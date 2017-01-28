@@ -1,0 +1,70 @@
+{
+  "name": "schema-utils",
+  "version": "0.0.1",
+  "description": "Webpack Schema Validation Utilities",
+  "main": "./dist",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prebuild": "npm run clean:dist",
+    "build": "cross-env NODE_ENV=production babel -s true src -d dist",
+    "clean:dist": "shx rm -rf dist",
+    "start": "npm run serve:dev src",
+    "serve:dev": "nodemon $2 --exec babel-node",
+    "lint": "eslint --cache src test",
+    "security": "nsp check",
+    "test": "jest",
+    "test:coverage": "jest --collectCoverageFrom='src/**/*.js' --coverage",
+    "travis:test": "yarn run test",
+    "travis:coverage": "yarn run test:coverage",
+    "travis:lint": "yarn run lint && yarn run nsp"
+  },
+  "dependencies": {
+    "ajv": "^4.11.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.22.2",
+    "babel-jest": "^18.0.0",
+    "babel-polyfill": "^6.22.0",
+    "babel-preset-webpack": "^1.0.0",
+    "chai": "^3.5.0",
+    "codecov": "^1.0.1",
+    "cross-env": "^3.1.4",
+    "eslint": "^3.14.1",
+    "eslint-config-webpack": "^1.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "greenkeeper-postpublish": "^1.0.1",
+    "jest": "^18.1.0",
+    "nodemon": "^1.11.0",
+    "nsp": "^2.6.2",
+    "shx": "^0.2.2",
+    "standard-version": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=4.3.0 <5.0.0 || >=5.10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webpack-contrib/schema-utils.git"
+  },
+  "eslintConfig": {
+    "extends": "webpack",
+    "installedESLint": true
+  },
+  "keywords": [
+    "webpack",
+    "plugin",
+    "es2015"
+  ],
+  "author": "Webpack Contrib (https://github.com/webpack-contrib)",
+  "contributors": [
+    { "name": "Juho Vepsäläinen <@bebraw>" },
+    { "name": "Joshua Wiens <@d3viant0ne>" }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/webpack-contrib/schema-utils/issues"
+  },
+  "homepage": "https://github.com/webpack-contrib/schema-utils#readme"
+}
