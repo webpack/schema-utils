@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "prebuild": "npm run clean:dist",
-    "build": "cross-env NODE_ENV=production babel -s true src -d dist",
+    "build": "cross-env NODE_ENV=production babel -s true src -d dist --ignore 'src/**/*.test.js'",
     "clean:dist": "shx rm -rf dist",
     "start": "npm run serve:dev src",
     "serve:dev": "nodemon $2 --exec babel-node",
