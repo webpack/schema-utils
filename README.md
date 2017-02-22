@@ -20,7 +20,7 @@
 ```bash
 npm i schema-utils@latest
 ```
-
+asdf
 <h2 align="center">Usage</h2>
 
 ### Validate Options
