@@ -1,6 +1,6 @@
 {
   "name": "schema-utils",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Webpack Schema Validation Utilities",
   "main": "dist/index.js",
   "files": [
