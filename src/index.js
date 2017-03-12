@@ -1,3 +1,5 @@
-import { validateOptions } from './lib/validate-options';
+import validateOptions from './lib/validate-options';
 
-export default validateOptions;
+export {
+  validateOptions, // eslint-disable-line import/prefer-default-export
+};
