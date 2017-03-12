@@ -28,6 +28,21 @@ npm i schema-utils@latest
 
 <h2 align="center">Examples</h2>
 
+```javascript
+const { validateSchema } = require('schema-utils');
+
+...
+
+// This injects possible default values to options
+const validation = validateSchema(jsonSchema, options);
+
+if(validation.isValid) {
+  throw new Error(validation.error);
+}
+
+// options are ok to use now
+```
+
 
 <h2 align="center">Maintainers</h2>
 
