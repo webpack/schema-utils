@@ -6,7 +6,8 @@
   "files": [
     "dist",
     "lib",
-    "src"
+    "src",
+    ".babelrc"
   ],
   "scripts": {
     "prebuild": "yarn run clean:dist",
