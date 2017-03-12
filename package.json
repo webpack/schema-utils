@@ -21,6 +21,7 @@
     "travis:lint": "yarn run lint && yarn run security",
     "webpack-defaults": "webpack-defaults",
     "lint-staged": "lint-staged",
+    "postinstall": "node lib/post_install.js",
     "prepublish": "yarn run build",
     "release": "yarn run standard-version"
   },
