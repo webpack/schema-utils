@@ -4,7 +4,9 @@
   "description": "Webpack Schema Validation Utilities",
   "main": "dist/index.js",
   "files": [
-    "dist"
+    "dist",
+    "lib",
+    "src"
   ],
   "scripts": {
     "prebuild": "yarn run clean:dist",
