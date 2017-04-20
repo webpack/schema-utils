@@ -6,9 +6,14 @@
 [![chat][chat]][chat-url]
 
 <div align="center">
+  <a href="http://json-schema.org">
+    <!-- src="https://webpack-contrib.github.io/schema-utils/logo.png" -->
+    <img width="180" height="180"
+      src="https://raw.githubusercontent.com/json-schema-org/json-schema-org.github.io/master/img/logo.png">
+  </a>
   <a href="https://github.com/webpack/webpack">
-    <img width="200" height="200" vspace="" hspace="25"
-      src="https://worldvectorlogo.com/logos/webpack.svg">
+    <img width="200" height="200" hspace="10"
+      src="https://webpack.js.org/assets/icon-square-big.svg">
   </a>
   <h1>Schema Utils</h1>
 </div>
@@ -24,33 +29,35 @@ npm install --save schema-utils
 ### `validateOptions`
 
 ```js
-validateOptions('path/to/schema', options, 'Loader/Plugin Name')
+import validateOptions from 'schema-utils'
+
+validateOptions('path/to/schema.json', options, 'Loader/Plugin Name')
 ```
 
 <h2 align="center">Examples</h2>
 
-### `Loader`
+### Loader
 
 ```js
 import { getOptions } from 'loader-utils'
-import { validateOptions } from 'schema-utils'
+import validateOptions from 'schema-utils'
 
 function loader (src, map) {
   const options = getOptions(this) || {}
 
-  validateOptions('path/to/schema', options, 'Loader Name')
+  validateOptions('path/to/schema.json', options, 'Loader Name')
 }
 ```
 
-### `Plugin`
+### Plugin
 
 ```js
 import Tapable from 'tapable'
-import { validateOptions } from 'schema-utils'
+import validateOptions from 'schema-utils'
 
 class Plugin extends Tapable {
   constructor (options) {
-    validateOptions('./path/to/schema', options, 'Plugin Name')
+    validateOptions('path/to/schema.json', options, 'Plugin Name')
   }
 }
 ```
