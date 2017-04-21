@@ -1,5 +1,5 @@
 /* eslint-disable */
-import validateOptions from '../dist/validateOptions';
+import validateOptions from '../src';
 
 test('Valid', () => {
   const options = {
