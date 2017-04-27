@@ -22,5 +22,5 @@ test('Error', () => {
   };
 
   expect(() => validateOptions('test/fixtures/schema.json', options, '{Name}'))
-    .toThrowError(/{Name} Options Validation Error/);
+    .toThrowError(/Validation Error\n\n{Name} Invalid Options\n\n/);
 });
