@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Error should have errors for every key in options 1`] = `
+Array [
+  Object {
+    "dataPath": ".string",
+    "keyword": "type",
+    "message": "should be string",
+    "params": Object {
+      "type": "string",
+    },
+    "schemaPath": "#/properties/string/type",
+  },
+  Object {
+    "dataPath": ".array",
+    "keyword": "type",
+    "message": "should be array",
+    "params": Object {
+      "type": "array",
+    },
+    "schemaPath": "#/properties/array/type",
+  },
+  Object {
+    "dataPath": ".object.prop",
+    "keyword": "type",
+    "message": "should be boolean",
+    "params": Object {
+      "type": "boolean",
+    },
+    "schemaPath": "#/properties/object/properties/prop/type",
+  },
+  Object {
+    "dataPath": ".boolean",
+    "keyword": "type",
+    "message": "should be boolean",
+    "params": Object {
+      "type": "boolean",
+    },
+    "schemaPath": "#/properties/boolean/type",
+  },
+  Object {
+    "dataPath": ".type",
+    "keyword": "typeof",
+    "message": "should pass \\"typeof\\" keyword validation",
+    "params": Object {
+      "keyword": "typeof",
+    },
+    "schemaPath": "#/properties/type/typeof",
+  },
+  Object {
+    "dataPath": ".instance",
+    "keyword": "instanceof",
+    "message": "should pass \\"instanceof\\" keyword validation",
+    "params": Object {
+      "keyword": "instanceof",
+    },
+    "schemaPath": "#/properties/instance/instanceof",
+  },
+]
+`;

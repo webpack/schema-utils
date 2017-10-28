@@ -26,20 +26,21 @@ describe('Error', () => {
     instance: function() {},
   };
 
-  const test = () => validateOptions('test/fixtures/schema.json', options, '{Name}')
+  const validate = () => validateOptions('test/fixtures/schema.json', options, '{Name}')
 
-  it('should throw error', () => {
-    expect(test).toThrowError(/Validation Error\n\n{Name} Invalid Options\n\n/);
+  test('should throw error', () => {
+    expect(validate).toThrowError(/Validation Error\n\n{Name} Invalid Options\n\n/);
   })
 
-  it('should have errors for every key in options', () => {
+  test('should have errors for every key in options', () => {
     try {
-      test()
+      validate()
     } catch(error) {
       const expected = ['.string', '.array', '.object.prop', '.boolean', '.type', '.instance'];
       const errors = error.err.map(e => e.dataPath)
 
-      expect(errors).toMatchObject(expected)
+      expect(errors).toMatchObject(expected);
+      expect(error.err).toMatchSnapshot();
     }
   })
 });
