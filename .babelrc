@@ -1,27 +1,11 @@
 {
   "presets": [
-    "webpack",
-    "jest",
-    [
-      "env",
-      {
-        "modules": false,
-        "useBuiltIns": true,
-        "targets": {
-          "node": 4.3
-        },
-        "exclude": [
-          "transform-async-to-generator",
-          "transform-regenerator"
-        ]
-      }
-    ],
     [
       "env",
       {
         "useBuiltIns": true,
         "targets": {
-          "node": 4.3
+          "node": "4.8"
         },
         "exclude": [
           "transform-async-to-generator",
@@ -30,7 +14,14 @@
       }
     ]
   ],
-  "ignore": [],
+  "plugins": [
+    [
+      "transform-object-rest-spread",
+      {
+        "useBuiltIns": true
+      }
+    ]
+  ],
   "env": {
     "test": {
       "presets": [
@@ -40,13 +31,5 @@
         "transform-object-rest-spread"
       ]
     }
-  },
-  "plugins": [
-    [
-      "transform-object-rest-spread",
-      {
-        "useBuiltIns": true
-      }
-    ]
-  ]
+  }
 }
