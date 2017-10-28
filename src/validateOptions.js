@@ -1,5 +1,9 @@
+/* eslint-disable
+  import/order,
+  no-param-reassign
+*/
 import fs from 'fs';
-import path from 'path'; // eslint-disable-line
+import path from 'path';
 
 import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
@@ -15,8 +19,8 @@ ajvKeywords(ajv, ['instanceof', 'typeof']);
 
 const validateOptions = (schema, options, name) => {
   if (typeof schema === 'string') {
-    schema = fs.readFileSync(path.resolve(schema), 'utf8'); // eslint-disable-line
-    schema = JSON.parse(schema); // eslint-disable-line
+    schema = fs.readFileSync(path.resolve(schema), 'utf8');
+    schema = JSON.parse(schema);
   }
 
   if (!ajv.validate(schema, options)) {
