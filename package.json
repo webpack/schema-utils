@@ -28,7 +28,8 @@
     "release": "yarn run standard-version"
   },
   "dependencies": {
-    "ajv": "^5.0.0"
+    "ajv": "^5.0.0",
+    "ajv-keywords": "^2.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
