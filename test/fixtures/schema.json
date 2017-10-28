@@ -20,6 +20,12 @@
     },
     "boolean": {
       "type": "boolean"
+    },
+    "type": {
+      "typeof": "function"
+    },
+    "instance": {
+      "instanceof": "RegExp"
     }
   },
   "additionalProperties": false
