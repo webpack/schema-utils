@@ -7,12 +7,12 @@
     "dist"
   ],
   "engines": {
-    "node": ">= 4.3 < 5.0.0 || >= 5.10"
+    "node": ">= 4.8 < 5.0.0 || >= 5.10"
   },
   "scripts": {
-    "start": "yarn run build -- -w",
-    "prebuild": "yarn run clean",
-    "build": "cross-env NODE_ENV=production babel src -d dist --ignore 'src/**/*.test.js'",
+    "start": "npm run build -- -w",
+    "prebuild": "npm run clean",
+    "build": "cross-env NODE_ENV=production babel src -d dist --ignore 'src/**/*.test.js' --copy-files",
     "clean": "del-cli dist",
     "lint": "eslint --cache src test",
     "lint-staged": "lint-staged",
@@ -20,36 +20,38 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --collectCoverageFrom='src/**/*.js' --coverage",
-    "travis:coverage": "yarn run test:coverage",
-    "travis:lint": "yarn run lint && yarn run security",
-    "travis:test": "yarn run test",
-    "webpack-defaults": "webpack-defaults",
-    "prepublish": "yarn run build",
-    "release": "yarn run standard-version"
+    "travis:lint": "npm run lint && npm run security",
+    "travis:test": "npm run test -- --runInBand",
+    "travis:coverage": "npm run test:coverage -- --runInBand",
+    "appveyor:test": "npm run test",
+    "prepublish": "npm run build",
+    "release": "standard-version",
+    "webpack-defaults": "webpack-defaults"
   },
   "dependencies": {
     "ajv": "^5.0.0",
     "ajv-keywords": "^2.1.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-jest": "^19.0.0",
-    "babel-plugin-transform-object-rest-spread": "^6.23.0",
-    "babel-polyfill": "^6.23.0",
-    "babel-preset-env": "^1.4.0",
-    "babel-preset-webpack": "^1.0.0",
-    "codecov": "^2.0.1",
-    "cross-env": "^4.0.0",
-    "del-cli": "^0.2.1",
-    "eslint": "^3.19.0",
-    "eslint-config-webpack": "^1.2.1",
-    "eslint-plugin-import": "^2.2.0",
-    "jest": "^19.0.2",
-    "lint-staged": "^3.4.0",
-    "nsp": "^2.6.3",
-    "pre-commit": "^1.2.2",
+    "babel-cli": "^6.0.0",
+    "babel-jest": "^21.0.0",
+    "babel-plugin-transform-object-rest-spread": "^6.0.0",
+    "babel-polyfill": "^6.0.0",
+    "babel-preset-env": "^1.0.0",
+    "cross-env": "^5.0.0",
+    "del-cli": "^1.0.0",
+    "eslint": "^4.0.0",
+    "eslint-config-webpack": "^1.0.0",
+    "eslint-plugin-import": "^2.0.0",
+    "jest": "^21.0.0",
+    "lint-staged": "^4.0.0",
+    "nsp": "^2.0.0",
+    "pre-commit": "^1.0.0",
     "standard-version": "^4.0.0",
-    "webpack-defaults": "^0.4.5"
+    "webpack-defaults": "^1.6.0"
+  },
+  "peerDependencies": {
+    "webpack": "^2.0.0 || ^3.0.0"
   },
   "pre-commit": "lint-staged",
   "lint-staged": {
@@ -58,34 +60,20 @@
       "git add"
     ]
   },
-  "eslintConfig": {
-    "extends": "webpack",
-    "installedESLint": true
-  },
   "keywords": [
     "webpack",
-    "plugin",
-    "es2015"
+    "webpack-plugin",
+    "schema-utils",
+    "loader"
   ],
   "author": "Webpack Contrib (https://github.com/webpack-contrib)",
   "contributors": [
-    {
-      "name": "Juho Vepsäläinen <@bebraw>"
-    },
-    {
-      "name": "Joshua Wiens <@d3viant0ne>"
-    },
-    {
-      "name": "Michael Ciniawsky <@michael-ciniawsky>"
-    }
+    "Juho Vepsäläinen <@bebraw>",
+    "Joshua Wiens <@d3viant0ne>",
+    "Michael Ciniawsky <@michael-ciniawsky>"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/webpack-contrib/schema-utils.git"
-  },
-  "bugs": {
-    "url": "https://github.com/webpack-contrib/schema-utils/issues"
-  },
+  "repository": "https://github.com/webpack-contrib/schema-utils.git",
+  "bugs": "https://github.com/webpack-contrib/schema-utils/issues",
   "homepage": "https://github.com/webpack-contrib/schema-utils#readme",
   "license": "MIT"
 }
