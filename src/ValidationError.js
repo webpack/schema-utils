@@ -1,15 +1,18 @@
 class ValidationError extends Error {
-  constructor(err, name) {
-    super(err);
+  constructor(errors, name) {
+    super();
 
-    this.err = err;
-    this.stack = false;
+    this.name = 'ValidationError';
 
     this.message = `Validation Error\n\n${name || ''} Invalid Options\n\n`;
 
-    err.forEach((msg) => {
-      this.message += `options${msg.dataPath} ${msg.message}\n`;
+    errors.forEach((err) => {
+      this.message += `options${err.dataPath} ${err.message}\n`;
     });
+
+    this.errors = errors;
+
+    Error.captureStackTrace(this, this.constructor);
 
     return this;
   }

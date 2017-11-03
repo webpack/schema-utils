@@ -40,13 +40,13 @@ describe('Error', () => {
   test('should have errors for every key in options', () => {
     try {
       validate();
-    } catch (error) {
-      const errors = error.err.map(e => e.dataPath);
+    } catch (err) {
+      const errors = err.errors.map(e => e.dataPath);
 
       const expected = ['.string', '.array', '.object.prop', '.boolean', '.type', '.instance'];
 
       expect(errors).toMatchObject(expected);
-      expect(error.err).toMatchSnapshot();
+      expect(err.errors).toMatchSnapshot();
     }
   });
 });
