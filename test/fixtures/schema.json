@@ -15,6 +15,14 @@
       "properties": {
         "prop": {
           "type": "boolean"
+        },
+        "object": {
+          "type": "object",
+          "properties": {
+            "prop": {
+              "type": "boolean"
+            }
+          }
         }
       }
     },

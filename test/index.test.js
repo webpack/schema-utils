@@ -7,11 +7,16 @@ import validateOptions from '../src';
 
 test('Valid', () => {
   const options = {
-    string: 'hello',
-    array: [ 'a' ],
-    object: { prop: false },
-    boolean: true,
     type() {},
+    array: [ 'a' ],
+    string: 'hello',
+    object: {
+      prop: false,
+      object: {
+        prop: false
+      }
+    },
+    boolean: true,
     instance: new RegExp('')
   };
 
@@ -21,11 +26,16 @@ test('Valid', () => {
 
 describe('Error', () => {
   const options = {
-    string: false,
-    array: {},
-    object: { prop: 1 },
-    boolean: 'hello',
     type: null,
+    array: {},
+    string: false,
+    object: {
+      prop: 1,
+      object: {
+        prop: 1
+      }
+    },
+    boolean: 'hello',
     instance() {}
   };
 
@@ -34,16 +44,25 @@ describe('Error', () => {
   };
 
   test('should throw error', () => {
-    expect(validate).toThrowError(/Validation Error\n\n{Name} Invalid Options\n\n/);
+    expect(validate).toThrowError();
+    expect(validate).toThrowErrorMatchingSnapshot();
   });
 
-  test('should have errors for every key in options', () => {
+  test('should have errors for every option key', () => {
     try {
       validate();
     } catch (err) {
-      const errors = err.errors.map(e => e.dataPath);
+      const errors = err.errors.map(err => err.dataPath);
 
-      const expected = ['.string', '.array', '.object.prop', '.boolean', '.type', '.instance'];
+      const expected = [
+        '.string',
+        '.array',
+        '.object.prop',
+        '.object.object.prop',
+        '.boolean',
+        '.type',
+        '.instance'
+      ];
 
       expect(errors).toMatchObject(expected);
       expect(err.errors).toMatchSnapshot();

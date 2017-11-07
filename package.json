@@ -17,9 +17,9 @@
     "lint": "eslint --cache src test",
     "lint-staged": "lint-staged",
     "security": "nsp check",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --collectCoverageFrom='src/**/*.js' --coverage",
+    "test": "cross-env JEST=true jest",
+    "test:watch": "cross-env JEST=true jest --watch",
+    "test:coverage": "cross-env JEST=true jest --collectCoverageFrom='src/**/*.js' --coverage",
     "travis:lint": "npm run lint && npm run security",
     "travis:test": "npm run test -- --runInBand",
     "travis:coverage": "npm run test:coverage -- --runInBand",
@@ -30,7 +30,8 @@
   },
   "dependencies": {
     "ajv": "^5.0.0",
-    "ajv-keywords": "^2.1.0"
+    "ajv-keywords": "^2.1.0",
+    "chalk": "^2.3.0"
   },
   "devDependencies": {
     "babel-cli": "^6.0.0",
