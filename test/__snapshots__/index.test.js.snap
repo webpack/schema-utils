@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Error should have errors for every key in options 1`] = `
+exports[`Error should have errors for every option key 1`] = `
 Array [
   Object {
     "dataPath": ".string",
@@ -30,6 +30,15 @@ Array [
     "schemaPath": "#/properties/object/properties/prop/type",
   },
   Object {
+    "dataPath": ".object.object.prop",
+    "keyword": "type",
+    "message": "should be boolean",
+    "params": Object {
+      "type": "boolean",
+    },
+    "schemaPath": "#/properties/object/properties/object/properties/prop/type",
+  },
+  Object {
     "dataPath": ".boolean",
     "keyword": "type",
     "message": "should be boolean",
@@ -57,4 +66,17 @@ Array [
     "schemaPath": "#/properties/instance/instanceof",
   },
 ]
+`;
+
+exports[`Error should throw error 1`] = `
+"{Name} Invalid Options
+
+options.string should be string
+options.array should be array
+options.object.prop should be boolean
+options.object.object.prop should be boolean
+options.boolean should be boolean
+options.type should pass \\"typeof\\" keyword validation
+options.instance should pass \\"instanceof\\" keyword validation
+"
 `;

@@ -4,7 +4,7 @@ class ValidationError extends Error {
 
     this.name = 'ValidationError';
 
-    this.message = `Validation Error\n\n${name || ''} Invalid Options\n\n`;
+    this.message = `${name || ''} Invalid Options\n\n`;
 
     errors.forEach((err) => {
       this.message += `options${err.dataPath} ${err.message}\n`;
