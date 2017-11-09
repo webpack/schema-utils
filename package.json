@@ -2,13 +2,17 @@
   "name": "schema-utils",
   "version": "0.4.1",
   "description": "Webpack Schema Validation Utilities",
+  "license": "MIT",
   "main": "dist/cjs.js",
   "files": [
     "dist"
   ],
-  "engines": {
-    "node": ">= 4.8 < 5.0.0 || >= 5.10"
-  },
+  "author": "Webpack Contrib (https://github.com/webpack-contrib)",
+  "contributors": [
+    "Juho Vepsäläinen <@bebraw>",
+    "Joshua Wiens <@d3viant0ne>",
+    "Michael Ciniawsky <@michael-ciniawsky>"
+  ],
   "scripts": {
     "start": "npm run build -- -w",
     "prebuild": "npm run clean",
@@ -49,11 +53,18 @@
     "nsp": "^2.0.0",
     "pre-commit": "^1.0.0",
     "standard-version": "^4.0.0",
+    "webpack": "^3.8.1",
     "webpack-defaults": "^1.6.0"
   },
   "peerDependencies": {
     "webpack": "^2.0.0 || ^3.0.0"
   },
+  "engines": {
+    "node": ">= 4.8 < 5.0.0 || >= 5.10"
+  },
+  "repository": "https://github.com/webpack-contrib/schema-utils.git",
+  "bugs": "https://github.com/webpack-contrib/schema-utils/issues",
+  "homepage": "https://github.com/webpack-contrib/schema-utils#readme",
   "pre-commit": "lint-staged",
   "lint-staged": {
     "*.js": [
@@ -66,15 +77,5 @@
     "webpack-plugin",
     "schema-utils",
     "loader"
-  ],
-  "author": "Webpack Contrib (https://github.com/webpack-contrib)",
-  "contributors": [
-    "Juho Vepsäläinen <@bebraw>",
-    "Joshua Wiens <@d3viant0ne>",
-    "Michael Ciniawsky <@michael-ciniawsky>"
-  ],
-  "repository": "https://github.com/webpack-contrib/schema-utils.git",
-  "bugs": "https://github.com/webpack-contrib/schema-utils/issues",
-  "homepage": "https://github.com/webpack-contrib/schema-utils#readme",
-  "license": "MIT"
+  ]
 }
