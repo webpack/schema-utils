@@ -4,14 +4,11 @@
   "description": "Webpack Schema Validation Utilities",
   "license": "MIT",
   "main": "dist/cjs.js",
+  "engines": {
+    "node": ">= 4.8 < 5.0.0 || >= 5.10"
+  },
   "files": [
     "dist"
-  ],
-  "author": "Webpack Contrib (https://github.com/webpack-contrib)",
-  "contributors": [
-    "Juho Vepsäläinen <@bebraw>",
-    "Joshua Wiens <@d3viant0ne>",
-    "Michael Ciniawsky <@michael-ciniawsky>"
   ],
   "scripts": {
     "start": "npm run build -- -w",
@@ -21,9 +18,9 @@
     "lint": "eslint --cache src test",
     "lint-staged": "lint-staged",
     "security": "nsp check",
-    "test": "cross-env JEST=true jest",
-    "test:watch": "cross-env JEST=true jest --watch",
-    "test:coverage": "cross-env JEST=true jest --collectCoverageFrom='src/**/*.js' --coverage",
+    "test": "cross-env jest",
+    "test:watch": "cross-env jest --watch",
+    "test:coverage": "cross-env jest --collectCoverageFrom='src/**/*.js' --coverage",
     "travis:lint": "npm run lint && npm run security",
     "travis:test": "npm run test -- --runInBand",
     "travis:coverage": "npm run test:coverage -- --runInBand",
@@ -34,8 +31,7 @@
   },
   "dependencies": {
     "ajv": "^5.0.0",
-    "ajv-keywords": "^2.1.0",
-    "chalk": "^2.3.0"
+    "ajv-keywords": "^2.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.0.0",
@@ -53,15 +49,24 @@
     "nsp": "^2.0.0",
     "pre-commit": "^1.0.0",
     "standard-version": "^4.0.0",
-    "webpack": "^3.8.1",
+    "webpack": "^3.0.0",
     "webpack-defaults": "^1.6.0"
   },
   "peerDependencies": {
     "webpack": "^2.0.0 || ^3.0.0"
   },
-  "engines": {
-    "node": ">= 4.8 < 5.0.0 || >= 5.10"
-  },
+  "keywords": [
+    "webpack",
+    "webpack-plugin",
+    "schema-utils",
+    "loader"
+  ],
+  "author": "Webpack Contrib (https://github.com/webpack-contrib)",
+  "contributors": [
+    "Juho Vepsäläinen <@bebraw>",
+    "Joshua Wiens <@d3viant0ne>",
+    "Michael Ciniawsky <@michael-ciniawsky>"
+  ],
   "repository": "https://github.com/webpack-contrib/schema-utils.git",
   "bugs": "https://github.com/webpack-contrib/schema-utils/issues",
   "homepage": "https://github.com/webpack-contrib/schema-utils#readme",
@@ -71,11 +76,5 @@
       "eslint --fix",
       "git add"
     ]
-  },
-  "keywords": [
-    "webpack",
-    "webpack-plugin",
-    "schema-utils",
-    "loader"
-  ]
+  }
 }

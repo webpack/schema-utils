@@ -6,8 +6,6 @@
 import fs from 'fs';
 import path from 'path';
 
-import chalk from 'chalk';
-
 import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
 
@@ -28,18 +26,7 @@ const validateOptions = (schema, options, name) => {
   }
 
   if (!ajv.validate(schema, options)) {
-    try {
-      throw new ValidationError(ajv.errors, name);
-    } catch (err) {
-      console.error(chalk.bold.red(`\n${err.message}\n`));
-
-      // rethrow {Error} for testing only
-      if (process.env.JEST) {
-        throw err;
-      }
-
-      process.exit(1);
-    }
+    throw new ValidationError(ajv.errors, name);
   }
 
   return true;
