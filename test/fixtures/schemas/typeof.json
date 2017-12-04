@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "fn": {
+      "typeof": "function"
+    }
+  },
+  "additionalProperties": false
+}

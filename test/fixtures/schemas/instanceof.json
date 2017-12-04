@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "regexp": {
+      "instanceof": "RegExp"
+    }
+  },
+  "additionalProperties": false
+}
