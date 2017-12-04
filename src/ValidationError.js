@@ -13,8 +13,6 @@ class ValidationError extends Error {
     this.errors = errors;
 
     Error.captureStackTrace(this, this.constructor);
-
-    return this;
   }
 }
 
