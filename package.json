@@ -1,6 +1,6 @@
 {
   "name": "schema-utils",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Webpack Schema Validation Utilities",
   "license": "MIT",
   "main": "dist/cjs.js",

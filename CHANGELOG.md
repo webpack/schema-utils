@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.4.3"></a>
+## [0.4.3](https://github.com/webpack-contrib/schema-utils/compare/v0.4.2...v0.4.3) (2017-12-14)
+
+
+### Bug Fixes
+
+* **validateOptions:** throw `err` instead of `process.exit(1)` ([#17](https://github.com/webpack-contrib/schema-utils/issues/17)) ([c595eda](https://github.com/webpack-contrib/schema-utils/commit/c595eda))
+* **ValidationError:** never return `this` in the ctor ([#16](https://github.com/webpack-contrib/schema-utils/issues/16)) ([c723791](https://github.com/webpack-contrib/schema-utils/commit/c723791))
+
+
+
 <a name="0.4.2"></a>
 ## [0.4.2](https://github.com/webpack-contrib/schema-utils/compare/v0.4.1...v0.4.2) (2017-11-09)
 
