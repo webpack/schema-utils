@@ -17,7 +17,7 @@ const ajv = new Ajv({
   errorDataPath: 'property',
 });
 
-ajvKeywords(ajv, [ 'instanceof', 'typeof' ]);
+ajvKeywords(ajv, ['instanceof', 'typeof']);
 
 const validateOptions = (schema, options, name) => {
   if (typeof schema === 'string') {

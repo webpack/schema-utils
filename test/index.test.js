@@ -8,20 +8,21 @@ import validateOptions from '../src';
 test('Valid', () => {
   const options = {
     type() {},
-    array: [ 'a' ],
+    array: ['a'],
     string: 'hello',
     object: {
       prop: false,
       object: {
-        prop: false
-      }
+        prop: false,
+      },
     },
     boolean: true,
-    instance: new RegExp('')
+    instance: new RegExp(''),
   };
 
-  expect(validateOptions('test/fixtures/schema.json', options, 'Loader'))
-    .toBe(true);
+  expect(validateOptions('test/fixtures/schema.json', options, 'Loader')).toBe(
+    true
+  );
 });
 
 describe('Error', () => {
@@ -32,11 +33,11 @@ describe('Error', () => {
     object: {
       prop: 1,
       object: {
-        prop: 1
-      }
+        prop: 1,
+      },
     },
     boolean: 'hello',
-    instance() {}
+    instance() {},
   };
 
   const validate = () => {
@@ -52,7 +53,7 @@ describe('Error', () => {
     try {
       validate();
     } catch (err) {
-      const errors = err.errors.map(err => err.dataPath);
+      const errors = err.errors.map((err) => err.dataPath);
 
       const expected = [
         '.string',
@@ -61,7 +62,7 @@ describe('Error', () => {
         '.object.object.prop',
         '.boolean',
         '.type',
-        '.instance'
+        '.instance',
       ];
 
       expect(errors).toMatchObject(expected);
