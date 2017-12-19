@@ -1,14 +1,7 @@
-/* eslint-disable
-  import/order,
-  no-param-reassign,
-  array-bracket-spacing,
-*/
-import fs from 'fs';
 import path from 'path';
-
+import fs from 'fs';
 import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
-
 import ValidationError from './ValidationError';
 
 const ajv = new Ajv({
