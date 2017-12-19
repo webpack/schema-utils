@@ -1,8 +1,3 @@
-/* eslint-disable
-  comma-dangle,
-  arrow-body-style,
-  array-bracket-spacing,
-*/
 import validateOptions from '../src';
 
 test('Valid', () => {
@@ -40,9 +35,8 @@ describe('Error', () => {
     instance() {},
   };
 
-  const validate = () => {
-    return validateOptions('test/fixtures/schema.json', options, '{Name}');
-  };
+  const validate = () =>
+    validateOptions('test/fixtures/schema.json', options, '{Name}');
 
   test('should throw error', () => {
     expect(validate).toThrowError();
