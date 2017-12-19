@@ -1,10 +1,10 @@
 // TODO eventually move to `Error/format`
-export default function (err) {
+export default function(err) {
   // TODO Better messages, see
   // https://github.com/webpack-contrib/schema-utils/issues/18
   const message = {
-    typeof: err => `options${err.dataPath} should be a {Function}\n`,
-    instanceof: err => `options${err.dataPath} should be {RegExp}\n`,
+    typeof: (err) => `options${err.dataPath} should be a {Function}\n`,
+    instanceof: (err) => `options${err.dataPath} should be {RegExp}\n`,
   };
 
   // TODO handle all ajv.keywords
