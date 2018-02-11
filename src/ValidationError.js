@@ -1,3 +1,5 @@
+import format from './format';
+
 class ValidationError extends Error {
   constructor(errors, name) {
     super();
@@ -7,7 +9,7 @@ class ValidationError extends Error {
     this.message = `${name || ''} Invalid Options\n\n`;
 
     errors.forEach((err) => {
-      this.message += `options${err.dataPath} ${err.message}\n`;
+      this.message += `${format(err)}`;
     });
 
     this.errors = errors;

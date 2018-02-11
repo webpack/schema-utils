@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Errors Format - instanceof 1`] = `
+"{Name} Invalid Options
+
+options.regexp should be {RegExp}
+"
+`;
+
+exports[`Errors Format - typeof 1`] = `
+"{Name} Invalid Options
+
+options.fn should be a {Function}
+"
+`;

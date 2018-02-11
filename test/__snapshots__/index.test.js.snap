@@ -76,7 +76,7 @@ options.array should be array
 options.object.prop should be boolean
 options.object.object.prop should be boolean
 options.boolean should be boolean
-options.type should pass \\"typeof\\" keyword validation
-options.instance should pass \\"instanceof\\" keyword validation
+options.type should be a {Function}
+options.instance should be {RegExp}
 "
 `;
