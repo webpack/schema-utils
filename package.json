@@ -33,8 +33,8 @@
     "webpack-defaults": "webpack-defaults"
   },
   "dependencies": {
-    "ajv": "^5.0.0",
-    "ajv-keywords": "^2.1.0"
+    "ajv": "^6.1.0",
+    "ajv-keywords": "^3.1.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^5.2.5",
