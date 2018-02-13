@@ -68,9 +68,9 @@
   "peerDependencies": {
     "webpack": "^2.0.0 || ^3.0.0 || ^4.0.0"
   },
-  "homepage": "https://github.com/michael-ciniawsky/schema",
-  "repository": "https://github.com/michael-ciniawsky/schema",
-  "bugs": "https://github.com/michael-ciniawsky/schema/issues",
+  "homepage": "https://github.com/webpack-defaults/schema-utils",
+  "repository": "https://github.com/webpack-defaults/schema-utils",
+  "bugs": "https://github.com/webpack-contrib/schema-utils/issues",
   "pre-commit": "lint-staged",
   "lint-staged": {
     "*.js": [
