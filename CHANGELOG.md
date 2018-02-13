@@ -3,12 +3,12 @@
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
 <a name="0.4.4"></a>
-## [0.4.4](https://github.com/michael-ciniawsky/schema/compare/v0.4.3...v0.4.4) (2018-02-13)
+## [0.4.4](https://github.com/webpack-contrib/schema-utils/compare/v0.4.3...v0.4.4) (2018-02-13)
 
 
 ### Bug Fixes
 
-* **package:** update `dependencies` ([#22](https://github.com/michael-ciniawsky/schema/issues/22)) ([3aecac6](https://github.com/michael-ciniawsky/schema/commit/3aecac6))
+* **package:** update `dependencies` ([#22](https://github.com/webpack-contrib/schema-utils/issues/22)) ([3aecac6](https://github.com/webpack-contrib/schema-utils/commit/3aecac6))
 
 
 
