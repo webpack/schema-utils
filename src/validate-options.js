@@ -62,7 +62,10 @@ const validate = (options) => {
     }
 
     if (options.log) {
-      const log = weblog({ name: options.name || logName, id: logName });
+      const log = weblog({
+        name: options.name || logName,
+        id: `${logName}-validator`,
+      });
       log.error(`${err.meta.desc}\n\n${err.format()}\n`);
     }
 
