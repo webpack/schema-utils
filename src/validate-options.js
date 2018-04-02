@@ -1,9 +1,12 @@
 import path from 'path';
 import fs from 'fs';
+
 import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
 import weblog from 'webpack-log';
+
 import optionsSchema from '../schema/options.json';
+
 import ValidationError from './ValidationError';
 
 const ajv = new Ajv({
