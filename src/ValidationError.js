@@ -12,8 +12,6 @@ class ValidationError extends Error {
     this.meta.desc = chalk`{underline Options Validation Error}`;
     this.name = 'ValidationError';
 
-    console.log(this.constructor);
-
     if (options.log) {
       this.message += `: ${this.meta.desc}`;
     } else {
