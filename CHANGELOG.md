@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0-beta.0"></a>
+# [1.0.0-beta.0](https://github.com/webpack-contrib/schema-utils/compare/v0.4.5...v1.0.0-beta.0) (2018-04-02)
+
+
+### Code Refactoring
+
+* refactor exports, self-validate, pretty output ([#25](https://github.com/webpack-contrib/schema-utils/issues/25)) ([f6fd667](https://github.com/webpack-contrib/schema-utils/commit/f6fd667))
+
+
+### BREAKING CHANGES
+
+* Minor API change along with a significant improvment in output readability and general development experience.
+
+MIGRATION: See https://github.com/webpack-contrib/schema-utils#api
+
+* test(jest): update tests and snapshots
+* docs(meta): add output images
+* docs(readme): update readme with api, options, images
+* fix(validation error):  Workaround for extending builtin
+* style: Breaks up import groups
+
+
+
 <a name="0.4.5"></a>
 ## [0.4.5](https://github.com/webpack-contrib/schema-utils/compare/v0.4.4...v0.4.5) (2018-02-13)
 

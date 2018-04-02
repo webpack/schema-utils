@@ -1,6 +1,6 @@
 {
   "name": "@webpack-contrib/schema-utils",
-  "version": "0.4.5",
+  "version": "1.0.0-beta.0",
   "description": "Webpack Schema Validation Utilities",
   "license": "MIT",
   "repository": "webpack-contrib/schema-utils",
