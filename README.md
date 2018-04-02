@@ -1,6 +1,10 @@
 <div align="center">
+  <a href="http://json-schema.org">
+    <img width="200"
+      src="https://cdn.rawgit.com/webpack-contrib/schema-utils/master/.github/json-schema-logo.svg">
+  </a>
   <a href="https://github.com/webpack/webpack">
-    <img width="200" height="200" src="https://webpack.js.org/assets/icon-square-big.svg">
+    <img width="200" src="https://webpack.js.org/assets/icon-square-big.svg">
   </a>
 </div>
 
@@ -14,6 +18,12 @@
 
 Webpack Schema Validation Utilities
 
+Validates `options` objects against a [JSON Schema](http://json-schema.org) and
+displays the output beautifully.
+
+<img width="645"
+  src="https://cdn.rawgit.com/webpack-contrib/schema-utils/master/.github/pretty.png">
+
 ## Requirements
 
 This module requires a minimum of Node v6.9.0 and Webpack v4.0.0.
@@ -26,94 +36,158 @@ To begin, you'll need to install `schema-utils`:
 $ npm install schema-utils --save-dev
 ```
 
-<!-- isLoader ? use(this) : delete(isPlugin) -->
-Then add the loader to your `webpack` config. For example:
+## API
 
-<!-- isPlugin ? use(this) : delete(isLoader) -->
-Then add the plugin to your `webpack` config. For example:
+When using the API directly, the main entry point  is the `serve` function, which
+is the default export of the module.
 
-**file.ext**
 ```js
-import file from 'file.ext';
+const validate = require('schema-utils');
+const schema = require('path/to/schema.json');
+const target = { ... }; // the options object to validate
+const name = '...'; // the load or plugin name validate() is being used in
+
+validate({ name, schema, target });
 ```
 
-<!-- isLoader ? use(this) : delete(isPlugin) -->
-**webpack.config.js**
-```js
-module.exports = {
-  module: {
-    rules: [
-      {
-        test: /.ext$/,
-        use: [
-          {
-            loader: `schemautils-loader`,
-            options: {...options}
-          }
-        ]
-      }
-    ]
-  }
-}
-```
+### serve(options)
 
-<!-- isPlugin ? use(this) : delete(isLoader) -->
-**webpack.config.js**
-```js
-module.exports = {
-  plugins: [
-    new `SchemaUtils`Plugin(options)
-  ]
-}
-```
+Returns `true` if validation succeeded, `false` validation failed and options
+allow the function to return a value. (see options below).
 
-And run `webpack` via your preferred method.
+### options
 
-## Options
+Type: `Object`
 
-### `[option]`
+Options for initializing and controlling the server provided. The option names
+listed below belong to the `options` object.
 
-Type: `[type|other-type]`
-Default: `[type|null]`
+#### `exit`
 
-[ option description ]
+Type: `Boolean`
+Default: `false`
 
-<!-- isLoader ? use(this) : delete(isPlugin) -->
-```js
-// in your webpack.config.js
-{
-  loader: `schemautils-loader`,
-  options: {
-    [option]: ''
-  }
-}
-```
+If `true`, will instruct the validator to end the process with an error code of
+`1`.
 
-<!-- isPlugin ? use(this) : delete(isLoader) -->
-```js
-// in your webpack.config.js
-new `SchemaUtils`Plugin({
-  [option]: ''
-})
-```
+#### `log`
+
+Type: `Boolean`
+Default: `false`
+
+If `true`, will instruct the validator to log the results of the validation (in
+the event of a failure) in a
+[webpack-style log output](https://github.com/webpack-contrib/webpack-log). This
+is typically used with `throw: false`.
+
+<img width="500"
+  src="https://cdn.rawgit.com/webpack-contrib/schema-utils/master/.github/output-log-true.png">
+
+#### `name`
+
+Type: `String`
+Default: `undefined`
+_**Required**_
+
+A `String` specifying the name of the loader or plugin utilizing the validator.
+
+#### `schema`
+
+Type: `String|Object`
+Default: `undefined`
+_**Required**_
+
+A `String` specifying the filesystem path to the schema used for validation.
+Alternatively, you may specify an `object` containing the JSON-parsed schema.
+
+#### `target`
+
+Type: `Object`
+Default: `undefined`
+_**Required**_
+
+An `Object` containing the options to validate against the specified schema.
+
+#### `throw`
+
+Type: `Boolean`
+Default: `true`
+
+By default the validator will throw an error and display validation results upon
+failure. If this option is set to `false`, the validator will not throw an error.
+This is typically used in situations where a return value of `false` for
+`validate()` is sufficient, a stack trace is uneeded, or when
+[webpack-style log output](https://github.com/webpack-contrib/webpack-log) is
+preferred.
+
+<img width="645"
+  src="https://cdn.rawgit.com/webpack-contrib/schema-utils/master/.github/output-throws-true.png">
+
 
 ## Examples
 
-[ example outline text ]
+Below is a basic example of how this validator might be used:
 
-**webpack.config.js**
-```js
-// Example setup here..
+```json
+# schema.json
+{
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "test": {
+      "anyOf": [
+        { "type": "array" },
+        { "type": "string" },
+        { "instanceof": "RegExp" }
+      ]
+    },
+    "transform": {
+      "instanceof": "Function"
+    },
+    "sourceMap": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}
 ```
 
-**file.ext**
+### Use in a Loader
+
 ```js
-// Source code here...
+const { getOptions } = require('loader-utils');
+const validate = require('schema-utils');
+
+import schema from 'path/to/schema.json'
+
+function loader (src, map) {
+  const options = getOptions(this) || {};
+
+  validate({ name: 'Loader Name', schema, target: options });
+
+  // Code...
+}
 ```
 
-**bundle.js**
+### Use in a Plugin
+
 ```js
-// Bundle code here...
+const validate = require('schema-utils');
+const schema = require('path/to/schema.json');
+
+class Plugin {
+  constructor (options) {
+    validate({ name: 'Plugin Name', schema, target: options });
+
+    this.options = options;
+  }
+
+  apply (compiler) {
+    // Code...
+  }
+}
 ```
 
 ## License
