@@ -3,15 +3,6 @@
 exports[`Error should have errors for every option key 1`] = `
 Array [
   Object {
-    "dataPath": ".string",
-    "keyword": "type",
-    "message": "should be string",
-    "params": Object {
-      "type": "string",
-    },
-    "schemaPath": "#/properties/string/type",
-  },
-  Object {
     "dataPath": ".array",
     "keyword": "type",
     "message": "should be array",
@@ -19,24 +10,6 @@ Array [
       "type": "array",
     },
     "schemaPath": "#/properties/array/type",
-  },
-  Object {
-    "dataPath": ".object.prop",
-    "keyword": "type",
-    "message": "should be boolean",
-    "params": Object {
-      "type": "boolean",
-    },
-    "schemaPath": "#/properties/object/properties/prop/type",
-  },
-  Object {
-    "dataPath": ".object.object.prop",
-    "keyword": "type",
-    "message": "should be boolean",
-    "params": Object {
-      "type": "boolean",
-    },
-    "schemaPath": "#/properties/object/properties/object/properties/prop/type",
   },
   Object {
     "dataPath": ".boolean",
@@ -48,15 +21,6 @@ Array [
     "schemaPath": "#/properties/boolean/type",
   },
   Object {
-    "dataPath": ".type",
-    "keyword": "typeof",
-    "message": "should pass \\"typeof\\" keyword validation",
-    "params": Object {
-      "keyword": "typeof",
-    },
-    "schemaPath": "#/properties/type/typeof",
-  },
-  Object {
     "dataPath": ".instance",
     "keyword": "instanceof",
     "message": "should pass \\"instanceof\\" keyword validation",
@@ -65,18 +29,56 @@ Array [
     },
     "schemaPath": "#/properties/instance/instanceof",
   },
+  Object {
+    "dataPath": ".object.object.prop",
+    "keyword": "type",
+    "message": "should be boolean",
+    "params": Object {
+      "type": "boolean",
+    },
+    "schemaPath": "#/properties/object/properties/object/properties/prop/type",
+  },
+  Object {
+    "dataPath": ".object.prop",
+    "keyword": "type",
+    "message": "should be boolean",
+    "params": Object {
+      "type": "boolean",
+    },
+    "schemaPath": "#/properties/object/properties/prop/type",
+  },
+  Object {
+    "dataPath": ".string",
+    "keyword": "type",
+    "message": "should be string",
+    "params": Object {
+      "type": "string",
+    },
+    "schemaPath": "#/properties/string/type",
+  },
+  Object {
+    "dataPath": ".type",
+    "keyword": "typeof",
+    "message": "should pass \\"typeof\\" keyword validation",
+    "params": Object {
+      "keyword": "typeof",
+    },
+    "schemaPath": "#/properties/type/typeof",
+  },
 ]
 `;
 
 exports[`Error should throw error 1`] = `
-"{Name} Invalid Options
+"TestLoader
 
-options.string should be string
-options.array should be array
-options.object.prop should be boolean
-options.object.object.prop should be boolean
-options.boolean should be boolean
-options.type should pass \\"typeof\\" keyword validation
-options.instance should pass \\"instanceof\\" keyword validation
+  [4mOptions Validation Error[24m
+
+  [2moptions[22m.array               [34mshould be array[39m
+  [2moptions[22m.boolean             [34mshould be boolean[39m
+  [2moptions[22m.instance            [34mshould pass \\"instanceof\\" keyword validation[39m
+  [2moptions[22m.object.object.prop  [34mshould be boolean[39m
+  [2moptions[22m.object.prop         [34mshould be boolean[39m
+  [2moptions[22m.string              [34mshould be string[39m
+  [2moptions[22m.type                [34mshould pass \\"typeof\\" keyword validation[39m
 "
 `;

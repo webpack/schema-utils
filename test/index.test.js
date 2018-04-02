@@ -1,7 +1,9 @@
-import validateOptions from '../src';
+import validate from '../src';
 
 test('Valid', () => {
-  const options = {
+  const name = 'TestLoader';
+  const schema = 'test/fixtures/schema.json';
+  const target = {
     type() {},
     array: ['a'],
     string: 'hello',
@@ -14,14 +16,15 @@ test('Valid', () => {
     boolean: true,
     instance: new RegExp(''),
   };
+  const result = validate({ name, schema, target });
 
-  expect(validateOptions('test/fixtures/schema.json', options, 'Loader')).toBe(
-    true
-  );
+  expect(result).toBe(true);
 });
 
 describe('Error', () => {
-  const options = {
+  const name = 'TestLoader';
+  const schema = 'test/fixtures/schema.json';
+  const target = {
     type: null,
     array: {},
     string: false,
@@ -35,32 +38,31 @@ describe('Error', () => {
     instance() {},
   };
 
-  const validate = () =>
-    validateOptions('test/fixtures/schema.json', options, '{Name}');
+  const doit = () => validate({ name, schema, target });
 
   test('should throw error', () => {
-    expect(validate).toThrowError();
-    expect(validate).toThrowErrorMatchingSnapshot();
+    expect(doit).toThrowError();
+    expect(doit).toThrowErrorMatchingSnapshot();
   });
 
   test('should have errors for every option key', () => {
     try {
-      validate();
+      doit();
     } catch (err) {
-      const errors = err.errors.map((err) => err.dataPath);
+      const errors = err.meta.errors.map((error) => error.dataPath);
 
       const expected = [
-        '.string',
         '.array',
-        '.object.prop',
-        '.object.object.prop',
         '.boolean',
-        '.type',
         '.instance',
+        '.object.object.prop',
+        '.object.prop',
+        '.string',
+        '.type',
       ];
 
       expect(errors).toMatchObject(expected);
-      expect(err.errors).toMatchSnapshot();
+      expect(err.meta.errors).toMatchSnapshot();
     }
   });
 });

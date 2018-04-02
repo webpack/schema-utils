@@ -7,5 +7,6 @@ module.exports = {
       'error',
       { singleQuote: true, trailingComma: 'es5', arrowParens: 'always' },
     ],
+    'no-proto': 0
   },
 };

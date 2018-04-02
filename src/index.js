@@ -1,3 +1,3 @@
-import validateOptions from './validateOptions';
+import validateOptions from './validate-options';
 
 export default validateOptions;

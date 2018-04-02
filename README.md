@@ -1,54 +1,135 @@
+<div align="center">
+  <a href="http://json-schema.org">
+    <img width="200"
+      src="https://cdn.rawgit.com/webpack-contrib/schema-utils/master/.github/json-schema-logo.svg">
+  </a>
+  <a href="https://github.com/webpack/webpack">
+    <img width="200" src="https://webpack.js.org/assets/icon-square-big.svg">
+  </a>
+</div>
+
 [![npm][npm]][npm-url]
 [![node][node]][node-url]
 [![deps][deps]][deps-url]
-[![test][test]][test-url]
-[![coverage][cover]][cover-url]
+[![tests][tests]][tests-url]
 [![chat][chat]][chat-url]
 
-<div align="center">
-  <a href="http://json-schema.org">
-    <img width="160" height="160"
-      src="https://raw.githubusercontent.com/webpack-contrib/schema-utils/master/logo.png">
-  </a>
-  <a href="https://github.com/webpack/webpack">
-    <img width="200" height="200"
-      src="https://webpack.js.org/assets/icon-square-big.svg">
-  </a>
-  <h1>Schema Utils</h1>
-</div>
+# schema-utils
 
-<h2 align="center">Install</h2>
+Webpack Schema Validation Utilities
 
-```bash
-npm i schema-utils
+Validates `options` objects against a [JSON Schema](http://json-schema.org) and
+displays the output beautifully.
+
+<img width="645"
+  src="https://cdn.rawgit.com/webpack-contrib/schema-utils/master/.github/pretty.png">
+
+## Requirements
+
+This module requires a minimum of Node v6.9.0 and Webpack v4.0.0.
+
+## Getting Started
+
+To begin, you'll need to install `schema-utils`:
+
+```console
+$ npm install schema-utils --save-dev
 ```
 
-<h2 align="center">Usage</h2>
+## API
 
-### `validateOptions`
-
-**schema.json**
-```js
-{
-  "type": "object",
-  "properties": {
-    // Options...
-  },
-  "additionalProperties": false
-}
-```
+When using the API directly, the main entry point  is the `serve` function, which
+is the default export of the module.
 
 ```js
-import schema from 'path/to/schema.json'
-import validateOptions from 'schema-utils'
+const validate = require('schema-utils');
+const schema = require('path/to/schema.json');
+const target = { ... }; // the options object to validate
+const name = '...'; // the load or plugin name validate() is being used in
 
-validateOptions(schema, options, 'Loader/Plugin Name')
+validate({ name, schema, target });
 ```
 
-<h2 align="center">Examples</h2>
+### serve(options)
 
-**schema.json**
+Returns `true` if validation succeeded, `false` validation failed and options
+allow the function to return a value. (see options below).
+
+### options
+
+Type: `Object`
+
+Options for initializing and controlling the server provided. The option names
+listed below belong to the `options` object.
+
+#### `exit`
+
+Type: `Boolean`
+Default: `false`
+
+If `true`, will instruct the validator to end the process with an error code of
+`1`.
+
+#### `log`
+
+Type: `Boolean`
+Default: `false`
+
+If `true`, will instruct the validator to log the results of the validation (in
+the event of a failure) in a
+[webpack-style log output](https://github.com/webpack-contrib/webpack-log). This
+is typically used with `throw: false`.
+
+<img width="500"
+  src="https://cdn.rawgit.com/webpack-contrib/schema-utils/master/.github/output-log-true.png">
+
+#### `name`
+
+Type: `String`
+Default: `undefined`
+_**Required**_
+
+A `String` specifying the name of the loader or plugin utilizing the validator.
+
+#### `schema`
+
+Type: `String|Object`
+Default: `undefined`
+_**Required**_
+
+A `String` specifying the filesystem path to the schema used for validation.
+Alternatively, you may specify an `object` containing the JSON-parsed schema.
+
+#### `target`
+
+Type: `Object`
+Default: `undefined`
+_**Required**_
+
+An `Object` containing the options to validate against the specified schema.
+
+#### `throw`
+
+Type: `Boolean`
+Default: `true`
+
+By default the validator will throw an error and display validation results upon
+failure. If this option is set to `false`, the validator will not throw an error.
+This is typically used in situations where a return value of `false` for
+`validate()` is sufficient, a stack trace is uneeded, or when
+[webpack-style log output](https://github.com/webpack-contrib/webpack-log) is
+preferred.
+
+<img width="645"
+  src="https://cdn.rawgit.com/webpack-contrib/schema-utils/master/.github/output-throws-true.png">
+
+
+## Examples
+
+Below is a basic example of how this validator might be used:
+
 ```json
+# schema.json
 {
   "type": "object",
   "properties": {
@@ -73,35 +154,34 @@ validateOptions(schema, options, 'Loader/Plugin Name')
 }
 ```
 
-### `Loader`
+### Use in a Loader
 
 ```js
-import { getOptions } from 'loader-utils'
-import validateOptions from 'schema-utils'
+const { getOptions } = require('loader-utils');
+const validate = require('schema-utils');
 
 import schema from 'path/to/schema.json'
 
 function loader (src, map) {
-  const options = getOptions(this) || {}
+  const options = getOptions(this) || {};
 
-  validateOptions(schema, options, 'Loader Name')
+  validate({ name: 'Loader Name', schema, target: options });
 
   // Code...
 }
 ```
 
-### `Plugin`
+### Use in a Plugin
 
 ```js
-import validateOptions from 'schema-utils'
-
-import schema from 'path/to/schema.json'
+const validate = require('schema-utils');
+const schema = require('path/to/schema.json');
 
 class Plugin {
   constructor (options) {
-    validateOptions(schema, options, 'Plugin Name')
+    validate({ name: 'Plugin Name', schema, target: options });
 
-    this.options = options
+    this.options = options;
   }
 
   apply (compiler) {
@@ -110,33 +190,9 @@ class Plugin {
 }
 ```
 
-<h2 align="center">Maintainers</h2>
+## License
 
-<table>
-  <tbody>
-    <tr>
-      <td align="center">
-        <img width="150" height="150"
-        src="https://github.com/bebraw.png?v=3&s=150">
-        </br>
-        <a href="https://github.com/bebraw">Juho Vepsäläinen</a>
-      </td>
-      <td align="center">
-        <img width="150" height="150"
-        src="https://github.com/d3viant0ne.png?v=3&s=150">
-        </br>
-        <a href="https://github.com/d3viant0ne">Joshua Wiens</a>
-      </td>
-      <td align="center">
-        <img width="150" height="150"
-        src="https://github.com/michael-ciniawsky.png?v=3&s=150">
-        </br>
-        <a href="https://github.com/michael-ciniawsky">Michael Ciniawsky</a>
-      </td>
-    </tr>
-  <tbody>
-</table>
-
+#### [MIT](./LICENSE)
 
 [npm]: https://img.shields.io/npm/v/schema-utils.svg
 [npm-url]: https://npmjs.com/package/schema-utils
@@ -147,8 +203,8 @@ class Plugin {
 [deps]: https://david-dm.org/webpack-contrib/schema-utils.svg
 [deps-url]: https://david-dm.org/webpack-contrib/schema-utils
 
-[test]: http://img.shields.io/travis/webpack-contrib/schema-utils.svg
-[test-url]: https://travis-ci.org/webpack-contrib/schema-utils
+[tests]: 	https://img.shields.io/circleci/project/github/webpack-contrib/schema-utils.svg
+[tests-url]: https://circleci.com/gh/webpack-contrib/schema-utils
 
 [cover]: https://codecov.io/gh/webpack-contrib/schema-utils/branch/master/graph/badge.svg
 [cover-url]: https://codecov.io/gh/webpack-contrib/schema-utils
