@@ -1,18 +1,52 @@
+import chalk from 'chalk';
+import strip from 'strip-ansi';
+import table from 'text-table';
+
 class ValidationError extends Error {
-  constructor(errors, name) {
+  constructor(options) {
     super();
 
+    // prettier-ignore
+    this.message = chalk`${options.name}`;
+    this.meta = options;
+    this.meta.desc = chalk`{underline Options Validation Error}`;
     this.name = 'ValidationError';
 
-    this.message = `${name || ''} Invalid Options\n\n`;
+    console.log(this.constructor);
 
-    errors.forEach((err) => {
-      this.message += `options${err.dataPath} ${err.message}\n`;
-    });
-
-    this.errors = errors;
+    if (options.log) {
+      this.message += `: ${this.meta.desc}`;
+    } else {
+      this.message += `\n\n  ${this.meta.desc}\n\n${this.format()}\n`;
+    }
 
     Error.captureStackTrace(this, this.constructor);
+  }
+
+  format() {
+    const { errors } = this.meta;
+    const rows = [];
+    const options = {
+      align: ['', 'l', 'l'],
+      stringLength(str) {
+        return strip(str).length;
+      },
+    };
+
+    for (const err of errors) {
+      rows.push([
+        '',
+        chalk`{dim options}${err.dataPath}`,
+        chalk`{blue ${err.message}}`,
+      ]);
+    }
+
+    return table(rows, options);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  toString() {
+    return `${this.message}\n\n${this.format()}`;
   }
 }
 
