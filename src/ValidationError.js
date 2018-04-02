@@ -5,7 +5,10 @@ import table from 'text-table';
 class ValidationError extends Error {
   constructor(options) {
     super();
-
+    // Workaround for https://github.com/istanbuljs/istanbuljs/issues/139
+    this.constructor = ValidationError;
+    this.__proto__ = ValidationError.prototype;
+    // End Workaround
     // prettier-ignore
     this.message = chalk`${options.name}`;
     this.meta = options;
