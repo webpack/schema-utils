@@ -33,7 +33,7 @@ This module requires a minimum of Node v6.9.0 and Webpack v4.0.0.
 To begin, you'll need to install `schema-utils`:
 
 ```console
-$ npm install schema-utils --save-dev
+$ npm install @webpack-contrib/schema-utils --save-dev
 ```
 
 ## API
@@ -42,7 +42,7 @@ When using the API directly, the main entry point  is the `serve` function, whic
 is the default export of the module.
 
 ```js
-const validate = require('schema-utils');
+const validate = require('@webpack-contrib/schema-utils');
 const schema = require('path/to/schema.json');
 const target = { ... }; // the options object to validate
 const name = '...'; // the load or plugin name validate() is being used in
@@ -158,7 +158,7 @@ Below is a basic example of how this validator might be used:
 
 ```js
 const { getOptions } = require('loader-utils');
-const validate = require('schema-utils');
+const validate = require('@webpack-contrib/schema-utils');
 
 import schema from 'path/to/schema.json'
 
@@ -174,7 +174,7 @@ function loader (src, map) {
 ### Use in a Plugin
 
 ```js
-const validate = require('schema-utils');
+const validate = require('@webpack-contrib/schema-utils');
 const schema = require('path/to/schema.json');
 
 class Plugin {

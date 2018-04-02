@@ -1,5 +1,5 @@
 {
-  "name": "schema-utils",
+  "name": "@webpack-contrib/schema-utils",
   "version": "0.4.5",
   "description": "Webpack Schema Validation Utilities",
   "license": "MIT",
@@ -42,7 +42,7 @@
     "webpack"
   ],
   "peerDependencies": {
-    "webpack": "^2.0.0 || ^3.0.0 || ^4.0.0"
+    "webpack": "^3.0.0 || ^4.0.0"
   },
   "dependencies": {
     "ajv": "^6.1.0",
@@ -76,7 +76,7 @@
     "pre-commit": "^1.2.2",
     "prettier": "^1.10.2",
     "standard-version": "^4.3.0",
-    "webpack": "^3.11.0",
+    "webpack": "^4.4.1",
     "webpack-defaults": "^2.1.4"
   },
   "pre-commit": "lint-staged",
