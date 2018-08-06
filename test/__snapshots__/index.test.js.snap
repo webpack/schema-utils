@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Error should have errors for every option key 1`] = `
+exports[`Error Errors 1`] = `
 Array [
   Object {
     "dataPath": ".string",
@@ -68,7 +68,55 @@ Array [
 ]
 `;
 
-exports[`Error should throw error 1`] = `
+exports[`Error Messages Customized 1`] = `
+Object {
+  "dataPath": ".string",
+  "keyword": "errorMessage",
+  "message": "should be {String} (https://github.com/org/repo#anchor)",
+  "params": Object {
+    "errors": Array [
+      Object {
+        "dataPath": "/string",
+        "keyword": "type",
+        "message": "should be string",
+        "params": Object {
+          "type": "string",
+        },
+        "schemaPath": "#/properties/string/type",
+      },
+    ],
+  },
+  "schemaPath": "#/errorMessage",
+}
+`;
+
+exports[`Error Messages Customized 2`] = `
+"{Name} Invalid Options
+
+options.string should be {String} (https://github.com/org/repo#anchor)
+"
+`;
+
+exports[`Error Messages Default 1`] = `
+Object {
+  "dataPath": ".string",
+  "keyword": "type",
+  "message": "should be string",
+  "params": Object {
+    "type": "string",
+  },
+  "schemaPath": "#/properties/string/type",
+}
+`;
+
+exports[`Error Messages Default 2`] = `
+"{Name} Invalid Options
+
+options.string should be string
+"
+`;
+
+exports[`Error Throws 1`] = `
 "{Name} Invalid Options
 
 options.string should be string
