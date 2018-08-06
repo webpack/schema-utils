@@ -1,8 +1,13 @@
-import path from 'path';
-import fs from 'fs';
-import Ajv from 'ajv';
-import ajvKeywords from 'ajv-keywords';
-import ValidationError from './ValidationError';
+/* eslint-disable
+  no-param-reassign
+*/
+const fs = require('fs');
+const path = require('path');
+
+const Ajv = require('ajv');
+const ajvKeywords = require('ajv-keywords');
+
+const ValidationError = require('./ValidationError');
 
 const ajv = new Ajv({
   allErrors: true,
@@ -25,4 +30,4 @@ const validateOptions = (schema, options, name) => {
   return true;
 };
 
-export default validateOptions;
+module.exports = validateOptions;

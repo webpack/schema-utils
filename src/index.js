@@ -1,3 +1,3 @@
-import validateOptions from './validateOptions';
+const validateOptions = require('./validateOptions');
 
-export default validateOptions;
+module.exports = validateOptions;

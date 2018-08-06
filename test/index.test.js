@@ -1,4 +1,7 @@
-import validateOptions from '../src';
+/* eslint-disable
+  no-shadow
+*/
+const validateOptions = require('../src');
 
 test('Valid', () => {
   const options = {
