@@ -1,0 +1,61 @@
+{
+  "type": "object",
+  "properties": {
+    "string": {
+      "type": "string"
+    },
+    "array": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "object": {
+      "type": "object",
+      "properties": {
+        "prop": {
+          "type": "boolean"
+        },
+        "object": {
+          "type": "object",
+          "properties": {
+            "prop": {
+              "type": "boolean"
+            }
+          },
+          "errorMessage": {
+            "properties": {
+              "prop": "should be {Boolean} (https://github.com/org/repo#anchor)"
+            }
+          }
+        }
+      },
+      "errorMessage": {
+        "properties": {
+          "prop": "should be {Boolean} (https://github.com/org/repo#anchor)",
+          "object": "should be {Object} (https://github.com/org/repo#anchor)"
+        }
+      }
+    },
+    "boolean": {
+      "type": "boolean"
+    },
+    "type": {
+      "typeof": "function"
+    },
+    "instance": {
+      "instanceof": "RegExp"
+    }
+  },
+  "errorMessage": {
+    "properties": {
+      "type": "should be {Function} (https://github.com/org/repo#anchor)",
+      "array": "should be {Array} (https://github.com/org/repo#anchor)",
+      "string": "should be {String} (https://github.com/org/repo#anchor)",
+      "object": "should be {Object} (https://github.com/org/repo#anchor)",
+      "boolean": "should be {Boolean} (https://github.com/org/repo#anchor)",
+      "instance": "should be {RegExp} (https://github.com/org/repo#anchor)"
+    }
+  },
+  "additionalProperties": false
+}

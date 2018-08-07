@@ -1,6 +1,7 @@
 /* eslint-disable
   strict,
-  no-shadow
+  no-shadow,
+  arrow-body-style
 */
 
 'use strict';
@@ -21,10 +22,11 @@ test('Valid', () => {
     boolean: true,
     instance: new RegExp(''),
   };
+  const validate = () => {
+    return validateOptions('test/fixtures/schema.json', options, '{Name}');
+  };
 
-  expect(validateOptions('test/fixtures/schema.json', options, 'Loader')).toBe(
-    true
-  );
+  expect(validate()).toBe(true);
 });
 
 describe('Error', () => {
@@ -42,15 +44,16 @@ describe('Error', () => {
     instance() {},
   };
 
-  const validate = () =>
-    validateOptions('test/fixtures/schema.json', options, '{Name}');
+  const validate = () => {
+    return validateOptions('test/fixtures/schema.json', options, '{Name}');
+  };
 
-  test('should throw error', () => {
+  test('Throws', () => {
     expect(validate).toThrowError();
     expect(validate).toThrowErrorMatchingSnapshot();
   });
 
-  test('should have errors for every option key', () => {
+  test('Errors', () => {
     try {
       validate();
     } catch (err) {
@@ -69,5 +72,67 @@ describe('Error', () => {
       expect(errors).toMatchObject(expected);
       expect(err.errors).toMatchSnapshot();
     }
+  });
+
+  describe('Messages', () => {
+    test('Default', () => {
+      const options = {
+        type() {},
+        array: [''],
+        string: 1,
+        object: {
+          prop: false,
+          object: {
+            prop: false,
+          },
+        },
+        boolean: true,
+        instance: new RegExp(''),
+      };
+
+      const validate = () => {
+        return validateOptions('test/fixtures/schema.json', options, '{Name}');
+      };
+
+      try {
+        validate();
+      } catch (err) {
+        err.errors.forEach((err) => expect(err).toMatchSnapshot());
+
+        expect(err.message).toMatchSnapshot();
+      }
+    });
+
+    test('Customized', () => {
+      const options = {
+        type() {},
+        array: [''],
+        string: 1,
+        object: {
+          prop: false,
+          object: {
+            prop: false,
+          },
+        },
+        boolean: true,
+        instance: new RegExp(''),
+      };
+
+      const validate = () => {
+        return validateOptions(
+          'test/fixtures/errors/schema.json',
+          options,
+          '{Name}'
+        );
+      };
+
+      try {
+        validate();
+      } catch (err) {
+        err.errors.forEach((err) => expect(err).toMatchSnapshot());
+
+        expect(err.message).toMatchSnapshot();
+      }
+    });
   });
 });
