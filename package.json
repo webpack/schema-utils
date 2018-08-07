@@ -1,6 +1,6 @@
 {
   "name": "schema-utils",
-  "version": "0.4.6",
+  "version": "0.4.7",
   "description": "webpack Validation Utils",
   "main": "src/index.js",
   "files": [
