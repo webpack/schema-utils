@@ -1,6 +1,10 @@
 /* eslint-disable
+  strict,
   no-shadow
 */
+
+'use strict';
+
 const validateOptions = require('../src');
 
 test('Valid', () => {

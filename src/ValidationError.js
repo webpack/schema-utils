@@ -1,3 +1,9 @@
+/* eslint-disable
+  strict
+*/
+
+'use strict';
+
 class ValidationError extends Error {
   constructor(errors, name) {
     super();

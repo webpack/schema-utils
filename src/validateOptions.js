@@ -1,6 +1,10 @@
 /* eslint-disable
+  strict,
   no-param-reassign
 */
+
+'use strict';
+
 const fs = require('fs');
 const path = require('path');
 
