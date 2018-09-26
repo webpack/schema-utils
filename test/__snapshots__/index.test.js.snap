@@ -70,6 +70,28 @@ Array [
 
 exports[`Error Messages Customized 1`] = `
 Object {
+  "dataPath": "",
+  "keyword": "errorMessage",
+  "message": "should NOT have additional properties (https://github.com/org/repo#anchor)",
+  "params": Object {
+    "errors": Array [
+      Object {
+        "dataPath": "",
+        "keyword": "additionalProperties",
+        "message": "should NOT have additional properties",
+        "params": Object {
+          "additionalProperty": "added",
+        },
+        "schemaPath": "#/additionalProperties",
+      },
+    ],
+  },
+  "schemaPath": "#/errorMessage",
+}
+`;
+
+exports[`Error Messages Customized 2`] = `
+Object {
   "dataPath": ".string",
   "keyword": "errorMessage",
   "message": "should be {String} (https://github.com/org/repo#anchor)",
@@ -90,9 +112,10 @@ Object {
 }
 `;
 
-exports[`Error Messages Customized 2`] = `
+exports[`Error Messages Customized 3`] = `
 "{Name} Invalid Options
 
+options should NOT have additional properties (https://github.com/org/repo#anchor)
 options.string should be {String} (https://github.com/org/repo#anchor)
 "
 `;

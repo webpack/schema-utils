@@ -20,10 +20,20 @@ class ValidationError extends Error {
     });
 
     this.errors.forEach((err) => {
-      this.message += `options${err.dataPath} ${err.message}\n`;
+      this.message += ValidationError.format(err);
     });
 
     Error.captureStackTrace(this, this.constructor);
+  }
+
+  static format(err) {
+    if (err.keyword === 'additionalProperties') {
+      return `options${err.schemaPath} ${err.message}: ${
+        err.params.additionalProperty
+      }\n`;
+    }
+
+    return `options${err.dataPath} ${err.message}\n`;
   }
 }
 

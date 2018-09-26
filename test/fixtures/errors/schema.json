@@ -55,7 +55,8 @@
       "object": "should be {Object} (https://github.com/org/repo#anchor)",
       "boolean": "should be {Boolean} (https://github.com/org/repo#anchor)",
       "instance": "should be {RegExp} (https://github.com/org/repo#anchor)"
-    }
+    },
+    "additionalProperties": "should NOT have additional properties (https://github.com/org/repo#anchor)"
   },
   "additionalProperties": false
 }

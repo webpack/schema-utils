@@ -116,6 +116,7 @@ describe('Error', () => {
         },
         boolean: true,
         instance: new RegExp(''),
+        added: 'test',
       };
 
       const validate = () => {
