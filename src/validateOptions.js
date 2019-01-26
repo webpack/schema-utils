@@ -22,14 +22,20 @@ const ajv = new Ajv({
 errors(ajv);
 keywords(ajv, ['instanceof', 'typeof']);
 
-const validateOptions = (schema, options, name) => {
-  if (typeof schema === 'string') {
-    schema = fs.readFileSync(path.resolve(schema), 'utf8');
-    schema = JSON.parse(schema);
-  }
+const passed = new WeakSet();
 
-  if (!ajv.validate(schema, options)) {
-    throw new ValidationError(ajv.errors, name);
+const validateOptions = (schema, options, name) => {
+  if (!passed.has(options)) {
+    if (typeof schema === 'string') {
+      schema = fs.readFileSync(path.resolve(schema), 'utf8');
+      schema = JSON.parse(schema);
+    }
+
+    if (!ajv.validate(schema, options)) {
+      throw new ValidationError(ajv.errors, name);
+    }
+
+    passed.add(options);
   }
 
   return true;
