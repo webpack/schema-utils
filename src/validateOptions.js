@@ -22,23 +22,40 @@ const ajv = new Ajv({
 errors(ajv);
 keywords(ajv, ['instanceof', 'typeof']);
 
-const passed = new WeakSet();
+const passedBySchema = new WeakMap();
 
 const validateOptions = (schema, options, name) => {
-  if (!passed.has(options)) {
-    if (typeof schema === 'string') {
-      schema = fs.readFileSync(path.resolve(schema), 'utf8');
-      schema = JSON.parse(schema);
-    }
-
-    if (!ajv.validate(schema, options)) {
+  if (typeof schema === 'string') {
+    if (
+      !ajv.validate(
+        JSON.parse(fs.readFileSync(path.resolve(schema), 'utf8')),
+        options
+      )
+    ) {
       throw new ValidationError(ajv.errors, name);
     }
+  } else {
+    const passed = passedBySchema.get(schema);
 
-    passed.add(options);
+    if (passed) {
+      if (!passed.has(options)) {
+        if (!ajv.validate(schema, options)) {
+          throw new ValidationError(ajv.errors, name);
+        }
+
+        passed.add(options);
+      }
+    } else {
+      if (!ajv.validate(schema, options)) {
+        throw new ValidationError(ajv.errors, name);
+      }
+
+      passedBySchema.set(schema, new WeakSet([options]));
+    }
   }
 
   return true;
 };
 
 module.exports = validateOptions;
+module.exports.ajv = ajv;

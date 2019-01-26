@@ -6,27 +6,65 @@
 
 'use strict';
 
+const fs = require('fs');
+
 const validateOptions = require('../src');
 
-test('Valid', () => {
-  const options = {
-    type() {},
-    array: ['a'],
-    string: 'hello',
+const testSchema = require('./fixtures/schema.json');
+const errorSchema = require('./fixtures/errors/schema.json');
+
+const validOptions = Object.freeze({
+  type() {},
+  array: ['a'],
+  string: 'hello',
+  object: {
+    prop: false,
     object: {
       prop: false,
-      object: {
-        prop: false,
-      },
     },
-    boolean: true,
-    instance: new RegExp(''),
-  };
-  const validate = () => {
-    return validateOptions('test/fixtures/schema.json', options, '{Name}');
-  };
+  },
+  boolean: true,
+  instance: new RegExp(''),
+});
 
-  expect(validate()).toBe(true);
+describe('Valid', () => {
+  describe('when schema is object', () => {
+    test('should pass, uncached', () => {
+      const readFileSpy = jest.spyOn(fs, 'readFileSync');
+      const validateSpy = jest.spyOn(validateOptions.ajv, 'validate');
+      expect(validateOptions(testSchema, validOptions, '{Name}')).toBe(true);
+      expect(validateSpy).toHaveBeenCalled();
+      expect(readFileSpy).not.toHaveBeenCalled();
+      readFileSpy.mockRestore();
+      validateSpy.mockRestore();
+    });
+    test('should pass, cached', () => {
+      const readFileSpy = jest.spyOn(fs, 'readFileSync');
+      const validateSpy = jest.spyOn(validateOptions.ajv, 'validate');
+      expect(validateOptions(testSchema, validOptions, '{Name}')).toBe(true);
+      expect(validateSpy).not.toHaveBeenCalled();
+      expect(readFileSpy).not.toHaveBeenCalled();
+      readFileSpy.mockRestore();
+      validateSpy.mockRestore();
+    });
+  });
+
+  describe('when schema is string', () => {
+    test('should pass, uncached', () => {
+      const readFileSpy = jest.spyOn(fs, 'readFileSync');
+      const validateSpy = jest.spyOn(validateOptions.ajv, 'validate');
+      expect(
+        validateOptions('test/fixtures/schema.json', validOptions, '{Name}')
+      ).toBe(true);
+      expect(
+        validateOptions('test/fixtures/schema.json', validOptions, '{Name}')
+      ).toBe(true);
+      expect(validateSpy).toHaveBeenCalledTimes(2);
+      expect(readFileSpy).toHaveBeenCalledTimes(2);
+      readFileSpy.mockRestore();
+      validateSpy.mockRestore();
+    });
+  });
 });
 
 describe('Error', () => {
@@ -45,8 +83,14 @@ describe('Error', () => {
   };
 
   const validate = () => {
-    return validateOptions('test/fixtures/schema.json', options, '{Name}');
+    return validateOptions(testSchema, options, '{Name}');
   };
+
+  test('should throw non objects', () => {
+    expect(() => {
+      return validateOptions(testSchema, undefined, '{Name}');
+    }).toThrowError('should be object');
+  });
 
   test('Throws', () => {
     expect(validate).toThrowError();
@@ -91,7 +135,7 @@ describe('Error', () => {
       };
 
       const validate = () => {
-        return validateOptions('test/fixtures/schema.json', options, '{Name}');
+        return validateOptions(testSchema, options, '{Name}');
       };
 
       try {
@@ -119,11 +163,7 @@ describe('Error', () => {
       };
 
       const validate = () => {
-        return validateOptions(
-          'test/fixtures/errors/schema.json',
-          options,
-          '{Name}'
-        );
+        return validateOptions(errorSchema, options, '{Name}');
       };
 
       try {
