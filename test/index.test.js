@@ -6,8 +6,6 @@
 
 'use strict';
 
-const fs = require('fs');
-
 const validateOptions = require('../src');
 
 const testSchema = require('./fixtures/schema.json');
@@ -30,38 +28,15 @@ const validOptions = Object.freeze({
 describe('Valid', () => {
   describe('when schema is object', () => {
     test('should pass, uncached', () => {
-      const readFileSpy = jest.spyOn(fs, 'readFileSync');
       const validateSpy = jest.spyOn(validateOptions.ajv, 'validate');
       expect(validateOptions(testSchema, validOptions, '{Name}')).toBe(true);
       expect(validateSpy).toHaveBeenCalled();
-      expect(readFileSpy).not.toHaveBeenCalled();
-      readFileSpy.mockRestore();
       validateSpy.mockRestore();
     });
     test('should pass, cached', () => {
-      const readFileSpy = jest.spyOn(fs, 'readFileSync');
       const validateSpy = jest.spyOn(validateOptions.ajv, 'validate');
       expect(validateOptions(testSchema, validOptions, '{Name}')).toBe(true);
       expect(validateSpy).not.toHaveBeenCalled();
-      expect(readFileSpy).not.toHaveBeenCalled();
-      readFileSpy.mockRestore();
-      validateSpy.mockRestore();
-    });
-  });
-
-  describe('when schema is string', () => {
-    test('should pass, uncached', () => {
-      const readFileSpy = jest.spyOn(fs, 'readFileSync');
-      const validateSpy = jest.spyOn(validateOptions.ajv, 'validate');
-      expect(
-        validateOptions('test/fixtures/schema.json', validOptions, '{Name}')
-      ).toBe(true);
-      expect(
-        validateOptions('test/fixtures/schema.json', validOptions, '{Name}')
-      ).toBe(true);
-      expect(validateSpy).toHaveBeenCalledTimes(2);
-      expect(readFileSpy).toHaveBeenCalledTimes(2);
-      readFileSpy.mockRestore();
       validateSpy.mockRestore();
     });
   });
