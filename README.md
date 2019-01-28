@@ -27,6 +27,8 @@ npm i schema-utils
 
 ### `validateOptions`
 
+**Note:** Validations are cached using the object indentity of `schema` & `options` arguments. For this reason, it is recommended to never mutate the options & schema objects after being validated.
+
 **`schema.json`**
 ```js
 {
