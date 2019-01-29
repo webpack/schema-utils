@@ -26,20 +26,30 @@ const validOptions = Object.freeze({
   instance: new RegExp(''),
 });
 
-describe('Valid', () => {
-  describe('when schema is object', () => {
-    test('should pass, uncached', () => {
-      const validateSpy = jest.spyOn(ajv, 'validate');
-      expect(validateOptions(testSchema, validOptions, '{Name}')).toBe(true);
-      expect(validateSpy).toHaveBeenCalled();
-      validateSpy.mockRestore();
-    });
-    test('should pass, cached', () => {
-      const validateSpy = jest.spyOn(ajv, 'validate');
-      expect(validateOptions(testSchema, validOptions, '{Name}')).toBe(true);
-      expect(validateSpy).not.toHaveBeenCalled();
-      validateSpy.mockRestore();
-    });
+describe('when schema is object', () => {
+  test('should pass, uncached', () => {
+    const validateSpy = jest.spyOn(ajv, 'validate');
+    expect(validateOptions(testSchema, validOptions, '{Name}')).toBe(true);
+    expect(validateSpy).toHaveBeenCalled();
+    validateSpy.mockRestore();
+  });
+  test('should pass, cached', () => {
+    const validateSpy = jest.spyOn(ajv, 'validate');
+    expect(validateOptions(testSchema, validOptions, '{Name}')).toBe(true);
+    expect(validateSpy).not.toHaveBeenCalled();
+    validateSpy.mockRestore();
+  });
+});
+
+describe('when schema is string', () => {
+  test('should throw', () => {
+    expect(() => {
+      return validateOptions(
+        'test/fixtured/schema.json',
+        validOptions,
+        '{Name}'
+      );
+    }).toThrowError('no schema with key or ref "test/fixtured/schema.json"');
   });
 });
 
