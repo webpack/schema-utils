@@ -5,19 +5,8 @@
 
 'use strict';
 
-const Ajv = require('ajv');
-const errors = require('ajv-errors');
-const keywords = require('ajv-keywords');
-
 const ValidationError = require('./ValidationError');
-
-const ajv = new Ajv({
-  allErrors: true,
-  jsonPointers: true,
-});
-
-errors(ajv);
-keywords(ajv, ['instanceof', 'typeof']);
+const ajv = require('./ajv');
 
 const passedBySchema = new WeakMap();
 
@@ -44,4 +33,3 @@ const validateOptions = (schema, options, name) => {
 };
 
 module.exports = validateOptions;
-module.exports.ajv = ajv;

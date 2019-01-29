@@ -6,6 +6,7 @@
 
 'use strict';
 
+const ajv = require('../src/ajv');
 const validateOptions = require('../src');
 
 const testSchema = require('./fixtures/schema.json');
@@ -28,13 +29,13 @@ const validOptions = Object.freeze({
 describe('Valid', () => {
   describe('when schema is object', () => {
     test('should pass, uncached', () => {
-      const validateSpy = jest.spyOn(validateOptions.ajv, 'validate');
+      const validateSpy = jest.spyOn(ajv, 'validate');
       expect(validateOptions(testSchema, validOptions, '{Name}')).toBe(true);
       expect(validateSpy).toHaveBeenCalled();
       validateSpy.mockRestore();
     });
     test('should pass, cached', () => {
-      const validateSpy = jest.spyOn(validateOptions.ajv, 'validate');
+      const validateSpy = jest.spyOn(ajv, 'validate');
       expect(validateOptions(testSchema, validOptions, '{Name}')).toBe(true);
       expect(validateSpy).not.toHaveBeenCalled();
       validateSpy.mockRestore();
