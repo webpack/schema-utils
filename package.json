@@ -17,7 +17,7 @@
     "release": "npm run commits && standard-version"
   },
   "dependencies": {
-    "ajv": "^6.1.0",
+    "ajv": "~6.1.0",
     "ajv-errors": "^1.0.0",
     "ajv-keywords": "^3.1.0"
   },
