@@ -1,6 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Error Errors 1`] = `
+exports[`validateOptions method should throws errors on invalid schema 1`] = `
+"{Name} Invalid Options
+
+options.string should be string
+options.array should be array
+options.object.prop should be boolean
+options.object.object.prop should be boolean
+options.boolean should be boolean
+options.type should pass \\"typeof\\" keyword validation
+options.instance should pass \\"instanceof\\" keyword validation
+"
+`;
+
+exports[`validateOptions method should throws errors on invalid schema 2`] = `
 Array [
   Object {
     "dataPath": ".string",
@@ -68,63 +81,153 @@ Array [
 ]
 `;
 
-exports[`Error Messages Customized 1`] = `
-Object {
-  "dataPath": ".string",
-  "keyword": "errorMessage",
-  "message": "should be {String} (https://github.com/org/repo#anchor)",
-  "params": Object {
-    "errors": Array [
-      Object {
-        "dataPath": "/string",
-        "keyword": "type",
-        "message": "should be string",
-        "params": Object {
-          "type": "string",
-        },
-        "schemaPath": "#/properties/string/type",
-      },
-    ],
-  },
-  "schemaPath": "#/errorMessage",
-}
-`;
-
-exports[`Error Messages Customized 2`] = `
+exports[`validateOptions method should throws errors on invalid schema and has custom error messages 1`] = `
 "{Name} Invalid Options
 
+options.object.object.prop should be {Boolean} (https://github.com/org/repo#anchor)
+options.object.prop should be {Boolean} (https://github.com/org/repo#anchor)
+options.type should be {Function} (https://github.com/org/repo#anchor)
+options.array should be {Array} (https://github.com/org/repo#anchor)
 options.string should be {String} (https://github.com/org/repo#anchor)
+options.boolean should be {Boolean} (https://github.com/org/repo#anchor)
+options.instance should be {RegExp} (https://github.com/org/repo#anchor)
 "
 `;
 
-exports[`Error Messages Default 1`] = `
-Object {
-  "dataPath": ".string",
-  "keyword": "type",
-  "message": "should be string",
-  "params": Object {
-    "type": "string",
+exports[`validateOptions method should throws errors on invalid schema and has custom error messages 2`] = `
+Array [
+  Object {
+    "dataPath": ".object.object.prop",
+    "keyword": "errorMessage",
+    "message": "should be {Boolean} (https://github.com/org/repo#anchor)",
+    "params": Object {
+      "errors": Array [
+        Object {
+          "dataPath": "/object/object/prop",
+          "keyword": "type",
+          "message": "should be boolean",
+          "params": Object {
+            "type": "boolean",
+          },
+          "schemaPath": "#/properties/object/properties/object/properties/prop/type",
+        },
+      ],
+    },
+    "schemaPath": "#/properties/object/properties/object/errorMessage",
   },
-  "schemaPath": "#/properties/string/type",
-}
-`;
-
-exports[`Error Messages Default 2`] = `
-"{Name} Invalid Options
-
-options.string should be string
-"
-`;
-
-exports[`Error Throws 1`] = `
-"{Name} Invalid Options
-
-options.string should be string
-options.array should be array
-options.object.prop should be boolean
-options.object.object.prop should be boolean
-options.boolean should be boolean
-options.type should pass \\"typeof\\" keyword validation
-options.instance should pass \\"instanceof\\" keyword validation
-"
+  Object {
+    "dataPath": ".object.prop",
+    "keyword": "errorMessage",
+    "message": "should be {Boolean} (https://github.com/org/repo#anchor)",
+    "params": Object {
+      "errors": Array [
+        Object {
+          "dataPath": "/object/prop",
+          "keyword": "type",
+          "message": "should be boolean",
+          "params": Object {
+            "type": "boolean",
+          },
+          "schemaPath": "#/properties/object/properties/prop/type",
+        },
+      ],
+    },
+    "schemaPath": "#/properties/object/errorMessage",
+  },
+  Object {
+    "dataPath": ".type",
+    "keyword": "errorMessage",
+    "message": "should be {Function} (https://github.com/org/repo#anchor)",
+    "params": Object {
+      "errors": Array [
+        Object {
+          "dataPath": "/type",
+          "keyword": "typeof",
+          "message": "should pass \\"typeof\\" keyword validation",
+          "params": Object {
+            "keyword": "typeof",
+          },
+          "schemaPath": "#/properties/type/typeof",
+        },
+      ],
+    },
+    "schemaPath": "#/errorMessage",
+  },
+  Object {
+    "dataPath": ".array",
+    "keyword": "errorMessage",
+    "message": "should be {Array} (https://github.com/org/repo#anchor)",
+    "params": Object {
+      "errors": Array [
+        Object {
+          "dataPath": "/array",
+          "keyword": "type",
+          "message": "should be array",
+          "params": Object {
+            "type": "array",
+          },
+          "schemaPath": "#/properties/array/type",
+        },
+      ],
+    },
+    "schemaPath": "#/errorMessage",
+  },
+  Object {
+    "dataPath": ".string",
+    "keyword": "errorMessage",
+    "message": "should be {String} (https://github.com/org/repo#anchor)",
+    "params": Object {
+      "errors": Array [
+        Object {
+          "dataPath": "/string",
+          "keyword": "type",
+          "message": "should be string",
+          "params": Object {
+            "type": "string",
+          },
+          "schemaPath": "#/properties/string/type",
+        },
+      ],
+    },
+    "schemaPath": "#/errorMessage",
+  },
+  Object {
+    "dataPath": ".boolean",
+    "keyword": "errorMessage",
+    "message": "should be {Boolean} (https://github.com/org/repo#anchor)",
+    "params": Object {
+      "errors": Array [
+        Object {
+          "dataPath": "/boolean",
+          "keyword": "type",
+          "message": "should be boolean",
+          "params": Object {
+            "type": "boolean",
+          },
+          "schemaPath": "#/properties/boolean/type",
+        },
+      ],
+    },
+    "schemaPath": "#/errorMessage",
+  },
+  Object {
+    "dataPath": ".instance",
+    "keyword": "errorMessage",
+    "message": "should be {RegExp} (https://github.com/org/repo#anchor)",
+    "params": Object {
+      "errors": Array [
+        Object {
+          "dataPath": "/instance",
+          "keyword": "instanceof",
+          "message": "should pass \\"instanceof\\" keyword validation",
+          "params": Object {
+            "keyword": "instanceof",
+          },
+          "schemaPath": "#/properties/instance/instanceof",
+        },
+      ],
+    },
+    "schemaPath": "#/errorMessage",
+  },
+]
 `;

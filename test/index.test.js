@@ -1,137 +1,98 @@
-/* eslint-disable
-  strict,
-  no-shadow,
-  arrow-body-style
-*/
+import validate from '../src/index';
 
-'use strict';
-
-const validateOptions = require('../src');
-
-test('Valid', () => {
-  const options = {
-    type() {},
-    array: ['a'],
-    string: 'hello',
-    object: {
-      prop: false,
+describe('validateOptions method', () => {
+  describe('should not throws errors on', () => {
+    const options = {
+      type() {},
+      array: ['a'],
+      string: 'hello',
       object: {
         prop: false,
-      },
-    },
-    boolean: true,
-    instance: new RegExp(''),
-  };
-  const validate = () => {
-    return validateOptions('test/fixtures/schema.json', options, '{Name}');
-  };
-
-  expect(validate()).toBe(true);
-});
-
-describe('Error', () => {
-  const options = {
-    type: null,
-    array: {},
-    string: false,
-    object: {
-      prop: 1,
-      object: {
-        prop: 1,
-      },
-    },
-    boolean: 'hello',
-    instance() {},
-  };
-
-  const validate = () => {
-    return validateOptions('test/fixtures/schema.json', options, '{Name}');
-  };
-
-  test('Throws', () => {
-    expect(validate).toThrowError();
-    expect(validate).toThrowErrorMatchingSnapshot();
-  });
-
-  test('Errors', () => {
-    try {
-      validate();
-    } catch (err) {
-      const errors = err.errors.map((err) => err.dataPath);
-
-      const expected = [
-        '.string',
-        '.array',
-        '.object.prop',
-        '.object.object.prop',
-        '.boolean',
-        '.type',
-        '.instance',
-      ];
-
-      expect(errors).toMatchObject(expected);
-      expect(err.errors).toMatchSnapshot();
-    }
-  });
-
-  describe('Messages', () => {
-    test('Default', () => {
-      const options = {
-        type() {},
-        array: [''],
-        string: 1,
         object: {
           prop: false,
-          object: {
-            prop: false,
-          },
         },
-        boolean: true,
-        instance: new RegExp(''),
-      };
+      },
+      boolean: true,
+      instance: new RegExp(''),
+    };
 
-      const validate = () => {
-        return validateOptions('test/fixtures/schema.json', options, '{Name}');
-      };
+    it('valid schema', () => {
+      expect(() =>
+        validate('test/fixtures/schema.json', options, '{Name}')
+      ).not.toThrow();
+    });
+  });
+
+  describe('should throws errors on', () => {
+    const options = {
+      type: null,
+      array: {},
+      string: false,
+      object: {
+        prop: 1,
+        object: {
+          prop: 1,
+        },
+      },
+      boolean: 'hello',
+      instance() {},
+    };
+
+    it('invalid schema', () => {
+      expect.assertions(3);
 
       try {
-        validate();
-      } catch (err) {
-        err.errors.forEach((err) => expect(err).toMatchSnapshot());
+        validate('test/fixtures/schema.json', options, '{Name}');
+      } catch (error) {
+        expect(() => {
+          throw error;
+        }).toThrowErrorMatchingSnapshot();
 
-        expect(err.message).toMatchSnapshot();
+        const nestedErrors = error.errors.map(
+          (nestedError) => nestedError.dataPath
+        );
+
+        const expected = [
+          '.string',
+          '.array',
+          '.object.prop',
+          '.object.object.prop',
+          '.boolean',
+          '.type',
+          '.instance',
+        ];
+
+        expect(nestedErrors).toMatchObject(expected);
+        expect(error.errors).toMatchSnapshot();
       }
     });
 
-    test('Customized', () => {
-      const options = {
-        type() {},
-        array: [''],
-        string: 1,
-        object: {
-          prop: false,
-          object: {
-            prop: false,
-          },
-        },
-        boolean: true,
-        instance: new RegExp(''),
-      };
-
-      const validate = () => {
-        return validateOptions(
-          'test/fixtures/errors/schema.json',
-          options,
-          '{Name}'
-        );
-      };
+    it('invalid schema and has custom error messages', () => {
+      expect.assertions(3);
 
       try {
-        validate();
-      } catch (err) {
-        err.errors.forEach((err) => expect(err).toMatchSnapshot());
+        validate('test/fixtures/schema-custom-errors.json', options, '{Name}');
+      } catch (error) {
+        expect(() => {
+          throw error;
+        }).toThrowErrorMatchingSnapshot();
 
-        expect(err.message).toMatchSnapshot();
+        const nestedErrors = error.errors.map(
+          (nestedError) => nestedError.dataPath
+        );
+
+        const expected = [
+          '.object.object.prop',
+          '.object.prop',
+          '.type',
+          '.array',
+          '.string',
+          '.boolean',
+          '.instance',
+        ];
+
+        expect(nestedErrors).toMatchObject(expected);
+        expect(error.errors).toMatchSnapshot();
       }
     });
   });

@@ -1,9 +1,3 @@
-/* eslint-disable
-  strict
-*/
+const validate = require('./validate');
 
-'use strict';
-
-const validateOptions = require('./validateOptions');
-
-module.exports = validateOptions;
+module.exports = validate.default;

@@ -1,10 +1,3 @@
-/* eslint-disable
-  strict,
-  no-param-reassign
-*/
-
-'use strict';
-
 class ValidationError extends Error {
   constructor(errors, name) {
     super();
@@ -13,10 +6,11 @@ class ValidationError extends Error {
 
     this.message = `${name || ''} Invalid Options\n\n`;
 
-    this.errors = errors.map((err) => {
-      err.dataPath = err.dataPath.replace(/\//g, '.');
+    this.errors = errors.map((error) => {
+      // eslint-disable-next-line no-param-reassign
+      error.dataPath = error.dataPath.replace(/\//g, '.');
 
-      return err;
+      return error;
     });
 
     this.errors.forEach((err) => {
@@ -27,4 +21,4 @@ class ValidationError extends Error {
   }
 }
 
-module.exports = ValidationError;
+export default ValidationError;
