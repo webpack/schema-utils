@@ -1,23 +1,854 @@
+const SPECIFICITY = {
+  type: 1,
+  not: 1,
+  oneOf: 1,
+  anyOf: 1,
+  if: 1,
+  enum: 1,
+  const: 1,
+  instanceof: 1,
+  required: 2,
+  pattern: 2,
+  patternRequired: 2,
+  format: 2,
+  formatMinimum: 2,
+  formatMaximum: 2,
+  minimum: 2,
+  exclusiveMinimum: 2,
+  maximum: 2,
+  exclusiveMaximum: 2,
+  multipleOf: 2,
+  uniqueItems: 2,
+  contains: 2,
+  minLength: 2,
+  maxLength: 2,
+  minItems: 2,
+  maxItems: 2,
+  minProperties: 2,
+  maxProperties: 2,
+  dependencies: 2,
+  propertyNames: 2,
+  additionalItems: 2,
+  additionalProperties: 2,
+  absolutePath: 2,
+};
+
+function filterMax(array, fn) {
+  const evaluatedMax = array.reduce((max, item) => Math.max(max, fn(item)), 0);
+
+  return array.filter((item) => fn(item) === evaluatedMax);
+}
+
+function filterChildren(children) {
+  let newChildren = children;
+
+  newChildren = filterMax(newChildren, (error) =>
+    error.dataPath ? error.dataPath.length : 0
+  );
+  newChildren = filterMax(
+    newChildren,
+    (error) => SPECIFICITY[error.keyword] || 2
+  );
+
+  return newChildren;
+}
+
+function indent(str, prefix) {
+  return str.replace(/\n(?!$)/g, `\n${prefix}`);
+}
+
+function isObject(maybyObj) {
+  return typeof maybyObj === 'object' && maybyObj !== null;
+}
+
+function likeNumber(schema) {
+  return (
+    schema.type === 'number' ||
+    typeof schema.minimum !== 'undefined' ||
+    typeof schema.exclusiveMinimum !== 'undefined' ||
+    typeof schema.maximum !== 'undefined' ||
+    typeof schema.exclusiveMaximum !== 'undefined' ||
+    typeof schema.multipleOf !== 'undefined'
+  );
+}
+
+function likeInteger(schema) {
+  return (
+    schema.type === 'integer' ||
+    typeof schema.minimum !== 'undefined' ||
+    typeof schema.exclusiveMinimum !== 'undefined' ||
+    typeof schema.maximum !== 'undefined' ||
+    typeof schema.exclusiveMaximum !== 'undefined' ||
+    typeof schema.multipleOf !== 'undefined'
+  );
+}
+
+function likeString(schema) {
+  return (
+    schema.type === 'string' ||
+    typeof schema.minLength !== 'undefined' ||
+    typeof schema.maxLength !== 'undefined' ||
+    typeof schema.pattern !== 'undefined' ||
+    typeof schema.format !== 'undefined' ||
+    typeof schema.formatMinimum !== 'undefined' ||
+    typeof schema.formatMaximum !== 'undefined'
+  );
+}
+
+function likeBoolean(schema) {
+  return schema.type === 'boolean';
+}
+
+function likeArray(schema) {
+  return (
+    schema.type === 'array' ||
+    typeof schema.minItems === 'number' ||
+    typeof schema.maxItems === 'number' ||
+    typeof schema.uniqueItems !== 'undefined' ||
+    typeof schema.items !== 'undefined' ||
+    typeof schema.additionalItems !== 'undefined' ||
+    typeof schema.contains !== 'undefined'
+  );
+}
+
+function likeObject(schema) {
+  return (
+    schema.type === 'object' ||
+    typeof schema.minProperties !== 'undefined' ||
+    typeof schema.maxProperties !== 'undefined' ||
+    typeof schema.required !== 'undefined' ||
+    typeof schema.properties !== 'undefined' ||
+    typeof schema.patternProperties !== 'undefined' ||
+    typeof schema.additionalProperties !== 'undefined' ||
+    typeof schema.dependencies !== 'undefined' ||
+    typeof schema.propertyNames !== 'undefined' ||
+    typeof schema.patternRequired !== 'undefined'
+  );
+}
+
+function likeNull(schema) {
+  return schema.type === 'null';
+}
+
+function getArticle(type) {
+  if (type === 'array' || type === 'object') {
+    return 'an';
+  }
+
+  return 'a';
+}
+
 class ValidationError extends Error {
-  constructor(errors, name) {
+  constructor(errors, schema, configuration = {}) {
     super();
 
     this.name = 'ValidationError';
+    this.errors = errors;
+    this.schema = schema;
+    this.headerName = configuration.name || 'Object';
+    this.baseDataPath = configuration.baseDataPath || 'configuration';
+    this.postFormatter = configuration.postFormatter || null;
 
-    this.message = `${name || ''} Invalid Options\n\n`;
+    const header = `Invalid ${this.baseDataPath} object. ${
+      this.headerName
+    } has been initialised using ${
+      this.baseDataPath === 'options'
+        ? `an ${this.baseDataPath}`
+        : `a ${this.baseDataPath}`
+    } object that does not match the API schema.\n`;
 
-    this.errors = errors.map((error) => {
-      // eslint-disable-next-line no-param-reassign
-      error.dataPath = error.dataPath.replace(/\//g, '.');
-
-      return error;
-    });
-
-    this.errors.forEach((err) => {
-      this.message += `options${err.dataPath} ${err.message}\n`;
-    });
+    this.message = `${header}${this.formatValidationErrors(errors)}`;
 
     Error.captureStackTrace(this, this.constructor);
+  }
+
+  getSchemaPart(path) {
+    const newPath = path.split('/').slice(0, path.length);
+
+    let schemaPart = this.schema;
+
+    for (let i = 1; i < newPath.length; i++) {
+      const inner = schemaPart[newPath[i]];
+
+      if (inner) {
+        schemaPart = inner;
+      }
+    }
+
+    return schemaPart;
+  }
+
+  formatSchema(schema, prevSchemas = []) {
+    const formatInnerSchema = (innerSchema, addSelf) => {
+      if (!addSelf) {
+        return this.formatSchema(innerSchema, prevSchemas);
+      }
+
+      if (prevSchemas.includes(innerSchema)) {
+        return '(recursive)';
+      }
+
+      return this.formatSchema(innerSchema, prevSchemas.concat(schema));
+    };
+
+    // eslint-disable-next-line default-case
+    switch (schema.instanceof) {
+      case 'Function':
+        return 'function';
+      case 'RegExp':
+        return 'RegExp';
+    }
+
+    if (schema.enum) {
+      return schema.enum.map((item) => JSON.stringify(item)).join(' | ');
+    }
+
+    if (typeof schema.const !== 'undefined') {
+      if (Array.isArray(schema.const)) {
+        return schema.const.map((item) => JSON.stringify(item)).join(' | ');
+      }
+
+      return JSON.stringify(schema.const);
+    }
+
+    if (schema.oneOf) {
+      return schema.oneOf.map(formatInnerSchema).join(' | ');
+    }
+
+    if (schema.anyOf) {
+      return schema.anyOf.map(formatInnerSchema).join(' | ');
+    }
+
+    if (schema.allOf) {
+      return schema.allOf.map(formatInnerSchema).join(' & ');
+    }
+
+    if (schema.if) {
+      return `if the data is valid against the sub-schema ${formatInnerSchema(
+        schema.if
+      )}, then data should valid against the sub-schema ${formatInnerSchema(
+        schema.then
+      )}${
+        schema.else
+          ? `, else data should valid against the sub-schema ${formatInnerSchema(
+              schema.else
+            )}`
+          : ''
+      }`;
+    }
+
+    if (schema.$ref) {
+      return formatInnerSchema(this.getSchemaPart(schema.$ref), true);
+    }
+
+    if (likeNumber(schema) || likeInteger(schema)) {
+      const hints = [];
+
+      if (typeof schema.minimum === 'number') {
+        hints.push(`should be >= ${schema.minimum}`);
+      }
+
+      if (typeof schema.exclusiveMinimum === 'number') {
+        hints.push(`should be > ${schema.exclusiveMinimum}`);
+      }
+
+      if (typeof schema.maximum === 'number') {
+        hints.push(`should be <= ${schema.maximum}`);
+      }
+
+      if (typeof schema.exclusiveMaximum === 'number') {
+        hints.push(`should be > ${schema.exclusiveMaximum}`);
+      }
+
+      if (typeof schema.multipleOf === 'number') {
+        hints.push(`should be multiple of ${schema.multipleOf}`);
+      }
+
+      const type = schema.type === 'integer' ? 'integer' : 'number';
+
+      return `${type}${hints.length > 0 ? ` (${hints.join(', ')})` : ''}`;
+    }
+
+    if (likeString(schema)) {
+      let type = 'string';
+      const hints = [];
+
+      if (typeof schema.minLength === 'number') {
+        if (schema.minLength === 1) {
+          type = 'non-empty string';
+        } else {
+          hints.push(
+            `should not be shorter than ${schema.minLength} characters`
+          );
+        }
+      }
+
+      if (typeof schema.maxLength === 'number') {
+        hints.push(
+          `should not be longer than ${schema.maxLength} character${
+            schema.maxLength > 1 ? 's' : ''
+          }`
+        );
+      }
+
+      if (schema.pattern) {
+        hints.push(`should match pattern ${JSON.stringify(schema.pattern)}`);
+      }
+
+      if (schema.format) {
+        hints.push(`should match format ${JSON.stringify(schema.format)}`);
+      }
+
+      if (schema.formatMinimum) {
+        hints.push(
+          `should be ${
+            schema.formatExclusiveMinimum ? '>' : '>='
+          } ${JSON.stringify(schema.formatMinimum)}`
+        );
+      }
+
+      if (schema.formatMaximum) {
+        hints.push(
+          `should be ${
+            schema.formatExclusiveMaximum ? '<' : '<='
+          } ${JSON.stringify(schema.formatMaximum)}`
+        );
+      }
+
+      return `${type}${hints.length > 0 ? ` (${hints.join(', ')})` : ''}`;
+    }
+
+    if (likeBoolean(schema)) {
+      return 'boolean';
+    }
+
+    if (likeArray(schema)) {
+      const hints = [];
+
+      if (typeof schema.minItems === 'number') {
+        hints.push(
+          `should not have fewer than ${schema.minItems} item${
+            schema.minItems > 1 ? 's' : ''
+          }`
+        );
+      }
+
+      if (typeof schema.maxItems === 'number') {
+        hints.push(
+          `should not have more than ${schema.maxItems} item${
+            schema.maxItems > 1 ? 's' : ''
+          }`
+        );
+      }
+
+      if (schema.uniqueItems) {
+        hints.push('should not have duplicate items');
+      }
+
+      let items = '';
+
+      if (schema.items) {
+        if (Array.isArray(schema.items) && schema.items.length > 0) {
+          items = `${schema.items.map(formatInnerSchema).join(', ')}`;
+        } else if (schema.items && Object.keys(schema.items).length > 0) {
+          // "additionalItems" is ignored
+          items = `${formatInnerSchema(schema.items)}`;
+        } else {
+          // Fallback for empty `items` value
+          items = 'any';
+        }
+      } else {
+        // "additionalItems" is ignored
+        items = 'any';
+      }
+
+      const hasAdditionalItems =
+        typeof schema.additionalItems === 'undefined' ||
+        Boolean(schema.additionalItems);
+
+      if (hasAdditionalItems) {
+        if (
+          isObject(schema.additionalItems) &&
+          Object.keys(schema.additionalItems).length > 0
+        ) {
+          hints.push(
+            `additional items should be ${getArticle(
+              schema.additionalItems.type
+            )} ${formatInnerSchema(schema.additionalItems)}`
+          );
+        }
+        // Maybe we can add more hints when additional items can be any, but looks it is unnecessary
+      }
+
+      if (schema.contains && Object.keys(schema.contains).length > 0) {
+        const contains =
+          Array.isArray(schema.contains.type) && schema.contains.type.length > 1
+            ? schema.contains.type
+                .map((item) => `${getArticle(item)} ${item}`)
+                .join(' or ')
+            : `${getArticle(schema.contains.type)} ${schema.contains.type}`;
+
+        hints.push(`should contains at least one ${contains} item`);
+      }
+
+      return `[${items}${hasAdditionalItems ? ', ...' : ''}]${
+        hints.length > 0 ? ` (${hints.join(', ')})` : ''
+      }`;
+    }
+
+    if (likeObject(schema)) {
+      const hints = [];
+
+      if (typeof schema.minProperties === 'number') {
+        hints.push(
+          `should not have fewer than ${schema.minProperties} ${
+            schema.minProperties > 1 ? 'properties' : 'property'
+          }`
+        );
+      }
+
+      if (typeof schema.maxProperties === 'number') {
+        hints.push(
+          `should not have more than ${schema.maxProperties} ${
+            schema.minProperties > 1 ? 'properties' : 'property'
+          }`
+        );
+      }
+
+      if (
+        schema.patternProperties &&
+        Object.keys(schema.patternProperties).length > 0
+      ) {
+        const patternProperties = Object.keys(schema.patternProperties);
+
+        hints.push(
+          `additional property names should match pattern${
+            patternProperties.length > 1 ? 's' : ''
+          } ${patternProperties
+            .map((pattern) => JSON.stringify(pattern))
+            .join(' | ')}`
+        );
+      }
+
+      const properties = schema.properties
+        ? Object.keys(schema.properties)
+        : [];
+      const required = schema.required ? schema.required : [];
+      const allProperties = [
+        ...new Set([].concat(required).concat(properties)),
+      ];
+      const hasAdditionalProperties =
+        typeof schema.additionalProperties === 'undefined' ||
+        Boolean(schema.additionalProperties);
+
+      const objectStructure = allProperties
+        .map((property) => {
+          const isRequired = required.includes(property);
+
+          // Some properties need quotes, maybe we should add check
+          // Maybe we should output type of property (`foo: string`), but it is looks very unreadable
+          return `${property}${isRequired ? '' : '?'}`;
+        })
+        .concat(
+          hasAdditionalProperties
+            ? isObject(schema.additionalProperties)
+              ? [`<key>: ${formatInnerSchema(schema.additionalProperties)}`]
+              : ['…']
+            : []
+        )
+        .join(', ');
+
+      if (schema.dependencies) {
+        Object.keys(schema.dependencies).forEach((dependencyName) => {
+          const dependency = schema.dependencies[dependencyName];
+
+          if (Array.isArray(dependency)) {
+            hints.push(
+              `should have ${
+                dependency.length > 1 ? 'properties' : 'property'
+              } ${dependency
+                .map((dep) => `'${dep}'`)
+                .join(', ')} when property '${dependencyName}' is present`
+            );
+          } else {
+            hints.push(
+              `should be valid according to the schema ${formatInnerSchema(
+                dependency
+              )} when property '${dependencyName}' is present`
+            );
+          }
+        });
+      }
+
+      if (
+        schema.propertyNames &&
+        Object.keys(schema.propertyNames).length > 0
+      ) {
+        hints.push(
+          `each property name should match format ${JSON.stringify(
+            schema.propertyNames.format
+          )}`
+        );
+      }
+
+      if (schema.patternRequired && schema.patternRequired.length > 0) {
+        hints.push(
+          `should have property matching pattern ${schema.patternRequired.map(
+            (item) => JSON.stringify(item)
+          )}`
+        );
+      }
+
+      return `object${objectStructure ? ` { ${objectStructure} }` : ''}${
+        hints.length > 0 ? ` (${hints.join(', ')})` : ''
+      }`;
+    }
+
+    if (likeNull(schema)) {
+      return 'null';
+    }
+
+    if (Array.isArray(schema.type)) {
+      return `${schema.type.map((item) => item).join(' | ')}`;
+    }
+
+    // Fallback for unknown keywords
+    /* istanbul ignore next */
+    return JSON.stringify(schema, null, 2);
+  }
+
+  getSchemaPartText(schemaPart, additionalPath, needDot = false) {
+    if (additionalPath) {
+      for (let i = 0; i < additionalPath.length; i++) {
+        const inner = schemaPart[additionalPath[i]];
+
+        if (inner) {
+          // eslint-disable-next-line no-param-reassign
+          schemaPart = inner;
+        }
+      }
+    }
+
+    while (schemaPart.$ref) {
+      // eslint-disable-next-line no-param-reassign
+      schemaPart = this.getSchemaPart(schemaPart.$ref);
+    }
+
+    let schemaText = `${this.formatSchema(schemaPart)}${needDot ? '.' : ''}`;
+
+    if (schemaPart.description) {
+      schemaText += `\n-> ${schemaPart.description}`;
+    }
+
+    return schemaText;
+  }
+
+  getSchemaPartDescription(schemaPart) {
+    while (schemaPart.$ref) {
+      // eslint-disable-next-line no-param-reassign
+      schemaPart = this.getSchemaPart(schemaPart.$ref);
+    }
+
+    if (schemaPart.description) {
+      return `\n-> ${schemaPart.description}`;
+    }
+
+    return '';
+  }
+
+  formatValidationError(error) {
+    const dataPath = `${this.baseDataPath}${error.dataPath}`;
+
+    if (error.keyword === 'type') {
+      // eslint-disable-next-line default-case
+      switch (error.params.type) {
+        case 'number':
+          return `${dataPath} should be a ${this.getSchemaPartText(
+            error.parentSchema,
+            false,
+            true
+          )}`;
+        case 'integer':
+          return `${dataPath} should be a ${this.getSchemaPartText(
+            error.parentSchema,
+            false,
+            true
+          )}`;
+        case 'string':
+          return `${dataPath} should be a ${this.getSchemaPartText(
+            error.parentSchema,
+            false,
+            true
+          )}`;
+        case 'boolean':
+          return `${dataPath} should be a ${this.getSchemaPartText(
+            error.parentSchema,
+            false,
+            true
+          )}`;
+        case 'array':
+          return `${dataPath} should be an array:\n${this.getSchemaPartText(
+            error.parentSchema
+          )}`;
+        case 'object':
+          return `${dataPath} should be an object:\n${this.getSchemaPartText(
+            error.parentSchema
+          )}`;
+        case 'null':
+          return `${dataPath} should be a ${this.getSchemaPartText(
+            error.parentSchema,
+            false,
+            true
+          )}`;
+      }
+
+      return `${dataPath} should be:\n${this.getSchemaPartText(
+        error.parentSchema
+      )}`;
+    } else if (error.keyword === 'instanceof') {
+      return `${dataPath} should be an instance of ${this.getSchemaPartText(
+        error.parentSchema
+      )}.`;
+    } else if (error.keyword === 'pattern') {
+      return `${dataPath} should match pattern ${JSON.stringify(
+        error.params.pattern
+      )}.${this.getSchemaPartDescription(error.parentSchema)}`;
+    } else if (error.keyword === 'format') {
+      return `${dataPath} should match format ${JSON.stringify(
+        error.params.format
+      )}.${this.getSchemaPartDescription(error.parentSchema)}`;
+    } else if (
+      error.keyword === 'formatMinimum' ||
+      error.keyword === 'formatMaximum'
+    ) {
+      return `${dataPath} should be ${error.params.comparison} ${JSON.stringify(
+        error.params.limit
+      )}.${this.getSchemaPartDescription(error.parentSchema)}`;
+    } else if (
+      error.keyword === 'minimum' ||
+      error.keyword === 'maximum' ||
+      error.keyword === 'exclusiveMinimum' ||
+      error.keyword === 'exclusiveMaximum'
+    ) {
+      return `${dataPath} should be ${error.params.comparison} ${
+        error.params.limit
+      }.${this.getSchemaPartDescription(error.parentSchema)}`;
+    } else if (error.keyword === 'multipleOf') {
+      return `${dataPath} should be multiple of ${
+        error.params.multipleOf
+      }.${this.getSchemaPartDescription(error.parentSchema)}`;
+    } else if (error.keyword === 'patternRequired') {
+      return `${dataPath} should have property matching pattern ${JSON.stringify(
+        error.params.missingPattern
+      )}.${this.getSchemaPartDescription(error.parentSchema)}`;
+    } else if (error.keyword === 'minLength') {
+      if (error.params.limit === 1) {
+        return `${dataPath} should be an non-empty string.${this.getSchemaPartDescription(
+          error.parentSchema
+        )}`;
+      }
+
+      return `${dataPath} should not be shorter than ${
+        error.params.limit
+      } characters.${this.getSchemaPartDescription(error.parentSchema)}`;
+    } else if (error.keyword === 'minItems') {
+      if (error.params.limit === 1) {
+        return `${dataPath} should be an non-empty array.${this.getSchemaPartDescription(
+          error.parentSchema
+        )}`;
+      }
+
+      return `${dataPath} should not have fewer than ${
+        error.limit
+      } items.${this.getSchemaPartDescription(error.parentSchema)}`;
+    } else if (error.keyword === 'minProperties') {
+      if (error.params.limit === 1) {
+        return `${dataPath} should be an non-empty object.${this.getSchemaPartDescription(
+          error.parentSchema
+        )}`;
+      }
+
+      return `${dataPath} should not have fewer than ${
+        error.params.limit
+      } properties.${this.getSchemaPartDescription(error.parentSchema)}`;
+    } else if (error.keyword === 'maxLength') {
+      return `${dataPath} should not be longer than ${
+        error.params.limit
+      } characters.${this.getSchemaPartDescription(error.parentSchema)}`;
+    } else if (error.keyword === 'maxItems') {
+      return `${dataPath} should not have more than ${
+        error.params.limit
+      } items.${this.getSchemaPartDescription(error.parentSchema)}`;
+    } else if (error.keyword === 'maxProperties') {
+      return `${dataPath} should not have more than ${
+        error.params.limit
+      } properties.${this.getSchemaPartDescription(error.parentSchema)}`;
+    } else if (error.keyword === 'uniqueItems') {
+      return `${dataPath} should not contain the item '${
+        error.data[error.params.i]
+      }' twice.${this.getSchemaPartDescription(error.parentSchema)}`;
+    } else if (error.keyword === 'additionalItems') {
+      return `${dataPath} should not have more than ${
+        error.params.limit
+      } items. These items are valid:\n${this.getSchemaPartText(
+        error.parentSchema
+      )}`;
+    } else if (error.keyword === 'contains') {
+      return this.formatValidationErrors(error.children);
+    } else if (error.keyword === 'required') {
+      const missingProperty = error.params.missingProperty.replace(/^\./, '');
+      const hasProperty = Boolean(
+        error.parentSchema.properties &&
+          error.parentSchema.properties[missingProperty]
+      );
+
+      return `${dataPath} misses the property '${missingProperty}'.${
+        hasProperty
+          ? ` Should be:\n${this.getSchemaPartText(
+              error.parentSchema,
+              hasProperty ? ['properties', missingProperty] : []
+            )}`
+          : this.getSchemaPartDescription(error.parentSchema)
+      }`;
+    } else if (error.keyword === 'additionalProperties') {
+      return `${dataPath} has an unknown property '${
+        error.params.additionalProperty
+      }'. These properties are valid:\n${this.getSchemaPartText(
+        error.parentSchema
+      )}`;
+    } else if (error.keyword === 'dependencies') {
+      const dependencies = error.params.deps
+        .split(',')
+        .map((dep) => `'${dep.trim()}'`)
+        .join(', ');
+
+      return `${dataPath} should have properties ${dependencies} when property '${
+        error.params.property
+      }' is present.${this.getSchemaPartDescription(error.parentSchema)}`;
+    } else if (error.keyword === 'propertyNames') {
+      const invalidProperty = error.params.propertyName.replace(/^\./, '');
+
+      return `${dataPath} property name '${invalidProperty}' is invalid. Property names should be match format "${
+        error.children[0].params.format
+      }".${this.getSchemaPartDescription(error.parentSchema)}`;
+    } else if (error.keyword === 'enum') {
+      if (
+        error.parentSchema &&
+        error.parentSchema.enum &&
+        error.parentSchema.enum.length === 1
+      ) {
+        return `${dataPath} should be ${this.getSchemaPartText(
+          error.parentSchema,
+          false,
+          true
+        )}`;
+      }
+
+      return `${dataPath} should be one of these:\n${this.getSchemaPartText(
+        error.parentSchema
+      )}`;
+    } else if (error.keyword === 'const') {
+      if (
+        error.parentSchema &&
+        typeof error.parentSchema.const !== 'undefined' &&
+        (!Array.isArray(error.parentSchema.const) ||
+          (Array.isArray(error.parentSchema.const) &&
+            error.parentSchema.const.length === 1))
+      ) {
+        return `${dataPath} should be ${this.getSchemaPartText(
+          error.parentSchema,
+          false,
+          true
+        )}`;
+      }
+
+      return `${dataPath} should be one of these:\n${this.getSchemaPartText(
+        error.parentSchema
+      )}`;
+    } else if (error.keyword === 'oneOf' || error.keyword === 'anyOf') {
+      if (error.children && error.children.length > 0) {
+        if (error.schema.length === 1) {
+          const lastChild = error.children[error.children.length - 1];
+          const remainingChildren = error.children.slice(
+            0,
+            error.children.length - 1
+          );
+
+          return this.formatValidationError(
+            Object.assign({}, lastChild, {
+              children: remainingChildren,
+              parentSchema: Object.assign(
+                {},
+                error.parentSchema,
+                lastChild.parentSchema
+              ),
+            })
+          );
+        }
+
+        const children = filterChildren(error.children);
+
+        if (children.length === 1) {
+          return this.formatValidationError(children[0]);
+        }
+
+        return `${dataPath} should be one of these:\n${this.getSchemaPartText(
+          error.parentSchema
+        )}\nDetails:\n${children
+          .map(
+            (nestedError) =>
+              ` * ${indent(this.formatValidationError(nestedError), '   ')}`
+          )
+          .join('\n')}`;
+      }
+
+      return `${dataPath} should be one of these:\n${this.getSchemaPartText(
+        error.parentSchema
+      )}`;
+    } else if (error.keyword === 'if') {
+      return `${dataPath} is invalid.${this.getSchemaPartDescription(
+        error.parentSchema
+      )}\nDetails:\n${error.children
+        .map((nestedError) => {
+          if (nestedError.keyword === 'if' && !nestedError.children) {
+            return '';
+          }
+
+          return ` * ${indent(this.formatValidationError(nestedError), '   ')}`;
+        })
+        .join('\n')}`;
+    } else if (error.keyword === 'absolutePath') {
+      return `${dataPath}: ${error.message}${this.getSchemaPartDescription(
+        error.parentSchema
+      )}`;
+    }
+
+    // For `custom`, `false schema`, `$ref` keywords
+    // Fallback for unknown keywords
+    /* istanbul ignore next */
+    return `${dataPath} ${error.message} (${JSON.stringify(
+      error,
+      null,
+      2
+    )}).\n${this.getSchemaPartText(error.parentSchema)}`;
+  }
+
+  formatValidationErrors(errors) {
+    return errors
+      .map((error) => {
+        let formattedError = this.formatValidationError(error, this.schema);
+
+        if (this.postFormatter) {
+          formattedError = this.postFormatter(formattedError, error);
+        }
+
+        if (error.keyword === 'contains') {
+          return formattedError;
+        }
+
+        return ` - ${indent(formattedError, '   ')}`;
+      })
+      .join('\n');
   }
 }
 

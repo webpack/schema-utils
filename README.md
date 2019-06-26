@@ -31,8 +31,6 @@ npm install schema-utils
 
 ## API
 
-### validateOptions
-
 **schema.json**
 
 ```json
@@ -43,20 +41,116 @@ npm install schema-utils
       "type": ["boolean"]
     }
   },
-  "errorMessage": {
-    "option": "should be {Boolean} (https:/github.com/org/repo#anchor)"
-  },
   "additionalProperties": false
 }
 ```
 
 ```js
 import schema from './path/to/schema.json';
-import validateOptions from 'schema-utils';
+import validate from 'schema-utils';
 
 const options = { option: true };
+const configuration = { name: 'Loader Name/Plugin Name/Name' };
 
-validateOptions(schema, options, 'Loader/Plugin Name');
+validate(schema, options, configuration);
+```
+
+### `schema`
+
+Type: `String`
+
+JSON schema.
+
+Simple example of schema:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}
+```
+
+### `options`
+
+Type: `Object`
+
+Object with options.
+
+```js
+validate(
+  schema,
+  {
+    name: 123,
+  },
+  { name: 'MyPlugin' }
+);
+```
+
+### `configuration`
+
+Allow to configure validator.
+
+#### `name`
+
+Type: `String`
+Default: `Object`
+
+Allow to setup name in validation errors.
+
+```js
+validate(schema, options, { name: 'MyPlugin' });
+```
+
+```shell
+Invalid configuration object. MyPlugin has been initialised using a configuration object that does not match the API schema.
+ - configuration.optionName should be a integer.
+```
+
+#### `baseDataPath`
+
+Type: `String`
+Default: `configuration`
+
+Allow to setup base data path in validation errors.
+
+```js
+validate(schema, options, { name: 'MyPlugin', baseDataPath: 'options' });
+```
+
+```shell
+Invalid options object. MyPlugin has been initialised using an options object that does not match the API schema.
+ - options.optionName should be a integer.
+```
+
+#### `postFormatter`
+
+Type: `Function`
+Default: `undefined`
+
+Allow to reformat errors.
+
+```js
+validate(schema, options, {
+  name: 'MyPlugin',
+  postFormatter: (formattedError, error) => {
+    if (error.keyword === 'type') {
+      return `${formattedError}\nAdditional Information.`;
+    }
+
+    return formattedError;
+  },
+});
+```
+
+```shell
+Invalid options object. MyPlugin has been initialised using an options object that does not match the API schema.
+ - options.optionName should be a integer.
+   Additional Information.
 ```
 
 ## Examples
@@ -99,10 +193,15 @@ import schema from 'path/to/schema.json';
 function loader(src, map) {
   const options = getOptions(this) || {};
 
-  validateOptions(schema, options, 'Loader Name');
+  validateOptions(schema, options, {
+    name: 'Loader Name',
+    baseDataPath: 'options',
+  });
 
   // Code...
 }
+
+export default loader;
 ```
 
 ### `Plugin`
@@ -114,7 +213,10 @@ import schema from 'path/to/schema.json';
 
 class Plugin {
   constructor(options) {
-    validateOptions(schema, options, 'Plugin Name');
+    validateOptions(schema, options, {
+      name: 'Plugin Name',
+      baseDataPath: 'options',
+    });
 
     this.options = options;
   }
@@ -123,6 +225,8 @@ class Plugin {
     // Code...
   }
 }
+
+export default Plugin;
 ```
 
 ## Contributing
@@ -139,12 +243,12 @@ Please take a moment to read our contributing guidelines if you haven't yet done
 [npm-url]: https://npmjs.com/package/schema-utils
 [node]: https://img.shields.io/node/v/schema-utils.svg
 [node-url]: https://nodejs.org
-[deps]: https://david-dm.org/webpack-contrib/schema-utils.svg
-[deps-url]: https://david-dm.org/webpack-contrib/schema-utils
-[tests]: https://dev.azure.com/webpack-contrib/schema-utils/_apis/build/status/webpack-contrib.schema-utils?branchName=master
-[tests-url]: https://dev.azure.com/webpack-contrib/schema-utils/_build/latest?definitionId=2&branchName=master
-[cover]: https://codecov.io/gh/webpack-contrib/schema-utils/branch/master/graph/badge.svg
-[cover-url]: https://codecov.io/gh/webpack-contrib/schema-utils
+[deps]: https://david-dm.org/webpack/schema-utils.svg
+[deps-url]: https://david-dm.org/webpack/schema-utils
+[tests]: https://dev.azure.com/webpack/schema-utils/_apis/build/status/webpack.schema-utils?branchName=master
+[tests-url]: https://dev.azure.com/webpack/schema-utils/_build/latest?definitionId=9&branchName=master
+[cover]: https://codecov.io/gh/webpack/schema-utils/branch/master/graph/badge.svg
+[cover-url]: https://codecov.io/gh/webpack/schema-utils
 [chat]: https://badges.gitter.im/webpack/webpack.svg
 [chat-url]: https://gitter.im/webpack/webpack
 [size]: https://packagephobia.now.sh/badge?p=schema-utils
