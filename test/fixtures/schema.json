@@ -3335,6 +3335,15 @@
         },
         { "type": "integer" }
       ]
+    },
+    "constWithArrayNotation": {
+      "const": [1, 2, 3]
+    },
+    "constWithObjectNotation": {
+      "const": {
+        "foo": "bar",
+        "baz": 123
+      }
     }
   }
 }

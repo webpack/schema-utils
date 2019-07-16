@@ -136,6 +136,22 @@ describe('Validation', () => {
     arrayKeyword17: [/test/, 1, 'test', true],
   });
 
+  createSuccessTestCase('const', {
+    constKeyword: 'foo',
+  });
+
+  createSuccessTestCase('const #2', {
+    constKeyword2: ['foo', 'bar'],
+  });
+
+  createSuccessTestCase('const with array notation', {
+    constWithArrayNotation: [1, 2, 3],
+  });
+
+  createSuccessTestCase('const with object notation', {
+    constWithObjectNotation: { foo: 'bar', baz: 123 },
+  });
+
   // The "name" option
   createFailedTestCase(
     'webpack name',
@@ -1982,6 +1998,22 @@ describe('Validation', () => {
     'oneOf with if',
     {
       oneOfWithIf: true,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'const with array notation',
+    {
+      constWithArrayNotation: true,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'const with object notation',
+    {
+      constWithObjectNotation: true,
     },
     (msg) => expect(msg).toMatchSnapshot()
   );

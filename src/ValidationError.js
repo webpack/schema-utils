@@ -204,10 +204,6 @@ class ValidationError extends Error {
     }
 
     if (typeof schema.const !== 'undefined') {
-      if (Array.isArray(schema.const)) {
-        return schema.const.map((item) => JSON.stringify(item)).join(' | ');
-      }
-
       return JSON.stringify(schema.const);
     }
 
@@ -753,25 +749,10 @@ class ValidationError extends Error {
           error.parentSchema
         )}`;
       }
-      case 'const': {
-        if (
-          error.parentSchema &&
-          typeof error.parentSchema.const !== 'undefined' &&
-          (!Array.isArray(error.parentSchema.const) ||
-            (Array.isArray(error.parentSchema.const) &&
-              error.parentSchema.const.length === 1))
-        ) {
-          return `${dataPath} should be ${this.getSchemaPartText(
-            error.parentSchema,
-            false,
-            true
-          )}`;
-        }
-
-        return `${dataPath} should be one of these:\n${this.getSchemaPartText(
+      case 'const':
+        return `${dataPath} should be equal to constant ${this.getSchemaPartText(
           error.parentSchema
         )}`;
-      }
       case 'oneOf':
       case 'anyOf': {
         if (error.children && error.children.length > 0) {
