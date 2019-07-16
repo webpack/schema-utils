@@ -68,6 +68,7 @@ Simple example of schema:
   "type": "object",
   "properties": {
     "name": {
+      "description": "This is description of option.",
       "type": "string"
     }
   },
@@ -97,8 +98,8 @@ Allow to configure validator.
 
 #### `name`
 
-Type: `String`
-Default: `Object`
+Type: `Object`
+Default: `"Object"`
 
 Allow to setup name in validation errors.
 
@@ -114,7 +115,7 @@ Invalid configuration object. MyPlugin has been initialised using a configuratio
 #### `baseDataPath`
 
 Type: `String`
-Default: `configuration`
+Default: `"configuration"`
 
 Allow to setup base data path in validation errors.
 
