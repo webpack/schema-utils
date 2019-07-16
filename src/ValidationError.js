@@ -718,12 +718,11 @@ class ValidationError extends Error {
         }' is present.${this.getSchemaPartDescription(error.parentSchema)}`;
       }
       case 'propertyNames': {
-        const invalidProperty = error.params.propertyName.replace(/^\./, '');
+        const invalidProperty = error.params.propertyName;
 
-        return `${dataPath} property name '${invalidProperty}' is invalid. Property names should be match format "${
-          // Todo maybe empty
-          error.children[0].params.format
-        }".${this.getSchemaPartDescription(error.parentSchema)}`;
+        return `${dataPath} property name '${invalidProperty}' is invalid. Property names should be match format ${JSON.stringify(
+          error.schema.format
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       }
       case 'enum': {
         if (
