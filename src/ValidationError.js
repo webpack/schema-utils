@@ -525,7 +525,7 @@ class ValidationError extends Error {
         if (inner) {
           // eslint-disable-next-line no-param-reassign
           schemaPart = inner;
-        }
+        } else break;
       }
     }
 
