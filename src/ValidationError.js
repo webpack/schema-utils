@@ -131,7 +131,7 @@ function likeNull(schema) {
 }
 
 function getArticle(type) {
-  if (type === 'array' || type === 'object') {
+  if (/^[aeiou]/i.test(type)) {
     return 'an';
   }
 
