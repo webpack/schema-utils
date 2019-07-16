@@ -333,11 +333,27 @@ class ValidationError extends Error {
         hints.push('should not have duplicate items');
       }
 
+      const hasAdditionalItems =
+        typeof schema.additionalItems === 'undefined' ||
+        Boolean(schema.additionalItems);
       let items = '';
 
       if (schema.items) {
         if (Array.isArray(schema.items) && schema.items.length > 0) {
           items = `${schema.items.map(formatInnerSchema).join(', ')}`;
+
+          if (hasAdditionalItems) {
+            if (
+              isObject(schema.additionalItems) &&
+              Object.keys(schema.additionalItems).length > 0
+            ) {
+              hints.push(
+                `additional items should be ${formatInnerSchema(
+                  schema.additionalItems
+                )}`
+              );
+            }
+          }
         } else if (schema.items && Object.keys(schema.items).length > 0) {
           // "additionalItems" is ignored
           items = `${formatInnerSchema(schema.items)}`;
@@ -348,24 +364,6 @@ class ValidationError extends Error {
       } else {
         // "additionalItems" is ignored
         items = 'any';
-      }
-
-      const hasAdditionalItems =
-        typeof schema.additionalItems === 'undefined' ||
-        Boolean(schema.additionalItems);
-
-      if (hasAdditionalItems) {
-        if (
-          isObject(schema.additionalItems) &&
-          Object.keys(schema.additionalItems).length > 0
-        ) {
-          hints.push(
-            `additional items should be ${getArticle(
-              schema.additionalItems.type
-            )} ${formatInnerSchema(schema.additionalItems)}`
-          );
-        }
-        // Maybe we can add more hints when additional items can be any, but looks it is unnecessary
       }
 
       if (schema.contains && Object.keys(schema.contains).length > 0) {
@@ -513,7 +511,9 @@ class ValidationError extends Error {
         if (inner) {
           // eslint-disable-next-line no-param-reassign
           schemaPart = inner;
-        } else break;
+        } else {
+          break;
+        }
       }
     }
 

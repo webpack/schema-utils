@@ -3344,6 +3344,28 @@
         "foo": "bar",
         "baz": 123
       }
+    },
+    "additionalItemsWithoutType" : {
+      "type": "array",
+      "items": { "type": "integer" },
+      "additionalItems": { "type": "boolean" }
+    },
+    "additionalItemsWithoutType2" : {
+      "type": "array",
+      "items": true,
+      "additionalItems": { "type": "boolean" }
+    },
+    "additionalItemsWithoutType3" : {
+      "type": "array",
+      "items": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "string"
+        }
+      ],
+      "additionalItems": { "type": ["boolean", "integer"] }
     }
   }
 }

@@ -152,6 +152,26 @@ describe('Validation', () => {
     constWithObjectNotation: { foo: 'bar', baz: 123 },
   });
 
+  createSuccessTestCase('items and additionalItems', {
+    additionalItemsWithoutType: [1, 2, 3, 4, 5],
+  });
+
+  createSuccessTestCase('items and additionalItems #2', {
+    additionalItemsWithoutType2: [
+      1,
+      true,
+      /test/,
+      'string',
+      [1, 2, 3],
+      { foo: 'bar' },
+      null,
+    ],
+  });
+
+  createSuccessTestCase('items and additionalItems #3', {
+    additionalItemsWithoutType3: ['string', 'other-string', 1, true, 2, false],
+  });
+
   // The "name" option
   createFailedTestCase(
     'webpack name',
@@ -2014,6 +2034,30 @@ describe('Validation', () => {
     'const with object notation',
     {
       constWithObjectNotation: true,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'items and additionalItems',
+    {
+      additionalItemsWithoutType: true,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'items and additionalItems #2',
+    {
+      additionalItemsWithoutType2: true,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'items and additionalItems #3',
+    {
+      additionalItemsWithoutType3: true,
     },
     (msg) => expect(msg).toMatchSnapshot()
   );
