@@ -367,14 +367,11 @@ class ValidationError extends Error {
       }
 
       if (schema.contains && Object.keys(schema.contains).length > 0) {
-        const contains =
-          Array.isArray(schema.contains.type) && schema.contains.type.length > 1
-            ? schema.contains.type
-                .map((item) => `${getArticle(item)} ${item}`)
-                .join(' or ')
-            : `${getArticle(schema.contains.type)} ${schema.contains.type}`;
-
-        hints.push(`should contains at least one ${contains} item`);
+        hints.push(
+          `should contains at least one ${this.formatSchema(
+            schema.contains
+          )} item`
+        );
       }
 
       return `[${items}${hasAdditionalItems ? ', ...' : ''}]${
@@ -684,7 +681,10 @@ class ValidationError extends Error {
           error.parentSchema
         )}`;
       case 'contains':
-        return this.formatValidationErrors(error.children);
+        return `${dataPath} should contains at least one ${this.getSchemaPartText(
+          error.parentSchema,
+          ['contains']
+        )} item.`;
       case 'required': {
         const missingProperty = error.params.missingProperty.replace(/^\./, '');
         const hasProperty = Boolean(
@@ -721,6 +721,7 @@ class ValidationError extends Error {
         const invalidProperty = error.params.propertyName.replace(/^\./, '');
 
         return `${dataPath} property name '${invalidProperty}' is invalid. Property names should be match format "${
+          // Todo maybe empty
           error.children[0].params.format
         }".${this.getSchemaPartDescription(error.parentSchema)}`;
       }
@@ -792,6 +793,7 @@ class ValidationError extends Error {
           error.parentSchema
         )}\nDetails:\n${error.children
           .map((nestedError) => {
+            // Todo
             if (nestedError.keyword === 'if' && !nestedError.children) {
               return '';
             }
@@ -825,10 +827,6 @@ class ValidationError extends Error {
 
         if (this.postFormatter) {
           formattedError = this.postFormatter(formattedError, error);
-        }
-
-        if (error.keyword === 'contains') {
-          return formattedError;
         }
 
         return ` - ${indent(formattedError, '   ')}`;

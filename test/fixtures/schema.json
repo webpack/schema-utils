@@ -3366,6 +3366,15 @@
         }
       ],
       "additionalItems": { "type": ["boolean", "integer"] }
+    },
+    "containsAndAdditionalItems": {
+      "type": "array",
+      "contains": {
+        "type": ["integer", "boolean"]
+      },
+      "additionalItems": {
+        "type": "string"
+      }
     }
   }
 }

@@ -172,6 +172,14 @@ describe('Validation', () => {
     additionalItemsWithoutType3: ['string', 'other-string', 1, true, 2, false],
   });
 
+  createSuccessTestCase('contains and additionalItems', {
+    containsAndAdditionalItems: [/test/, true, 'string'],
+  });
+
+  createSuccessTestCase('contains and additionalItems', {
+    containsAndAdditionalItems: [/test/, 1, 'string'],
+  });
+
   // The "name" option
   createFailedTestCase(
     'webpack name',
@@ -2058,6 +2066,22 @@ describe('Validation', () => {
     'items and additionalItems #3',
     {
       additionalItemsWithoutType3: true,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'contains and additionalItems',
+    {
+      containsAndAdditionalItems: true,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'contains and additionalItems #2',
+    {
+      containsAndAdditionalItems: [/test/, 'string'],
     },
     (msg) => expect(msg).toMatchSnapshot()
   );
