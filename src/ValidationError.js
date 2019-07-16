@@ -788,21 +788,11 @@ class ValidationError extends Error {
         )}`;
       }
       case 'if':
-        return `${dataPath} is invalid.${this.getSchemaPartDescription(
-          error.parentSchema
-        )}\nDetails:\n${error.children
-          .map((nestedError) => {
-            // Todo
-            if (nestedError.keyword === 'if' && !nestedError.children) {
-              return '';
-            }
-
-            return ` * ${indent(
-              this.formatValidationError(nestedError),
-              '   '
-            )}`;
-          })
-          .join('\n')}`;
+        return `${dataPath} should match "${
+          error.params.failingKeyword
+        }" schema:\n${this.getSchemaPartText(error.parentSchema, [
+          error.params.failingKeyword,
+        ])}`;
       case 'absolutePath':
         return `${dataPath}: ${error.message}${this.getSchemaPartDescription(
           error.parentSchema

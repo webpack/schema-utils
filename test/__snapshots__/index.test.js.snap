@@ -619,25 +619,20 @@ exports[`Validation should fail validation for formatMinimum 1`] = `
 
 exports[`Validation should fail validation for if/then/else #2 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.ifThenElseKeyword is invalid.
-   Details:
-    * configuration.ifThenElseKeyword misses the property 'disbelief'."
+ - configuration.ifThenElseKeyword should match \\"then\\" schema:
+   object { disbelief, … }"
 `;
 
 exports[`Validation should fail validation for if/then/else #3 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.ifThenElseKeyword is invalid.
-   Details:
-    * configuration.ifThenElseKeyword should not have fewer than 3 properties.
-    * configuration.ifThenElseKeyword misses the property 'confidence'."
+ - configuration.ifThenElseKeyword should match \\"else\\" schema:
+   object { confidence, … } (should not have fewer than 3 properties)"
 `;
 
 exports[`Validation should fail validation for if/then/else #4 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.ifThenElseKeyword2 is invalid.
-   Details:
-    * configuration.ifThenElseKeyword2 should be multiple of 10.
-"
+ - configuration.ifThenElseKeyword2 should match \\"else\\" schema:
+   if number (should be >= 10) then number (should be multiple of 10)"
 `;
 
 exports[`Validation should fail validation for if/then/else #5 1`] = `
@@ -652,9 +647,8 @@ exports[`Validation should fail validation for if/then/else #6 1`] = `
 
 exports[`Validation should fail validation for if/then/else 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.ifThenElseKeyword is invalid.
-   Details:
-    * configuration.ifThenElseKeyword misses the property 'disbelief'."
+ - configuration.ifThenElseKeyword should match \\"then\\" schema:
+   object { disbelief, … }"
 `;
 
 exports[`Validation should fail validation for integer and null in object with anyOf 1`] = `
