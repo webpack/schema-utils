@@ -1122,10 +1122,10 @@ exports[`Validation should fail validation for oneOf with description 1`] = `
 exports[`Validation should fail validation for oneOf with if 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
  - configuration.oneOfWithIf should be one of these:
-   if the data is valid against the sub-schema object { power?, … }, then data should valid against the sub-schema object { disbelief, … }, else data should valid against the sub-schema object { confidence, … } | integer
+   if object { power?, … } then object { disbelief, … } else object { confidence, … } | integer
    Details:
     * configuration.oneOfWithIf should be an object:
-      if the data is valid against the sub-schema object { power?, … }, then data should valid against the sub-schema object { disbelief, … }, else data should valid against the sub-schema object { confidence, … }
+      if object { power?, … } then object { disbelief, … } else object { confidence, … }
     * configuration.oneOfWithIf should be a integer."
 `;
 

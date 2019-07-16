@@ -220,17 +220,9 @@ class ValidationError extends Error {
     }
 
     if (schema.if) {
-      return `if the data is valid against the sub-schema ${formatInnerSchema(
-        schema.if
-      )}, then data should valid against the sub-schema ${formatInnerSchema(
+      return `if ${formatInnerSchema(schema.if)} then ${formatInnerSchema(
         schema.then
-      )}${
-        schema.else
-          ? `, else data should valid against the sub-schema ${formatInnerSchema(
-              schema.else
-            )}`
-          : ''
-      }`;
+      )}${schema.else ? ` else ${formatInnerSchema(schema.else)}` : ''}`;
     }
 
     if (schema.$ref) {
