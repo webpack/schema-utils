@@ -559,278 +559,290 @@ class ValidationError extends Error {
   formatValidationError(error) {
     const dataPath = `${this.baseDataPath}${error.dataPath}`;
 
-    if (error.keyword === 'type') {
-      // eslint-disable-next-line default-case
-      switch (error.params.type) {
-        case 'number':
-          return `${dataPath} should be a ${this.getSchemaPartText(
-            error.parentSchema,
-            false,
-            true
-          )}`;
-        case 'integer':
-          return `${dataPath} should be a ${this.getSchemaPartText(
-            error.parentSchema,
-            false,
-            true
-          )}`;
-        case 'string':
-          return `${dataPath} should be a ${this.getSchemaPartText(
-            error.parentSchema,
-            false,
-            true
-          )}`;
-        case 'boolean':
-          return `${dataPath} should be a ${this.getSchemaPartText(
-            error.parentSchema,
-            false,
-            true
-          )}`;
-        case 'array':
-          return `${dataPath} should be an array:\n${this.getSchemaPartText(
-            error.parentSchema
-          )}`;
-        case 'object':
-          return `${dataPath} should be an object:\n${this.getSchemaPartText(
-            error.parentSchema
-          )}`;
-        case 'null':
-          return `${dataPath} should be a ${this.getSchemaPartText(
-            error.parentSchema,
-            false,
-            true
-          )}`;
-      }
-
-      return `${dataPath} should be:\n${this.getSchemaPartText(
-        error.parentSchema
-      )}`;
-    } else if (error.keyword === 'instanceof') {
-      return `${dataPath} should be an instance of ${this.getSchemaPartText(
-        error.parentSchema
-      )}.`;
-    } else if (error.keyword === 'pattern') {
-      return `${dataPath} should match pattern ${JSON.stringify(
-        error.params.pattern
-      )}.${this.getSchemaPartDescription(error.parentSchema)}`;
-    } else if (error.keyword === 'format') {
-      return `${dataPath} should match format ${JSON.stringify(
-        error.params.format
-      )}.${this.getSchemaPartDescription(error.parentSchema)}`;
-    } else if (
-      error.keyword === 'formatMinimum' ||
-      error.keyword === 'formatMaximum'
-    ) {
-      return `${dataPath} should be ${error.params.comparison} ${JSON.stringify(
-        error.params.limit
-      )}.${this.getSchemaPartDescription(error.parentSchema)}`;
-    } else if (
-      error.keyword === 'minimum' ||
-      error.keyword === 'maximum' ||
-      error.keyword === 'exclusiveMinimum' ||
-      error.keyword === 'exclusiveMaximum'
-    ) {
-      return `${dataPath} should be ${error.params.comparison} ${
-        error.params.limit
-      }.${this.getSchemaPartDescription(error.parentSchema)}`;
-    } else if (error.keyword === 'multipleOf') {
-      return `${dataPath} should be multiple of ${
-        error.params.multipleOf
-      }.${this.getSchemaPartDescription(error.parentSchema)}`;
-    } else if (error.keyword === 'patternRequired') {
-      return `${dataPath} should have property matching pattern ${JSON.stringify(
-        error.params.missingPattern
-      )}.${this.getSchemaPartDescription(error.parentSchema)}`;
-    } else if (error.keyword === 'minLength') {
-      if (error.params.limit === 1) {
-        return `${dataPath} should be an non-empty string.${this.getSchemaPartDescription(
-          error.parentSchema
-        )}`;
-      }
-
-      return `${dataPath} should not be shorter than ${
-        error.params.limit
-      } characters.${this.getSchemaPartDescription(error.parentSchema)}`;
-    } else if (error.keyword === 'minItems') {
-      if (error.params.limit === 1) {
-        return `${dataPath} should be an non-empty array.${this.getSchemaPartDescription(
-          error.parentSchema
-        )}`;
-      }
-
-      return `${dataPath} should not have fewer than ${
-        error.limit
-      } items.${this.getSchemaPartDescription(error.parentSchema)}`;
-    } else if (error.keyword === 'minProperties') {
-      if (error.params.limit === 1) {
-        return `${dataPath} should be an non-empty object.${this.getSchemaPartDescription(
-          error.parentSchema
-        )}`;
-      }
-
-      return `${dataPath} should not have fewer than ${
-        error.params.limit
-      } properties.${this.getSchemaPartDescription(error.parentSchema)}`;
-    } else if (error.keyword === 'maxLength') {
-      return `${dataPath} should not be longer than ${
-        error.params.limit
-      } characters.${this.getSchemaPartDescription(error.parentSchema)}`;
-    } else if (error.keyword === 'maxItems') {
-      return `${dataPath} should not have more than ${
-        error.params.limit
-      } items.${this.getSchemaPartDescription(error.parentSchema)}`;
-    } else if (error.keyword === 'maxProperties') {
-      return `${dataPath} should not have more than ${
-        error.params.limit
-      } properties.${this.getSchemaPartDescription(error.parentSchema)}`;
-    } else if (error.keyword === 'uniqueItems') {
-      return `${dataPath} should not contain the item '${
-        error.data[error.params.i]
-      }' twice.${this.getSchemaPartDescription(error.parentSchema)}`;
-    } else if (error.keyword === 'additionalItems') {
-      return `${dataPath} should not have more than ${
-        error.params.limit
-      } items. These items are valid:\n${this.getSchemaPartText(
-        error.parentSchema
-      )}`;
-    } else if (error.keyword === 'contains') {
-      return this.formatValidationErrors(error.children);
-    } else if (error.keyword === 'required') {
-      const missingProperty = error.params.missingProperty.replace(/^\./, '');
-      const hasProperty = Boolean(
-        error.parentSchema.properties &&
-          error.parentSchema.properties[missingProperty]
-      );
-
-      return `${dataPath} misses the property '${missingProperty}'.${
-        hasProperty
-          ? ` Should be:\n${this.getSchemaPartText(
+    switch (error.keyword) {
+      case 'type':
+        // eslint-disable-next-line default-case
+        switch (error.params.type) {
+          case 'number':
+            return `${dataPath} should be a ${this.getSchemaPartText(
               error.parentSchema,
-              hasProperty ? ['properties', missingProperty] : []
-            )}`
-          : this.getSchemaPartDescription(error.parentSchema)
-      }`;
-    } else if (error.keyword === 'additionalProperties') {
-      return `${dataPath} has an unknown property '${
-        error.params.additionalProperty
-      }'. These properties are valid:\n${this.getSchemaPartText(
-        error.parentSchema
-      )}`;
-    } else if (error.keyword === 'dependencies') {
-      const dependencies = error.params.deps
-        .split(',')
-        .map((dep) => `'${dep.trim()}'`)
-        .join(', ');
-
-      return `${dataPath} should have properties ${dependencies} when property '${
-        error.params.property
-      }' is present.${this.getSchemaPartDescription(error.parentSchema)}`;
-    } else if (error.keyword === 'propertyNames') {
-      const invalidProperty = error.params.propertyName.replace(/^\./, '');
-
-      return `${dataPath} property name '${invalidProperty}' is invalid. Property names should be match format "${
-        error.children[0].params.format
-      }".${this.getSchemaPartDescription(error.parentSchema)}`;
-    } else if (error.keyword === 'enum') {
-      if (
-        error.parentSchema &&
-        error.parentSchema.enum &&
-        error.parentSchema.enum.length === 1
-      ) {
-        return `${dataPath} should be ${this.getSchemaPartText(
-          error.parentSchema,
-          false,
-          true
+              false,
+              true
+            )}`;
+          case 'integer':
+            return `${dataPath} should be a ${this.getSchemaPartText(
+              error.parentSchema,
+              false,
+              true
+            )}`;
+          case 'string':
+            return `${dataPath} should be a ${this.getSchemaPartText(
+              error.parentSchema,
+              false,
+              true
+            )}`;
+          case 'boolean':
+            return `${dataPath} should be a ${this.getSchemaPartText(
+              error.parentSchema,
+              false,
+              true
+            )}`;
+          case 'array':
+            return `${dataPath} should be an array:\n${this.getSchemaPartText(
+              error.parentSchema
+            )}`;
+          case 'object':
+            return `${dataPath} should be an object:\n${this.getSchemaPartText(
+              error.parentSchema
+            )}`;
+          case 'null':
+            return `${dataPath} should be a ${this.getSchemaPartText(
+              error.parentSchema,
+              false,
+              true
+            )}`;
+          default:
+            return `${dataPath} should be:\n${this.getSchemaPartText(
+              error.parentSchema
+            )}`;
+        }
+      case 'instanceof':
+        return `${dataPath} should be an instance of ${this.getSchemaPartText(
+          error.parentSchema
+        )}.`;
+      case 'pattern':
+        return `${dataPath} should match pattern ${JSON.stringify(
+          error.params.pattern
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
+      case 'format':
+        return `${dataPath} should match format ${JSON.stringify(
+          error.params.format
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
+      case 'formatMinimum':
+      case 'formatMaximum':
+        return `${dataPath} should be ${
+          error.params.comparison
+        } ${JSON.stringify(error.params.limit)}.${this.getSchemaPartDescription(
+          error.parentSchema
         )}`;
-      }
-
-      return `${dataPath} should be one of these:\n${this.getSchemaPartText(
-        error.parentSchema
-      )}`;
-    } else if (error.keyword === 'const') {
-      if (
-        error.parentSchema &&
-        typeof error.parentSchema.const !== 'undefined' &&
-        (!Array.isArray(error.parentSchema.const) ||
-          (Array.isArray(error.parentSchema.const) &&
-            error.parentSchema.const.length === 1))
-      ) {
-        return `${dataPath} should be ${this.getSchemaPartText(
-          error.parentSchema,
-          false,
-          true
-        )}`;
-      }
-
-      return `${dataPath} should be one of these:\n${this.getSchemaPartText(
-        error.parentSchema
-      )}`;
-    } else if (error.keyword === 'oneOf' || error.keyword === 'anyOf') {
-      if (error.children && error.children.length > 0) {
-        if (error.schema.length === 1) {
-          const lastChild = error.children[error.children.length - 1];
-          const remainingChildren = error.children.slice(
-            0,
-            error.children.length - 1
-          );
-
-          return this.formatValidationError(
-            Object.assign({}, lastChild, {
-              children: remainingChildren,
-              parentSchema: Object.assign(
-                {},
-                error.parentSchema,
-                lastChild.parentSchema
-              ),
-            })
-          );
+      case 'minimum':
+      case 'maximum':
+      case 'exclusiveMinimum':
+      case 'exclusiveMaximum':
+        return `${dataPath} should be ${error.params.comparison} ${
+          error.params.limit
+        }.${this.getSchemaPartDescription(error.parentSchema)}`;
+      case 'multipleOf':
+        return `${dataPath} should be multiple of ${
+          error.params.multipleOf
+        }.${this.getSchemaPartDescription(error.parentSchema)}`;
+      case 'patternRequired':
+        return `${dataPath} should have property matching pattern ${JSON.stringify(
+          error.params.missingPattern
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
+      case 'minLength': {
+        if (error.params.limit === 1) {
+          return `${dataPath} should be an non-empty string.${this.getSchemaPartDescription(
+            error.parentSchema
+          )}`;
         }
 
-        const children = filterChildren(error.children);
+        return `${dataPath} should not be shorter than ${
+          error.params.limit
+        } characters.${this.getSchemaPartDescription(error.parentSchema)}`;
+      }
+      case 'minItems': {
+        if (error.params.limit === 1) {
+          return `${dataPath} should be an non-empty array.${this.getSchemaPartDescription(
+            error.parentSchema
+          )}`;
+        }
 
-        if (children.length === 1) {
-          return this.formatValidationError(children[0]);
+        return `${dataPath} should not have fewer than ${
+          error.limit
+        } items.${this.getSchemaPartDescription(error.parentSchema)}`;
+      }
+      case 'minProperties': {
+        if (error.params.limit === 1) {
+          return `${dataPath} should be an non-empty object.${this.getSchemaPartDescription(
+            error.parentSchema
+          )}`;
+        }
+
+        return `${dataPath} should not have fewer than ${
+          error.params.limit
+        } properties.${this.getSchemaPartDescription(error.parentSchema)}`;
+      }
+      case 'maxLength':
+        return `${dataPath} should not be longer than ${
+          error.params.limit
+        } characters.${this.getSchemaPartDescription(error.parentSchema)}`;
+      case 'maxItems':
+        return `${dataPath} should not have more than ${
+          error.params.limit
+        } items.${this.getSchemaPartDescription(error.parentSchema)}`;
+      case 'maxProperties':
+        return `${dataPath} should not have more than ${
+          error.params.limit
+        } properties.${this.getSchemaPartDescription(error.parentSchema)}`;
+      case 'uniqueItems':
+        return `${dataPath} should not contain the item '${
+          error.data[error.params.i]
+        }' twice.${this.getSchemaPartDescription(error.parentSchema)}`;
+      case 'additionalItems':
+        return `${dataPath} should not have more than ${
+          error.params.limit
+        } items. These items are valid:\n${this.getSchemaPartText(
+          error.parentSchema
+        )}`;
+      case 'contains':
+        return this.formatValidationErrors(error.children);
+      case 'required': {
+        const missingProperty = error.params.missingProperty.replace(/^\./, '');
+        const hasProperty = Boolean(
+          error.parentSchema.properties &&
+            error.parentSchema.properties[missingProperty]
+        );
+
+        return `${dataPath} misses the property '${missingProperty}'.${
+          hasProperty
+            ? ` Should be:\n${this.getSchemaPartText(
+                error.parentSchema,
+                hasProperty ? ['properties', missingProperty] : []
+              )}`
+            : this.getSchemaPartDescription(error.parentSchema)
+        }`;
+      }
+      case 'additionalProperties':
+        return `${dataPath} has an unknown property '${
+          error.params.additionalProperty
+        }'. These properties are valid:\n${this.getSchemaPartText(
+          error.parentSchema
+        )}`;
+      case 'dependencies': {
+        const dependencies = error.params.deps
+          .split(',')
+          .map((dep) => `'${dep.trim()}'`)
+          .join(', ');
+
+        return `${dataPath} should have properties ${dependencies} when property '${
+          error.params.property
+        }' is present.${this.getSchemaPartDescription(error.parentSchema)}`;
+      }
+      case 'propertyNames': {
+        const invalidProperty = error.params.propertyName.replace(/^\./, '');
+
+        return `${dataPath} property name '${invalidProperty}' is invalid. Property names should be match format "${
+          error.children[0].params.format
+        }".${this.getSchemaPartDescription(error.parentSchema)}`;
+      }
+      case 'enum': {
+        if (
+          error.parentSchema &&
+          error.parentSchema.enum &&
+          error.parentSchema.enum.length === 1
+        ) {
+          return `${dataPath} should be ${this.getSchemaPartText(
+            error.parentSchema,
+            false,
+            true
+          )}`;
         }
 
         return `${dataPath} should be one of these:\n${this.getSchemaPartText(
           error.parentSchema
-        )}\nDetails:\n${children
-          .map(
-            (nestedError) =>
-              ` * ${indent(this.formatValidationError(nestedError), '   ')}`
-          )
-          .join('\n')}`;
+        )}`;
       }
+      case 'const': {
+        if (
+          error.parentSchema &&
+          typeof error.parentSchema.const !== 'undefined' &&
+          (!Array.isArray(error.parentSchema.const) ||
+            (Array.isArray(error.parentSchema.const) &&
+              error.parentSchema.const.length === 1))
+        ) {
+          return `${dataPath} should be ${this.getSchemaPartText(
+            error.parentSchema,
+            false,
+            true
+          )}`;
+        }
 
-      return `${dataPath} should be one of these:\n${this.getSchemaPartText(
-        error.parentSchema
-      )}`;
-    } else if (error.keyword === 'if') {
-      return `${dataPath} is invalid.${this.getSchemaPartDescription(
-        error.parentSchema
-      )}\nDetails:\n${error.children
-        .map((nestedError) => {
-          if (nestedError.keyword === 'if' && !nestedError.children) {
-            return '';
+        return `${dataPath} should be one of these:\n${this.getSchemaPartText(
+          error.parentSchema
+        )}`;
+      }
+      case 'oneOf':
+      case 'anyOf': {
+        if (error.children && error.children.length > 0) {
+          if (error.schema.length === 1) {
+            const lastChild = error.children[error.children.length - 1];
+            const remainingChildren = error.children.slice(
+              0,
+              error.children.length - 1
+            );
+
+            return this.formatValidationError(
+              Object.assign({}, lastChild, {
+                children: remainingChildren,
+                parentSchema: Object.assign(
+                  {},
+                  error.parentSchema,
+                  lastChild.parentSchema
+                ),
+              })
+            );
           }
 
-          return ` * ${indent(this.formatValidationError(nestedError), '   ')}`;
-        })
-        .join('\n')}`;
-    } else if (error.keyword === 'absolutePath') {
-      return `${dataPath}: ${error.message}${this.getSchemaPartDescription(
-        error.parentSchema
-      )}`;
-    }
+          const children = filterChildren(error.children);
 
-    // For `custom`, `false schema`, `$ref` keywords
-    // Fallback for unknown keywords
-    /* istanbul ignore next */
-    return `${dataPath} ${error.message} (${JSON.stringify(
-      error,
-      null,
-      2
-    )}).\n${this.getSchemaPartText(error.parentSchema)}`;
+          if (children.length === 1) {
+            return this.formatValidationError(children[0]);
+          }
+
+          return `${dataPath} should be one of these:\n${this.getSchemaPartText(
+            error.parentSchema
+          )}\nDetails:\n${children
+            .map(
+              (nestedError) =>
+                ` * ${indent(this.formatValidationError(nestedError), '   ')}`
+            )
+            .join('\n')}`;
+        }
+
+        return `${dataPath} should be one of these:\n${this.getSchemaPartText(
+          error.parentSchema
+        )}`;
+      }
+      case 'if':
+        return `${dataPath} is invalid.${this.getSchemaPartDescription(
+          error.parentSchema
+        )}\nDetails:\n${error.children
+          .map((nestedError) => {
+            if (nestedError.keyword === 'if' && !nestedError.children) {
+              return '';
+            }
+
+            return ` * ${indent(
+              this.formatValidationError(nestedError),
+              '   '
+            )}`;
+          })
+          .join('\n')}`;
+      case 'absolutePath':
+        return `${dataPath}: ${error.message}${this.getSchemaPartDescription(
+          error.parentSchema
+        )}`;
+      default:
+        // For `custom`, `false schema`, `$ref` keywords
+        // Fallback for unknown keywords
+        /* istanbul ignore next */
+        return `${dataPath} ${error.message} (${JSON.stringify(
+          error,
+          null,
+          2
+        )}).\n${this.getSchemaPartText(error.parentSchema)}`;
+    }
   }
 
   formatValidationErrors(errors) {
