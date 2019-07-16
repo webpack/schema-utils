@@ -3375,6 +3375,14 @@
       "additionalItems": {
         "type": "string"
       }
+    },
+    "containsInsideItem": {
+      "type": "array",
+      "items": {
+        "contains": {
+          "type": "integer"
+        }
+      }
     }
   }
 }

@@ -180,6 +180,22 @@ describe('Validation', () => {
     containsAndAdditionalItems: [/test/, 1, 'string'],
   });
 
+  createSuccessTestCase('contains inside items', {
+    containsInsideItem: [1, 'test', true, /test/],
+  });
+
+  createSuccessTestCase('contains inside items #2', {
+    containsInsideItem: ['test', 'test', 'test'],
+  });
+
+  createSuccessTestCase('contains inside items #3', {
+    containsInsideItem: [['test', 1], '1', /test/],
+  });
+
+  createSuccessTestCase('contains inside items #3', {
+    containsInsideItem: [[1, 'test'], '1', /test/],
+  });
+
   // The "name" option
   createFailedTestCase(
     'webpack name',
@@ -2082,6 +2098,22 @@ describe('Validation', () => {
     'contains and additionalItems #2',
     {
       containsAndAdditionalItems: [/test/, 'string'],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'contains inside items',
+    {
+      containsInsideItem: true,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'contains inside items #2',
+    {
+      containsInsideItem: [['test'], '1', /test/],
     },
     (msg) => expect(msg).toMatchSnapshot()
   );
