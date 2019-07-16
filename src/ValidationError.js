@@ -151,10 +151,8 @@ class ValidationError extends Error {
 
     const header = `Invalid ${this.baseDataPath} object. ${
       this.headerName
-    } has been initialised using ${
-      this.baseDataPath === 'options'
-        ? `an ${this.baseDataPath}`
-        : `a ${this.baseDataPath}`
+    } has been initialised using ${getArticle(this.baseDataPath)} ${
+      this.baseDataPath
     } object that does not match the API schema.\n`;
 
     this.message = `${header}${this.formatValidationErrors(errors)}`;

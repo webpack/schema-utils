@@ -219,7 +219,7 @@ exports[`Validation should fail validation for array #6 1`] = `
 exports[`Validation should fail validation for array #7 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
  - configuration.arrayKeyword4 should be an array:
-   [any, ...] (should not have more than 3 items, should not have duplicate items, should contains at least one a integer item)
+   [any, ...] (should not have more than 3 items, should not have duplicate items, should contains at least one an integer item)
    -> Description"
 `;
 
@@ -335,7 +335,7 @@ exports[`Validation should fail validation for array #25 1`] = `
 exports[`Validation should fail validation for array #26 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
  - configuration.arrayKeyword19 should be an array:
-   [any, ...] (should contains at least one a boolean or a integer item)
+   [any, ...] (should contains at least one a boolean or an integer item)
    -> Description."
 `;
 
