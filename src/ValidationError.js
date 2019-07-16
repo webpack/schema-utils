@@ -161,16 +161,18 @@ class ValidationError extends Error {
   }
 
   getSchemaPart(path) {
-    const newPath = path.split('/').slice(0, path.length);
+    const newPath = path.split('/');
 
     let schemaPart = this.schema;
 
     for (let i = 1; i < newPath.length; i++) {
       const inner = schemaPart[newPath[i]];
 
-      if (inner) {
-        schemaPart = inner;
+      if (!inner) {
+        break;
       }
+
+      schemaPart = inner;
     }
 
     return schemaPart;
