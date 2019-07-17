@@ -644,7 +644,7 @@ class ValidationError extends Error {
         }
 
         return `${dataPath} should not have fewer than ${
-          error.limit
+          error.params.limit
         } items.${this.getSchemaPartDescription(error.parentSchema)}`;
       }
       case 'minProperties': {

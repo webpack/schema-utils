@@ -851,7 +851,7 @@ exports[`Validation should fail validation for min properties 1`] = `
 
 exports[`Validation should fail validation for minItems Keyword 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.minItemsKeyword should not have fewer than undefined items."
+ - configuration.minItemsKeyword should not have fewer than 2 items."
 `;
 
 exports[`Validation should fail validation for minProperties 1`] = `
