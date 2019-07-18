@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.1](https://github.com/webpack-contrib/schema-utils/compare/v2.0.0...v2.0.1) (2019-07-18)
+
+
+### Bug Fixes
+
+* error message for empty object ([#44](https://github.com/webpack-contrib/schema-utils/issues/44)) ([0b4b4a2](https://github.com/webpack-contrib/schema-utils/commit/0b4b4a2))
+
+
+
 ### [2.0.0](https://github.com/webpack-contrib/schema-utils/compare/v1.0.0...v2.0.0) (2019-07-17)
 
 
