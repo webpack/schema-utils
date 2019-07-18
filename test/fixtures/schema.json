@@ -2554,20 +2554,10 @@
     "patternPropertiesKeyword2": {
       "patternProperties": {
         "^[b-z0-9]+$": {
-          "properties": {
-            "model": {
-              "type": "string"
-            },
-            "made": {
-              "type": "string"
-            },
-            "year": {
-              "type": "string"
-            }
-          }
+          "type": "number"
         }
       },
-      "additionalProperties": false
+      "additionalProperties": true
     },
     "arrayWithOnlyNumber": {
       "type": "array",
@@ -3145,7 +3135,7 @@
       "dependencies": {
         "foo": ["bar", "baz"]
       },
-      "additionalProperties": false
+      "additionalProperties": true
     },
     "propertyNamesWithoutType": {
       "propertyNames": { "format": "email" },
@@ -3158,9 +3148,9 @@
     "additionalPropertiesWithoutType": {
       "additionalProperties": false
     },
-    "minPropertiesWithoutType": {
+    "maxPropertiesWithoutType": {
       "maxProperties": 0,
-      "additionalProperties": false
+      "additionalProperties": true
     },
     "justAnObject": {
       "type": "object",
@@ -3383,6 +3373,23 @@
           "type": "integer"
         }
       }
+    },
+    "emptyObject": {
+      "type": "object",
+      "additionalProperties": false
+    },
+    "nonEmptyObject": {
+      "type": "object",
+      "properties": {
+        "bar": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "nonEmptyObject2": {
+      "type": "object",
+      "additionalProperties": true
     }
   }
 }

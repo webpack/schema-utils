@@ -196,6 +196,22 @@ describe('Validation', () => {
     containsInsideItem: [[1, 'test'], '1', /test/],
   });
 
+  createSuccessTestCase('object without properties', {
+    emptyObject: {},
+  });
+
+  createSuccessTestCase('non empty object', {
+    nonEmptyObject: { bar: 123 },
+  });
+
+  createSuccessTestCase('non empty object #2', {
+    nonEmptyObject: {},
+  });
+
+  createSuccessTestCase('non empty object #3', {
+    nonEmptyObject2: { foo: 'test' },
+  });
+
   // The "name" option
   createFailedTestCase(
     'webpack name',
@@ -1039,7 +1055,7 @@ describe('Validation', () => {
   createFailedTestCase(
     'patternProperties #1',
     {
-      patternPropertiesKeyword2: { a: 't' },
+      patternPropertiesKeyword2: { b: 't' },
     },
     (msg) => expect(msg).toMatchSnapshot()
   );
@@ -1863,9 +1879,9 @@ describe('Validation', () => {
   );
 
   createFailedTestCase(
-    'minProperties without object type',
+    'maxProperties without object type',
     {
-      minPropertiesWithoutType: { boo: 'test' },
+      maxPropertiesWithoutType: { boo: 'test' },
     },
     (msg) => expect(msg).toMatchSnapshot()
   );
@@ -2114,6 +2130,38 @@ describe('Validation', () => {
     'contains inside items #2',
     {
       containsInsideItem: [['test'], '1', /test/],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'empty object',
+    {
+      emptyObject: true,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'empty object #2',
+    {
+      emptyObject: { a: 'test' },
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'non empty object',
+    {
+      nonEmptyObject: true,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'non empty object #2',
+    {
+      nonEmptyObject2: true,
     },
     (msg) => expect(msg).toMatchSnapshot()
   );

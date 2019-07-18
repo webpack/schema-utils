@@ -482,7 +482,7 @@ class ValidationError extends Error {
         );
       }
 
-      return `object${objectStructure ? ` { ${objectStructure} }` : ''}${
+      return `object {${objectStructure ? ` ${objectStructure} ` : ''}}${
         hints.length > 0 ? ` (${hints.join(', ')})` : ''
       }`;
     }
