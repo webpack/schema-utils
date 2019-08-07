@@ -2165,4 +2165,19 @@ describe('Validation', () => {
     },
     (msg) => expect(msg).toMatchSnapshot()
   );
+
+  createFailedTestCase(
+    'holey array',
+    // eslint-disable-next-line no-sparse-arrays
+    [
+      {
+        mode: 'production',
+      },
+      ,
+      {
+        mode: 'development',
+      },
+    ],
+    (msg) => expect(msg).toMatchSnapshot()
+  );
 });
