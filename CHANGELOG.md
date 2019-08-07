@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/webpack-contrib/schema-utils/compare/v2.0.1...v2.1.0) (2019-08-07)
+
+
+### Bug Fixes
+
+* throw error on sparse arrays ([#47](https://github.com/webpack-contrib/schema-utils/issues/47)) ([b85ac38](https://github.com/webpack-contrib/schema-utils/commit/b85ac38))
+
+
+### Features
+
+* export `ValidateError` ([#46](https://github.com/webpack-contrib/schema-utils/issues/46)) ([ff781d7](https://github.com/webpack-contrib/schema-utils/commit/ff781d7))
+
+
+
 ### [2.0.1](https://github.com/webpack-contrib/schema-utils/compare/v2.0.0...v2.0.1) (2019-07-18)
 
 
