@@ -24,7 +24,7 @@ function validate(schema, options, configuration = {}) {
   let errors = [];
 
   if (Array.isArray(options)) {
-    errors = options.map((nestedOptions) =>
+    errors = Array.from(options).map((nestedOptions) =>
       validateObject(schema, nestedOptions)
     );
 
