@@ -163,16 +163,14 @@ exports[`Validation should fail validation for anyOf 1`] = `
    Details:
     * configuration.anyOfKeyword should be an object:
       object { foo?, … }
-    * configuration.anyOfKeyword should be a non-empty string.
-      -> An entry point without name. The string is resolved to a module which is loaded upon startup.
-    * configuration.anyOfKeyword should be an array:
-      [non-empty string, ...] (should not have fewer than 1 item, should not have duplicate items)
-      -> A non-empty array of non-empty strings
     * configuration.anyOfKeyword should be one of these:
-      [non-empty string, ...] (should not have fewer than 1 item, should not have duplicate items)
-      -> An entry point without name. All modules are loaded upon startup. The last one is exported.
-    * configuration.anyOfKeyword should be one of these:
-      non-empty string | [non-empty string, ...] (should not have fewer than 1 item, should not have duplicate items)"
+      non-empty string | [non-empty string, ...] (should not have fewer than 1 item, should not have duplicate items)
+      Details:
+       * configuration.anyOfKeyword should be a non-empty string.
+         -> An entry point without name. The string is resolved to a module which is loaded upon startup.
+       * configuration.anyOfKeyword should be an array:
+         [non-empty string, ...] (should not have fewer than 1 item, should not have duplicate items)
+         -> A non-empty array of non-empty strings"
 `;
 
 exports[`Validation should fail validation for array #1 1`] = `
@@ -905,8 +903,6 @@ exports[`Validation should fail validation for module 1`] = `
       [RegExp | non-empty string | function | [(recursive), ...] | object { and?, exclude?, include?, not?, or?, test? }, ...]
     * configuration.module.rules[0].compiler should be an object:
       object { and?, exclude?, include?, not?, or?, test? }
-    * configuration.module.rules[0].compiler should be one of these:
-      RegExp | non-empty string | function | [(recursive), ...] | object { and?, exclude?, include?, not?, or?, test? }
     * configuration.module.rules[0].compiler should be an array:
       [RegExp | non-empty string | function | [(recursive), ...] | object { and?, exclude?, include?, not?, or?, test? }, ...]"
 `;
@@ -1143,23 +1139,48 @@ exports[`Validation should fail validation for one const 1`] = `
  - configuration.oneConst should be equal to constant [\\"foo\\"]"
 `;
 
-exports[`Validation should fail validation for oneOf 1`] = `
+exports[`Validation should fail validation for oneOf #1 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
  - configuration.entry should be one of these:
    function | object { <key>: non-empty string | [non-empty string, ...] (should not have fewer than 1 item, should not have duplicate items) } (should not have fewer than 1 property) | non-empty string | [non-empty string, ...] (should not have fewer than 1 item, should not have duplicate items)
    -> The entry point(s) of the compilation.
    Details:
-    * configuration.entry['foo'] should be a non-empty string.
-      -> The string is resolved to a module which is loaded upon startup.
-    * configuration.entry['foo'] should be an array:
-      [non-empty string, ...] (should not have fewer than 1 item, should not have duplicate items)
-      -> A non-empty array of non-empty strings
-    * configuration.entry['foo'] should be one of these:
-      [non-empty string, ...] (should not have fewer than 1 item, should not have duplicate items)
-      -> All modules are loaded upon startup. The last one is exported.
     * configuration.entry['foo'] should be one of these:
       non-empty string | [non-empty string, ...] (should not have fewer than 1 item, should not have duplicate items)
-      -> An entry point with name"
+      -> An entry point with name
+      Details:
+       * configuration.entry['foo'] should be a non-empty string.
+         -> The string is resolved to a module which is loaded upon startup.
+       * configuration.entry['foo'] should be an array:
+         [non-empty string, ...] (should not have fewer than 1 item, should not have duplicate items)
+         -> A non-empty array of non-empty strings"
+`;
+
+exports[`Validation should fail validation for oneOf #2 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.optimization.runtimeChunk should be one of these:
+   boolean | \\"single\\" | \\"multiple\\" | object { name? }
+   -> Create an additional chunk which contains only the webpack runtime and chunk hash maps
+   Details:
+    * configuration.optimization.runtimeChunk.name should be one of these:
+      string | function
+      -> The name or name factory for the runtime chunks
+      Details:
+       * configuration.optimization.runtimeChunk.name should be a string.
+       * configuration.optimization.runtimeChunk.name should be an instance of function."
+`;
+
+exports[`Validation should fail validation for oneOf #3 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.optimization.runtimeChunk should be one of these:
+   boolean | \\"single\\" | \\"multiple\\" | object { name? }
+   -> Create an additional chunk which contains only the webpack runtime and chunk hash maps
+   Details:
+    * configuration.optimization.runtimeChunk should be a boolean.
+    * configuration.optimization.runtimeChunk should be one of these:
+      \\"single\\" | \\"multiple\\"
+    * configuration.optimization.runtimeChunk should be an object:
+      object { name? }"
 `;
 
 exports[`Validation should fail validation for oneOf with description 1`] = `
