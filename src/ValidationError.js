@@ -53,6 +53,91 @@ function filterChildren(children) {
   return newChildren;
 }
 
+/**
+ * Find all children errors
+ * @param children
+ * @param {string[]} schemaPaths
+ * @return {number} returns index of first child
+ */
+function findAllChildren(children, schemaPaths) {
+  let i = children.length - 1;
+  const predicate = (schemaPath) =>
+    children[i].schemaPath.indexOf(schemaPath) !== 0;
+
+  while (i > -1 && !schemaPaths.every(predicate)) {
+    if (children[i].keyword === 'anyOf' || children[i].keyword === 'oneOf') {
+      const refs = extractRefs(children[i]);
+      const childrenStart = findAllChildren(
+        children.slice(0, i),
+        refs.concat(children[i].schemaPath)
+      );
+      i = childrenStart - 1;
+    } else {
+      i -= 1;
+    }
+  }
+
+  return i + 1;
+}
+
+/**
+ * Extracts all refs from schema
+ * @param error
+ * @return {string[]}
+ */
+function extractRefs(error) {
+  const { schema } = error;
+
+  if (!Array.isArray(schema)) {
+    return [];
+  }
+
+  return schema.map(({ $ref }) => $ref).filter((s) => s);
+}
+
+/**
+ * Groups children by their first level parent (assuming that error is root)
+ * @param children
+ * @return {any[]}
+ */
+function groupChildrenByFirstChild(children) {
+  const result = [];
+  let i = children.length - 1;
+
+  while (i > 0) {
+    const child = children[i];
+
+    if (child.keyword === 'anyOf' || child.keyword === 'oneOf') {
+      const refs = extractRefs(child);
+      const childrenStart = findAllChildren(
+        children.slice(0, i),
+        refs.concat(child.schemaPath)
+      );
+
+      if (childrenStart !== i) {
+        result.push(
+          Object.assign({}, child, {
+            children: children.slice(childrenStart, i),
+          })
+        );
+        i = childrenStart;
+      } else {
+        result.push(child);
+      }
+    } else {
+      result.push(child);
+    }
+
+    i -= 1;
+  }
+
+  if (i === 0) {
+    result.push(children[i]);
+  }
+
+  return result.reverse();
+}
+
 function indent(str, prefix) {
   return str.replace(/\n(?!$)/g, `\n${prefix}`);
 }
@@ -767,11 +852,13 @@ class ValidationError extends Error {
             );
           }
 
-          const children = filterChildren(error.children);
+          let children = filterChildren(error.children);
 
           if (children.length === 1) {
             return this.formatValidationError(children[0]);
           }
+
+          children = groupChildrenByFirstChild(children);
 
           return `${dataPath} should be one of these:\n${this.getSchemaPartText(
             error.parentSchema

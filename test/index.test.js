@@ -212,6 +212,14 @@ describe('Validation', () => {
     nonEmptyObject2: { foo: 'test' },
   });
 
+  createSuccessTestCase('oneOf', {
+    optimization: {
+      runtimeChunk: {
+        name: 'fef',
+      },
+    },
+  });
+
   // The "name" option
   createFailedTestCase(
     'webpack name',
@@ -781,9 +789,31 @@ describe('Validation', () => {
   );
 
   createFailedTestCase(
-    'oneOf',
+    'oneOf #1',
     {
       entry: { foo: () => [] },
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'oneOf #2',
+    {
+      optimization: {
+        runtimeChunk: {
+          name: /fef/,
+        },
+      },
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'oneOf #3',
+    {
+      optimization: {
+        runtimeChunk: (name) => name,
+      },
     },
     (msg) => expect(msg).toMatchSnapshot()
   );
