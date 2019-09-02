@@ -8,6 +8,7 @@
   "homepage": "https://github.com/webpack/schema-utils",
   "bugs": "https://github.com/webpack/schema-utils/issues",
   "main": "dist/index.js",
+  "types": "index.d.ts",
   "engines": {
     "node": ">= 8.9.0"
   },
@@ -34,6 +35,7 @@
     "dist"
   ],
   "dependencies": {
+    "@types/json-schema": "^7.0.3",
     "ajv": "^6.10.2",
     "ajv-keywords": "^3.4.1"
   },
