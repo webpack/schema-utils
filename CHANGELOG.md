@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/webpack/schema-utils/compare/v2.1.0...v2.2.0) (2019-09-02)
+
+
+### Features
+
+* better error output for `oneOf` and `anyOf` ([#48](https://github.com/webpack/schema-utils/issues/48)) ([#50](https://github.com/webpack/schema-utils/issues/50)) ([332242f](https://github.com/webpack/schema-utils/commit/332242f))
+
 ## [2.1.0](https://github.com/webpack-contrib/schema-utils/compare/v2.0.1...v2.1.0) (2019-08-07)
 
 
