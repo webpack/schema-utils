@@ -35,7 +35,7 @@ exports[`Validation should fail validation for absolute path 1`] = `
 exports[`Validation should fail validation for additional key on root 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
  - configuration has an unknown property 'postcss'. These properties are valid:
-   object { amd?, bail?, cache?, context?, dependencies?, devServer?, devtool?, entry?, externals?, loader?, mode?, module?, name?, node?, optimization?, output?, parallelism?, performance?, plugins?, profile?, recordsInputPath?, recordsOutputPath?, recordsPath?, resolve?, resolveLoader?, serve?, stats?, target?, watch?, watchOptions?, minLengthOne?, minLengthTwo?, integerType?, nullType?, allOfRef?, customObject?, objectType?, anyOfKeyword?, nestedArrayWithoutItems?, nestedObjectWithoutItems?, arrayType?, arrayType2?, multipleTypes?, zeroMaxItems?, multipleContains?, multipleContains2?, exclusiveMinimumKeyword?, exclusiveMaximumKeyword?, uniqueItemsKeyword?, minPropertiesKeyword?, maxPropertiesKeyword?, requiredKeyword?, requiredKeywordWithAdditionalProperties?, enumKeyword?, formatMinimumKeyword?, formatMaximumKeyword?, formatExclusiveMinimumKeyword?, formatExclusiveMaximumKeyword?, formatMinMaxExclusiveMinKeyword?, formatMinMaxExclusiveMaxKeyword?, minItemsKeyword?, maxItemsKeyword?, itemsKeyword?, itemsKeyword2?, additionalItemsKeyword?, additionalItemsKeyword2?, additionalItemsKeyword3?, additionalItemsKeyword4?, propertiesKeyword?, patternPropertiesKeyword?, patternPropertiesKeyword2?, arrayWithOnlyNumber?, onlyRequired?, dependenciesKeyword?, dependenciesKeyword2?, patternRequiredKeyword?, patternRequiredKeyword2?, onlyProperties?, onlyProperties2?, onlyItems?, onlyItems2?, onlyAdditionalItems?, booleanType?, additionalPropertiesKeyword?, additionalPropertiesKeyword2?, propertyNamesKeyword?, constKeyword?, constKeyword2?, ifThenElseKeyword?, ifThenElseKeyword2?, stringKeyword?, arrayKeyword?, arrayKeyword2?, arrayKeyword3?, arrayKeyword4?, arrayKeyword5?, arrayKeyword6?, arrayKeyword7?, arrayKeyword8?, arrayKeyword9?, arrayKeyword10?, arrayKeyword11?, arrayKeyword12?, arrayKeyword13?, arrayKeyword14?, arrayKeyword15?, arrayKeyword16?, arrayKeyword17?, arrayKeyword18?, arrayKeyword19?, recursion?, extending?, longString?, integerWithMinimum?, integerWithExclusiveMinimum?, integerWithExclusiveMaximum?, numberWithMinimum?, multipleOfProp?, stringWithMinAndMaxLength?, strictFormat?, strictFormat2?, uniqueItemsProp?, numberAndDescription?, oneOfnumberAndDescriptionAndArray?, maxPropertiesAndMinProperties?, objectTest?, objectTest2?, objectTest3?, objectTest4?, objectTest5?, objectTest6?, objectTest7?, objectTest8?, objectTest9?, stringWithEmptyPattern?, likeArray?, arrayWithEmptyItemsAndEmptyAdditionalItemsAndEmptyContains?, numberWithoutType?, numberWithoutType2?, stringWithoutType?, arrayWithoutType?, additionalItemsFalse?, requiredWithoutType?, dependenciesWithoutType?, propertyNamesWithoutType?, patternRequiredWithoutType?, additionalPropertiesWithoutType?, maxPropertiesWithoutType?, justAnObject?, arrayWithAbsolutePath?, allOfKeyword?, enumWithDescription?, constWithDescription?, itemsTrue?, emptyConst?, oneConst?, constWithEmptyString?, refAndAnyOf?, additionalPropertiesInsideOneOf?, additionalPropertiesInsideOneOf2?, singleContainsItems?, objectWithPropertyDependency?, objectWithPropertyDependency2?, objectWithPropertyDependency3?, objectWithPropertyDependency4?, oneOfWithIf?, constWithArrayNotation?, constWithObjectNotation?, additionalItemsWithoutType?, additionalItemsWithoutType2?, additionalItemsWithoutType3?, containsAndAdditionalItems?, containsInsideItem?, emptyObject?, nonEmptyObject?, nonEmptyObject2?, notEnum?, notConst?, notNumber?, notInteger?, notString?, notBoolean?, notArray?, notObject?, notNull?, notNotNull?, NotNotNotNull?, notMultipleTypes?, notMaxItemsArray? }"
+   object { amd?, bail?, cache?, context?, dependencies?, devServer?, devtool?, entry?, externals?, loader?, mode?, module?, name?, node?, optimization?, output?, parallelism?, performance?, plugins?, profile?, recordsInputPath?, recordsOutputPath?, recordsPath?, resolve?, resolveLoader?, serve?, stats?, target?, watch?, watchOptions?, minLengthOne?, minLengthTwo?, integerType?, nullType?, allOfRef?, customObject?, objectType?, anyOfKeyword?, nestedArrayWithoutItems?, nestedObjectWithoutItems?, arrayType?, arrayType2?, multipleTypes?, zeroMaxItems?, multipleContains?, multipleContains2?, exclusiveMinimumKeyword?, exclusiveMaximumKeyword?, uniqueItemsKeyword?, minPropertiesKeyword?, maxPropertiesKeyword?, requiredKeyword?, requiredKeywordWithAdditionalProperties?, enumKeyword?, formatMinimumKeyword?, formatMaximumKeyword?, formatExclusiveMinimumKeyword?, formatExclusiveMaximumKeyword?, formatMinMaxExclusiveMinKeyword?, formatMinMaxExclusiveMaxKeyword?, minItemsKeyword?, maxItemsKeyword?, itemsKeyword?, itemsKeyword2?, additionalItemsKeyword?, additionalItemsKeyword2?, additionalItemsKeyword3?, additionalItemsKeyword4?, propertiesKeyword?, patternPropertiesKeyword?, patternPropertiesKeyword2?, arrayWithOnlyNumber?, onlyRequired?, dependenciesKeyword?, dependenciesKeyword2?, patternRequiredKeyword?, patternRequiredKeyword2?, onlyProperties?, onlyProperties2?, onlyItems?, onlyItems2?, onlyAdditionalItems?, booleanType?, additionalPropertiesKeyword?, additionalPropertiesKeyword2?, propertyNamesKeyword?, constKeyword?, constKeyword2?, ifThenElseKeyword?, ifThenElseKeyword2?, stringKeyword?, arrayKeyword?, arrayKeyword2?, arrayKeyword3?, arrayKeyword4?, arrayKeyword5?, arrayKeyword6?, arrayKeyword7?, arrayKeyword8?, arrayKeyword9?, arrayKeyword10?, arrayKeyword11?, arrayKeyword12?, arrayKeyword13?, arrayKeyword14?, arrayKeyword15?, arrayKeyword16?, arrayKeyword17?, arrayKeyword18?, arrayKeyword19?, recursion?, extending?, longString?, integerWithMinimum?, integerWithExclusiveMinimum?, integerWithExclusiveMaximum?, numberWithMinimum?, multipleOfProp?, stringWithMinAndMaxLength?, strictFormat?, strictFormat2?, uniqueItemsProp?, numberAndDescription?, oneOfnumberAndDescriptionAndArray?, maxPropertiesAndMinProperties?, objectTest?, objectTest2?, objectTest3?, objectTest4?, objectTest5?, objectTest6?, objectTest7?, objectTest8?, objectTest9?, stringWithEmptyPattern?, likeArray?, arrayWithEmptyItemsAndEmptyAdditionalItemsAndEmptyContains?, numberWithoutType?, numberWithoutType2?, stringWithoutType?, arrayWithoutType?, additionalItemsFalse?, requiredWithoutType?, dependenciesWithoutType?, propertyNamesWithoutType?, patternRequiredWithoutType?, additionalPropertiesWithoutType?, maxPropertiesWithoutType?, justAnObject?, arrayWithAbsolutePath?, allOfKeyword?, enumWithDescription?, constWithDescription?, itemsTrue?, emptyConst?, oneConst?, constWithEmptyString?, refAndAnyOf?, additionalPropertiesInsideOneOf?, additionalPropertiesInsideOneOf2?, singleContainsItems?, objectWithPropertyDependency?, objectWithPropertyDependency2?, objectWithPropertyDependency3?, objectWithPropertyDependency4?, oneOfWithIf?, constWithArrayNotation?, constWithObjectNotation?, additionalItemsWithoutType?, additionalItemsWithoutType2?, additionalItemsWithoutType3?, containsAndAdditionalItems?, containsInsideItem?, emptyObject?, nonEmptyObject?, nonEmptyObject2?, notEnum?, notConst?, notNumber?, notInteger?, notString?, notBoolean?, notArray?, notObject?, notNull?, notNotNull?, NotNotNotNull?, notMultipleTypes?, notMaxItemsArray?, noTypeLikeNumberMinimum?, noTypeLikeNumberMaximum?, noTypeLikeNumberExclusiveMinimum?, noTypeLikeNumberExclusiveMaximum?, minimumWithTypeNumber?, maximumWithTypeNumber?, exclusiveMinimumWithTypeNumber?, exclusiveMaximumWithTypeNumber?, noTypeLikeNumberMultipleOf?, multipleOfWithNumberType?, noTypeLikeStringMinLength?, noTypeLikeStringMaxLength?, stringWithMinLength?, stringWithMaxLength?, noTypeLikeStringPattern?, patternWithStringType?, noTypeLikeStringFormat?, stringWithFormat?, noTypeLikeStringFormatMaximum?, stringWithFormatMaximum?, multipleInstanceof?, noTypeLikeObjectPatternRequired?, objectWithPatternRequired?, noTypeLikeStringMinLength1?, noTypeLikeArrayMinItems?, noTypeLikeArrayMinItems1?, arrayWithMinItems?, noTypeMinProperties?, noTypeMinProperties1?, objectMinProperties?, noTypeLikeArrayMaxItems?, arrayMaxItems?, noTypeLikeObjectMaxProperties?, objectMaxProperties?, noTypeLikeArrayUniqueItems?, arrayWithUniqueItems?, noTypeLikeArrayAdditionalItems?, arrayWithAdditionalItems?, noTypeLikeArrayContains?, arrayWithContains?, anyOfNoTypeInItem?, oneOfNoTypeInItem?, noTypeLikeObjectPropertyNames?, objectPropertyNames?, noTypeLikeObjectDependencies?, objectWithDependencies?, noTypeLikeObjectAdditionalProperties?, noTypeLikeObjectRequired? }"
 `;
 
 exports[`Validation should fail validation for additionalItems #2 1`] = `
@@ -61,19 +61,19 @@ exports[`Validation should fail validation for additionalItems 1`] = `
 
 exports[`Validation should fail validation for additionalItems with false 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.additionalItemsFalse should not have more than 2 items. These items are valid:
+ - configuration.additionalItemsFalse should not have more than 2 items | should be any non-array. These items are valid:
    [integer, integer]"
 `;
 
 exports[`Validation should fail validation for additionalProperties #2 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.additionalPropertiesKeyword has an unknown property 'baz'. These properties are valid:
+ - configuration.additionalPropertiesKeyword has an unknown property 'baz' | should be any non-object. These properties are valid:
    object { foo? } (additional property names should match pattern \\"^.*r$\\")"
 `;
 
 exports[`Validation should fail validation for additionalProperties #3 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.additionalPropertiesKeyword has an unknown property 'baz'. These properties are valid:
+ - configuration.additionalPropertiesKeyword has an unknown property 'baz' | should be any non-object. These properties are valid:
    object { foo? } (additional property names should match pattern \\"^.*r$\\")
  - configuration.additionalPropertiesKeyword.foo should be a number."
 `;
@@ -95,7 +95,7 @@ exports[`Validation should fail validation for additionalProperties #6 1`] = `
 
 exports[`Validation should fail validation for additionalProperties 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.additionalPropertiesKeyword has an unknown property 'a'. These properties are valid:
+ - configuration.additionalPropertiesKeyword has an unknown property 'a' | should be any non-object. These properties are valid:
    object { foo? } (additional property names should match pattern \\"^.*r$\\")"
 `;
 
@@ -127,7 +127,7 @@ exports[`Validation should fail validation for additionalProperties inside oneOf
 
 exports[`Validation should fail validation for additionalProperties without object type 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.additionalPropertiesWithoutType has an unknown property 'boo'. These properties are valid:
+ - configuration.additionalPropertiesWithoutType has an unknown property 'boo' | should be any non-object. These properties are valid:
    object {}"
 `;
 
@@ -138,7 +138,7 @@ exports[`Validation should fail validation for allOf #1 1`] = `
 
 exports[`Validation should fail validation for allOf #2 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.allOfKeyword should be <= 3."
+ - configuration.allOfKeyword should be <= 3 | should be any non-number."
 `;
 
 exports[`Validation should fail validation for allOf 1`] = `
@@ -171,6 +171,11 @@ exports[`Validation should fail validation for anyOf 1`] = `
        * configuration.anyOfKeyword should be an array:
          [non-empty string, ...] (should not have fewer than 1 item, should not have duplicate items)
          -> A non-empty array of non-empty strings"
+`;
+
+exports[`Validation should fail validation for anyOf with item without type 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.anyOfNoTypeInItem should be <= 3 | should be any non-number."
 `;
 
 exports[`Validation should fail validation for array #1 1`] = `
@@ -206,12 +211,12 @@ exports[`Validation should fail validation for array #5 1`] = `
 
 exports[`Validation should fail validation for array #5 2`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.arrayKeyword3 should not contain the item '1' twice."
+ - configuration.arrayKeyword3 should not contain the item '1' twice | should be any non-array."
 `;
 
 exports[`Validation should fail validation for array #6 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.arrayKeyword3 should not have more than 3 items."
+ - configuration.arrayKeyword3 should not have more than 3 items | should be any non-array."
 `;
 
 exports[`Validation should fail validation for array #7 1`] = `
@@ -355,6 +360,17 @@ exports[`Validation should fail validation for array with absolutePath item 1`] 
    [integer, string, ...]"
 `;
 
+exports[`Validation should fail validation for array with additionalItems 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.arrayWithAdditionalItems should not have more than 2 items. These items are valid:
+   [integer, integer]"
+`;
+
+exports[`Validation should fail validation for array with contains 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.arrayWithContains should contains at least one integer item."
+`;
+
 exports[`Validation should fail validation for array with empty items, empty additionalItems, empty contains 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
  - configuration.arrayWithEmptyItemsAndEmptyAdditionalItemsAndEmptyContains should be an array:
@@ -365,6 +381,16 @@ exports[`Validation should fail validation for array with items with true 1`] = 
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
  - configuration.itemsTrue should be an array:
    [any, ...]"
+`;
+
+exports[`Validation should fail validation for array with maxItems 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.arrayMaxItems should not have more than 2 items."
+`;
+
+exports[`Validation should fail validation for array with minItems 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.arrayWithMinItems should be an non-empty array."
 `;
 
 exports[`Validation should fail validation for array with only number 1`] = `
@@ -468,7 +494,7 @@ exports[`Validation should fail validation for contains #1 1`] = `
 
 exports[`Validation should fail validation for contains 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.customObject.containsKeyword should contains at least one integer item."
+ - configuration.customObject.containsKeyword should contains at least one integer item | should be any non-array."
 `;
 
 exports[`Validation should fail validation for contains and additionalItems #2 1`] = `
@@ -484,7 +510,7 @@ exports[`Validation should fail validation for contains and additionalItems 1`] 
 
 exports[`Validation should fail validation for contains inside items #2 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.containsInsideItem[0] should contains at least one integer item."
+ - configuration.containsInsideItem[0] should contains at least one integer item | should be any non-array."
 `;
 
 exports[`Validation should fail validation for contains inside items 1`] = `
@@ -513,12 +539,12 @@ exports[`Validation should fail validation for dependencies #2 1`] = `
 
 exports[`Validation should fail validation for dependencies 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.dependenciesKeyword should have properties 'bar', 'baz' when property 'foo' is present."
+ - configuration.dependenciesKeyword should have properties 'bar', 'baz' when property 'foo' is present | should be any non-object."
 `;
 
 exports[`Validation should fail validation for dependencies without object type 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.dependenciesWithoutType should have properties 'bar', 'baz' when property 'foo' is present."
+ - configuration.dependenciesWithoutType should have properties 'bar', 'baz' when property 'foo' is present | should be any non-object."
 `;
 
 exports[`Validation should fail validation for empty const 1`] = `
@@ -566,6 +592,16 @@ exports[`Validation should fail validation for enum 2`] = `
    2 | \\"foo\\" | {\\"foo\\":\\"bar\\"} | [1,2,3]"
 `;
 
+exports[`Validation should fail validation for exclusive maximum with type number 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.exclusiveMaximumWithTypeNumber should be <= 5."
+`;
+
+exports[`Validation should fail validation for exclusive minimum with type number 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.exclusiveMinimumWithTypeNumber should be >= 5."
+`;
+
 exports[`Validation should fail validation for exclusiveMaximum 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
  - configuration.exclusiveMaximumKeyword should be < 5."
@@ -578,23 +614,28 @@ exports[`Validation should fail validation for exclusiveMinimum 1`] = `
 
 exports[`Validation should fail validation for extending 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.extending.shipping_address misses the property 'type'. Should be:
+ - configuration.extending.shipping_address misses the property 'type' | should be any non-object. Should be:
    \\"residential\\" | \\"business\\""
 `;
 
 exports[`Validation should fail validation for format 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.customObject.formatKeyword should match format \\"ipv4\\"."
+ - configuration.customObject.formatKeyword should match format \\"ipv4\\" | should be any non-string."
 `;
 
 exports[`Validation should fail validation for format and formatMinimum and formatMaximum and formatExclusiveMaximum 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.formatMinMaxExclusiveMinKeyword should be > \\"2016-02-06\\"."
+ - configuration.formatMinMaxExclusiveMinKeyword should be > \\"2016-02-06\\" | should be any non-string."
 `;
 
 exports[`Validation should fail validation for format and formatMinimum and formatMaximum and formatExclusiveMaximum 2`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.formatMinMaxExclusiveMaxKeyword should be >= \\"2016-02-06\\"."
+ - configuration.formatMinMaxExclusiveMaxKeyword should be >= \\"2016-02-06\\" | should be any non-string."
+`;
+
+exports[`Validation should fail validation for format with type string 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.stringWithFormat should match format \\"date\\"."
 `;
 
 exports[`Validation should fail validation for format, formatMaximum and formatExclusiveMaximum #2 1`] = `
@@ -619,28 +660,33 @@ exports[`Validation should fail validation for format, formatMinimum and formatE
 
 exports[`Validation should fail validation for formatExclusiveMaximum 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.formatExclusiveMaximumKeyword should be < \\"2016-02-06\\"."
+ - configuration.formatExclusiveMaximumKeyword should be < \\"2016-02-06\\" | should be any non-string."
 `;
 
 exports[`Validation should fail validation for formatExclusiveMinimum 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.formatExclusiveMinimumKeyword should be > \\"2016-02-06\\"."
+ - configuration.formatExclusiveMinimumKeyword should be > \\"2016-02-06\\" | should be any non-string."
 `;
 
 exports[`Validation should fail validation for formatMaximum 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.formatMaximumKeyword should be <= \\"2016-02-06\\"."
+ - configuration.formatMaximumKeyword should be <= \\"2016-02-06\\" | should be any non-string."
+`;
+
+exports[`Validation should fail validation for formatMaximum with type string 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.stringWithFormatMaximum should be < \\"2016-02-06\\"."
 `;
 
 exports[`Validation should fail validation for formatMinimum 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.formatMinimumKeyword should be >= \\"2016-02-06\\"."
+ - configuration.formatMinimumKeyword should be >= \\"2016-02-06\\" | should be any non-string."
 `;
 
 exports[`Validation should fail validation for holey array 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
  - configuration[1] should be an object:
-   object { amd?, bail?, cache?, context?, dependencies?, devServer?, devtool?, entry?, externals?, loader?, mode?, module?, name?, node?, optimization?, output?, parallelism?, performance?, plugins?, profile?, recordsInputPath?, recordsOutputPath?, recordsPath?, resolve?, resolveLoader?, serve?, stats?, target?, watch?, watchOptions?, minLengthOne?, minLengthTwo?, integerType?, nullType?, allOfRef?, customObject?, objectType?, anyOfKeyword?, nestedArrayWithoutItems?, nestedObjectWithoutItems?, arrayType?, arrayType2?, multipleTypes?, zeroMaxItems?, multipleContains?, multipleContains2?, exclusiveMinimumKeyword?, exclusiveMaximumKeyword?, uniqueItemsKeyword?, minPropertiesKeyword?, maxPropertiesKeyword?, requiredKeyword?, requiredKeywordWithAdditionalProperties?, enumKeyword?, formatMinimumKeyword?, formatMaximumKeyword?, formatExclusiveMinimumKeyword?, formatExclusiveMaximumKeyword?, formatMinMaxExclusiveMinKeyword?, formatMinMaxExclusiveMaxKeyword?, minItemsKeyword?, maxItemsKeyword?, itemsKeyword?, itemsKeyword2?, additionalItemsKeyword?, additionalItemsKeyword2?, additionalItemsKeyword3?, additionalItemsKeyword4?, propertiesKeyword?, patternPropertiesKeyword?, patternPropertiesKeyword2?, arrayWithOnlyNumber?, onlyRequired?, dependenciesKeyword?, dependenciesKeyword2?, patternRequiredKeyword?, patternRequiredKeyword2?, onlyProperties?, onlyProperties2?, onlyItems?, onlyItems2?, onlyAdditionalItems?, booleanType?, additionalPropertiesKeyword?, additionalPropertiesKeyword2?, propertyNamesKeyword?, constKeyword?, constKeyword2?, ifThenElseKeyword?, ifThenElseKeyword2?, stringKeyword?, arrayKeyword?, arrayKeyword2?, arrayKeyword3?, arrayKeyword4?, arrayKeyword5?, arrayKeyword6?, arrayKeyword7?, arrayKeyword8?, arrayKeyword9?, arrayKeyword10?, arrayKeyword11?, arrayKeyword12?, arrayKeyword13?, arrayKeyword14?, arrayKeyword15?, arrayKeyword16?, arrayKeyword17?, arrayKeyword18?, arrayKeyword19?, recursion?, extending?, longString?, integerWithMinimum?, integerWithExclusiveMinimum?, integerWithExclusiveMaximum?, numberWithMinimum?, multipleOfProp?, stringWithMinAndMaxLength?, strictFormat?, strictFormat2?, uniqueItemsProp?, numberAndDescription?, oneOfnumberAndDescriptionAndArray?, maxPropertiesAndMinProperties?, objectTest?, objectTest2?, objectTest3?, objectTest4?, objectTest5?, objectTest6?, objectTest7?, objectTest8?, objectTest9?, stringWithEmptyPattern?, likeArray?, arrayWithEmptyItemsAndEmptyAdditionalItemsAndEmptyContains?, numberWithoutType?, numberWithoutType2?, stringWithoutType?, arrayWithoutType?, additionalItemsFalse?, requiredWithoutType?, dependenciesWithoutType?, propertyNamesWithoutType?, patternRequiredWithoutType?, additionalPropertiesWithoutType?, maxPropertiesWithoutType?, justAnObject?, arrayWithAbsolutePath?, allOfKeyword?, enumWithDescription?, constWithDescription?, itemsTrue?, emptyConst?, oneConst?, constWithEmptyString?, refAndAnyOf?, additionalPropertiesInsideOneOf?, additionalPropertiesInsideOneOf2?, singleContainsItems?, objectWithPropertyDependency?, objectWithPropertyDependency2?, objectWithPropertyDependency3?, objectWithPropertyDependency4?, oneOfWithIf?, constWithArrayNotation?, constWithObjectNotation?, additionalItemsWithoutType?, additionalItemsWithoutType2?, additionalItemsWithoutType3?, containsAndAdditionalItems?, containsInsideItem?, emptyObject?, nonEmptyObject?, nonEmptyObject2?, notEnum?, notConst?, notNumber?, notInteger?, notString?, notBoolean?, notArray?, notObject?, notNull?, notNotNull?, NotNotNotNull?, notMultipleTypes?, notMaxItemsArray? }"
+   object { amd?, bail?, cache?, context?, dependencies?, devServer?, devtool?, entry?, externals?, loader?, mode?, module?, name?, node?, optimization?, output?, parallelism?, performance?, plugins?, profile?, recordsInputPath?, recordsOutputPath?, recordsPath?, resolve?, resolveLoader?, serve?, stats?, target?, watch?, watchOptions?, minLengthOne?, minLengthTwo?, integerType?, nullType?, allOfRef?, customObject?, objectType?, anyOfKeyword?, nestedArrayWithoutItems?, nestedObjectWithoutItems?, arrayType?, arrayType2?, multipleTypes?, zeroMaxItems?, multipleContains?, multipleContains2?, exclusiveMinimumKeyword?, exclusiveMaximumKeyword?, uniqueItemsKeyword?, minPropertiesKeyword?, maxPropertiesKeyword?, requiredKeyword?, requiredKeywordWithAdditionalProperties?, enumKeyword?, formatMinimumKeyword?, formatMaximumKeyword?, formatExclusiveMinimumKeyword?, formatExclusiveMaximumKeyword?, formatMinMaxExclusiveMinKeyword?, formatMinMaxExclusiveMaxKeyword?, minItemsKeyword?, maxItemsKeyword?, itemsKeyword?, itemsKeyword2?, additionalItemsKeyword?, additionalItemsKeyword2?, additionalItemsKeyword3?, additionalItemsKeyword4?, propertiesKeyword?, patternPropertiesKeyword?, patternPropertiesKeyword2?, arrayWithOnlyNumber?, onlyRequired?, dependenciesKeyword?, dependenciesKeyword2?, patternRequiredKeyword?, patternRequiredKeyword2?, onlyProperties?, onlyProperties2?, onlyItems?, onlyItems2?, onlyAdditionalItems?, booleanType?, additionalPropertiesKeyword?, additionalPropertiesKeyword2?, propertyNamesKeyword?, constKeyword?, constKeyword2?, ifThenElseKeyword?, ifThenElseKeyword2?, stringKeyword?, arrayKeyword?, arrayKeyword2?, arrayKeyword3?, arrayKeyword4?, arrayKeyword5?, arrayKeyword6?, arrayKeyword7?, arrayKeyword8?, arrayKeyword9?, arrayKeyword10?, arrayKeyword11?, arrayKeyword12?, arrayKeyword13?, arrayKeyword14?, arrayKeyword15?, arrayKeyword16?, arrayKeyword17?, arrayKeyword18?, arrayKeyword19?, recursion?, extending?, longString?, integerWithMinimum?, integerWithExclusiveMinimum?, integerWithExclusiveMaximum?, numberWithMinimum?, multipleOfProp?, stringWithMinAndMaxLength?, strictFormat?, strictFormat2?, uniqueItemsProp?, numberAndDescription?, oneOfnumberAndDescriptionAndArray?, maxPropertiesAndMinProperties?, objectTest?, objectTest2?, objectTest3?, objectTest4?, objectTest5?, objectTest6?, objectTest7?, objectTest8?, objectTest9?, stringWithEmptyPattern?, likeArray?, arrayWithEmptyItemsAndEmptyAdditionalItemsAndEmptyContains?, numberWithoutType?, numberWithoutType2?, stringWithoutType?, arrayWithoutType?, additionalItemsFalse?, requiredWithoutType?, dependenciesWithoutType?, propertyNamesWithoutType?, patternRequiredWithoutType?, additionalPropertiesWithoutType?, maxPropertiesWithoutType?, justAnObject?, arrayWithAbsolutePath?, allOfKeyword?, enumWithDescription?, constWithDescription?, itemsTrue?, emptyConst?, oneConst?, constWithEmptyString?, refAndAnyOf?, additionalPropertiesInsideOneOf?, additionalPropertiesInsideOneOf2?, singleContainsItems?, objectWithPropertyDependency?, objectWithPropertyDependency2?, objectWithPropertyDependency3?, objectWithPropertyDependency4?, oneOfWithIf?, constWithArrayNotation?, constWithObjectNotation?, additionalItemsWithoutType?, additionalItemsWithoutType2?, additionalItemsWithoutType3?, containsAndAdditionalItems?, containsInsideItem?, emptyObject?, nonEmptyObject?, nonEmptyObject2?, notEnum?, notConst?, notNumber?, notInteger?, notString?, notBoolean?, notArray?, notObject?, notNull?, notNotNull?, NotNotNotNull?, notMultipleTypes?, notMaxItemsArray?, noTypeLikeNumberMinimum?, noTypeLikeNumberMaximum?, noTypeLikeNumberExclusiveMinimum?, noTypeLikeNumberExclusiveMaximum?, minimumWithTypeNumber?, maximumWithTypeNumber?, exclusiveMinimumWithTypeNumber?, exclusiveMaximumWithTypeNumber?, noTypeLikeNumberMultipleOf?, multipleOfWithNumberType?, noTypeLikeStringMinLength?, noTypeLikeStringMaxLength?, stringWithMinLength?, stringWithMaxLength?, noTypeLikeStringPattern?, patternWithStringType?, noTypeLikeStringFormat?, stringWithFormat?, noTypeLikeStringFormatMaximum?, stringWithFormatMaximum?, multipleInstanceof?, noTypeLikeObjectPatternRequired?, objectWithPatternRequired?, noTypeLikeStringMinLength1?, noTypeLikeArrayMinItems?, noTypeLikeArrayMinItems1?, arrayWithMinItems?, noTypeMinProperties?, noTypeMinProperties1?, objectMinProperties?, noTypeLikeArrayMaxItems?, arrayMaxItems?, noTypeLikeObjectMaxProperties?, objectMaxProperties?, noTypeLikeArrayUniqueItems?, arrayWithUniqueItems?, noTypeLikeArrayAdditionalItems?, arrayWithAdditionalItems?, noTypeLikeArrayContains?, arrayWithContains?, anyOfNoTypeInItem?, oneOfNoTypeInItem?, noTypeLikeObjectPropertyNames?, objectPropertyNames?, noTypeLikeObjectDependencies?, objectWithDependencies?, noTypeLikeObjectAdditionalProperties?, noTypeLikeObjectRequired? }"
 `;
 
 exports[`Validation should fail validation for if/then/else #2 1`] = `
@@ -814,12 +860,17 @@ exports[`Validation should fail validation for maxItems 1`] = `
 
 exports[`Validation should fail validation for maxItems Keyword 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.maxItemsKeyword should not have more than 2 items."
+ - configuration.maxItemsKeyword should not have more than 2 items | should be any non-array."
 `;
 
 exports[`Validation should fail validation for maxLength 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
  - configuration.customObject.maxLength should not be longer than 3 characters."
+`;
+
+exports[`Validation should fail validation for maxLength with type string 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.stringWithMaxLength should not be longer than 2 characters."
 `;
 
 exports[`Validation should fail validation for maxProperties 1`] = `
@@ -829,7 +880,7 @@ exports[`Validation should fail validation for maxProperties 1`] = `
 
 exports[`Validation should fail validation for maxProperties 2`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.maxPropertiesKeyword should not have more than 2 properties."
+ - configuration.maxPropertiesKeyword should not have more than 2 properties | should be any non-object."
 `;
 
 exports[`Validation should fail validation for maxProperties and minProperties #2 1`] = `
@@ -850,12 +901,17 @@ exports[`Validation should fail validation for maxProperties and minProperties 1
 
 exports[`Validation should fail validation for maxProperties without object type 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.maxPropertiesWithoutType should not have more than 0 properties."
+ - configuration.maxPropertiesWithoutType should not have more than 0 properties | should be any non-object."
 `;
 
 exports[`Validation should fail validation for maximum 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.customObject.maximumKeyword should be <= 3."
+ - configuration.customObject.maximumKeyword should be <= 3 | should be any non-number."
+`;
+
+exports[`Validation should fail validation for maximum with type number 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.maximumWithTypeNumber should be <= 5."
 `;
 
 exports[`Validation should fail validation for min length 1`] = `
@@ -871,17 +927,27 @@ exports[`Validation should fail validation for min properties 1`] = `
 
 exports[`Validation should fail validation for minItems Keyword 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.minItemsKeyword should not have fewer than 2 items."
+ - configuration.minItemsKeyword should not have fewer than 2 items | should be any non-array."
+`;
+
+exports[`Validation should fail validation for minLength with type string 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.stringWithMinLength should not be shorter than 2 characters."
 `;
 
 exports[`Validation should fail validation for minProperties 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.minPropertiesKeyword should not have fewer than 2 properties."
+ - configuration.minPropertiesKeyword should not have fewer than 2 properties | should be any non-object."
 `;
 
 exports[`Validation should fail validation for minimum 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.customObject.minimumKeyword should be >= 3."
+ - configuration.customObject.minimumKeyword should be >= 3 | should be any non-number."
+`;
+
+exports[`Validation should fail validation for minimum with type number 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.minimumWithTypeNumber should be >= 5."
 `;
 
 exports[`Validation should fail validation for missing cache group name 1`] = `
@@ -945,6 +1011,11 @@ exports[`Validation should fail validation for multiple errors 1`] = `
     * configuration.output.filename should be an instance of function."
 `;
 
+exports[`Validation should fail validation for multiple instanceof  1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.multipleInstanceof should be an instance of \\"Array\\" | \\"Function\\"."
+`;
+
 exports[`Validation should fail validation for multiple types 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
  - configuration.multipleTypes should be:
@@ -959,17 +1030,154 @@ exports[`Validation should fail validation for multiple types in array 1`] = `
 
 exports[`Validation should fail validation for multiple types in contains 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.multipleContains should contains at least one number | string | boolean item."
+ - configuration.multipleContains should contains at least one number | string | boolean item | should be any non-array."
 `;
 
 exports[`Validation should fail validation for multipleOf 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.customObject.multipleOfKeyword should be multiple of 5."
+ - configuration.customObject.multipleOfKeyword should be multiple of 5 | should be any non-number."
 `;
 
 exports[`Validation should fail validation for multipleOf with minimum and maximum 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
  - configuration.multipleOfProp should be a number (should be >= 5, should be <= 20, should be multiple of 5)."
+`;
+
+exports[`Validation should fail validation for multipleOf with type number 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.multipleOfWithNumberType should be multiple of 5."
+`;
+
+exports[`Validation should fail validation for no type like array with additionalItems 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.noTypeLikeArrayAdditionalItems should not have more than 2 items | should be any non-array. These items are valid:
+   [integer, integer]"
+`;
+
+exports[`Validation should fail validation for no type like array with contains 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.noTypeLikeArrayContains should contains at least one integer item | should be any non-array."
+`;
+
+exports[`Validation should fail validation for no type like array with maxItems 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.noTypeLikeArrayMaxItems should not have more than 2 items | should be any non-array."
+`;
+
+exports[`Validation should fail validation for no type like array with minItems 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.noTypeLikeArrayMinItems should not have fewer than 2 items | should be any non-array."
+`;
+
+exports[`Validation should fail validation for no type like array with minItems 2`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.noTypeMinProperties should not have fewer than 2 properties | should be any non-object."
+`;
+
+exports[`Validation should fail validation for no type like array with minItems 3`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.noTypeMinProperties1 should be an non-empty object | should be any non-object."
+`;
+
+exports[`Validation should fail validation for no type like array with minItems 4`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.objectMinProperties should not have fewer than 2 properties."
+`;
+
+exports[`Validation should fail validation for no type like array with minItems equals 1 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.noTypeLikeArrayMinItems1 should be an non-empty array | should be any non-array."
+`;
+
+exports[`Validation should fail validation for no type like number with exclusive maximum 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.noTypeLikeNumberExclusiveMaximum should be < 5 | should be any non-number."
+`;
+
+exports[`Validation should fail validation for no type like number with exclusive minimum 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.noTypeLikeNumberExclusiveMinimum should be > 5 | should be any non-number."
+`;
+
+exports[`Validation should fail validation for no type like number with maximum 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.noTypeLikeNumberMaximum should be <= 5 | should be any non-number."
+`;
+
+exports[`Validation should fail validation for no type like number with minimum 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.noTypeLikeNumberMinimum should be >= 5 | should be any non-number."
+`;
+
+exports[`Validation should fail validation for no type like number with multipleOf 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.noTypeLikeNumberMultipleOf should be multiple of 5 | should be any non-number."
+`;
+
+exports[`Validation should fail validation for no type like object additionalProperties 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.noTypeLikeObjectAdditionalProperties has an unknown property 'baz' | should be any non-object. These properties are valid:
+   object { foo? } (additional property names should match pattern \\"^.*r$\\")"
+`;
+
+exports[`Validation should fail validation for no type like object dependencies 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.noTypeLikeObjectDependencies should have properties 'bar', 'baz' when property 'foo' is present | should be any non-object."
+`;
+
+exports[`Validation should fail validation for no type like object propertyNames 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.noTypeLikeObjectPropertyNames property name 'foo' is invalid | should be any non-object. Property names should be match format \\"email\\"."
+`;
+
+exports[`Validation should fail validation for no type like object required 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.noTypeLikeObjectRequired misses the property 'b' | should be any non-object."
+`;
+
+exports[`Validation should fail validation for no type like object with maxProperties 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.noTypeLikeObjectMaxProperties should not have more than 2 properties | should be any non-object."
+`;
+
+exports[`Validation should fail validation for no type like object with maxProperties 2`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.noTypeLikeArrayUniqueItems should not contain the item '1' twice | should be any non-array."
+`;
+
+exports[`Validation should fail validation for no type like object with patternRequired 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.noTypeLikeObjectPatternRequired should have property matching pattern \\"f.*o\\" | should be any non-object."
+`;
+
+exports[`Validation should fail validation for no type like string with format 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.noTypeLikeStringFormat should match format \\"date\\" | should be any non-string."
+`;
+
+exports[`Validation should fail validation for no type like string with formatMaximum 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.noTypeLikeStringFormatMaximum should be < \\"2016-02-06\\" | should be any non-string."
+`;
+
+exports[`Validation should fail validation for no type like string with maxLength 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.noTypeLikeStringMaxLength should not be longer than 2 characters | should be any non-string."
+`;
+
+exports[`Validation should fail validation for no type like string with minLength 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.noTypeLikeStringMinLength should not be shorter than 2 characters | should be any non-string."
+`;
+
+exports[`Validation should fail validation for no type like string with minLength equals 1 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.noTypeLikeStringMinLength1 should be an non-empty string | should be any non-string."
+`;
+
+exports[`Validation should fail validation for no type like string with pattern 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.noTypeLikeStringPattern should match pattern \\"[abc]+\\" | should be any non-string."
 `;
 
 exports[`Validation should fail validation for non empty object #2 1`] = `
@@ -1059,7 +1267,7 @@ exports[`Validation should fail validation for not string 1`] = `
 exports[`Validation should fail validation for null configuration 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
  - configuration should be an object:
-   object { amd?, bail?, cache?, context?, dependencies?, devServer?, devtool?, entry?, externals?, loader?, mode?, module?, name?, node?, optimization?, output?, parallelism?, performance?, plugins?, profile?, recordsInputPath?, recordsOutputPath?, recordsPath?, resolve?, resolveLoader?, serve?, stats?, target?, watch?, watchOptions?, minLengthOne?, minLengthTwo?, integerType?, nullType?, allOfRef?, customObject?, objectType?, anyOfKeyword?, nestedArrayWithoutItems?, nestedObjectWithoutItems?, arrayType?, arrayType2?, multipleTypes?, zeroMaxItems?, multipleContains?, multipleContains2?, exclusiveMinimumKeyword?, exclusiveMaximumKeyword?, uniqueItemsKeyword?, minPropertiesKeyword?, maxPropertiesKeyword?, requiredKeyword?, requiredKeywordWithAdditionalProperties?, enumKeyword?, formatMinimumKeyword?, formatMaximumKeyword?, formatExclusiveMinimumKeyword?, formatExclusiveMaximumKeyword?, formatMinMaxExclusiveMinKeyword?, formatMinMaxExclusiveMaxKeyword?, minItemsKeyword?, maxItemsKeyword?, itemsKeyword?, itemsKeyword2?, additionalItemsKeyword?, additionalItemsKeyword2?, additionalItemsKeyword3?, additionalItemsKeyword4?, propertiesKeyword?, patternPropertiesKeyword?, patternPropertiesKeyword2?, arrayWithOnlyNumber?, onlyRequired?, dependenciesKeyword?, dependenciesKeyword2?, patternRequiredKeyword?, patternRequiredKeyword2?, onlyProperties?, onlyProperties2?, onlyItems?, onlyItems2?, onlyAdditionalItems?, booleanType?, additionalPropertiesKeyword?, additionalPropertiesKeyword2?, propertyNamesKeyword?, constKeyword?, constKeyword2?, ifThenElseKeyword?, ifThenElseKeyword2?, stringKeyword?, arrayKeyword?, arrayKeyword2?, arrayKeyword3?, arrayKeyword4?, arrayKeyword5?, arrayKeyword6?, arrayKeyword7?, arrayKeyword8?, arrayKeyword9?, arrayKeyword10?, arrayKeyword11?, arrayKeyword12?, arrayKeyword13?, arrayKeyword14?, arrayKeyword15?, arrayKeyword16?, arrayKeyword17?, arrayKeyword18?, arrayKeyword19?, recursion?, extending?, longString?, integerWithMinimum?, integerWithExclusiveMinimum?, integerWithExclusiveMaximum?, numberWithMinimum?, multipleOfProp?, stringWithMinAndMaxLength?, strictFormat?, strictFormat2?, uniqueItemsProp?, numberAndDescription?, oneOfnumberAndDescriptionAndArray?, maxPropertiesAndMinProperties?, objectTest?, objectTest2?, objectTest3?, objectTest4?, objectTest5?, objectTest6?, objectTest7?, objectTest8?, objectTest9?, stringWithEmptyPattern?, likeArray?, arrayWithEmptyItemsAndEmptyAdditionalItemsAndEmptyContains?, numberWithoutType?, numberWithoutType2?, stringWithoutType?, arrayWithoutType?, additionalItemsFalse?, requiredWithoutType?, dependenciesWithoutType?, propertyNamesWithoutType?, patternRequiredWithoutType?, additionalPropertiesWithoutType?, maxPropertiesWithoutType?, justAnObject?, arrayWithAbsolutePath?, allOfKeyword?, enumWithDescription?, constWithDescription?, itemsTrue?, emptyConst?, oneConst?, constWithEmptyString?, refAndAnyOf?, additionalPropertiesInsideOneOf?, additionalPropertiesInsideOneOf2?, singleContainsItems?, objectWithPropertyDependency?, objectWithPropertyDependency2?, objectWithPropertyDependency3?, objectWithPropertyDependency4?, oneOfWithIf?, constWithArrayNotation?, constWithObjectNotation?, additionalItemsWithoutType?, additionalItemsWithoutType2?, additionalItemsWithoutType3?, containsAndAdditionalItems?, containsInsideItem?, emptyObject?, nonEmptyObject?, nonEmptyObject2?, notEnum?, notConst?, notNumber?, notInteger?, notString?, notBoolean?, notArray?, notObject?, notNull?, notNotNull?, NotNotNotNull?, notMultipleTypes?, notMaxItemsArray? }"
+   object { amd?, bail?, cache?, context?, dependencies?, devServer?, devtool?, entry?, externals?, loader?, mode?, module?, name?, node?, optimization?, output?, parallelism?, performance?, plugins?, profile?, recordsInputPath?, recordsOutputPath?, recordsPath?, resolve?, resolveLoader?, serve?, stats?, target?, watch?, watchOptions?, minLengthOne?, minLengthTwo?, integerType?, nullType?, allOfRef?, customObject?, objectType?, anyOfKeyword?, nestedArrayWithoutItems?, nestedObjectWithoutItems?, arrayType?, arrayType2?, multipleTypes?, zeroMaxItems?, multipleContains?, multipleContains2?, exclusiveMinimumKeyword?, exclusiveMaximumKeyword?, uniqueItemsKeyword?, minPropertiesKeyword?, maxPropertiesKeyword?, requiredKeyword?, requiredKeywordWithAdditionalProperties?, enumKeyword?, formatMinimumKeyword?, formatMaximumKeyword?, formatExclusiveMinimumKeyword?, formatExclusiveMaximumKeyword?, formatMinMaxExclusiveMinKeyword?, formatMinMaxExclusiveMaxKeyword?, minItemsKeyword?, maxItemsKeyword?, itemsKeyword?, itemsKeyword2?, additionalItemsKeyword?, additionalItemsKeyword2?, additionalItemsKeyword3?, additionalItemsKeyword4?, propertiesKeyword?, patternPropertiesKeyword?, patternPropertiesKeyword2?, arrayWithOnlyNumber?, onlyRequired?, dependenciesKeyword?, dependenciesKeyword2?, patternRequiredKeyword?, patternRequiredKeyword2?, onlyProperties?, onlyProperties2?, onlyItems?, onlyItems2?, onlyAdditionalItems?, booleanType?, additionalPropertiesKeyword?, additionalPropertiesKeyword2?, propertyNamesKeyword?, constKeyword?, constKeyword2?, ifThenElseKeyword?, ifThenElseKeyword2?, stringKeyword?, arrayKeyword?, arrayKeyword2?, arrayKeyword3?, arrayKeyword4?, arrayKeyword5?, arrayKeyword6?, arrayKeyword7?, arrayKeyword8?, arrayKeyword9?, arrayKeyword10?, arrayKeyword11?, arrayKeyword12?, arrayKeyword13?, arrayKeyword14?, arrayKeyword15?, arrayKeyword16?, arrayKeyword17?, arrayKeyword18?, arrayKeyword19?, recursion?, extending?, longString?, integerWithMinimum?, integerWithExclusiveMinimum?, integerWithExclusiveMaximum?, numberWithMinimum?, multipleOfProp?, stringWithMinAndMaxLength?, strictFormat?, strictFormat2?, uniqueItemsProp?, numberAndDescription?, oneOfnumberAndDescriptionAndArray?, maxPropertiesAndMinProperties?, objectTest?, objectTest2?, objectTest3?, objectTest4?, objectTest5?, objectTest6?, objectTest7?, objectTest8?, objectTest9?, stringWithEmptyPattern?, likeArray?, arrayWithEmptyItemsAndEmptyAdditionalItemsAndEmptyContains?, numberWithoutType?, numberWithoutType2?, stringWithoutType?, arrayWithoutType?, additionalItemsFalse?, requiredWithoutType?, dependenciesWithoutType?, propertyNamesWithoutType?, patternRequiredWithoutType?, additionalPropertiesWithoutType?, maxPropertiesWithoutType?, justAnObject?, arrayWithAbsolutePath?, allOfKeyword?, enumWithDescription?, constWithDescription?, itemsTrue?, emptyConst?, oneConst?, constWithEmptyString?, refAndAnyOf?, additionalPropertiesInsideOneOf?, additionalPropertiesInsideOneOf2?, singleContainsItems?, objectWithPropertyDependency?, objectWithPropertyDependency2?, objectWithPropertyDependency3?, objectWithPropertyDependency4?, oneOfWithIf?, constWithArrayNotation?, constWithObjectNotation?, additionalItemsWithoutType?, additionalItemsWithoutType2?, additionalItemsWithoutType3?, containsAndAdditionalItems?, containsInsideItem?, emptyObject?, nonEmptyObject?, nonEmptyObject2?, notEnum?, notConst?, notNumber?, notInteger?, notString?, notBoolean?, notArray?, notObject?, notNull?, notNotNull?, NotNotNotNull?, notMultipleTypes?, notMaxItemsArray?, noTypeLikeNumberMinimum?, noTypeLikeNumberMaximum?, noTypeLikeNumberExclusiveMinimum?, noTypeLikeNumberExclusiveMaximum?, minimumWithTypeNumber?, maximumWithTypeNumber?, exclusiveMinimumWithTypeNumber?, exclusiveMaximumWithTypeNumber?, noTypeLikeNumberMultipleOf?, multipleOfWithNumberType?, noTypeLikeStringMinLength?, noTypeLikeStringMaxLength?, stringWithMinLength?, stringWithMaxLength?, noTypeLikeStringPattern?, patternWithStringType?, noTypeLikeStringFormat?, stringWithFormat?, noTypeLikeStringFormatMaximum?, stringWithFormatMaximum?, multipleInstanceof?, noTypeLikeObjectPatternRequired?, objectWithPatternRequired?, noTypeLikeStringMinLength1?, noTypeLikeArrayMinItems?, noTypeLikeArrayMinItems1?, arrayWithMinItems?, noTypeMinProperties?, noTypeMinProperties1?, objectMinProperties?, noTypeLikeArrayMaxItems?, arrayMaxItems?, noTypeLikeObjectMaxProperties?, objectMaxProperties?, noTypeLikeArrayUniqueItems?, arrayWithUniqueItems?, noTypeLikeArrayAdditionalItems?, arrayWithAdditionalItems?, noTypeLikeArrayContains?, arrayWithContains?, anyOfNoTypeInItem?, oneOfNoTypeInItem?, noTypeLikeObjectPropertyNames?, objectPropertyNames?, noTypeLikeObjectDependencies?, objectWithDependencies?, noTypeLikeObjectAdditionalProperties?, noTypeLikeObjectRequired? }"
 `;
 
 exports[`Validation should fail validation for null type 1`] = `
@@ -1139,7 +1347,7 @@ exports[`Validation should fail validation for object #9 2`] = `
 
 exports[`Validation should fail validation for object #10 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.objectTest7 misses the property 'd'.
+ - configuration.objectTest7 misses the property 'd' | should be any non-object.
    -> Description about object, properties and methods."
 `;
 
@@ -1151,7 +1359,7 @@ exports[`Validation should fail validation for object #11 1`] = `
 
 exports[`Validation should fail validation for object #12 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.objectTest9 misses the property 'prop'.
+ - configuration.objectTest9 misses the property 'prop' | should be any non-object.
    -> Description about object, properties and methods."
 `;
 
@@ -1159,6 +1367,16 @@ exports[`Validation should fail validation for object 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
  - configuration.objectTest should be an object:
    object { a, b, c, d, f?, <key>: number } (should not have fewer than 3 properties, should not have more than 5 properties)"
+`;
+
+exports[`Validation should fail validation for object dependencies 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.objectPropertyNames property name 'foo' is invalid. Property names should be match format \\"email\\"."
+`;
+
+exports[`Validation should fail validation for object dependencies 2`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.objectWithDependencies should have properties 'bar', 'baz' when property 'foo' is present."
 `;
 
 exports[`Validation should fail validation for object in object with anyOf 1`] = `
@@ -1195,6 +1413,16 @@ exports[`Validation should fail validation for object with dependencies 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
  - configuration.objectWithPropertyDependency should be an object:
    object { foo?, … } (should have properties 'bar', 'baz' when property 'foo' is present)"
+`;
+
+exports[`Validation should fail validation for object with maxProperties 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.objectMaxProperties should not have more than 2 properties."
+`;
+
+exports[`Validation should fail validation for object with maxProperties 2`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.arrayWithUniqueItems should not contain the item '1' twice."
 `;
 
 exports[`Validation should fail validation for object with required and properties 1`] = `
@@ -1284,6 +1512,11 @@ exports[`Validation should fail validation for oneOf with if 1`] = `
     * configuration.oneOfWithIf should be a integer."
 `;
 
+exports[`Validation should fail validation for oneOf with item without type 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.oneOfNoTypeInItem should be <= 3 | should be any non-number."
+`;
+
 exports[`Validation should fail validation for only items #2 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
  - configuration.onlyItems2[0] should be a integer.
@@ -1297,7 +1530,7 @@ exports[`Validation should fail validation for only items 1`] = `
 
 exports[`Validation should fail validation for only properties #2 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.onlyProperties2 has an unknown property 'break'. These properties are valid:
+ - configuration.onlyProperties2 has an unknown property 'break' | should be any non-object. These properties are valid:
    object { foo?, bar? }"
 `;
 
@@ -1308,12 +1541,17 @@ exports[`Validation should fail validation for only properties 1`] = `
 
 exports[`Validation should fail validation for only required 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.onlyRequired misses the property 'b'."
+ - configuration.onlyRequired misses the property 'b' | should be any non-object."
 `;
 
 exports[`Validation should fail validation for pattern 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.customObject.patternKeyword should match pattern \\"[abc]+\\"."
+ - configuration.customObject.patternKeyword should match pattern \\"[abc]+\\" | should be any non-string."
+`;
+
+exports[`Validation should fail validation for pattern with type string 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.patternWithStringType should match pattern \\"[abc]+\\"."
 `;
 
 exports[`Validation should fail validation for patternProperties #1 1`] = `
@@ -1328,24 +1566,29 @@ exports[`Validation should fail validation for patternProperties 1`] = `
 
 exports[`Validation should fail validation for patternRequired #2 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.patternRequiredKeyword2 should have property matching pattern \\"b.*r\\"."
+ - configuration.patternRequiredKeyword2 should have property matching pattern \\"b.*r\\" | should be any non-object."
 `;
 
 exports[`Validation should fail validation for patternRequired 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.patternRequiredKeyword should have property matching pattern \\"f.*o\\"."
+ - configuration.patternRequiredKeyword should have property matching pattern \\"f.*o\\" | should be any non-object."
+`;
+
+exports[`Validation should fail validation for patternRequired with type object 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.objectWithPatternRequired should have property matching pattern \\"f.*o\\"."
 `;
 
 exports[`Validation should fail validation for patternRequired without object type 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.patternRequiredWithoutType has an unknown property 'boo'. These properties are valid:
+ - configuration.patternRequiredWithoutType has an unknown property 'boo' | should be any non-object. These properties are valid:
    object {} (should have property matching pattern \\"b.*o\\")"
 `;
 
 exports[`Validation should fail validation for postFormatter #1 1`] = `
 "Invalid configuration object. Webpack has been initialised using a configuration object that does not match the API schema.
  - configuration has an unknown property 'minify'. These properties are valid:
-   object { amd?, bail?, cache?, context?, dependencies?, devServer?, devtool?, entry?, externals?, loader?, mode?, module?, name?, node?, optimization?, output?, parallelism?, performance?, plugins?, profile?, recordsInputPath?, recordsOutputPath?, recordsPath?, resolve?, resolveLoader?, serve?, stats?, target?, watch?, watchOptions?, minLengthOne?, minLengthTwo?, integerType?, nullType?, allOfRef?, customObject?, objectType?, anyOfKeyword?, nestedArrayWithoutItems?, nestedObjectWithoutItems?, arrayType?, arrayType2?, multipleTypes?, zeroMaxItems?, multipleContains?, multipleContains2?, exclusiveMinimumKeyword?, exclusiveMaximumKeyword?, uniqueItemsKeyword?, minPropertiesKeyword?, maxPropertiesKeyword?, requiredKeyword?, requiredKeywordWithAdditionalProperties?, enumKeyword?, formatMinimumKeyword?, formatMaximumKeyword?, formatExclusiveMinimumKeyword?, formatExclusiveMaximumKeyword?, formatMinMaxExclusiveMinKeyword?, formatMinMaxExclusiveMaxKeyword?, minItemsKeyword?, maxItemsKeyword?, itemsKeyword?, itemsKeyword2?, additionalItemsKeyword?, additionalItemsKeyword2?, additionalItemsKeyword3?, additionalItemsKeyword4?, propertiesKeyword?, patternPropertiesKeyword?, patternPropertiesKeyword2?, arrayWithOnlyNumber?, onlyRequired?, dependenciesKeyword?, dependenciesKeyword2?, patternRequiredKeyword?, patternRequiredKeyword2?, onlyProperties?, onlyProperties2?, onlyItems?, onlyItems2?, onlyAdditionalItems?, booleanType?, additionalPropertiesKeyword?, additionalPropertiesKeyword2?, propertyNamesKeyword?, constKeyword?, constKeyword2?, ifThenElseKeyword?, ifThenElseKeyword2?, stringKeyword?, arrayKeyword?, arrayKeyword2?, arrayKeyword3?, arrayKeyword4?, arrayKeyword5?, arrayKeyword6?, arrayKeyword7?, arrayKeyword8?, arrayKeyword9?, arrayKeyword10?, arrayKeyword11?, arrayKeyword12?, arrayKeyword13?, arrayKeyword14?, arrayKeyword15?, arrayKeyword16?, arrayKeyword17?, arrayKeyword18?, arrayKeyword19?, recursion?, extending?, longString?, integerWithMinimum?, integerWithExclusiveMinimum?, integerWithExclusiveMaximum?, numberWithMinimum?, multipleOfProp?, stringWithMinAndMaxLength?, strictFormat?, strictFormat2?, uniqueItemsProp?, numberAndDescription?, oneOfnumberAndDescriptionAndArray?, maxPropertiesAndMinProperties?, objectTest?, objectTest2?, objectTest3?, objectTest4?, objectTest5?, objectTest6?, objectTest7?, objectTest8?, objectTest9?, stringWithEmptyPattern?, likeArray?, arrayWithEmptyItemsAndEmptyAdditionalItemsAndEmptyContains?, numberWithoutType?, numberWithoutType2?, stringWithoutType?, arrayWithoutType?, additionalItemsFalse?, requiredWithoutType?, dependenciesWithoutType?, propertyNamesWithoutType?, patternRequiredWithoutType?, additionalPropertiesWithoutType?, maxPropertiesWithoutType?, justAnObject?, arrayWithAbsolutePath?, allOfKeyword?, enumWithDescription?, constWithDescription?, itemsTrue?, emptyConst?, oneConst?, constWithEmptyString?, refAndAnyOf?, additionalPropertiesInsideOneOf?, additionalPropertiesInsideOneOf2?, singleContainsItems?, objectWithPropertyDependency?, objectWithPropertyDependency2?, objectWithPropertyDependency3?, objectWithPropertyDependency4?, oneOfWithIf?, constWithArrayNotation?, constWithObjectNotation?, additionalItemsWithoutType?, additionalItemsWithoutType2?, additionalItemsWithoutType3?, containsAndAdditionalItems?, containsInsideItem?, emptyObject?, nonEmptyObject?, nonEmptyObject2?, notEnum?, notConst?, notNumber?, notInteger?, notString?, notBoolean?, notArray?, notObject?, notNull?, notNotNull?, NotNotNotNull?, notMultipleTypes?, notMaxItemsArray? }
+   object { amd?, bail?, cache?, context?, dependencies?, devServer?, devtool?, entry?, externals?, loader?, mode?, module?, name?, node?, optimization?, output?, parallelism?, performance?, plugins?, profile?, recordsInputPath?, recordsOutputPath?, recordsPath?, resolve?, resolveLoader?, serve?, stats?, target?, watch?, watchOptions?, minLengthOne?, minLengthTwo?, integerType?, nullType?, allOfRef?, customObject?, objectType?, anyOfKeyword?, nestedArrayWithoutItems?, nestedObjectWithoutItems?, arrayType?, arrayType2?, multipleTypes?, zeroMaxItems?, multipleContains?, multipleContains2?, exclusiveMinimumKeyword?, exclusiveMaximumKeyword?, uniqueItemsKeyword?, minPropertiesKeyword?, maxPropertiesKeyword?, requiredKeyword?, requiredKeywordWithAdditionalProperties?, enumKeyword?, formatMinimumKeyword?, formatMaximumKeyword?, formatExclusiveMinimumKeyword?, formatExclusiveMaximumKeyword?, formatMinMaxExclusiveMinKeyword?, formatMinMaxExclusiveMaxKeyword?, minItemsKeyword?, maxItemsKeyword?, itemsKeyword?, itemsKeyword2?, additionalItemsKeyword?, additionalItemsKeyword2?, additionalItemsKeyword3?, additionalItemsKeyword4?, propertiesKeyword?, patternPropertiesKeyword?, patternPropertiesKeyword2?, arrayWithOnlyNumber?, onlyRequired?, dependenciesKeyword?, dependenciesKeyword2?, patternRequiredKeyword?, patternRequiredKeyword2?, onlyProperties?, onlyProperties2?, onlyItems?, onlyItems2?, onlyAdditionalItems?, booleanType?, additionalPropertiesKeyword?, additionalPropertiesKeyword2?, propertyNamesKeyword?, constKeyword?, constKeyword2?, ifThenElseKeyword?, ifThenElseKeyword2?, stringKeyword?, arrayKeyword?, arrayKeyword2?, arrayKeyword3?, arrayKeyword4?, arrayKeyword5?, arrayKeyword6?, arrayKeyword7?, arrayKeyword8?, arrayKeyword9?, arrayKeyword10?, arrayKeyword11?, arrayKeyword12?, arrayKeyword13?, arrayKeyword14?, arrayKeyword15?, arrayKeyword16?, arrayKeyword17?, arrayKeyword18?, arrayKeyword19?, recursion?, extending?, longString?, integerWithMinimum?, integerWithExclusiveMinimum?, integerWithExclusiveMaximum?, numberWithMinimum?, multipleOfProp?, stringWithMinAndMaxLength?, strictFormat?, strictFormat2?, uniqueItemsProp?, numberAndDescription?, oneOfnumberAndDescriptionAndArray?, maxPropertiesAndMinProperties?, objectTest?, objectTest2?, objectTest3?, objectTest4?, objectTest5?, objectTest6?, objectTest7?, objectTest8?, objectTest9?, stringWithEmptyPattern?, likeArray?, arrayWithEmptyItemsAndEmptyAdditionalItemsAndEmptyContains?, numberWithoutType?, numberWithoutType2?, stringWithoutType?, arrayWithoutType?, additionalItemsFalse?, requiredWithoutType?, dependenciesWithoutType?, propertyNamesWithoutType?, patternRequiredWithoutType?, additionalPropertiesWithoutType?, maxPropertiesWithoutType?, justAnObject?, arrayWithAbsolutePath?, allOfKeyword?, enumWithDescription?, constWithDescription?, itemsTrue?, emptyConst?, oneConst?, constWithEmptyString?, refAndAnyOf?, additionalPropertiesInsideOneOf?, additionalPropertiesInsideOneOf2?, singleContainsItems?, objectWithPropertyDependency?, objectWithPropertyDependency2?, objectWithPropertyDependency3?, objectWithPropertyDependency4?, oneOfWithIf?, constWithArrayNotation?, constWithObjectNotation?, additionalItemsWithoutType?, additionalItemsWithoutType2?, additionalItemsWithoutType3?, containsAndAdditionalItems?, containsInsideItem?, emptyObject?, nonEmptyObject?, nonEmptyObject2?, notEnum?, notConst?, notNumber?, notInteger?, notString?, notBoolean?, notArray?, notObject?, notNull?, notNotNull?, NotNotNotNull?, notMultipleTypes?, notMaxItemsArray?, noTypeLikeNumberMinimum?, noTypeLikeNumberMaximum?, noTypeLikeNumberExclusiveMinimum?, noTypeLikeNumberExclusiveMaximum?, minimumWithTypeNumber?, maximumWithTypeNumber?, exclusiveMinimumWithTypeNumber?, exclusiveMaximumWithTypeNumber?, noTypeLikeNumberMultipleOf?, multipleOfWithNumberType?, noTypeLikeStringMinLength?, noTypeLikeStringMaxLength?, stringWithMinLength?, stringWithMaxLength?, noTypeLikeStringPattern?, patternWithStringType?, noTypeLikeStringFormat?, stringWithFormat?, noTypeLikeStringFormatMaximum?, stringWithFormatMaximum?, multipleInstanceof?, noTypeLikeObjectPatternRequired?, objectWithPatternRequired?, noTypeLikeStringMinLength1?, noTypeLikeArrayMinItems?, noTypeLikeArrayMinItems1?, arrayWithMinItems?, noTypeMinProperties?, noTypeMinProperties1?, objectMinProperties?, noTypeLikeArrayMaxItems?, arrayMaxItems?, noTypeLikeObjectMaxProperties?, objectMaxProperties?, noTypeLikeArrayUniqueItems?, arrayWithUniqueItems?, noTypeLikeArrayAdditionalItems?, arrayWithAdditionalItems?, noTypeLikeArrayContains?, arrayWithContains?, anyOfNoTypeInItem?, oneOfNoTypeInItem?, noTypeLikeObjectPropertyNames?, objectPropertyNames?, noTypeLikeObjectDependencies?, objectWithDependencies?, noTypeLikeObjectAdditionalProperties?, noTypeLikeObjectRequired? }
    For typos: please correct them.
    For loader options: webpack >= v2.0.0 no longer allows custom properties in configuration.
      Loaders should be updated to allow passing options via loader options in module.rules.
@@ -1369,7 +1612,7 @@ exports[`Validation should fail validation for postFormatter #2 1`] = `
 exports[`Validation should fail validation for postFormatter 1`] = `
 "Invalid configuration object. Webpack has been initialised using a configuration object that does not match the API schema.
  - configuration has an unknown property 'debug'. These properties are valid:
-   object { amd?, bail?, cache?, context?, dependencies?, devServer?, devtool?, entry?, externals?, loader?, mode?, module?, name?, node?, optimization?, output?, parallelism?, performance?, plugins?, profile?, recordsInputPath?, recordsOutputPath?, recordsPath?, resolve?, resolveLoader?, serve?, stats?, target?, watch?, watchOptions?, minLengthOne?, minLengthTwo?, integerType?, nullType?, allOfRef?, customObject?, objectType?, anyOfKeyword?, nestedArrayWithoutItems?, nestedObjectWithoutItems?, arrayType?, arrayType2?, multipleTypes?, zeroMaxItems?, multipleContains?, multipleContains2?, exclusiveMinimumKeyword?, exclusiveMaximumKeyword?, uniqueItemsKeyword?, minPropertiesKeyword?, maxPropertiesKeyword?, requiredKeyword?, requiredKeywordWithAdditionalProperties?, enumKeyword?, formatMinimumKeyword?, formatMaximumKeyword?, formatExclusiveMinimumKeyword?, formatExclusiveMaximumKeyword?, formatMinMaxExclusiveMinKeyword?, formatMinMaxExclusiveMaxKeyword?, minItemsKeyword?, maxItemsKeyword?, itemsKeyword?, itemsKeyword2?, additionalItemsKeyword?, additionalItemsKeyword2?, additionalItemsKeyword3?, additionalItemsKeyword4?, propertiesKeyword?, patternPropertiesKeyword?, patternPropertiesKeyword2?, arrayWithOnlyNumber?, onlyRequired?, dependenciesKeyword?, dependenciesKeyword2?, patternRequiredKeyword?, patternRequiredKeyword2?, onlyProperties?, onlyProperties2?, onlyItems?, onlyItems2?, onlyAdditionalItems?, booleanType?, additionalPropertiesKeyword?, additionalPropertiesKeyword2?, propertyNamesKeyword?, constKeyword?, constKeyword2?, ifThenElseKeyword?, ifThenElseKeyword2?, stringKeyword?, arrayKeyword?, arrayKeyword2?, arrayKeyword3?, arrayKeyword4?, arrayKeyword5?, arrayKeyword6?, arrayKeyword7?, arrayKeyword8?, arrayKeyword9?, arrayKeyword10?, arrayKeyword11?, arrayKeyword12?, arrayKeyword13?, arrayKeyword14?, arrayKeyword15?, arrayKeyword16?, arrayKeyword17?, arrayKeyword18?, arrayKeyword19?, recursion?, extending?, longString?, integerWithMinimum?, integerWithExclusiveMinimum?, integerWithExclusiveMaximum?, numberWithMinimum?, multipleOfProp?, stringWithMinAndMaxLength?, strictFormat?, strictFormat2?, uniqueItemsProp?, numberAndDescription?, oneOfnumberAndDescriptionAndArray?, maxPropertiesAndMinProperties?, objectTest?, objectTest2?, objectTest3?, objectTest4?, objectTest5?, objectTest6?, objectTest7?, objectTest8?, objectTest9?, stringWithEmptyPattern?, likeArray?, arrayWithEmptyItemsAndEmptyAdditionalItemsAndEmptyContains?, numberWithoutType?, numberWithoutType2?, stringWithoutType?, arrayWithoutType?, additionalItemsFalse?, requiredWithoutType?, dependenciesWithoutType?, propertyNamesWithoutType?, patternRequiredWithoutType?, additionalPropertiesWithoutType?, maxPropertiesWithoutType?, justAnObject?, arrayWithAbsolutePath?, allOfKeyword?, enumWithDescription?, constWithDescription?, itemsTrue?, emptyConst?, oneConst?, constWithEmptyString?, refAndAnyOf?, additionalPropertiesInsideOneOf?, additionalPropertiesInsideOneOf2?, singleContainsItems?, objectWithPropertyDependency?, objectWithPropertyDependency2?, objectWithPropertyDependency3?, objectWithPropertyDependency4?, oneOfWithIf?, constWithArrayNotation?, constWithObjectNotation?, additionalItemsWithoutType?, additionalItemsWithoutType2?, additionalItemsWithoutType3?, containsAndAdditionalItems?, containsInsideItem?, emptyObject?, nonEmptyObject?, nonEmptyObject2?, notEnum?, notConst?, notNumber?, notInteger?, notString?, notBoolean?, notArray?, notObject?, notNull?, notNotNull?, NotNotNotNull?, notMultipleTypes?, notMaxItemsArray? }
+   object { amd?, bail?, cache?, context?, dependencies?, devServer?, devtool?, entry?, externals?, loader?, mode?, module?, name?, node?, optimization?, output?, parallelism?, performance?, plugins?, profile?, recordsInputPath?, recordsOutputPath?, recordsPath?, resolve?, resolveLoader?, serve?, stats?, target?, watch?, watchOptions?, minLengthOne?, minLengthTwo?, integerType?, nullType?, allOfRef?, customObject?, objectType?, anyOfKeyword?, nestedArrayWithoutItems?, nestedObjectWithoutItems?, arrayType?, arrayType2?, multipleTypes?, zeroMaxItems?, multipleContains?, multipleContains2?, exclusiveMinimumKeyword?, exclusiveMaximumKeyword?, uniqueItemsKeyword?, minPropertiesKeyword?, maxPropertiesKeyword?, requiredKeyword?, requiredKeywordWithAdditionalProperties?, enumKeyword?, formatMinimumKeyword?, formatMaximumKeyword?, formatExclusiveMinimumKeyword?, formatExclusiveMaximumKeyword?, formatMinMaxExclusiveMinKeyword?, formatMinMaxExclusiveMaxKeyword?, minItemsKeyword?, maxItemsKeyword?, itemsKeyword?, itemsKeyword2?, additionalItemsKeyword?, additionalItemsKeyword2?, additionalItemsKeyword3?, additionalItemsKeyword4?, propertiesKeyword?, patternPropertiesKeyword?, patternPropertiesKeyword2?, arrayWithOnlyNumber?, onlyRequired?, dependenciesKeyword?, dependenciesKeyword2?, patternRequiredKeyword?, patternRequiredKeyword2?, onlyProperties?, onlyProperties2?, onlyItems?, onlyItems2?, onlyAdditionalItems?, booleanType?, additionalPropertiesKeyword?, additionalPropertiesKeyword2?, propertyNamesKeyword?, constKeyword?, constKeyword2?, ifThenElseKeyword?, ifThenElseKeyword2?, stringKeyword?, arrayKeyword?, arrayKeyword2?, arrayKeyword3?, arrayKeyword4?, arrayKeyword5?, arrayKeyword6?, arrayKeyword7?, arrayKeyword8?, arrayKeyword9?, arrayKeyword10?, arrayKeyword11?, arrayKeyword12?, arrayKeyword13?, arrayKeyword14?, arrayKeyword15?, arrayKeyword16?, arrayKeyword17?, arrayKeyword18?, arrayKeyword19?, recursion?, extending?, longString?, integerWithMinimum?, integerWithExclusiveMinimum?, integerWithExclusiveMaximum?, numberWithMinimum?, multipleOfProp?, stringWithMinAndMaxLength?, strictFormat?, strictFormat2?, uniqueItemsProp?, numberAndDescription?, oneOfnumberAndDescriptionAndArray?, maxPropertiesAndMinProperties?, objectTest?, objectTest2?, objectTest3?, objectTest4?, objectTest5?, objectTest6?, objectTest7?, objectTest8?, objectTest9?, stringWithEmptyPattern?, likeArray?, arrayWithEmptyItemsAndEmptyAdditionalItemsAndEmptyContains?, numberWithoutType?, numberWithoutType2?, stringWithoutType?, arrayWithoutType?, additionalItemsFalse?, requiredWithoutType?, dependenciesWithoutType?, propertyNamesWithoutType?, patternRequiredWithoutType?, additionalPropertiesWithoutType?, maxPropertiesWithoutType?, justAnObject?, arrayWithAbsolutePath?, allOfKeyword?, enumWithDescription?, constWithDescription?, itemsTrue?, emptyConst?, oneConst?, constWithEmptyString?, refAndAnyOf?, additionalPropertiesInsideOneOf?, additionalPropertiesInsideOneOf2?, singleContainsItems?, objectWithPropertyDependency?, objectWithPropertyDependency2?, objectWithPropertyDependency3?, objectWithPropertyDependency4?, oneOfWithIf?, constWithArrayNotation?, constWithObjectNotation?, additionalItemsWithoutType?, additionalItemsWithoutType2?, additionalItemsWithoutType3?, containsAndAdditionalItems?, containsInsideItem?, emptyObject?, nonEmptyObject?, nonEmptyObject2?, notEnum?, notConst?, notNumber?, notInteger?, notString?, notBoolean?, notArray?, notObject?, notNull?, notNotNull?, NotNotNotNull?, notMultipleTypes?, notMaxItemsArray?, noTypeLikeNumberMinimum?, noTypeLikeNumberMaximum?, noTypeLikeNumberExclusiveMinimum?, noTypeLikeNumberExclusiveMaximum?, minimumWithTypeNumber?, maximumWithTypeNumber?, exclusiveMinimumWithTypeNumber?, exclusiveMaximumWithTypeNumber?, noTypeLikeNumberMultipleOf?, multipleOfWithNumberType?, noTypeLikeStringMinLength?, noTypeLikeStringMaxLength?, stringWithMinLength?, stringWithMaxLength?, noTypeLikeStringPattern?, patternWithStringType?, noTypeLikeStringFormat?, stringWithFormat?, noTypeLikeStringFormatMaximum?, stringWithFormatMaximum?, multipleInstanceof?, noTypeLikeObjectPatternRequired?, objectWithPatternRequired?, noTypeLikeStringMinLength1?, noTypeLikeArrayMinItems?, noTypeLikeArrayMinItems1?, arrayWithMinItems?, noTypeMinProperties?, noTypeMinProperties1?, objectMinProperties?, noTypeLikeArrayMaxItems?, arrayMaxItems?, noTypeLikeObjectMaxProperties?, objectMaxProperties?, noTypeLikeArrayUniqueItems?, arrayWithUniqueItems?, noTypeLikeArrayAdditionalItems?, arrayWithAdditionalItems?, noTypeLikeArrayContains?, arrayWithContains?, anyOfNoTypeInItem?, oneOfNoTypeInItem?, noTypeLikeObjectPropertyNames?, objectPropertyNames?, noTypeLikeObjectDependencies?, objectWithDependencies?, noTypeLikeObjectAdditionalProperties?, noTypeLikeObjectRequired? }
    The 'debug' property was removed in webpack 2.0.0.
    Loaders should be updated to allow passing this option via loader options in module.rules.
    Until loaders are updated one can use the LoaderOptionsPlugin to switch loaders into debug mode:
@@ -1387,13 +1630,13 @@ exports[`Validation should fail validation for properties 1`] = `
 
 exports[`Validation should fail validation for propertyNames 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.propertyNamesKeyword property name 'foo' is invalid. Property names should be match format \\"email\\".
+ - configuration.propertyNamesKeyword property name 'foo' is invalid | should be any non-object. Property names should be match format \\"email\\".
    -> Description"
 `;
 
 exports[`Validation should fail validation for propertyNames without object type 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.propertyNamesWithoutType has an unknown property 'foo'. These properties are valid:
+ - configuration.propertyNamesWithoutType has an unknown property 'foo' | should be any non-object. These properties are valid:
    object {} (each property name should match format \\"email\\")"
 `;
 
@@ -1422,22 +1665,22 @@ exports[`Validation should fail validation for repeated value 1`] = `
 
 exports[`Validation should fail validation for required #2 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.requiredKeyword misses the property 'a'."
+ - configuration.requiredKeyword misses the property 'a' | should be any non-object."
 `;
 
 exports[`Validation should fail validation for required 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.requiredKeyword misses the property 'b'."
+ - configuration.requiredKeyword misses the property 'b' | should be any non-object."
 `;
 
 exports[`Validation should fail validation for required with additionalProperties 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.requiredKeywordWithAdditionalProperties misses the property 'a'."
+ - configuration.requiredKeywordWithAdditionalProperties misses the property 'a' | should be any non-object."
 `;
 
 exports[`Validation should fail validation for required without object type 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.requiredWithoutType has an unknown property 'b'. These properties are valid:
+ - configuration.requiredWithoutType has an unknown property 'b' | should be any non-object. These properties are valid:
    object { a }"
 `;
 
@@ -1481,7 +1724,7 @@ exports[`Validation should fail validation for terser-webpack-plugin name 1`] = 
 exports[`Validation should fail validation for undefined configuration 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
  - configuration should be an object:
-   object { amd?, bail?, cache?, context?, dependencies?, devServer?, devtool?, entry?, externals?, loader?, mode?, module?, name?, node?, optimization?, output?, parallelism?, performance?, plugins?, profile?, recordsInputPath?, recordsOutputPath?, recordsPath?, resolve?, resolveLoader?, serve?, stats?, target?, watch?, watchOptions?, minLengthOne?, minLengthTwo?, integerType?, nullType?, allOfRef?, customObject?, objectType?, anyOfKeyword?, nestedArrayWithoutItems?, nestedObjectWithoutItems?, arrayType?, arrayType2?, multipleTypes?, zeroMaxItems?, multipleContains?, multipleContains2?, exclusiveMinimumKeyword?, exclusiveMaximumKeyword?, uniqueItemsKeyword?, minPropertiesKeyword?, maxPropertiesKeyword?, requiredKeyword?, requiredKeywordWithAdditionalProperties?, enumKeyword?, formatMinimumKeyword?, formatMaximumKeyword?, formatExclusiveMinimumKeyword?, formatExclusiveMaximumKeyword?, formatMinMaxExclusiveMinKeyword?, formatMinMaxExclusiveMaxKeyword?, minItemsKeyword?, maxItemsKeyword?, itemsKeyword?, itemsKeyword2?, additionalItemsKeyword?, additionalItemsKeyword2?, additionalItemsKeyword3?, additionalItemsKeyword4?, propertiesKeyword?, patternPropertiesKeyword?, patternPropertiesKeyword2?, arrayWithOnlyNumber?, onlyRequired?, dependenciesKeyword?, dependenciesKeyword2?, patternRequiredKeyword?, patternRequiredKeyword2?, onlyProperties?, onlyProperties2?, onlyItems?, onlyItems2?, onlyAdditionalItems?, booleanType?, additionalPropertiesKeyword?, additionalPropertiesKeyword2?, propertyNamesKeyword?, constKeyword?, constKeyword2?, ifThenElseKeyword?, ifThenElseKeyword2?, stringKeyword?, arrayKeyword?, arrayKeyword2?, arrayKeyword3?, arrayKeyword4?, arrayKeyword5?, arrayKeyword6?, arrayKeyword7?, arrayKeyword8?, arrayKeyword9?, arrayKeyword10?, arrayKeyword11?, arrayKeyword12?, arrayKeyword13?, arrayKeyword14?, arrayKeyword15?, arrayKeyword16?, arrayKeyword17?, arrayKeyword18?, arrayKeyword19?, recursion?, extending?, longString?, integerWithMinimum?, integerWithExclusiveMinimum?, integerWithExclusiveMaximum?, numberWithMinimum?, multipleOfProp?, stringWithMinAndMaxLength?, strictFormat?, strictFormat2?, uniqueItemsProp?, numberAndDescription?, oneOfnumberAndDescriptionAndArray?, maxPropertiesAndMinProperties?, objectTest?, objectTest2?, objectTest3?, objectTest4?, objectTest5?, objectTest6?, objectTest7?, objectTest8?, objectTest9?, stringWithEmptyPattern?, likeArray?, arrayWithEmptyItemsAndEmptyAdditionalItemsAndEmptyContains?, numberWithoutType?, numberWithoutType2?, stringWithoutType?, arrayWithoutType?, additionalItemsFalse?, requiredWithoutType?, dependenciesWithoutType?, propertyNamesWithoutType?, patternRequiredWithoutType?, additionalPropertiesWithoutType?, maxPropertiesWithoutType?, justAnObject?, arrayWithAbsolutePath?, allOfKeyword?, enumWithDescription?, constWithDescription?, itemsTrue?, emptyConst?, oneConst?, constWithEmptyString?, refAndAnyOf?, additionalPropertiesInsideOneOf?, additionalPropertiesInsideOneOf2?, singleContainsItems?, objectWithPropertyDependency?, objectWithPropertyDependency2?, objectWithPropertyDependency3?, objectWithPropertyDependency4?, oneOfWithIf?, constWithArrayNotation?, constWithObjectNotation?, additionalItemsWithoutType?, additionalItemsWithoutType2?, additionalItemsWithoutType3?, containsAndAdditionalItems?, containsInsideItem?, emptyObject?, nonEmptyObject?, nonEmptyObject2?, notEnum?, notConst?, notNumber?, notInteger?, notString?, notBoolean?, notArray?, notObject?, notNull?, notNotNull?, NotNotNotNull?, notMultipleTypes?, notMaxItemsArray? }"
+   object { amd?, bail?, cache?, context?, dependencies?, devServer?, devtool?, entry?, externals?, loader?, mode?, module?, name?, node?, optimization?, output?, parallelism?, performance?, plugins?, profile?, recordsInputPath?, recordsOutputPath?, recordsPath?, resolve?, resolveLoader?, serve?, stats?, target?, watch?, watchOptions?, minLengthOne?, minLengthTwo?, integerType?, nullType?, allOfRef?, customObject?, objectType?, anyOfKeyword?, nestedArrayWithoutItems?, nestedObjectWithoutItems?, arrayType?, arrayType2?, multipleTypes?, zeroMaxItems?, multipleContains?, multipleContains2?, exclusiveMinimumKeyword?, exclusiveMaximumKeyword?, uniqueItemsKeyword?, minPropertiesKeyword?, maxPropertiesKeyword?, requiredKeyword?, requiredKeywordWithAdditionalProperties?, enumKeyword?, formatMinimumKeyword?, formatMaximumKeyword?, formatExclusiveMinimumKeyword?, formatExclusiveMaximumKeyword?, formatMinMaxExclusiveMinKeyword?, formatMinMaxExclusiveMaxKeyword?, minItemsKeyword?, maxItemsKeyword?, itemsKeyword?, itemsKeyword2?, additionalItemsKeyword?, additionalItemsKeyword2?, additionalItemsKeyword3?, additionalItemsKeyword4?, propertiesKeyword?, patternPropertiesKeyword?, patternPropertiesKeyword2?, arrayWithOnlyNumber?, onlyRequired?, dependenciesKeyword?, dependenciesKeyword2?, patternRequiredKeyword?, patternRequiredKeyword2?, onlyProperties?, onlyProperties2?, onlyItems?, onlyItems2?, onlyAdditionalItems?, booleanType?, additionalPropertiesKeyword?, additionalPropertiesKeyword2?, propertyNamesKeyword?, constKeyword?, constKeyword2?, ifThenElseKeyword?, ifThenElseKeyword2?, stringKeyword?, arrayKeyword?, arrayKeyword2?, arrayKeyword3?, arrayKeyword4?, arrayKeyword5?, arrayKeyword6?, arrayKeyword7?, arrayKeyword8?, arrayKeyword9?, arrayKeyword10?, arrayKeyword11?, arrayKeyword12?, arrayKeyword13?, arrayKeyword14?, arrayKeyword15?, arrayKeyword16?, arrayKeyword17?, arrayKeyword18?, arrayKeyword19?, recursion?, extending?, longString?, integerWithMinimum?, integerWithExclusiveMinimum?, integerWithExclusiveMaximum?, numberWithMinimum?, multipleOfProp?, stringWithMinAndMaxLength?, strictFormat?, strictFormat2?, uniqueItemsProp?, numberAndDescription?, oneOfnumberAndDescriptionAndArray?, maxPropertiesAndMinProperties?, objectTest?, objectTest2?, objectTest3?, objectTest4?, objectTest5?, objectTest6?, objectTest7?, objectTest8?, objectTest9?, stringWithEmptyPattern?, likeArray?, arrayWithEmptyItemsAndEmptyAdditionalItemsAndEmptyContains?, numberWithoutType?, numberWithoutType2?, stringWithoutType?, arrayWithoutType?, additionalItemsFalse?, requiredWithoutType?, dependenciesWithoutType?, propertyNamesWithoutType?, patternRequiredWithoutType?, additionalPropertiesWithoutType?, maxPropertiesWithoutType?, justAnObject?, arrayWithAbsolutePath?, allOfKeyword?, enumWithDescription?, constWithDescription?, itemsTrue?, emptyConst?, oneConst?, constWithEmptyString?, refAndAnyOf?, additionalPropertiesInsideOneOf?, additionalPropertiesInsideOneOf2?, singleContainsItems?, objectWithPropertyDependency?, objectWithPropertyDependency2?, objectWithPropertyDependency3?, objectWithPropertyDependency4?, oneOfWithIf?, constWithArrayNotation?, constWithObjectNotation?, additionalItemsWithoutType?, additionalItemsWithoutType2?, additionalItemsWithoutType3?, containsAndAdditionalItems?, containsInsideItem?, emptyObject?, nonEmptyObject?, nonEmptyObject2?, notEnum?, notConst?, notNumber?, notInteger?, notString?, notBoolean?, notArray?, notObject?, notNull?, notNotNull?, NotNotNotNull?, notMultipleTypes?, notMaxItemsArray?, noTypeLikeNumberMinimum?, noTypeLikeNumberMaximum?, noTypeLikeNumberExclusiveMinimum?, noTypeLikeNumberExclusiveMaximum?, minimumWithTypeNumber?, maximumWithTypeNumber?, exclusiveMinimumWithTypeNumber?, exclusiveMaximumWithTypeNumber?, noTypeLikeNumberMultipleOf?, multipleOfWithNumberType?, noTypeLikeStringMinLength?, noTypeLikeStringMaxLength?, stringWithMinLength?, stringWithMaxLength?, noTypeLikeStringPattern?, patternWithStringType?, noTypeLikeStringFormat?, stringWithFormat?, noTypeLikeStringFormatMaximum?, stringWithFormatMaximum?, multipleInstanceof?, noTypeLikeObjectPatternRequired?, objectWithPatternRequired?, noTypeLikeStringMinLength1?, noTypeLikeArrayMinItems?, noTypeLikeArrayMinItems1?, arrayWithMinItems?, noTypeMinProperties?, noTypeMinProperties1?, objectMinProperties?, noTypeLikeArrayMaxItems?, arrayMaxItems?, noTypeLikeObjectMaxProperties?, objectMaxProperties?, noTypeLikeArrayUniqueItems?, arrayWithUniqueItems?, noTypeLikeArrayAdditionalItems?, arrayWithAdditionalItems?, noTypeLikeArrayContains?, arrayWithContains?, anyOfNoTypeInItem?, oneOfNoTypeInItem?, noTypeLikeObjectPropertyNames?, objectPropertyNames?, noTypeLikeObjectDependencies?, objectWithDependencies?, noTypeLikeObjectAdditionalProperties?, noTypeLikeObjectRequired? }"
 `;
 
 exports[`Validation should fail validation for uniqueItems #2 1`] = `
@@ -1491,7 +1734,7 @@ exports[`Validation should fail validation for uniqueItems #2 1`] = `
 
 exports[`Validation should fail validation for uniqueItems 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.uniqueItemsKeyword should not contain the item '1' twice."
+ - configuration.uniqueItemsKeyword should not contain the item '1' twice | should be any non-array."
 `;
 
 exports[`Validation should fail validation for uniqueItems 2`] = `

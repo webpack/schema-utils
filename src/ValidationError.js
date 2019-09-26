@@ -223,6 +223,28 @@ function getArticle(type) {
   return 'a';
 }
 
+function getSchemaNonTypes(schema) {
+  if (!schema.type) {
+    if (likeNumber(schema) || likeInteger(schema)) {
+      return ' | should be any non-number';
+    }
+
+    if (likeString(schema)) {
+      return ' | should be any non-string';
+    }
+
+    if (likeArray(schema)) {
+      return ' | should be any non-array';
+    }
+
+    if (likeObject(schema)) {
+      return ' | should be any non-object';
+    }
+  }
+
+  return '';
+}
+
 class ValidationError extends Error {
   constructor(errors, schema, configuration = {}) {
     super();
@@ -280,12 +302,18 @@ class ValidationError extends Error {
       return `non ${formatInnerSchema(schema.not)}`;
     }
 
-    // eslint-disable-next-line default-case
-    switch (schema.instanceof) {
-      case 'Function':
-        return 'function';
-      case 'RegExp':
-        return 'RegExp';
+    if (schema.instanceof) {
+      if (Array.isArray(schema.instanceof)) {
+        return schema.instanceof.map(formatInnerSchema).join(' | ');
+      }
+
+      // eslint-disable-next-line default-case
+      switch (schema.instanceof) {
+        case 'Function':
+          return 'function';
+        case 'RegExp':
+          return 'RegExp';
+      }
     }
 
     if (schema.enum) {
@@ -687,93 +715,119 @@ class ValidationError extends Error {
       case 'pattern':
         return `${dataPath} should match pattern ${JSON.stringify(
           error.params.pattern
+        )}${getSchemaNonTypes(
+          error.parentSchema
         )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       case 'format':
         return `${dataPath} should match format ${JSON.stringify(
           error.params.format
+        )}${getSchemaNonTypes(
+          error.parentSchema
         )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       case 'formatMinimum':
       case 'formatMaximum':
         return `${dataPath} should be ${
           error.params.comparison
-        } ${JSON.stringify(error.params.limit)}.${this.getSchemaPartDescription(
+        } ${JSON.stringify(error.params.limit)}${getSchemaNonTypes(
           error.parentSchema
-        )}`;
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       case 'minimum':
       case 'maximum':
       case 'exclusiveMinimum':
       case 'exclusiveMaximum':
         return `${dataPath} should be ${error.params.comparison} ${
           error.params.limit
-        }.${this.getSchemaPartDescription(error.parentSchema)}`;
+        }${getSchemaNonTypes(
+          error.parentSchema
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       case 'multipleOf':
         return `${dataPath} should be multiple of ${
           error.params.multipleOf
-        }.${this.getSchemaPartDescription(error.parentSchema)}`;
+        }${getSchemaNonTypes(
+          error.parentSchema
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       case 'patternRequired':
         return `${dataPath} should have property matching pattern ${JSON.stringify(
           error.params.missingPattern
+        )}${getSchemaNonTypes(
+          error.parentSchema
         )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       case 'minLength': {
         if (error.params.limit === 1) {
-          return `${dataPath} should be an non-empty string.${this.getSchemaPartDescription(
+          return `${dataPath} should be an non-empty string${getSchemaNonTypes(
             error.parentSchema
-          )}`;
+          )}.${this.getSchemaPartDescription(error.parentSchema)}`;
         }
 
         return `${dataPath} should not be shorter than ${
           error.params.limit
-        } characters.${this.getSchemaPartDescription(error.parentSchema)}`;
+        } characters${getSchemaNonTypes(
+          error.parentSchema
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       }
       case 'minItems': {
         if (error.params.limit === 1) {
-          return `${dataPath} should be an non-empty array.${this.getSchemaPartDescription(
+          return `${dataPath} should be an non-empty array${getSchemaNonTypes(
             error.parentSchema
-          )}`;
+          )}.${this.getSchemaPartDescription(error.parentSchema)}`;
         }
 
         return `${dataPath} should not have fewer than ${
           error.params.limit
-        } items.${this.getSchemaPartDescription(error.parentSchema)}`;
+        } items${getSchemaNonTypes(
+          error.parentSchema
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       }
       case 'minProperties': {
         if (error.params.limit === 1) {
-          return `${dataPath} should be an non-empty object.${this.getSchemaPartDescription(
+          return `${dataPath} should be an non-empty object${getSchemaNonTypes(
             error.parentSchema
-          )}`;
+          )}.${this.getSchemaPartDescription(error.parentSchema)}`;
         }
 
         return `${dataPath} should not have fewer than ${
           error.params.limit
-        } properties.${this.getSchemaPartDescription(error.parentSchema)}`;
+        } properties${getSchemaNonTypes(
+          error.parentSchema
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       }
       case 'maxLength':
         return `${dataPath} should not be longer than ${
           error.params.limit
-        } characters.${this.getSchemaPartDescription(error.parentSchema)}`;
+        } characters${getSchemaNonTypes(
+          error.parentSchema
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       case 'maxItems':
         return `${dataPath} should not have more than ${
           error.params.limit
-        } items.${this.getSchemaPartDescription(error.parentSchema)}`;
+        } items${getSchemaNonTypes(
+          error.parentSchema
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       case 'maxProperties':
         return `${dataPath} should not have more than ${
           error.params.limit
-        } properties.${this.getSchemaPartDescription(error.parentSchema)}`;
+        } properties${getSchemaNonTypes(
+          error.parentSchema
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       case 'uniqueItems':
         return `${dataPath} should not contain the item '${
           error.data[error.params.i]
-        }' twice.${this.getSchemaPartDescription(error.parentSchema)}`;
+        }' twice${getSchemaNonTypes(
+          error.parentSchema
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       case 'additionalItems':
         return `${dataPath} should not have more than ${
           error.params.limit
-        } items. These items are valid:\n${this.getSchemaPartText(
+        } items${getSchemaNonTypes(
+          error.parentSchema
+        )}. These items are valid:\n${this.getSchemaPartText(
           error.parentSchema
         )}`;
       case 'contains':
         return `${dataPath} should contains at least one ${this.getSchemaPartText(
           error.parentSchema,
           ['contains']
-        )} item.`;
+        )} item${getSchemaNonTypes(error.parentSchema)}.`;
       case 'required': {
         const missingProperty = error.params.missingProperty.replace(/^\./, '');
         const hasProperty = Boolean(
@@ -781,7 +835,9 @@ class ValidationError extends Error {
             error.parentSchema.properties[missingProperty]
         );
 
-        return `${dataPath} misses the property '${missingProperty}'.${
+        return `${dataPath} misses the property '${missingProperty}'${getSchemaNonTypes(
+          error.parentSchema
+        )}.${
           hasProperty
             ? ` Should be:\n${this.getSchemaPartText(error.parentSchema, [
                 'properties',
@@ -793,7 +849,9 @@ class ValidationError extends Error {
       case 'additionalProperties':
         return `${dataPath} has an unknown property '${
           error.params.additionalProperty
-        }'. These properties are valid:\n${this.getSchemaPartText(
+        }'${getSchemaNonTypes(
+          error.parentSchema
+        )}. These properties are valid:\n${this.getSchemaPartText(
           error.parentSchema
         )}`;
       case 'dependencies': {
@@ -804,12 +862,16 @@ class ValidationError extends Error {
 
         return `${dataPath} should have properties ${dependencies} when property '${
           error.params.property
-        }' is present.${this.getSchemaPartDescription(error.parentSchema)}`;
+        }' is present${getSchemaNonTypes(
+          error.parentSchema
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       }
       case 'propertyNames': {
-        const invalidProperty = error.params.propertyName;
-
-        return `${dataPath} property name '${invalidProperty}' is invalid. Property names should be match format ${JSON.stringify(
+        return `${dataPath} property name '${
+          error.params.propertyName
+        }' is invalid${getSchemaNonTypes(
+          error.parentSchema
+        )}. Property names should be match format ${JSON.stringify(
           error.schema.format
         )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       }

@@ -3490,6 +3490,202 @@
           "type": "integer"
         }
       }
+    },
+    "noTypeLikeNumberMinimum": {
+      "minimum": 5
+    },
+    "noTypeLikeNumberMaximum": {
+      "maximum": 5
+    },
+    "noTypeLikeNumberExclusiveMinimum": {
+      "exclusiveMinimum": 5
+    },
+    "noTypeLikeNumberExclusiveMaximum": {
+      "exclusiveMaximum": 5
+    },
+    "minimumWithTypeNumber": {
+      "type": "number",
+      "minimum": 5
+    },
+    "maximumWithTypeNumber": {
+      "type": "number",
+      "maximum": 5
+    },
+    "exclusiveMinimumWithTypeNumber": {
+      "type": "number",
+      "minimum": 5
+    },
+    "exclusiveMaximumWithTypeNumber": {
+      "type": "number",
+      "maximum": 5
+    },
+    "noTypeLikeNumberMultipleOf": {
+      "multipleOf": 5
+    },
+    "multipleOfWithNumberType": {
+      "type": "number",
+      "multipleOf": 5
+    },
+    "noTypeLikeStringMinLength": {
+      "minLength": 2
+    },
+    "noTypeLikeStringMaxLength": {
+      "maxLength": 2
+    },
+    "stringWithMinLength": {
+      "type": "string",
+      "minLength": 2
+    },
+    "stringWithMaxLength": {
+      "type": "string",
+      "maxLength": 2
+    },
+    "noTypeLikeStringPattern": {
+      "pattern": "[abc]+"
+    },
+    "patternWithStringType" : {
+      "type": "string",
+      "pattern": "[abc]+"
+    },
+    "noTypeLikeStringFormat": {
+      "format": "date"
+    },
+    "stringWithFormat": {
+      "type": "string",
+      "format": "date"
+    },
+    "noTypeLikeStringFormatMaximum": {
+      "format": "date",
+      "formatMaximum": "2016-02-06",
+      "formatExclusiveMaximum": true
+    },
+    "stringWithFormatMaximum": {
+      "type": "string",
+      "format": "date",
+      "formatMaximum": "2016-02-06",
+      "formatExclusiveMaximum": true
+    },
+    "multipleInstanceof": {
+      "instanceof": ["Array", "Function"]
+    },
+    "noTypeLikeObjectPatternRequired": {
+      "patternRequired": [ "f.*o" ]
+    },
+    "objectWithPatternRequired": {
+      "type": "object",
+      "patternRequired": [ "f.*o" ]
+    },
+    "noTypeLikeStringMinLength1": {
+      "minLength": 1
+    },
+    "noTypeLikeArrayMinItems": {
+      "minItems": 2
+    },
+    "noTypeLikeArrayMinItems1": {
+      "minItems": 1
+    },
+    "arrayWithMinItems": {
+      "type": "array",
+      "minItems": 1
+    },
+    "noTypeMinProperties": {
+      "minProperties": 2
+    },
+    "noTypeMinProperties1": {
+      "minProperties": 1
+    },
+    "objectMinProperties": {
+      "type": "object",
+      "minProperties": 2
+    },
+    "noTypeLikeArrayMaxItems": {
+      "maxItems": 2
+    },
+    "arrayMaxItems": {
+      "type": "array",
+      "maxItems": 2
+    },
+    "noTypeLikeObjectMaxProperties": {
+      "maxProperties": 2
+    },
+    "objectMaxProperties": {
+      "type": "object",
+      "maxProperties": 2
+    },
+    "noTypeLikeArrayUniqueItems": {
+      "uniqueItems": true
+    },
+    "arrayWithUniqueItems": {
+      "type": "array",
+      "uniqueItems": true
+    },
+    "noTypeLikeArrayAdditionalItems": {
+      "items": [
+        { "type": "integer" },
+        { "type": "integer" }
+      ],
+      "additionalItems": false
+    },
+    "arrayWithAdditionalItems": {
+      "type": "array",
+      "items": [
+        { "type": "integer" },
+        { "type": "integer" }
+      ],
+      "additionalItems": false
+    },
+    "noTypeLikeArrayContains": {
+      "contains": {
+        "type": "integer"
+      }
+    },
+    "arrayWithContains": {
+      "type": "array",
+      "contains": {
+        "type": "integer"
+      }
+    },
+    "anyOfNoTypeInItem": {
+      "anyOf": [
+        { "maximum": 3 },
+        { "type": "integer" }
+      ]
+    },
+    "oneOfNoTypeInItem": {
+      "oneOf": [
+        { "maximum": 3 },
+        { "type": "integer" }
+      ]
+    },
+    "noTypeLikeObjectPropertyNames": {
+      "propertyNames": { "format": "email" }
+    },
+    "objectPropertyNames": {
+      "type": "object",
+      "propertyNames": { "format": "email" }
+    },
+    "noTypeLikeObjectDependencies": {
+      "dependencies": {
+        "foo": ["bar", "baz"]
+      }
+    },
+    "objectWithDependencies": {
+      "type": "object",
+      "dependencies": {
+        "foo": ["bar", "baz"]
+      }
+    },
+    "noTypeLikeObjectAdditionalProperties": {
+      "properties": {
+        "foo": { "type": "number" }
+      },
+      "patternProperties": {
+        "^.*r$": { "type": "number" }
+      },
+      "additionalProperties": false
+    },
+    "noTypeLikeObjectRequired":{
+      "required": ["a", "b"]
     }
   }
 }

@@ -224,6 +224,58 @@ describe('Validation', () => {
     notArray: 1,
   });
 
+  createSuccessTestCase('no type like number with minimum', {
+    noTypeLikeNumberMinimum: 6,
+  });
+
+  createSuccessTestCase('no type like number with minimum', {
+    noTypeLikeNumberMinimum: true,
+  });
+
+  createSuccessTestCase('no type like number with maximum', {
+    noTypeLikeNumberMaximum: 4,
+  });
+
+  createSuccessTestCase('no type like number with maximum', {
+    noTypeLikeNumberMaximum: true,
+  });
+
+  createSuccessTestCase('no type like number with minimum', {
+    noTypeLikeNumberExclusiveMinimum: 6,
+  });
+
+  createSuccessTestCase('no type like number with minimum', {
+    noTypeLikeNumberExclusiveMinimum: true,
+  });
+
+  createSuccessTestCase('no type like number with maximum', {
+    noTypeLikeNumberExclusiveMaximum: 4,
+  });
+
+  createSuccessTestCase('no type like number with maximum', {
+    noTypeLikeNumberExclusiveMaximum: true,
+  });
+
+  createSuccessTestCase('no type like number with multipleOf', {
+    noTypeLikeNumberMultipleOf: true,
+  });
+
+  createSuccessTestCase('no type like string with pattern', {
+    noTypeLikeStringPattern: 1,
+  });
+
+  createSuccessTestCase('no type like string with pattern #2', {
+    noTypeLikeStringPattern: 'a',
+  });
+
+  createSuccessTestCase('no type like string with MinLength equals 1', {
+    noTypeLikeStringMinLength1: 1,
+  });
+
+  createSuccessTestCase('no type like array with additionalItems', {
+    noTypeLikeArrayAdditionalItems: true,
+  });
+
   // The "name" option
   createFailedTestCase(
     'webpack name',
@@ -2329,6 +2381,390 @@ describe('Validation', () => {
     'not array less than 3 items',
     {
       notMaxItemsArray: [1, 2],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like number with minimum',
+    {
+      noTypeLikeNumberMinimum: 4,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like number with maximum',
+    {
+      noTypeLikeNumberMaximum: 6,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like number with exclusive minimum',
+    {
+      noTypeLikeNumberExclusiveMinimum: 4,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like number with exclusive maximum',
+    {
+      noTypeLikeNumberExclusiveMaximum: 6,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'minimum with type number',
+    {
+      minimumWithTypeNumber: 4,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'maximum with type number',
+    {
+      maximumWithTypeNumber: 6,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'exclusive minimum with type number',
+    {
+      exclusiveMinimumWithTypeNumber: 4,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'exclusive maximum with type number',
+    {
+      exclusiveMaximumWithTypeNumber: 6,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like number with multipleOf',
+    {
+      noTypeLikeNumberMultipleOf: 1,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'multipleOf with type number',
+    {
+      multipleOfWithNumberType: 1,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like string with minLength',
+    {
+      noTypeLikeStringMinLength: 'a',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like string with maxLength',
+    {
+      noTypeLikeStringMaxLength: 'aaa',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'minLength with type string',
+    {
+      stringWithMinLength: 'a',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'maxLength with type string',
+    {
+      stringWithMaxLength: 'aaa',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like string with pattern',
+    {
+      noTypeLikeStringPattern: 'def',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'pattern with type string',
+    {
+      patternWithStringType: 'def',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like string with format',
+    {
+      noTypeLikeStringFormat: 'abc',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'format with type string',
+    {
+      stringWithFormat: 'abc',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like string with formatMaximum',
+    {
+      noTypeLikeStringFormatMaximum: '2016-02-06',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'formatMaximum with type string',
+    {
+      stringWithFormatMaximum: '2016-02-06',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'multiple instanceof ',
+    {
+      multipleInstanceof: 'test',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like object with patternRequired',
+    {
+      noTypeLikeObjectPatternRequired: { bar: 2 },
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'patternRequired with type object',
+    {
+      objectWithPatternRequired: { bar: 2 },
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like string with minLength equals 1',
+    {
+      noTypeLikeStringMinLength1: '',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like array with minItems equals 1',
+    {
+      noTypeLikeArrayMinItems1: [],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like array with minItems',
+    {
+      noTypeLikeArrayMinItems: [],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'array with minItems',
+    {
+      arrayWithMinItems: [],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like array with minItems',
+    {
+      noTypeMinProperties: {},
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like array with minItems',
+    {
+      noTypeMinProperties1: {},
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like array with minItems',
+    {
+      objectMinProperties: {},
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like array with maxItems',
+    {
+      noTypeLikeArrayMaxItems: [1, 2, 3, 4],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'array with maxItems',
+    {
+      arrayMaxItems: [1, 2, 3, 4],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like object with maxProperties',
+    {
+      noTypeLikeObjectMaxProperties: { a: 1, b: 2, c: 3 },
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'object with maxProperties',
+    {
+      objectMaxProperties: { a: 1, b: 2, c: 3 },
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like object with maxProperties',
+    {
+      noTypeLikeArrayUniqueItems: [1, 2, 1],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'object with maxProperties',
+    {
+      arrayWithUniqueItems: [1, 2, 1],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like array with additionalItems',
+    {
+      noTypeLikeArrayAdditionalItems: [1, 1, 'foo'],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'array with additionalItems',
+    {
+      arrayWithAdditionalItems: [1, 1, 'foo'],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like array with contains',
+    {
+      noTypeLikeArrayContains: ['foo', 'bar'],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'array with contains',
+    {
+      arrayWithContains: ['foo', 'bar'],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'anyOf with item without type',
+    {
+      anyOfNoTypeInItem: 4.5,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'oneOf with item without type',
+    {
+      oneOfNoTypeInItem: 4.5,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like object propertyNames',
+    {
+      noTypeLikeObjectPropertyNames: { foo: 'any value' },
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'object dependencies',
+    {
+      objectPropertyNames: { foo: 'any value' },
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like object dependencies',
+    {
+      noTypeLikeObjectDependencies: { foo: 1, baz: 3 },
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'object dependencies',
+    {
+      objectWithDependencies: { foo: 1, baz: 3 },
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like object additionalProperties',
+    {
+      noTypeLikeObjectAdditionalProperties: { foo: 1, baz: 3 },
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like object required',
+    {
+      noTypeLikeObjectRequired: {},
     },
     (msg) => expect(msg).toMatchSnapshot()
   );
