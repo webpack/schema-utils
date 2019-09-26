@@ -223,22 +223,22 @@ function getArticle(type) {
   return 'a';
 }
 
-function getSchemaNonTypes(schema, before = ' | should be ') {
+function getSchemaNonTypes(schema) {
   if (!schema.type) {
     if (likeNumber(schema) || likeInteger(schema)) {
-      return `${before}any non-number`;
+      return ' | should be any non-number';
     }
 
     if (likeString(schema)) {
-      return `${before}any non-string`;
+      return ' | should be any non-string';
     }
 
     if (likeArray(schema)) {
-      return `${before}any non-array`;
+      return ' | should be any non-array';
     }
 
     if (likeObject(schema)) {
-      return `${before}any non-object`;
+      return ' | should be any non-object';
     }
   }
 
@@ -847,7 +847,9 @@ class ValidationError extends Error {
       case 'additionalProperties':
         return `${dataPath} has an unknown property '${
           error.params.additionalProperty
-        }'. These properties are valid:\n${this.getSchemaPartText(
+        }'${getSchemaNonTypes(
+          error.parentSchema
+        )}. These properties are valid:\n${this.getSchemaPartText(
           error.parentSchema
         )}`;
       case 'dependencies': {
@@ -856,24 +858,20 @@ class ValidationError extends Error {
           .map((dep) => `'${dep.trim()}'`)
           .join(', ');
 
-        const nonTypes = getSchemaNonTypes(error.parentSchema, ' can be ');
-
         return `${dataPath} should have properties ${dependencies} when property '${
           error.params.property
-        }' is present.${
-          nonTypes ? ` Value of property${nonTypes}.` : ''
-        }${this.getSchemaPartDescription(error.parentSchema)}`;
+        }' is present${getSchemaNonTypes(
+          error.parentSchema
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       }
       case 'propertyNames': {
-        const nonTypes = getSchemaNonTypes(error.parentSchema, ' can be ');
-
         return `${dataPath} property name '${
           error.params.propertyName
-        }' is invalid. Property names should be match format ${JSON.stringify(
+        }' is invalid${getSchemaNonTypes(
+          error.parentSchema
+        )}. Property names should be match format ${JSON.stringify(
           error.schema.format
-        )}.${
-          nonTypes ? ` Value of property${nonTypes}.` : ''
-        }${this.getSchemaPartDescription(error.parentSchema)}`;
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       }
       case 'enum': {
         if (

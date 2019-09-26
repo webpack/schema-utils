@@ -2752,4 +2752,12 @@ describe('Validation', () => {
     },
     (msg) => expect(msg).toMatchSnapshot()
   );
+
+  createFailedTestCase(
+    'no type like object additionalProperties',
+    {
+      noTypeLikeObjectAdditionalProperties: { foo: 1, baz: 3 },
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
 });

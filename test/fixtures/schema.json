@@ -3674,6 +3674,15 @@
       "dependencies": {
         "foo": ["bar", "baz"]
       }
+    },
+    "noTypeLikeObjectAdditionalProperties": {
+      "properties": {
+        "foo": { "type": "number" }
+      },
+      "patternProperties": {
+        "^.*r$": { "type": "number" }
+      },
+      "additionalProperties": false
     }
   }
 }
