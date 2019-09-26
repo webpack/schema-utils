@@ -228,6 +228,10 @@ function getSchemaNonTypes(schema) {
     if (likeNumber(schema)) {
       return ' | should be any non-number';
     }
+
+    if (likeString(schema)) {
+      return ' | should be any non-string';
+    }
   }
 
   return '';
@@ -697,18 +701,22 @@ class ValidationError extends Error {
       case 'pattern':
         return `${dataPath} should match pattern ${JSON.stringify(
           error.params.pattern
+        )}${getSchemaNonTypes(
+          error.parentSchema
         )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       case 'format':
         return `${dataPath} should match format ${JSON.stringify(
           error.params.format
+        )}${getSchemaNonTypes(
+          error.parentSchema
         )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       case 'formatMinimum':
       case 'formatMaximum':
         return `${dataPath} should be ${
           error.params.comparison
-        } ${JSON.stringify(error.params.limit)}.${this.getSchemaPartDescription(
+        } ${JSON.stringify(error.params.limit)}${getSchemaNonTypes(
           error.parentSchema
-        )}`;
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       case 'minimum':
       case 'maximum':
       case 'exclusiveMinimum':
@@ -737,7 +745,9 @@ class ValidationError extends Error {
 
         return `${dataPath} should not be shorter than ${
           error.params.limit
-        } characters.${this.getSchemaPartDescription(error.parentSchema)}`;
+        } characters${getSchemaNonTypes(
+          error.parentSchema
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       }
       case 'minItems': {
         if (error.params.limit === 1) {
@@ -764,7 +774,9 @@ class ValidationError extends Error {
       case 'maxLength':
         return `${dataPath} should not be longer than ${
           error.params.limit
-        } characters.${this.getSchemaPartDescription(error.parentSchema)}`;
+        } characters${getSchemaNonTypes(
+          error.parentSchema
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       case 'maxItems':
         return `${dataPath} should not have more than ${
           error.params.limit

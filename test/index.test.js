@@ -260,6 +260,14 @@ describe('Validation', () => {
     noTypeLikeNumberMultipleOf: true,
   });
 
+  createSuccessTestCase('no type like string with pattern', {
+    noTypeLikeStringPattern: 1,
+  });
+
+  createSuccessTestCase('no type like string with pattern #2', {
+    noTypeLikeStringPattern: 'a',
+  });
+
   // The "name" option
   createFailedTestCase(
     'webpack name',
@@ -2445,6 +2453,86 @@ describe('Validation', () => {
     'multipleOf with type number',
     {
       multipleOfWithNumberType: 1,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like string with minLength',
+    {
+      noTypeLikeStringMinLength: 'a',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like string with maxLength',
+    {
+      noTypeLikeStringMaxLength: 'aaa',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'minLength with type string',
+    {
+      stringWithMinLength: 'a',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'maxLength with type string',
+    {
+      stringWithMaxLength: 'aaa',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like string with pattern',
+    {
+      noTypeLikeStringPattern: 'def',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'pattern with type string',
+    {
+      patternWithStringType: 'def',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like string with format',
+    {
+      noTypeLikeStringFormat: 'abc',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'format with type string',
+    {
+      stringWithFormat: 'abc',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like string with formatMaximum',
+    {
+      noTypeLikeStringFormatMaximum: '2016-02-06',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'formatMaximum with type string',
+    {
+      stringWithFormatMaximum: '2016-02-06',
     },
     (msg) => expect(msg).toMatchSnapshot()
   );

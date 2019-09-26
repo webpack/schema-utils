@@ -3525,6 +3525,45 @@
     "multipleOfWithNumberType": {
       "type": "number",
       "multipleOf": 5
+    },
+    "noTypeLikeStringMinLength": {
+      "minLength": 2
+    },
+    "noTypeLikeStringMaxLength": {
+      "maxLength": 2
+    },
+    "stringWithMinLength": {
+      "type": "string",
+      "minLength": 2
+    },
+    "stringWithMaxLength": {
+      "type": "string",
+      "maxLength": 2
+    },
+    "noTypeLikeStringPattern": {
+      "pattern": "[abc]+"
+    },
+    "patternWithStringType" : {
+      "type": "string",
+      "pattern": "[abc]+"
+    },
+    "noTypeLikeStringFormat": {
+      "format": "date"
+    },
+    "stringWithFormat": {
+      "type": "string",
+      "format": "date"
+    },
+    "noTypeLikeStringFormatMaximum": {
+      "format": "date",
+      "formatMaximum": "2016-02-06",
+      "formatExclusiveMaximum": true
+    },
+    "stringWithFormatMaximum": {
+      "type": "string",
+      "format": "date",
+      "formatMaximum": "2016-02-06",
+      "formatExclusiveMaximum": true
     }
   }
 }
