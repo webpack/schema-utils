@@ -835,7 +835,9 @@ class ValidationError extends Error {
             error.parentSchema.properties[missingProperty]
         );
 
-        return `${dataPath} misses the property '${missingProperty}'.${
+        return `${dataPath} misses the property '${missingProperty}'${getSchemaNonTypes(
+          error.parentSchema
+        )}.${
           hasProperty
             ? ` Should be:\n${this.getSchemaPartText(error.parentSchema, [
                 'properties',

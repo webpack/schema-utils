@@ -3683,6 +3683,9 @@
         "^.*r$": { "type": "number" }
       },
       "additionalProperties": false
+    },
+    "noTypeLikeObjectRequired":{
+      "required": ["a", "b"]
     }
   }
 }

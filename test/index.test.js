@@ -2760,4 +2760,12 @@ describe('Validation', () => {
     },
     (msg) => expect(msg).toMatchSnapshot()
   );
+
+  createFailedTestCase(
+    'no type like object required',
+    {
+      noTypeLikeObjectRequired: {},
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
 });
