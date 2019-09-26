@@ -3644,6 +3644,18 @@
       "contains": {
         "type": "integer"
       }
+    },
+    "anyOfNoTypeInItem": {
+      "anyOf": [
+        { "maximum": 3 },
+        { "type": "integer" }
+      ]
+    },
+    "oneOfNoTypeInItem": {
+      "oneOf": [
+        { "maximum": 3 },
+        { "type": "integer" }
+      ]
     }
   }
 }

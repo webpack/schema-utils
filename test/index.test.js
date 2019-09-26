@@ -2704,4 +2704,20 @@ describe('Validation', () => {
     },
     (msg) => expect(msg).toMatchSnapshot()
   );
+
+  createFailedTestCase(
+    'anyOf with item without type',
+    {
+      anyOfNoTypeInItem: 4.5,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'oneOf with item without type',
+    {
+      oneOfNoTypeInItem: 4.5,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
 });
