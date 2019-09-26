@@ -35,7 +35,6 @@
     "dist"
   ],
   "dependencies": {
-    "@types/json-schema": "^7.0.3",
     "ajv": "^6.10.2",
     "ajv-keywords": "^3.4.1"
   },
@@ -45,6 +44,7 @@
     "@babel/preset-env": "^7.5.5",
     "@commitlint/cli": "^8.0.0",
     "@commitlint/config-conventional": "^8.0.0",
+    "@types/json-schema": "^7.0.3",
     "@webpack-contrib/defaults": "^5.0.2",
     "@webpack-contrib/eslint-config-webpack": "^3.0.0",
     "babel-jest": "^24.9.0",
