@@ -3611,6 +3611,13 @@
     "objectMaxProperties": {
       "type": "object",
       "maxProperties": 2
+    },
+    "noTypeLikeArrayUniqueItems": {
+      "uniqueItems": true
+    },
+    "arrayWithUniqueItems": {
+      "type": "array",
+      "uniqueItems": true
     }
   }
 }

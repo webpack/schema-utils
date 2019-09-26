@@ -812,7 +812,9 @@ class ValidationError extends Error {
       case 'uniqueItems':
         return `${dataPath} should not contain the item '${
           error.data[error.params.i]
-        }' twice.${this.getSchemaPartDescription(error.parentSchema)}`;
+        }' twice${getSchemaNonTypes(
+          error.parentSchema
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       case 'additionalItems':
         return `${dataPath} should not have more than ${
           error.params.limit
