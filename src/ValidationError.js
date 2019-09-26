@@ -223,6 +223,16 @@ function getArticle(type) {
   return 'a';
 }
 
+function getSchemaNonTypes(schema) {
+  if (!schema.type) {
+    if (likeNumber(schema)) {
+      return ' | should be any non-number';
+    }
+  }
+
+  return '';
+}
+
 class ValidationError extends Error {
   constructor(errors, schema, configuration = {}) {
     super();
@@ -705,11 +715,15 @@ class ValidationError extends Error {
       case 'exclusiveMaximum':
         return `${dataPath} should be ${error.params.comparison} ${
           error.params.limit
-        }.${this.getSchemaPartDescription(error.parentSchema)}`;
+        }${getSchemaNonTypes(
+          error.parentSchema
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       case 'multipleOf':
         return `${dataPath} should be multiple of ${
           error.params.multipleOf
-        }.${this.getSchemaPartDescription(error.parentSchema)}`;
+        }${getSchemaNonTypes(
+          error.parentSchema
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       case 'patternRequired':
         return `${dataPath} should have property matching pattern ${JSON.stringify(
           error.params.missingPattern

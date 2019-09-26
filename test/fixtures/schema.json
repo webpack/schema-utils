@@ -3490,6 +3490,41 @@
           "type": "integer"
         }
       }
+    },
+    "noTypeLikeNumberMinimum": {
+      "minimum": 5
+    },
+    "noTypeLikeNumberMaximum": {
+      "maximum": 5
+    },
+    "noTypeLikeNumberExclusiveMinimum": {
+      "exclusiveMinimum": 5
+    },
+    "noTypeLikeNumberExclusiveMaximum": {
+      "exclusiveMaximum": 5
+    },
+    "minimumWithTypeNumber": {
+      "type": "number",
+      "minimum": 5
+    },
+    "maximumWithTypeNumber": {
+      "type": "number",
+      "maximum": 5
+    },
+    "exclusiveMinimumWithTypeNumber": {
+      "type": "number",
+      "minimum": 5
+    },
+    "exclusiveMaximumWithTypeNumber": {
+      "type": "number",
+      "maximum": 5
+    },
+    "noTypeLikeNumberMultipleOf": {
+      "multipleOf": 5
+    },
+    "multipleOfWithNumberType": {
+      "type": "number",
+      "multipleOf": 5
     }
   }
 }

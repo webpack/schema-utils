@@ -224,6 +224,42 @@ describe('Validation', () => {
     notArray: 1,
   });
 
+  createSuccessTestCase('no type like number with minimum', {
+    noTypeLikeNumberMinimum: 6,
+  });
+
+  createSuccessTestCase('no type like number with minimum', {
+    noTypeLikeNumberMinimum: true,
+  });
+
+  createSuccessTestCase('no type like number with maximum', {
+    noTypeLikeNumberMaximum: 4,
+  });
+
+  createSuccessTestCase('no type like number with maximum', {
+    noTypeLikeNumberMaximum: true,
+  });
+
+  createSuccessTestCase('no type like number with minimum', {
+    noTypeLikeNumberExclusiveMinimum: 6,
+  });
+
+  createSuccessTestCase('no type like number with minimum', {
+    noTypeLikeNumberExclusiveMinimum: true,
+  });
+
+  createSuccessTestCase('no type like number with maximum', {
+    noTypeLikeNumberExclusiveMaximum: 4,
+  });
+
+  createSuccessTestCase('no type like number with maximum', {
+    noTypeLikeNumberExclusiveMaximum: true,
+  });
+
+  createSuccessTestCase('no type like number with multipleOf', {
+    noTypeLikeNumberMultipleOf: true,
+  });
+
   // The "name" option
   createFailedTestCase(
     'webpack name',
@@ -2329,6 +2365,86 @@ describe('Validation', () => {
     'not array less than 3 items',
     {
       notMaxItemsArray: [1, 2],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like number with minimum',
+    {
+      noTypeLikeNumberMinimum: 4,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like number with maximum',
+    {
+      noTypeLikeNumberMaximum: 6,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like number with exclusive minimum',
+    {
+      noTypeLikeNumberExclusiveMinimum: 4,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like number with exclusive maximum',
+    {
+      noTypeLikeNumberExclusiveMaximum: 6,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'minimum with type number',
+    {
+      minimumWithTypeNumber: 4,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'maximum with type number',
+    {
+      maximumWithTypeNumber: 6,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'exclusive minimum with type number',
+    {
+      exclusiveMinimumWithTypeNumber: 4,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'exclusive maximum with type number',
+    {
+      exclusiveMaximumWithTypeNumber: 6,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like number with multipleOf',
+    {
+      noTypeLikeNumberMultipleOf: 1,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'multipleOf with type number',
+    {
+      multipleOfWithNumberType: 1,
     },
     (msg) => expect(msg).toMatchSnapshot()
   );
