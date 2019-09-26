@@ -3686,6 +3686,23 @@
     },
     "noTypeLikeObjectRequired":{
       "required": ["a", "b"]
+    },
+    "dollarData": {
+      "type": "object",
+      "properties": {
+        "smaller": {
+          "type": "number",
+          "maximum": { "$data": "1/larger" }
+        },
+        "larger": { "type": "number" }
+      }
+    },
+    "dollarData2": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "format": { "$data": "0#" }
+      }
     }
   }
 }
