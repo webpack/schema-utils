@@ -8,6 +8,7 @@ import ValidationError from './ValidationError';
 const ajv = new Ajv({
   allErrors: true,
   verbose: true,
+  $data: true,
 });
 
 ajvKeywords(ajv, [

@@ -276,6 +276,13 @@ describe('Validation', () => {
     noTypeLikeArrayAdditionalItems: true,
   });
 
+  createSuccessTestCase('$data', {
+    dollarData: {
+      smaller: 5,
+      larger: 7,
+    },
+  });
+
   // The "name" option
   createFailedTestCase(
     'webpack name',
@@ -2765,6 +2772,28 @@ describe('Validation', () => {
     'no type like object required',
     {
       noTypeLikeObjectRequired: {},
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    '$data',
+    {
+      dollarData: {
+        smaller: 5,
+        larger: 4,
+      },
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    '$data #2',
+    {
+      dollarData2: {
+        'date-time': '1',
+        email: 'joe.bloggs@example.com',
+      },
     },
     (msg) => expect(msg).toMatchSnapshot()
   );
