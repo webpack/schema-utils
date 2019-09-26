@@ -780,14 +780,16 @@ class ValidationError extends Error {
       }
       case 'minProperties': {
         if (error.params.limit === 1) {
-          return `${dataPath} should be an non-empty object.${this.getSchemaPartDescription(
+          return `${dataPath} should be an non-empty object${getSchemaNonTypes(
             error.parentSchema
-          )}`;
+          )}.${this.getSchemaPartDescription(error.parentSchema)}`;
         }
 
         return `${dataPath} should not have fewer than ${
           error.params.limit
-        } properties.${this.getSchemaPartDescription(error.parentSchema)}`;
+        } properties${getSchemaNonTypes(
+          error.parentSchema
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       }
       case 'maxLength':
         return `${dataPath} should not be longer than ${

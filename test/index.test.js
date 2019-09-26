@@ -2596,4 +2596,28 @@ describe('Validation', () => {
     },
     (msg) => expect(msg).toMatchSnapshot()
   );
+
+  createFailedTestCase(
+    'no type like array with minItems',
+    {
+      noTypeMinProperties: {},
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like array with minItems',
+    {
+      noTypeMinProperties1: {},
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like array with minItems',
+    {
+      objectMinProperties: {},
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
 });
