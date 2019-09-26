@@ -3567,6 +3567,13 @@
     },
     "multipleInstanceof": {
       "instanceof": ["Array", "Function"]
+    },
+    "noTypeLikeObjectPatternRequired": {
+      "patternRequired": [ "f.*o" ]
+    },
+    "objectWithPatternRequired": {
+      "type": "object",
+      "patternRequired": [ "f.*o" ]
     }
   }
 }

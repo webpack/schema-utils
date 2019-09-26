@@ -232,6 +232,10 @@ function getSchemaNonTypes(schema) {
     if (likeString(schema)) {
       return ' | should be any non-string';
     }
+
+    if (likeObject(schema)) {
+      return ' | should be any non-object';
+    }
   }
 
   return '';
@@ -741,6 +745,8 @@ class ValidationError extends Error {
       case 'patternRequired':
         return `${dataPath} should have property matching pattern ${JSON.stringify(
           error.params.missingPattern
+        )}${getSchemaNonTypes(
+          error.parentSchema
         )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       case 'minLength': {
         if (error.params.limit === 1) {
