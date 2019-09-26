@@ -8,6 +8,7 @@
   "homepage": "https://github.com/webpack/schema-utils",
   "bugs": "https://github.com/webpack/schema-utils/issues",
   "main": "dist/index.js",
+  "types": "index.d.ts",
   "engines": {
     "node": ">= 8.9.0"
   },
@@ -43,6 +44,7 @@
     "@babel/preset-env": "^7.6.2",
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-conventional": "^8.2.0",
+    "@types/json-schema": "^7.0.3",
     "@webpack-contrib/defaults": "^5.0.2",
     "@webpack-contrib/eslint-config-webpack": "^3.0.0",
     "babel-jest": "^24.9.0",
