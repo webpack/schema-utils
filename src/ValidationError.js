@@ -294,12 +294,18 @@ class ValidationError extends Error {
       return `non ${formatInnerSchema(schema.not)}`;
     }
 
-    // eslint-disable-next-line default-case
-    switch (schema.instanceof) {
-      case 'Function':
-        return 'function';
-      case 'RegExp':
-        return 'RegExp';
+    if (schema.instanceof) {
+      if (Array.isArray(schema.instanceof)) {
+        return schema.instanceof.map(formatInnerSchema).join(' | ');
+      }
+
+      // eslint-disable-next-line default-case
+      switch (schema.instanceof) {
+        case 'Function':
+          return 'function';
+        case 'RegExp':
+          return 'RegExp';
+      }
     }
 
     if (schema.enum) {

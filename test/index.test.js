@@ -2536,4 +2536,12 @@ describe('Validation', () => {
     },
     (msg) => expect(msg).toMatchSnapshot()
   );
+
+  createFailedTestCase(
+    'multiple instanceof ',
+    {
+      multipleInstanceof: 'test',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
 });
