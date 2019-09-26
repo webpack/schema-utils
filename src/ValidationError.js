@@ -806,7 +806,9 @@ class ValidationError extends Error {
       case 'maxProperties':
         return `${dataPath} should not have more than ${
           error.params.limit
-        } properties.${this.getSchemaPartDescription(error.parentSchema)}`;
+        } properties${getSchemaNonTypes(
+          error.parentSchema
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       case 'uniqueItems':
         return `${dataPath} should not contain the item '${
           error.data[error.params.i]

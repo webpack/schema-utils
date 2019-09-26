@@ -2636,4 +2636,20 @@ describe('Validation', () => {
     },
     (msg) => expect(msg).toMatchSnapshot()
   );
+
+  createFailedTestCase(
+    'no type like object with maxProperties',
+    {
+      noTypeLikeObjectMaxProperties: { a: 1, b: 2, c: 3 },
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'object with maxProperties',
+    {
+      objectMaxProperties: { a: 1, b: 2, c: 3 },
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
 });

@@ -3604,6 +3604,13 @@
     "arrayMaxItems": {
       "type": "array",
       "maxItems": 2
+    },
+    "noTypeLikeObjectMaxProperties": {
+      "maxProperties": 2
+    },
+    "objectMaxProperties": {
+      "type": "object",
+      "maxProperties": 2
     }
   }
 }
