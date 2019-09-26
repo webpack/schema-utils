@@ -276,6 +276,10 @@ class ValidationError extends Error {
       return this.formatSchema(innerSchema, prevSchemas.concat(schema));
     };
 
+    if (schema.not && !likeObject(schema)) {
+      return `non ${formatInnerSchema(schema.not)}`;
+    }
+
     // eslint-disable-next-line default-case
     switch (schema.instanceof) {
       case 'Function':
@@ -830,6 +834,14 @@ class ValidationError extends Error {
         return `${dataPath} should be equal to constant ${this.getSchemaPartText(
           error.parentSchema
         )}`;
+      case 'not':
+        return `${dataPath} should not be ${this.getSchemaPartText(
+          error.schema
+        )}${
+          likeObject(error.parentSchema)
+            ? `\n${this.getSchemaPartText(error.parentSchema)}`
+            : ''
+        }`;
       case 'oneOf':
       case 'anyOf': {
         if (error.children && error.children.length > 0) {

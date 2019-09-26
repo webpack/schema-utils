@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.3.0](https://github.com/webpack/schema-utils/compare/v2.2.0...v2.3.0) (2019-09-26)
+
+
+### Features
+
+* support `not` keyword ([#53](https://github.com/webpack/schema-utils/issues/53)) ([765f458](https://github.com/webpack/schema-utils/commit/765f458))
+
 ## [2.2.0](https://github.com/webpack/schema-utils/compare/v2.1.0...v2.2.0) (2019-09-02)
 
 
