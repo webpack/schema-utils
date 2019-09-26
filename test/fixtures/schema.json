@@ -3659,6 +3659,21 @@
     },
     "noTypeLikeObjectPropertyNames": {
       "propertyNames": { "format": "email" }
+    },
+    "objectPropertyNames": {
+      "type": "object",
+      "propertyNames": { "format": "email" }
+    },
+    "noTypeLikeObjectDependencies": {
+      "dependencies": {
+        "foo": ["bar", "baz"]
+      }
+    },
+    "objectWithDependencies": {
+      "type": "object",
+      "dependencies": {
+        "foo": ["bar", "baz"]
+      }
     }
   }
 }

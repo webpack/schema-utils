@@ -2728,4 +2728,28 @@ describe('Validation', () => {
     },
     (msg) => expect(msg).toMatchSnapshot()
   );
+
+  createFailedTestCase(
+    'object dependencies',
+    {
+      objectPropertyNames: { foo: 'any value' },
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like object dependencies',
+    {
+      noTypeLikeObjectDependencies: { foo: 1, baz: 3 },
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'object dependencies',
+    {
+      objectWithDependencies: { foo: 1, baz: 3 },
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
 });

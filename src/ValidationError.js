@@ -856,19 +856,24 @@ class ValidationError extends Error {
           .map((dep) => `'${dep.trim()}'`)
           .join(', ');
 
+        const nonTypes = getSchemaNonTypes(error.parentSchema, ' can be ');
+
         return `${dataPath} should have properties ${dependencies} when property '${
           error.params.property
-        }' is present.${this.getSchemaPartDescription(error.parentSchema)}`;
+        }' is present.${
+          nonTypes ? ` Value of property${nonTypes}.` : ''
+        }${this.getSchemaPartDescription(error.parentSchema)}`;
       }
       case 'propertyNames': {
+        const nonTypes = getSchemaNonTypes(error.parentSchema, ' can be ');
+
         return `${dataPath} property name '${
           error.params.propertyName
         }' is invalid. Property names should be match format ${JSON.stringify(
           error.schema.format
-        )}. Value${getSchemaNonTypes(
-          error.parentSchema,
-          ' can be '
-        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
+        )}.${
+          nonTypes ? ` Value of property${nonTypes}.` : ''
+        }${this.getSchemaPartDescription(error.parentSchema)}`;
       }
       case 'enum': {
         if (
