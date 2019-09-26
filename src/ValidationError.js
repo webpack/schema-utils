@@ -750,9 +750,9 @@ class ValidationError extends Error {
         )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       case 'minLength': {
         if (error.params.limit === 1) {
-          return `${dataPath} should be an non-empty string.${this.getSchemaPartDescription(
+          return `${dataPath} should be an non-empty string${getSchemaNonTypes(
             error.parentSchema
-          )}`;
+          )}.${this.getSchemaPartDescription(error.parentSchema)}`;
         }
 
         return `${dataPath} should not be shorter than ${

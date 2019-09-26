@@ -268,6 +268,10 @@ describe('Validation', () => {
     noTypeLikeStringPattern: 'a',
   });
 
+  createSuccessTestCase('no type like string with MinLength equals 1', {
+    noTypeLikeStringMinLength1: 1,
+  });
+
   // The "name" option
   createFailedTestCase(
     'webpack name',
@@ -2557,6 +2561,14 @@ describe('Validation', () => {
     'patternRequired with type object',
     {
       objectWithPatternRequired: { bar: 2 },
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like string with MinLength equals 1',
+    {
+      noTypeLikeStringMinLength1: '',
     },
     (msg) => expect(msg).toMatchSnapshot()
   );

@@ -3574,6 +3574,9 @@
     "objectWithPatternRequired": {
       "type": "object",
       "patternRequired": [ "f.*o" ]
+    },
+    "noTypeLikeStringMinLength1": {
+      "minLength": 1
     }
   }
 }
