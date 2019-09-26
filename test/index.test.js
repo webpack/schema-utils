@@ -2720,4 +2720,12 @@ describe('Validation', () => {
     },
     (msg) => expect(msg).toMatchSnapshot()
   );
+
+  createFailedTestCase(
+    'no type like object propertyNames',
+    {
+      noTypeLikeObjectPropertyNames: { foo: 'any value' },
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
 });

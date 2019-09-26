@@ -3656,6 +3656,9 @@
         { "maximum": 3 },
         { "type": "integer" }
       ]
+    },
+    "noTypeLikeObjectPropertyNames": {
+      "propertyNames": { "format": "email" }
     }
   }
 }

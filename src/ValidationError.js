@@ -223,22 +223,22 @@ function getArticle(type) {
   return 'a';
 }
 
-function getSchemaNonTypes(schema) {
+function getSchemaNonTypes(schema, before = ' | should be ') {
   if (!schema.type) {
     if (likeNumber(schema) || likeInteger(schema)) {
-      return ' | should be any non-number';
+      return `${before}any non-number`;
     }
 
     if (likeString(schema)) {
-      return ' | should be any non-string';
+      return `${before}any non-string`;
     }
 
     if (likeArray(schema)) {
-      return ' | should be any non-array';
+      return `${before}any non-array`;
     }
 
     if (likeObject(schema)) {
-      return ' | should be any non-object';
+      return `${before}any non-object`;
     }
   }
 
@@ -861,10 +861,13 @@ class ValidationError extends Error {
         }' is present.${this.getSchemaPartDescription(error.parentSchema)}`;
       }
       case 'propertyNames': {
-        const invalidProperty = error.params.propertyName;
-
-        return `${dataPath} property name '${invalidProperty}' is invalid. Property names should be match format ${JSON.stringify(
+        return `${dataPath} property name '${
+          error.params.propertyName
+        }' is invalid. Property names should be match format ${JSON.stringify(
           error.schema.format
+        )}. Value${getSchemaNonTypes(
+          error.parentSchema,
+          ' can be '
         )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       }
       case 'enum': {
