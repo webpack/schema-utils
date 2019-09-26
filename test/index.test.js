@@ -272,6 +272,10 @@ describe('Validation', () => {
     noTypeLikeStringMinLength1: 1,
   });
 
+  createSuccessTestCase('no type like array with additionalItems', {
+    arrayNoTypeAdditionalItems: true,
+  });
+
   // The "name" option
   createFailedTestCase(
     'webpack name',
@@ -2665,6 +2669,22 @@ describe('Validation', () => {
     'object with maxProperties',
     {
       arrayWithUniqueItems: [1, 2, 1],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like array with additionalItems',
+    {
+      arrayNoTypeAdditionalItems: [1, 1, 'foo'],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'array with additionalItems',
+    {
+      arrayWithAdditionalItems: [1, 1, 'foo'],
     },
     (msg) => expect(msg).toMatchSnapshot()
   );

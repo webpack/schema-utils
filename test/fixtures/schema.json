@@ -3618,6 +3618,21 @@
     "arrayWithUniqueItems": {
       "type": "array",
       "uniqueItems": true
+    },
+    "arrayNoTypeAdditionalItems": {
+      "items": [
+        { "type": "integer" },
+        { "type": "integer" }
+      ],
+      "additionalItems": false
+    },
+    "arrayWithAdditionalItems": {
+      "type": "array",
+      "items": [
+        { "type": "integer" },
+        { "type": "integer" }
+      ],
+      "additionalItems": false
     }
   }
 }

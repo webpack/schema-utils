@@ -818,7 +818,9 @@ class ValidationError extends Error {
       case 'additionalItems':
         return `${dataPath} should not have more than ${
           error.params.limit
-        } items. These items are valid:\n${this.getSchemaPartText(
+        } items${getSchemaNonTypes(
+          error.parentSchema
+        )}. These items are valid:\n${this.getSchemaPartText(
           error.parentSchema
         )}`;
       case 'contains':
