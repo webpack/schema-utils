@@ -3619,7 +3619,7 @@
       "type": "array",
       "uniqueItems": true
     },
-    "arrayNoTypeAdditionalItems": {
+    "noTypeLikeArrayAdditionalItems": {
       "items": [
         { "type": "integer" },
         { "type": "integer" }
@@ -3633,6 +3633,17 @@
         { "type": "integer" }
       ],
       "additionalItems": false
+    },
+    "noTypeLikeArrayContains": {
+      "contains": {
+        "type": "integer"
+      }
+    },
+    "arrayWithContains": {
+      "type": "array",
+      "contains": {
+        "type": "integer"
+      }
     }
   }
 }

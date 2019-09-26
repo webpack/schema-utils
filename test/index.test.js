@@ -273,7 +273,7 @@ describe('Validation', () => {
   });
 
   createSuccessTestCase('no type like array with additionalItems', {
-    arrayNoTypeAdditionalItems: true,
+    noTypeLikeArrayAdditionalItems: true,
   });
 
   // The "name" option
@@ -2676,7 +2676,7 @@ describe('Validation', () => {
   createFailedTestCase(
     'no type like array with additionalItems',
     {
-      arrayNoTypeAdditionalItems: [1, 1, 'foo'],
+      noTypeLikeArrayAdditionalItems: [1, 1, 'foo'],
     },
     (msg) => expect(msg).toMatchSnapshot()
   );
@@ -2685,6 +2685,22 @@ describe('Validation', () => {
     'array with additionalItems',
     {
       arrayWithAdditionalItems: [1, 1, 'foo'],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like array with contains',
+    {
+      noTypeLikeArrayContains: ['foo', 'bar'],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'array with contains',
+    {
+      arrayWithContains: ['foo', 'bar'],
     },
     (msg) => expect(msg).toMatchSnapshot()
   );

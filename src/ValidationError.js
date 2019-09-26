@@ -827,7 +827,7 @@ class ValidationError extends Error {
         return `${dataPath} should contains at least one ${this.getSchemaPartText(
           error.parentSchema,
           ['contains']
-        )} item.`;
+        )} item${getSchemaNonTypes(error.parentSchema)}.`;
       case 'required': {
         const missingProperty = error.params.missingProperty.replace(/^\./, '');
         const hasProperty = Boolean(
