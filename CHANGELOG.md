@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.4.0](https://github.com/webpack/schema-utils/compare/v2.3.0...v2.4.0) (2019-09-26)
+
+
+### Features
+
+* better errors when the `type` keyword doesn't exist ([0988be2](https://github.com/webpack/schema-utils/commit/0988be2))
+* support $data reference ([#56](https://github.com/webpack/schema-utils/issues/56)) ([d2f11d6](https://github.com/webpack/schema-utils/commit/d2f11d6))
+* types definitions ([#52](https://github.com/webpack/schema-utils/issues/52)) ([facb431](https://github.com/webpack/schema-utils/commit/facb431))
+
 ## [2.3.0](https://github.com/webpack/schema-utils/compare/v2.2.0...v2.3.0) (2019-09-26)
 
 
