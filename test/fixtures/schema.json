@@ -772,6 +772,32 @@
                 }
               }
             ]
+          },
+          "not": {
+            "description": "Using the cacheGroup shorthand syntax with a cache group named 'test' is a potential config error\nDid you intent to define a cache group with a test instead?\ncacheGroups: {\n  <name>: {\n    test: ...\n  }\n}",
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "test": {
+                "description": "The test property is a cache group name, but using the test option of the cache group could be intended instead",
+                "anyOf": [
+                  {
+                    "instanceof": "Function",
+                    "tsType": "Function"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "instanceof": "RegExp",
+                    "tsType": "RegExp"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "test"
+            ]
           }
         },
         "chunks": {
@@ -3390,6 +3416,80 @@
     "nonEmptyObject2": {
       "type": "object",
       "additionalProperties": true
+    },
+    "notEnum": {
+      "not": {
+        "enum": [ 2, "foo", {"foo": "bar" }, [1, 2, 3] ]
+      }
+    },
+    "notConst": {
+      "not": {
+        "const": "foo"
+      }
+    },
+    "notNumber": {
+      "not": {
+        "type": "number"
+      }
+    },
+    "notInteger": {
+      "not": {
+        "type": "integer"
+      }
+    },
+    "notString": {
+      "not": {
+        "type": "string"
+      }
+    },
+    "notBoolean": {
+      "not": {
+        "type": "boolean"
+      }
+    },
+    "notArray": {
+      "not": {
+        "type": "array"
+      }
+    },
+    "notObject": {
+      "not": {
+        "type": "object"
+      }
+    },
+    "notNull": {
+      "not": {
+        "type": "null"
+      }
+    },
+    "notNotNull": {
+      "not": {
+        "not": {
+          "type": "null"
+        }
+      }
+    },
+    "NotNotNotNull": {
+      "not": {
+        "not": {
+          "not": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    "notMultipleTypes": {
+      "not": {
+        "type": ["number", "string"]
+      }
+    },
+    "notMaxItemsArray": {
+      "not": {
+        "type": "array",
+        "items": {
+          "type": "integer"
+        }
+      }
     }
   }
 }

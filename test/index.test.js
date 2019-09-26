@@ -220,6 +220,10 @@ describe('Validation', () => {
     },
   });
 
+  createSuccessTestCase('not array', {
+    notArray: 1,
+  });
+
   // The "name" option
   createFailedTestCase(
     'webpack name',
@@ -2208,6 +2212,124 @@ describe('Validation', () => {
         mode: 'development',
       },
     ],
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'missing cache group name',
+    {
+      optimization: {
+        splitChunks: {
+          cacheGroups: {
+            test: /abc/,
+          },
+        },
+      },
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'not enum',
+    {
+      notEnum: 2,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'not const',
+    {
+      notConst: 'foo',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'not number',
+    {
+      notNumber: 1,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'not integer',
+    {
+      notNumber: 1,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'not string',
+    {
+      notString: 'test',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'not boolean',
+    {
+      notBoolean: true,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'not array',
+    {
+      notArray: [1, 2, 3],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'not object',
+    {
+      notObject: { foo: 'test' },
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'not null',
+    {
+      notNull: null,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'not not null',
+    {
+      notNotNull: 1,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'not not not null',
+    {
+      NotNotNotNull: null,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'not not not null',
+    {
+      notMultipleTypes: 1,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'not array less than 3 items',
+    {
+      notMaxItemsArray: [1, 2],
+    },
     (msg) => expect(msg).toMatchSnapshot()
   );
 });
