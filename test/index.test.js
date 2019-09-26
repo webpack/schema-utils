@@ -2620,4 +2620,20 @@ describe('Validation', () => {
     },
     (msg) => expect(msg).toMatchSnapshot()
   );
+
+  createFailedTestCase(
+    'no type like array with maxItems',
+    {
+      noTypeLikeArrayMaxItems: [1, 2, 3, 4],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'array with maxItems',
+    {
+      arrayMaxItems: [1, 2, 3, 4],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
 });

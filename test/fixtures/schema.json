@@ -3597,6 +3597,13 @@
     "objectMinProperties": {
       "type": "object",
       "minProperties": 2
+    },
+    "noTypeLikeArrayMaxItems": {
+      "maxItems": 2
+    },
+    "arrayMaxItems": {
+      "type": "array",
+      "maxItems": 2
     }
   }
 }

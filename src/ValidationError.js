@@ -800,7 +800,9 @@ class ValidationError extends Error {
       case 'maxItems':
         return `${dataPath} should not have more than ${
           error.params.limit
-        } items.${this.getSchemaPartDescription(error.parentSchema)}`;
+        } items${getSchemaNonTypes(
+          error.parentSchema
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       case 'maxProperties':
         return `${dataPath} should not have more than ${
           error.params.limit
