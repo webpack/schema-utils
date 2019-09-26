@@ -225,12 +225,16 @@ function getArticle(type) {
 
 function getSchemaNonTypes(schema) {
   if (!schema.type) {
-    if (likeNumber(schema)) {
+    if (likeNumber(schema) || likeInteger(schema)) {
       return ' | should be any non-number';
     }
 
     if (likeString(schema)) {
       return ' | should be any non-string';
+    }
+
+    if (likeArray(schema)) {
+      return ' | should be any non-array';
     }
 
     if (likeObject(schema)) {
@@ -763,14 +767,16 @@ class ValidationError extends Error {
       }
       case 'minItems': {
         if (error.params.limit === 1) {
-          return `${dataPath} should be an non-empty array.${this.getSchemaPartDescription(
+          return `${dataPath} should be an non-empty array${getSchemaNonTypes(
             error.parentSchema
-          )}`;
+          )}.${this.getSchemaPartDescription(error.parentSchema)}`;
         }
 
         return `${dataPath} should not have fewer than ${
           error.params.limit
-        } items.${this.getSchemaPartDescription(error.parentSchema)}`;
+        } items${getSchemaNonTypes(
+          error.parentSchema
+        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       }
       case 'minProperties': {
         if (error.params.limit === 1) {

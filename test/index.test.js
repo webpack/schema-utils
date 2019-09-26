@@ -2566,9 +2566,33 @@ describe('Validation', () => {
   );
 
   createFailedTestCase(
-    'no type like string with MinLength equals 1',
+    'no type like string with minLength equals 1',
     {
       noTypeLikeStringMinLength1: '',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like array with minItems equals 1',
+    {
+      noTypeLikeArrayMinItems1: [],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'no type like array with minItems',
+    {
+      noTypeLikeArrayMinItems: [],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'array with minItems',
+    {
+      arrayWithMinItems: [],
     },
     (msg) => expect(msg).toMatchSnapshot()
   );

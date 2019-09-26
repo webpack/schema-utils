@@ -3577,6 +3577,16 @@
     },
     "noTypeLikeStringMinLength1": {
       "minLength": 1
+    },
+    "noTypeLikeArrayMinItems": {
+      "minItems": 2
+    },
+    "noTypeLikeArrayMinItems1": {
+      "minItems": 1
+    },
+    "arrayWithMinItems": {
+      "type": "array",
+      "minItems": 1
     }
   }
 }
