@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.4.1](https://github.com/webpack/schema-utils/compare/v2.4.0...v2.4.1) (2019-09-27)
+
+
+### Bug Fixes
+
+* publish definitions ([#58](https://github.com/webpack/schema-utils/issues/58)) ([1885faa](https://github.com/webpack/schema-utils/commit/1885faa))
+
 ## [2.4.0](https://github.com/webpack/schema-utils/compare/v2.3.0...v2.4.0) (2019-09-26)
 
 
