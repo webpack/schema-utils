@@ -32,7 +32,8 @@
     "defaults": "webpack-defaults"
   },
   "files": [
-    "dist"
+    "dist",
+    "index.d.ts"
   ],
   "dependencies": {
     "ajv": "^6.10.2",
