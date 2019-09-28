@@ -749,7 +749,7 @@ exports[`Validation should fail validation for integer type 1`] = `
 
 exports[`Validation should fail validation for integer with exclusive maximum 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.integerWithExclusiveMaximum should be a integer (should be < 0)."
+ - configuration.integerWithExclusiveMaximum should be a integer (should be > 0)."
 `;
 
 exports[`Validation should fail validation for integer with exclusive maximum 2`] = `
@@ -769,7 +769,7 @@ exports[`Validation should fail validation for integer with exclusive minimum 2`
 
 exports[`Validation should fail validation for integer with minimum 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.integerWithMinimum should be a integer (should be >= 5 and <= 20)."
+ - configuration.integerWithMinimum should be a integer (should be >= 5, should be <= 20)."
 `;
 
 exports[`Validation should fail validation for integer with minimum and maximum 1`] = `
@@ -779,12 +779,12 @@ exports[`Validation should fail validation for integer with minimum and maximum 
 
 exports[`Validation should fail validation for integer with not minimum 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.integerNotWithMinimum should not be integer | integer (should be < 5)"
+ - configuration.integerNotWithMinimum should not be integer (should be >= 5)"
 `;
 
 exports[`Validation should fail validation for integer with not minimum and maximum 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.integerWithNotMinMax should not be integer | integer (should be < 5 or > 20)"
+ - configuration.integerWithNotMinMax should not be integer (should be >= 5, should be <= 20)"
 `;
 
 exports[`Validation should fail validation for invalid instanceof 1`] = `
@@ -1060,7 +1060,7 @@ exports[`Validation should fail validation for multipleOf 1`] = `
 
 exports[`Validation should fail validation for multipleOf with minimum and maximum 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.multipleOfProp should be a number (should be >= 5 and <= 20, should be multiple of 5)."
+ - configuration.multipleOfProp should be a number (should be >= 5, should be <= 20, should be multiple of 5)."
 `;
 
 exports[`Validation should fail validation for multipleOf with type number 1`] = `
@@ -1309,7 +1309,7 @@ exports[`Validation should fail validation for number type 1`] = `
 
 exports[`Validation should fail validation for number with minimum and maximum 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.numberWithMinimum should be a number (should be >= 5 and <= 20)."
+ - configuration.numberWithMinimum should be a number (should be >= 5, should be <= 20)."
 `;
 
 exports[`Validation should fail validation for object #2 1`] = `

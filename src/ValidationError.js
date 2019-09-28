@@ -1,5 +1,3 @@
-const Range = require('./util/Range');
-
 const SPECIFICITY = {
   type: 1,
   not: 1,
@@ -305,10 +303,6 @@ class ValidationError extends Error {
       const prefix = logic ? '' : 'non ';
       logic = !logic;
 
-      if (likeNumber(schema.not)) {
-        return formatInnerSchema(schema.not);
-      }
-
       return needApplyLogicHere
         ? prefix + formatInnerSchema(schema.not)
         : formatInnerSchema(schema.not);
@@ -360,28 +354,21 @@ class ValidationError extends Error {
 
     if (likeNumber(schema) || likeInteger(schema)) {
       const hints = [];
-      const range = new Range();
 
       if (typeof schema.minimum === 'number') {
-        range.left(schema.minimum);
+        hints.push(`should be >= ${schema.minimum}`);
       }
 
       if (typeof schema.exclusiveMinimum === 'number') {
-        range.left(schema.exclusiveMinimum, true);
+        hints.push(`should be > ${schema.exclusiveMinimum}`);
       }
 
       if (typeof schema.maximum === 'number') {
-        range.right(schema.maximum);
+        hints.push(`should be <= ${schema.maximum}`);
       }
 
       if (typeof schema.exclusiveMaximum === 'number') {
-        range.right(schema.exclusiveMaximum, true);
-      }
-
-      const rangeFormat = range.format(logic);
-
-      if (rangeFormat) {
-        hints.push(rangeFormat);
+        hints.push(`should be > ${schema.exclusiveMaximum}`);
       }
 
       if (typeof schema.multipleOf === 'number') {
@@ -389,9 +376,8 @@ class ValidationError extends Error {
       }
 
       const type = schema.type === 'integer' ? 'integer' : 'number';
-      const str = `${type}${hints.length > 0 ? ` (${hints.join(', ')})` : ''}`;
 
-      return logic ? str : hints.length ? `${type} | ${str}` : str;
+      return `${type}${hints.length > 0 ? ` (${hints.join(', ')})` : ''}`;
     }
 
     if (likeString(schema)) {
