@@ -305,6 +305,10 @@ class ValidationError extends Error {
       const prefix = logic ? '' : 'non ';
       logic = !logic;
 
+      if (likeNumber(schema.not)) {
+        return formatInnerSchema(schema.not);
+      }
+
       return needApplyLogicHere
         ? prefix + formatInnerSchema(schema.not)
         : formatInnerSchema(schema.not);
@@ -374,7 +378,7 @@ class ValidationError extends Error {
         range.right(schema.exclusiveMaximum, true);
       }
 
-      const rangeFormat = range.format();
+      const rangeFormat = range.format(logic);
 
       if (rangeFormat) {
         hints.push(rangeFormat);
@@ -385,8 +389,9 @@ class ValidationError extends Error {
       }
 
       const type = schema.type === 'integer' ? 'integer' : 'number';
+      const str = `${type}${hints.length > 0 ? ` (${hints.join(', ')})` : ''}`;
 
-      return `${type}${hints.length > 0 ? ` (${hints.join(', ')})` : ''}`;
+      return logic ? str : hints.length ? `${type} | ${str}` : str;
     }
 
     if (likeString(schema)) {
@@ -913,17 +918,23 @@ class ValidationError extends Error {
         return `${dataPath} should be equal to constant ${this.getSchemaPartText(
           error.parentSchema
         )}`;
-      case 'not':
-        return `${dataPath} should not be ${this.getSchemaPartText(
+      case 'not': {
+        const postfix = likeObject(error.parentSchema)
+          ? `\n${this.getSchemaPartText(error.parentSchema)}`
+          : '';
+        const schemaOutput = this.getSchemaPartText(
           error.schema,
           null,
           false,
           false
-        )}${
-          likeObject(error.parentSchema)
-            ? `\n${this.getSchemaPartText(error.parentSchema)}`
-            : ''
-        }`;
+        );
+
+        if (likeNumber(error.schema) || likeInteger(error.schema)) {
+          return `${dataPath} should be any non-${schemaOutput}${postfix}`;
+        }
+
+        return `${dataPath} should not be ${schemaOutput}${postfix}`;
+      }
       case 'oneOf':
       case 'anyOf': {
         if (error.children && error.children.length > 0) {

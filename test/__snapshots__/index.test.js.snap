@@ -779,12 +779,12 @@ exports[`Validation should fail validation for integer with minimum and maximum 
 
 exports[`Validation should fail validation for integer with not minimum 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.integerNotWithMinimum should not be integer (should be >= 5)"
+ - configuration.integerNotWithMinimum should be any non-integer | integer (should be < 5)"
 `;
 
 exports[`Validation should fail validation for integer with not minimum and maximum 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.integerWithNotMinMax should not be integer (should be >= 5, should be <= 20)"
+ - configuration.integerWithNotMinMax should be any non-integer | integer (should be < 5 or > 20)"
 `;
 
 exports[`Validation should fail validation for invalid instanceof 1`] = `
@@ -1246,7 +1246,7 @@ exports[`Validation should fail validation for not enum 1`] = `
 
 exports[`Validation should fail validation for not integer 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.notNumber should not be number"
+ - configuration.notNumber should be any non-number"
 `;
 
 exports[`Validation should fail validation for not not not null 1`] = `
@@ -1271,7 +1271,7 @@ exports[`Validation should fail validation for not null 1`] = `
 
 exports[`Validation should fail validation for not number 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.notNumber should not be number"
+ - configuration.notNumber should be any non-number"
 `;
 
 exports[`Validation should fail validation for not object 1`] = `
