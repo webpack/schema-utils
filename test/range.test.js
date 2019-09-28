@@ -104,6 +104,6 @@ it('not 10 < x < 10', () => {
   range.left(10, true);
   range.right(10, true);
 
-  // expect x <= 10 since it covers bigger range. [10, Infinity] is greater than [-1, Infinity]
+  // expect x <= 10 since it covers bigger range. [-Infinity, 10] is greater than [-Infinity, -1]
   expect(range.format(false)).toEqual('should be <= 10 or >= 10');
 });
