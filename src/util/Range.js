@@ -1,68 +1,68 @@
 const left = Symbol('left');
 const right = Symbol('right');
 
-function getOperator(side, exclusive) {
-  if (side === 'left') {
-    return exclusive ? '>' : '>=';
-  }
-
-  return exclusive ? '<' : '<=';
-}
-
-function formatRight(value, logic, exclusive) {
-  if (logic === false) {
-    return formatLeft(value, !logic, !exclusive);
-  }
-
-  return `should be ${getOperator('right', exclusive)} ${value}`;
-}
-
-function formatLeft(value, logic, exclusive) {
-  if (logic === false) {
-    return formatRight(value, !logic, !exclusive);
-  }
-
-  return `should be ${getOperator('left', exclusive)} ${value}`;
-}
-
-function formatRange(start, end, startExclusive, endExclusive, logic) {
-  let result = 'should be';
-
-  result += ` ${getOperator(
-    logic ? 'left' : 'right',
-    logic ? startExclusive : !startExclusive
-  )} ${start} `;
-  result += logic ? 'and' : 'or';
-  result += ` ${getOperator(
-    logic ? 'right' : 'left',
-    logic ? endExclusive : !endExclusive
-  )} ${end}`;
-
-  return result;
-}
-
-function getRangeValue(values, logic) {
-  let minMax = logic ? Infinity : -Infinity;
-  let j = -1;
-  const predicate = logic
-    ? ([value]) => value <= minMax
-    : ([value]) => value >= minMax;
-
-  for (let i = 0; i < values.length; i++) {
-    if (predicate(values[i])) {
-      minMax = values[i][0];
-      j = i;
-    }
-  }
-
-  if (j > -1) {
-    return values[j];
-  }
-
-  return [Infinity, true];
-}
-
 class Range {
+  static getOperator(side, exclusive) {
+    if (side === 'left') {
+      return exclusive ? '>' : '>=';
+    }
+
+    return exclusive ? '<' : '<=';
+  }
+
+  static formatRight(value, logic, exclusive) {
+    if (logic === false) {
+      return Range.formatLeft(value, !logic, !exclusive);
+    }
+
+    return `should be ${Range.getOperator('right', exclusive)} ${value}`;
+  }
+
+  static formatLeft(value, logic, exclusive) {
+    if (logic === false) {
+      return Range.formatRight(value, !logic, !exclusive);
+    }
+
+    return `should be ${Range.getOperator('left', exclusive)} ${value}`;
+  }
+
+  static formatRange(start, end, startExclusive, endExclusive, logic) {
+    let result = 'should be';
+
+    result += ` ${Range.getOperator(
+      logic ? 'left' : 'right',
+      logic ? startExclusive : !startExclusive
+    )} ${start} `;
+    result += logic ? 'and' : 'or';
+    result += ` ${Range.getOperator(
+      logic ? 'right' : 'left',
+      logic ? endExclusive : !endExclusive
+    )} ${end}`;
+
+    return result;
+  }
+
+  static getRangeValue(values, logic) {
+    let minMax = logic ? Infinity : -Infinity;
+    let j = -1;
+    const predicate = logic
+      ? ([value]) => value <= minMax
+      : ([value]) => value >= minMax;
+
+    for (let i = 0; i < values.length; i++) {
+      if (predicate(values[i])) {
+        minMax = values[i][0];
+        j = i;
+      }
+    }
+
+    if (j > -1) {
+      return values[j];
+    }
+
+    return [Infinity, true];
+  }
+
   constructor() {
     this[left] = [];
     this[right] = [];
@@ -77,8 +77,8 @@ class Range {
   }
 
   format(logic = true) {
-    const [start, leftExclusive] = getRangeValue(this[left], logic);
-    const [end, rightExclusive] = getRangeValue(this[right], !logic);
+    const [start, leftExclusive] = Range.getRangeValue(this[left], logic);
+    const [end, rightExclusive] = Range.getRangeValue(this[right], !logic);
 
     if (!Number.isFinite(start) && !Number.isFinite(end)) {
       return '';
@@ -97,14 +97,14 @@ class Range {
     }
 
     if (Number.isFinite(start) && !Number.isFinite(end)) {
-      return formatLeft(start, logic, leftExclusive);
+      return Range.formatLeft(start, logic, leftExclusive);
     }
 
     if (!Number.isFinite(start) && Number.isFinite(end)) {
-      return formatRight(end, logic, rightExclusive);
+      return Range.formatRight(end, logic, rightExclusive);
     }
 
-    return formatRange(start, end, leftExclusive, rightExclusive, logic);
+    return Range.formatRange(start, end, leftExclusive, rightExclusive, logic);
   }
 }
 
