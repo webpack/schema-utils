@@ -1648,22 +1648,6 @@ describe('Validation', () => {
   );
 
   createFailedTestCase(
-    'integer with not minimum and maximum',
-    {
-      integerWithNotMinMax: 10,
-    },
-    (msg) => expect(msg).toMatchSnapshot()
-  );
-
-  createFailedTestCase(
-    'integer with not minimum',
-    {
-      integerNotWithMinimum: 5,
-    },
-    (msg) => expect(msg).toMatchSnapshot()
-  );
-
-  createFailedTestCase(
     'integer with minimum and maximum',
     {
       integerWithMinimum: 1,

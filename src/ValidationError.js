@@ -287,31 +287,21 @@ class ValidationError extends Error {
     return schemaPart;
   }
 
-  formatSchema(schema, logic = true, prevSchemas = []) {
+  formatSchema(schema, prevSchemas = []) {
     const formatInnerSchema = (innerSchema, addSelf) => {
       if (!addSelf) {
-        return this.formatSchema(innerSchema, logic, prevSchemas);
+        return this.formatSchema(innerSchema, prevSchemas);
       }
 
       if (prevSchemas.includes(innerSchema)) {
         return '(recursive)';
       }
 
-      return this.formatSchema(innerSchema, logic, prevSchemas.concat(schema));
+      return this.formatSchema(innerSchema, prevSchemas.concat(schema));
     };
 
     if (schema.not && !likeObject(schema)) {
-      const needApplyLogicHere = !schema.not.not;
-      const prefix = logic ? '' : 'non ';
-      logic = !logic;
-
-      if (likeNumber(schema.not)) {
-        return formatInnerSchema(schema.not);
-      }
-
-      return needApplyLogicHere
-        ? prefix + formatInnerSchema(schema.not)
-        : formatInnerSchema(schema.not);
+      return `non ${formatInnerSchema(schema.not)}`;
     }
 
     if (schema.instanceof) {
@@ -378,7 +368,7 @@ class ValidationError extends Error {
         range.right(schema.exclusiveMaximum, true);
       }
 
-      const rangeFormat = range.format(logic);
+      const rangeFormat = range.format();
 
       if (rangeFormat) {
         hints.push(rangeFormat);
@@ -389,9 +379,8 @@ class ValidationError extends Error {
       }
 
       const type = schema.type === 'integer' ? 'integer' : 'number';
-      const str = `${type}${hints.length > 0 ? ` (${hints.join(', ')})` : ''}`;
 
-      return logic ? str : hints.length ? `${type} | ${str}` : str;
+      return `${type}${hints.length > 0 ? ` (${hints.join(', ')})` : ''}`;
     }
 
     if (likeString(schema)) {
@@ -637,7 +626,7 @@ class ValidationError extends Error {
     return JSON.stringify(schema, null, 2);
   }
 
-  getSchemaPartText(schemaPart, additionalPath, needDot = false, logic = true) {
+  getSchemaPartText(schemaPart, additionalPath, needDot = false) {
     if (additionalPath) {
       for (let i = 0; i < additionalPath.length; i++) {
         const inner = schemaPart[additionalPath[i]];
@@ -656,9 +645,7 @@ class ValidationError extends Error {
       schemaPart = this.getSchemaPart(schemaPart.$ref);
     }
 
-    let schemaText = `${this.formatSchema(schemaPart, logic)}${
-      needDot ? '.' : ''
-    }`;
+    let schemaText = `${this.formatSchema(schemaPart)}${needDot ? '.' : ''}`;
 
     if (schemaPart.description) {
       schemaText += `\n-> ${schemaPart.description}`;
@@ -920,10 +907,7 @@ class ValidationError extends Error {
         )}`;
       case 'not':
         return `${dataPath} should not be ${this.getSchemaPartText(
-          error.schema,
-          null,
-          false,
-          false
+          error.schema
         )}${
           likeObject(error.parentSchema)
             ? `\n${this.getSchemaPartText(error.parentSchema)}`

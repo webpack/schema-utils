@@ -2930,19 +2930,6 @@
       "minimum": 5,
       "maximum": 20
     },
-    "integerNotWithMinimum": {
-      "not": {
-        "type": "integer",
-        "minimum": 5
-      }
-    },
-    "integerWithNotMinMax": {
-      "not": {
-        "type": "integer",
-        "minimum": 5,
-        "maximum": 20
-      }
-    },
     "integerWithExclusiveMinimum": {
       "type": "integer",
       "exclusiveMinimum": 5
