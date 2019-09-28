@@ -1,3 +1,5 @@
+const Range = require('./util/Range');
+
 const SPECIFICITY = {
   type: 1,
   not: 1,
@@ -354,21 +356,28 @@ class ValidationError extends Error {
 
     if (likeNumber(schema) || likeInteger(schema)) {
       const hints = [];
+      const range = new Range();
 
       if (typeof schema.minimum === 'number') {
-        hints.push(`should be >= ${schema.minimum}`);
+        range.left(schema.minimum);
       }
 
       if (typeof schema.exclusiveMinimum === 'number') {
-        hints.push(`should be > ${schema.exclusiveMinimum}`);
+        range.left(schema.exclusiveMinimum, true);
       }
 
       if (typeof schema.maximum === 'number') {
-        hints.push(`should be <= ${schema.maximum}`);
+        range.right(schema.maximum);
       }
 
       if (typeof schema.exclusiveMaximum === 'number') {
-        hints.push(`should be > ${schema.exclusiveMaximum}`);
+        range.right(schema.exclusiveMaximum, true);
+      }
+
+      const rangeFormat = range.format();
+
+      if (rangeFormat) {
+        hints.push(rangeFormat);
       }
 
       if (typeof schema.multipleOf === 'number') {
