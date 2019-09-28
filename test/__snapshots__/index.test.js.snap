@@ -742,6 +742,11 @@ exports[`Validation should fail validation for integer and null in object with a
     * configuration.customObject.anyOfKeyword should be a null."
 `;
 
+exports[`Validation should fail validation for integer not zero 1`] = `
+"Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
+ - configuration.integerNotZero should be any non-integer | integer (should be != 0)"
+`;
+
 exports[`Validation should fail validation for integer type 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
  - configuration.integerType should be a integer."
