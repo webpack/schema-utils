@@ -33,6 +33,25 @@ const SPECIFICITY = {
   absolutePath: 2,
 };
 
+function createPropertyFormatter(schema) {
+  const required = new Set(schema.required || []);
+  const format = (property) => property + (required.has(property) ? '' : '?');
+
+  return function formatProperty(property) {
+    const { type } =
+      typeof schema.properties === 'object' && schema.properties !== null
+        ? schema.properties[property] || {}
+        : {};
+    const name = format(property);
+
+    if (type) {
+      return `${name}: ${type}`;
+    }
+
+    return name;
+  };
+}
+
 function filterMax(array, fn) {
   const evaluatedMax = array.reduce((max, item) => Math.max(max, fn(item)), 0);
 
@@ -530,6 +549,7 @@ class ValidationError extends Error {
         );
       }
 
+      const formatter = createPropertyFormatter(schema);
       const properties = schema.properties
         ? Object.keys(schema.properties)
         : [];
@@ -542,13 +562,7 @@ class ValidationError extends Error {
         Boolean(schema.additionalProperties);
 
       const objectStructure = allProperties
-        .map((property) => {
-          const isRequired = required.includes(property);
-
-          // Some properties need quotes, maybe we should add check
-          // Maybe we should output type of property (`foo: string`), but it is looks very unreadable
-          return `${property}${isRequired ? '' : '?'}`;
-        })
+        .map(formatter)
         .concat(
           hasAdditionalProperties
             ? isObject(schema.additionalProperties)
