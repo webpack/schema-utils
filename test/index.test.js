@@ -1680,22 +1680,6 @@ describe('Validation', () => {
   );
 
   createFailedTestCase(
-    'integer zero',
-    {
-      integerZero: 1,
-    },
-    (msg) => expect(msg).toMatchSnapshot()
-  );
-
-  createFailedTestCase(
-    'integer not zero',
-    {
-      integerNotZero: 0,
-    },
-    (msg) => expect(msg).toMatchSnapshot()
-  );
-
-  createFailedTestCase(
     'integer with exclusive maximum',
     {
       integerWithExclusiveMaximum: 1,
