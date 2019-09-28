@@ -1,3 +1,5 @@
+const Range = require('./util/Range');
+
 const SPECIFICITY = {
   type: 1,
   not: 1,
@@ -285,21 +287,31 @@ class ValidationError extends Error {
     return schemaPart;
   }
 
-  formatSchema(schema, prevSchemas = []) {
+  formatSchema(schema, logic = true, prevSchemas = []) {
     const formatInnerSchema = (innerSchema, addSelf) => {
       if (!addSelf) {
-        return this.formatSchema(innerSchema, prevSchemas);
+        return this.formatSchema(innerSchema, logic, prevSchemas);
       }
 
       if (prevSchemas.includes(innerSchema)) {
         return '(recursive)';
       }
 
-      return this.formatSchema(innerSchema, prevSchemas.concat(schema));
+      return this.formatSchema(innerSchema, logic, prevSchemas.concat(schema));
     };
 
     if (schema.not && !likeObject(schema)) {
-      return `non ${formatInnerSchema(schema.not)}`;
+      const needApplyLogicHere = !schema.not.not;
+      const prefix = logic ? '' : 'non ';
+      logic = !logic;
+
+      if (likeNumber(schema.not)) {
+        return formatInnerSchema(schema.not);
+      }
+
+      return needApplyLogicHere
+        ? prefix + formatInnerSchema(schema.not)
+        : formatInnerSchema(schema.not);
     }
 
     if (schema.instanceof) {
@@ -348,21 +360,28 @@ class ValidationError extends Error {
 
     if (likeNumber(schema) || likeInteger(schema)) {
       const hints = [];
+      const range = new Range();
 
       if (typeof schema.minimum === 'number') {
-        hints.push(`should be >= ${schema.minimum}`);
+        range.left(schema.minimum);
       }
 
       if (typeof schema.exclusiveMinimum === 'number') {
-        hints.push(`should be > ${schema.exclusiveMinimum}`);
+        range.left(schema.exclusiveMinimum, true);
       }
 
       if (typeof schema.maximum === 'number') {
-        hints.push(`should be <= ${schema.maximum}`);
+        range.right(schema.maximum);
       }
 
       if (typeof schema.exclusiveMaximum === 'number') {
-        hints.push(`should be > ${schema.exclusiveMaximum}`);
+        range.right(schema.exclusiveMaximum, true);
+      }
+
+      const rangeFormat = range.format(logic);
+
+      if (rangeFormat) {
+        hints.push(rangeFormat);
       }
 
       if (typeof schema.multipleOf === 'number') {
@@ -370,8 +389,9 @@ class ValidationError extends Error {
       }
 
       const type = schema.type === 'integer' ? 'integer' : 'number';
+      const str = `${type}${hints.length > 0 ? ` (${hints.join(', ')})` : ''}`;
 
-      return `${type}${hints.length > 0 ? ` (${hints.join(', ')})` : ''}`;
+      return logic ? str : hints.length ? `${type} | ${str}` : str;
     }
 
     if (likeString(schema)) {
@@ -617,7 +637,7 @@ class ValidationError extends Error {
     return JSON.stringify(schema, null, 2);
   }
 
-  getSchemaPartText(schemaPart, additionalPath, needDot = false) {
+  getSchemaPartText(schemaPart, additionalPath, needDot = false, logic = true) {
     if (additionalPath) {
       for (let i = 0; i < additionalPath.length; i++) {
         const inner = schemaPart[additionalPath[i]];
@@ -636,7 +656,9 @@ class ValidationError extends Error {
       schemaPart = this.getSchemaPart(schemaPart.$ref);
     }
 
-    let schemaText = `${this.formatSchema(schemaPart)}${needDot ? '.' : ''}`;
+    let schemaText = `${this.formatSchema(schemaPart, logic)}${
+      needDot ? '.' : ''
+    }`;
 
     if (schemaPart.description) {
       schemaText += `\n-> ${schemaPart.description}`;
@@ -898,7 +920,10 @@ class ValidationError extends Error {
         )}`;
       case 'not':
         return `${dataPath} should not be ${this.getSchemaPartText(
-          error.schema
+          error.schema,
+          null,
+          false,
+          false
         )}${
           likeObject(error.parentSchema)
             ? `\n${this.getSchemaPartText(error.parentSchema)}`
