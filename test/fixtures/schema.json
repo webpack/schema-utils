@@ -2938,6 +2938,18 @@
       "type": "integer",
       "exclusiveMaximum": 0
     },
+    "integerNotZero": {
+      "not": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 0
+      }
+    },
+    "integerZero": {
+      "type": "integer",
+      "exclusiveMinimum": -1,
+      "exclusiveMaximum": 1
+    },
     "numberWithMinimum": {
       "type": "number",
       "minimum": 5,
