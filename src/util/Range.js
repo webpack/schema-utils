@@ -118,16 +118,12 @@ class Range {
       return '';
     }
 
-    if (leftExclusive === rightExclusive) {
-      // e.g. 5 <= x <= 5
-      if (leftExclusive === false && start === end) {
-        return `should be ${logic ? '' : '!'}= ${start}`;
-      }
+    const realStart = leftExclusive ? start + 1 : start;
+    const realEnd = rightExclusive ? end - 1 : end;
 
-      // e.g. 4 < x < 6
-      if (leftExclusive === true && start + 1 === end - 1) {
-        return `should be ${logic ? '' : '!'}= ${start + 1}`;
-      }
+    // e.g. 5 < x < 7, 5 < x <= 6, 6 <= x <= 6
+    if (realStart === realEnd) {
+      return `should be ${logic ? '' : '!'}= ${realStart}`;
     }
 
     // e.g. 4 < x < ∞
