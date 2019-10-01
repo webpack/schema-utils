@@ -247,6 +247,51 @@ function getSchemaNonTypes(schema) {
   return '';
 }
 
+function numberHints(schema, logic) {
+  const hints = [];
+  const range = new Range();
+
+  if (typeof schema.minimum === 'number') {
+    range.left(schema.minimum);
+  }
+
+  if (typeof schema.exclusiveMinimum === 'number') {
+    range.left(schema.exclusiveMinimum, true);
+  }
+
+  if (typeof schema.maximum === 'number') {
+    range.right(schema.maximum);
+  }
+
+  if (typeof schema.exclusiveMaximum === 'number') {
+    range.right(schema.exclusiveMaximum, true);
+  }
+
+  const rangeFormat = range.format(logic);
+
+  if (rangeFormat) {
+    hints.push(rangeFormat);
+  }
+
+  if (typeof schema.multipleOf === 'number') {
+    hints.push(`should be multiple of ${schema.multipleOf}`);
+  }
+
+  return hints;
+}
+
+function formatHints(hints) {
+  return hints.length > 0 ? `(${hints.join(', ')})` : '';
+}
+
+function getHints(schema, logic) {
+  if (likeNumber(schema) || likeInteger(schema)) {
+    return formatHints(numberHints(schema, logic));
+  }
+
+  return '';
+}
+
 class ValidationError extends Error {
   constructor(errors, schema, configuration = {}) {
     super();
@@ -359,37 +404,9 @@ class ValidationError extends Error {
     }
 
     if (likeNumber(schema) || likeInteger(schema)) {
-      const hints = [];
-      const range = new Range();
-
-      if (typeof schema.minimum === 'number') {
-        range.left(schema.minimum);
-      }
-
-      if (typeof schema.exclusiveMinimum === 'number') {
-        range.left(schema.exclusiveMinimum, true);
-      }
-
-      if (typeof schema.maximum === 'number') {
-        range.right(schema.maximum);
-      }
-
-      if (typeof schema.exclusiveMaximum === 'number') {
-        range.right(schema.exclusiveMaximum, true);
-      }
-
-      const rangeFormat = range.format(logic);
-
-      if (rangeFormat) {
-        hints.push(rangeFormat);
-      }
-
-      if (typeof schema.multipleOf === 'number') {
-        hints.push(`should be multiple of ${schema.multipleOf}`);
-      }
-
       const type = schema.type === 'integer' ? 'integer' : 'number';
-      const str = `${type}${hints.length > 0 ? ` (${hints.join(', ')})` : ''}`;
+      const hints = getHints(schema, logic);
+      const str = `${type}${hints.length > 0 ? ` ${hints}` : ''}`;
 
       return logic ? str : hints.length ? `${type} | ${str}` : str;
     }
@@ -756,12 +773,19 @@ class ValidationError extends Error {
       case 'minimum':
       case 'maximum':
       case 'exclusiveMinimum':
-      case 'exclusiveMaximum':
-        return `${dataPath} should be ${error.params.comparison} ${
-          error.params.limit
-        }${getSchemaNonTypes(
+      case 'exclusiveMaximum': {
+        const hints = numberHints(error.parentSchema);
+
+        if (hints.length === 0) {
+          hints.push(
+            `should be ${error.params.comparison} ${error.params.limit}`
+          );
+        }
+
+        return `${dataPath} ${hints.join(' ')}${getSchemaNonTypes(
           error.parentSchema
         )}.${this.getSchemaPartDescription(error.parentSchema)}`;
+      }
       case 'multipleOf':
         return `${dataPath} should be multiple of ${
           error.params.multipleOf

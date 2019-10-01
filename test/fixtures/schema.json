@@ -2925,6 +2925,11 @@
         "minLength": 2
       }
     },
+    "integerEqualsTo5": {
+      "type": "integer",
+      "minimum": 5,
+      "exclusiveMaximum": 6
+    },
     "integerWithMinimum": {
       "type": "integer",
       "minimum": 5,

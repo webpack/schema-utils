@@ -16,6 +16,14 @@ it('not 5 <= x <= 5', () => {
   expect(range.format(false)).toEqual('should be != 5');
 });
 
+it('5 < x <= 6', () => {
+  const range = new Range();
+  range.left(5, true);
+  range.right(6);
+
+  expect(range.format()).toEqual('should be = 6');
+});
+
 it('-1 < x < 1', () => {
   const range = new Range();
   range.left(-1, true);
