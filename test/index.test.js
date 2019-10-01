@@ -1640,6 +1640,14 @@ describe('Validation', () => {
   );
 
   createFailedTestCase(
+    'integer equals to 5',
+    {
+      integerEqualsTo5: 6,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
     'integer with minimum',
     {
       integerWithMinimum: true,
