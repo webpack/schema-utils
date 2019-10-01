@@ -247,6 +247,51 @@ function getSchemaNonTypes(schema) {
   return '';
 }
 
+function numberHints(schema) {
+  const hints = [];
+  const range = new Range();
+
+  if (typeof schema.minimum === 'number') {
+    range.left(schema.minimum);
+  }
+
+  if (typeof schema.exclusiveMinimum === 'number') {
+    range.left(schema.exclusiveMinimum, true);
+  }
+
+  if (typeof schema.maximum === 'number') {
+    range.right(schema.maximum);
+  }
+
+  if (typeof schema.exclusiveMaximum === 'number') {
+    range.right(schema.exclusiveMaximum, true);
+  }
+
+  const rangeFormat = range.format();
+
+  if (rangeFormat) {
+    hints.push(rangeFormat);
+  }
+
+  if (typeof schema.multipleOf === 'number') {
+    hints.push(`should be multiple of ${schema.multipleOf}`);
+  }
+
+  return hints;
+}
+
+function formatHints(hints) {
+  return hints.length > 0 ? `(${hints.join(', ')})` : '';
+}
+
+function getHints(schema) {
+  if (likeNumber(schema) || likeInteger(schema)) {
+    return formatHints(numberHints(schema));
+  }
+
+  return '';
+}
+
 class ValidationError extends Error {
   constructor(errors, schema, configuration = {}) {
     super();
@@ -349,38 +394,10 @@ class ValidationError extends Error {
     }
 
     if (likeNumber(schema) || likeInteger(schema)) {
-      const hints = [];
-      const range = new Range();
-
-      if (typeof schema.minimum === 'number') {
-        range.left(schema.minimum);
-      }
-
-      if (typeof schema.exclusiveMinimum === 'number') {
-        range.left(schema.exclusiveMinimum, true);
-      }
-
-      if (typeof schema.maximum === 'number') {
-        range.right(schema.maximum);
-      }
-
-      if (typeof schema.exclusiveMaximum === 'number') {
-        range.right(schema.exclusiveMaximum, true);
-      }
-
-      const rangeFormat = range.format();
-
-      if (rangeFormat) {
-        hints.push(rangeFormat);
-      }
-
-      if (typeof schema.multipleOf === 'number') {
-        hints.push(`should be multiple of ${schema.multipleOf}`);
-      }
-
       const type = schema.type === 'integer' ? 'integer' : 'number';
+      const hints = getHints(schema);
 
-      return `${type}${hints.length > 0 ? ` (${hints.join(', ')})` : ''}`;
+      return `${type}${hints.length > 0 ? ` ${hints}` : ''}`;
     }
 
     if (likeString(schema)) {
@@ -743,12 +760,21 @@ class ValidationError extends Error {
       case 'minimum':
       case 'maximum':
       case 'exclusiveMinimum':
-      case 'exclusiveMaximum':
-        return `${dataPath} should be ${error.params.comparison} ${
-          error.params.limit
+      case 'exclusiveMaximum': {
+        const hints = numberHints(error.parentSchema);
+        const thisHint = `should be ${error.params.comparison} ${error.params.limit}`;
+        const i = hints.indexOf(thisHint);
+
+        if (i > -1) {
+          hints.splice(i, 1);
+        }
+
+        return `${dataPath} ${thisHint}${
+          hints.length > 0 ? ` ${formatHints(hints)}` : ''
         }${getSchemaNonTypes(
           error.parentSchema
         )}.${this.getSchemaPartDescription(error.parentSchema)}`;
+      }
       case 'multipleOf':
         return `${dataPath} should be multiple of ${
           error.params.multipleOf
