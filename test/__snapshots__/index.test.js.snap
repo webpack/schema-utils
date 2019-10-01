@@ -719,12 +719,12 @@ exports[`Validation should fail validation for if/then/else #4 1`] = `
 
 exports[`Validation should fail validation for if/then/else #5 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.ifThenElseKeyword2 should be <= 1000 (should be >= 1 and <= 1000)."
+ - configuration.ifThenElseKeyword2 should be >= 1 and <= 1000."
 `;
 
 exports[`Validation should fail validation for if/then/else #6 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.ifThenElseKeyword2 should be >= 1 (should be >= 1 and <= 1000)."
+ - configuration.ifThenElseKeyword2 should be >= 1 and <= 1000."
 `;
 
 exports[`Validation should fail validation for if/then/else 1`] = `
@@ -744,7 +744,7 @@ exports[`Validation should fail validation for integer and null in object with a
 
 exports[`Validation should fail validation for integer equals to 5 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.integerEqualsTo5 should be < 6 (should be = 5)."
+ - configuration.integerEqualsTo5 should be = 5."
 `;
 
 exports[`Validation should fail validation for integer type 1`] = `
@@ -779,7 +779,7 @@ exports[`Validation should fail validation for integer with minimum 1`] = `
 
 exports[`Validation should fail validation for integer with minimum and maximum 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.integerWithMinimum should be >= 5 (should be >= 5 and <= 20)."
+ - configuration.integerWithMinimum should be >= 5 and <= 20."
 `;
 
 exports[`Validation should fail validation for invalid instanceof 1`] = `

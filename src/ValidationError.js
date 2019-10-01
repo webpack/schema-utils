@@ -762,16 +762,14 @@ class ValidationError extends Error {
       case 'exclusiveMinimum':
       case 'exclusiveMaximum': {
         const hints = numberHints(error.parentSchema);
-        const thisHint = `should be ${error.params.comparison} ${error.params.limit}`;
-        const i = hints.indexOf(thisHint);
 
-        if (i > -1) {
-          hints.splice(i, 1);
+        if (hints.length === 0) {
+          hints.push(
+            `should be ${error.params.comparison} ${error.params.limit}`
+          );
         }
 
-        return `${dataPath} ${thisHint}${
-          hints.length > 0 ? ` ${formatHints(hints)}` : ''
-        }${getSchemaNonTypes(
+        return `${dataPath} ${hints.join(' ')}${getSchemaNonTypes(
           error.parentSchema
         )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       }
