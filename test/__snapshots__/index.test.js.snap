@@ -1246,7 +1246,7 @@ exports[`Validation should fail validation for not array less than 3 items 1`] =
 
 exports[`Validation should fail validation for not boolean 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.notBoolean should not be boolean"
+ - configuration.notBoolean should be any non-boolean"
 `;
 
 exports[`Validation should fail validation for not const 1`] = `
@@ -1266,7 +1266,7 @@ exports[`Validation should fail validation for not integer 1`] = `
 
 exports[`Validation should fail validation for not not not null 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.NotNotNotNull should not be null"
+ - configuration.NotNotNotNull should be any non-null"
 `;
 
 exports[`Validation should fail validation for not not not null 2`] = `
@@ -1276,12 +1276,12 @@ exports[`Validation should fail validation for not not not null 2`] = `
 
 exports[`Validation should fail validation for not not null 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.notNotNull should not be non null"
+ - configuration.notNotNull should be any null"
 `;
 
 exports[`Validation should fail validation for not null 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.notNull should not be null"
+ - configuration.notNull should be any non-null"
 `;
 
 exports[`Validation should fail validation for not number 1`] = `
@@ -1296,7 +1296,7 @@ exports[`Validation should fail validation for not object 1`] = `
 
 exports[`Validation should fail validation for not string 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.notString should not be string"
+ - configuration.notString should be any non-string"
 `;
 
 exports[`Validation should fail validation for null configuration 1`] = `

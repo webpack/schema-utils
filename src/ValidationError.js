@@ -1,4 +1,4 @@
-const Range = require('./util/Range');
+const { stringHints, numberHints } = require('./util/hints');
 
 const SPECIFICITY = {
   type: 1,
@@ -225,6 +225,26 @@ function getArticle(type) {
   return 'a';
 }
 
+function findFirstTypedSchema(schema) {
+  if (schema.not) {
+    return findFirstTypedSchema(schema.not);
+  }
+
+  return schema;
+}
+
+function canApplyNot(schema) {
+  const typedSchema = findFirstTypedSchema(schema);
+
+  return (
+    likeNumber(typedSchema) ||
+    likeInteger(typedSchema) ||
+    likeString(typedSchema) ||
+    likeNull(typedSchema) ||
+    likeBoolean(typedSchema)
+  );
+}
+
 function getSchemaNonTypes(schema) {
   if (!schema.type) {
     if (likeNumber(schema) || likeInteger(schema)) {
@@ -247,39 +267,6 @@ function getSchemaNonTypes(schema) {
   return '';
 }
 
-function numberHints(schema, logic) {
-  const hints = [];
-  const range = new Range();
-
-  if (typeof schema.minimum === 'number') {
-    range.left(schema.minimum);
-  }
-
-  if (typeof schema.exclusiveMinimum === 'number') {
-    range.left(schema.exclusiveMinimum, true);
-  }
-
-  if (typeof schema.maximum === 'number') {
-    range.right(schema.maximum);
-  }
-
-  if (typeof schema.exclusiveMaximum === 'number') {
-    range.right(schema.exclusiveMaximum, true);
-  }
-
-  const rangeFormat = range.format(logic);
-
-  if (rangeFormat) {
-    hints.push(rangeFormat);
-  }
-
-  if (typeof schema.multipleOf === 'number') {
-    hints.push(`should be multiple of ${schema.multipleOf}`);
-  }
-
-  return hints;
-}
-
 function formatHints(hints) {
   return hints.length > 0 ? `(${hints.join(', ')})` : '';
 }
@@ -287,6 +274,8 @@ function formatHints(hints) {
 function getHints(schema, logic) {
   if (likeNumber(schema) || likeInteger(schema)) {
     return formatHints(numberHints(schema, logic));
+  } else if (likeString(schema)) {
+    return formatHints(stringHints(schema, logic));
   }
 
   return '';
@@ -333,26 +322,34 @@ class ValidationError extends Error {
   }
 
   formatSchema(schema, logic = true, prevSchemas = []) {
+    let newLogic = logic;
+
     const formatInnerSchema = (innerSchema, addSelf) => {
       if (!addSelf) {
-        return this.formatSchema(innerSchema, logic, prevSchemas);
+        return this.formatSchema(innerSchema, newLogic, prevSchemas);
       }
 
       if (prevSchemas.includes(innerSchema)) {
         return '(recursive)';
       }
 
-      return this.formatSchema(innerSchema, logic, prevSchemas.concat(schema));
+      return this.formatSchema(
+        innerSchema,
+        newLogic,
+        prevSchemas.concat(schema)
+      );
     };
 
     if (schema.not && !likeObject(schema)) {
-      const needApplyLogicHere = !schema.not.not;
-      const prefix = logic ? '' : 'non ';
-      logic = !logic;
+      if (canApplyNot(schema.not)) {
+        newLogic = !logic;
 
-      if (likeNumber(schema.not)) {
         return formatInnerSchema(schema.not);
       }
+
+      const needApplyLogicHere = !schema.not.not;
+      const prefix = logic ? '' : 'non ';
+      newLogic = !logic;
 
       return needApplyLogicHere
         ? prefix + formatInnerSchema(schema.not)
@@ -408,63 +405,37 @@ class ValidationError extends Error {
       const hints = getHints(schema, logic);
       const str = `${type}${hints.length > 0 ? ` ${hints}` : ''}`;
 
-      return logic ? str : hints.length ? `${type} | ${str}` : str;
+      return logic
+        ? str
+        : hints.length
+        ? `non-${type} | ${str}`
+        : `non-${type}`;
     }
 
     if (likeString(schema)) {
-      let type = 'string';
-      const hints = [];
+      const type =
+        typeof schema.minLength === 'number' && schema.minLength === 1
+          ? `${logic ? 'non-' : ''}empty string`
+          : 'string';
+      const hints = getHints(schema, logic);
+      const str = `${type}${hints.length > 0 ? ` ${hints}` : ''}`;
 
-      if (typeof schema.minLength === 'number') {
-        if (schema.minLength === 1) {
-          type = 'non-empty string';
-        } else {
-          hints.push(
-            `should not be shorter than ${schema.minLength} characters`
-          );
-        }
-      }
-
-      if (typeof schema.maxLength === 'number') {
-        hints.push(
-          `should not be longer than ${schema.maxLength} character${
-            schema.maxLength > 1 ? 's' : ''
-          }`
-        );
-      }
-
-      if (schema.pattern) {
-        hints.push(`should match pattern ${JSON.stringify(schema.pattern)}`);
-      }
-
-      if (schema.format) {
-        hints.push(`should match format ${JSON.stringify(schema.format)}`);
-      }
-
-      if (schema.formatMinimum) {
-        hints.push(
-          `should be ${
-            schema.formatExclusiveMinimum ? '>' : '>='
-          } ${JSON.stringify(schema.formatMinimum)}`
-        );
-      }
-
-      if (schema.formatMaximum) {
-        hints.push(
-          `should be ${
-            schema.formatExclusiveMaximum ? '<' : '<='
-          } ${JSON.stringify(schema.formatMaximum)}`
-        );
-      }
-
-      return `${type}${hints.length > 0 ? ` (${hints.join(', ')})` : ''}`;
+      return logic
+        ? str
+        : hints.length
+        ? `non-string | ${str}`
+        : type === 'string'
+        ? 'non-string'
+        : type;
     }
 
     if (likeBoolean(schema)) {
-      return 'boolean';
+      return `${logic ? '' : 'non-'}boolean`;
     }
 
     if (likeArray(schema)) {
+      // not logic already applied in formatValidationError
+      newLogic = true;
       const hints = [];
 
       if (typeof schema.minItems === 'number') {
@@ -534,6 +505,8 @@ class ValidationError extends Error {
     }
 
     if (likeObject(schema)) {
+      // not logic already applied in formatValidationError
+      newLogic = true;
       const hints = [];
 
       if (typeof schema.minProperties === 'number') {
@@ -642,14 +615,16 @@ class ValidationError extends Error {
     }
 
     if (likeNull(schema)) {
-      return 'null';
+      return `${logic ? '' : 'non-'}null`;
     }
 
     if (Array.isArray(schema.type)) {
-      return `${schema.type.map((item) => item).join(' | ')}`;
+      // not logic already applied in formatValidationError
+      return `${schema.type.join(' | ')}`;
     }
 
     // Fallback for unknown keywords
+    // not logic already applied in formatValidationError
     /* istanbul ignore next */
     return JSON.stringify(schema, null, 2);
   }
@@ -953,8 +928,8 @@ class ValidationError extends Error {
           false
         );
 
-        if (likeNumber(error.schema) || likeInteger(error.schema)) {
-          return `${dataPath} should be any non-${schemaOutput}${postfix}`;
+        if (canApplyNot(error.schema)) {
+          return `${dataPath} should be any ${schemaOutput}${postfix}`;
         }
 
         return `${dataPath} should not be ${schemaOutput}${postfix}`;
