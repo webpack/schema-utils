@@ -411,7 +411,7 @@ exports[`Validation should fail validation for array with only number 1`] = `
 exports[`Validation should fail validation for array with string items and minLength 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
  - configuration.longString should be an array:
-   [string (should not be shorter than 2 characters), ...]"
+   [string (should be longer than 1 character), ...]"
 `;
 
 exports[`Validation should fail validation for array without items 1`] = `
@@ -1747,7 +1747,7 @@ exports[`Validation should fail validation for string with minLength and maxLeng
 
 exports[`Validation should fail validation for string with minLength, maxLength and pattern 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.stringWithMinAndMaxLength should be a string (should not be shorter than 2 characters, should not be longer than 5 characters, should match pattern \\"[bc]+\\")."
+ - configuration.stringWithMinAndMaxLength should be a string (should be longer than 1 character, should be shorter than 6 characters, should match pattern \\"[bc]+\\")."
 `;
 
 exports[`Validation should fail validation for terser-webpack-plugin name 1`] = `

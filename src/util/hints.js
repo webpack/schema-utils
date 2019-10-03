@@ -2,52 +2,67 @@ const Range = require('./Range');
 
 module.exports.stringHints = function stringHints(schema, logic) {
   const hints = [];
+  const currentSchema = { ...schema };
 
-  if (typeof schema.minLength === 'number' && schema.minLength > 1) {
+  if (!logic) {
+    const tmpLength = currentSchema.minLength;
+    const tmpFormat = currentSchema.formatMinimum;
+    const tmpExclusive = currentSchema.formatExclusiveMaximum;
+
+    currentSchema.minLength = currentSchema.maxLength;
+    currentSchema.maxLength = tmpLength;
+    currentSchema.formatMinimum = currentSchema.formatMaximum;
+    currentSchema.formatMaximum = tmpFormat;
+    currentSchema.formatExclusiveMaximum = !currentSchema.formatExclusiveMinimum;
+    currentSchema.formatExclusiveMinimum = !tmpExclusive;
+  }
+
+  if (
+    typeof currentSchema.minLength === 'number' &&
+    currentSchema.minLength > 1
+  ) {
+    const length = currentSchema.minLength - 1;
     hints.push(
-      `should${logic ? ' not' : ''} be shorter than ${
-        schema.minLength
-      } characters`
+      `should be longer than ${length} character${length > 1 ? 's' : ''}`
     );
   }
 
-  if (typeof schema.maxLength === 'number') {
+  if (typeof currentSchema.maxLength === 'number') {
+    const length = currentSchema.maxLength + 1;
     hints.push(
-      `should${logic ? ' not' : ''} be longer than ${
-        schema.maxLength
-      } character${schema.maxLength > 1 ? 's' : ''}`
+      `should be shorter than ${length} character${length > 1 ? 's' : ''}`
     );
   }
 
-  if (schema.pattern) {
+  if (currentSchema.pattern) {
     hints.push(
       `should${logic ? '' : ' not'} match pattern ${JSON.stringify(
-        schema.pattern
+        currentSchema.pattern
       )}`
     );
   }
 
-  if (schema.format) {
+  if (currentSchema.format) {
     hints.push(
       `should${logic ? '' : ' not'} match format ${JSON.stringify(
-        schema.format
+        currentSchema.format
       )}`
     );
   }
 
-  if (schema.formatMinimum) {
+  if (currentSchema.formatMinimum) {
     hints.push(
-      `should${logic ? '' : ' not'} be ${
-        schema.formatExclusiveMinimum ? '>' : '>='
-      } ${JSON.stringify(schema.formatMinimum)}`
+      `should be ${
+        currentSchema.formatExclusiveMinimum ? '>' : '>='
+      } ${JSON.stringify(currentSchema.formatMinimum)}`
     );
   }
 
-  if (schema.formatMaximum) {
+  if (currentSchema.formatMaximum) {
     hints.push(
-      `should${logic ? '' : ' not'} be ${
-        schema.formatExclusiveMaximum ? '<' : '<='
-      } ${JSON.stringify(schema.formatMaximum)}`
+      `should be ${
+        currentSchema.formatExclusiveMaximum ? '<' : '<='
+      } ${JSON.stringify(currentSchema.formatMaximum)}`
     );
   }
 
