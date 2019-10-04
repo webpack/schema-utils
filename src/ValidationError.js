@@ -273,9 +273,9 @@ function formatHints(hints) {
 
 function getHints(schema, logic) {
   if (likeNumber(schema) || likeInteger(schema)) {
-    return formatHints(numberHints(schema, logic));
+    return numberHints(schema, logic);
   } else if (likeString(schema)) {
-    return formatHints(stringHints(schema, logic));
+    return stringHints(schema, logic);
   }
 
   return '';
@@ -401,9 +401,8 @@ class ValidationError extends Error {
     }
 
     if (likeNumber(schema) || likeInteger(schema)) {
-      const type = schema.type === 'integer' ? 'integer' : 'number';
-      const hints = getHints(schema, logic);
-      const str = `${type}${hints.length > 0 ? ` ${hints}` : ''}`;
+      const [type, ...hints] = getHints(schema, logic);
+      const str = `${type}${hints.length > 0 ? ` ${formatHints(hints)}` : ''}`;
 
       return logic
         ? str
@@ -413,20 +412,14 @@ class ValidationError extends Error {
     }
 
     if (likeString(schema)) {
-      const type =
-        typeof schema.minLength === 'number' && schema.minLength === 1
-          ? `${logic ? 'non-' : ''}empty string`
-          : 'string';
-      const hints = getHints(schema, logic);
-      const str = `${type}${hints.length > 0 ? ` ${hints}` : ''}`;
+      const [type, ...hints] = getHints(schema, logic);
+      const str = `${type}${hints.length > 0 ? ` ${formatHints(hints)}` : ''}`;
 
       return logic
         ? str
-        : hints.length
-        ? `non-string | ${str}`
-        : type === 'string'
+        : str === 'string'
         ? 'non-string'
-        : type;
+        : `non-string | ${str}`;
     }
 
     if (likeBoolean(schema)) {
@@ -749,7 +742,7 @@ class ValidationError extends Error {
       case 'maximum':
       case 'exclusiveMinimum':
       case 'exclusiveMaximum': {
-        const hints = numberHints(error.parentSchema);
+        const [, ...hints] = getHints(error.parentSchema);
 
         if (hints.length === 0) {
           hints.push(
@@ -780,9 +773,10 @@ class ValidationError extends Error {
           )}.${this.getSchemaPartDescription(error.parentSchema)}`;
         }
 
-        return `${dataPath} should not be shorter than ${
-          error.params.limit
-        } characters${getSchemaNonTypes(
+        return `${dataPath} should be longer than ${Math.max(
+          error.params.limit - 1,
+          0
+        )} characters${getSchemaNonTypes(
           error.parentSchema
         )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       }
@@ -813,9 +807,14 @@ class ValidationError extends Error {
         )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       }
       case 'maxLength':
-        return `${dataPath} should not be longer than ${
-          error.params.limit
-        } characters${getSchemaNonTypes(
+        if (error.params.limit === 0) {
+          return `${dataPath} should be an empty string${getSchemaNonTypes(
+            error.parentSchema
+          )}.${this.getSchemaPartDescription(error.parentSchema)}`;
+        }
+
+        return `${dataPath} should be shorter than ${error.params.limit +
+          1} characters${getSchemaNonTypes(
           error.parentSchema
         )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       case 'maxItems':

@@ -2979,6 +2979,18 @@
       "maximum": 20,
       "multipleOf": 5
     },
+    "notMultipleOf": {
+      "not": {
+        "not": {
+          "not": {
+            "type": "number",
+            "minimum": -100,
+            "maximum": 100,
+            "multipleOf": 5
+          }
+        }
+      }
+    },
     "stringWithMinAndMaxLength": {
       "type": "string",
       "minLength": 2,
@@ -3716,6 +3728,26 @@
     },
     "noTypeLikeObjectRequired":{
       "required": ["a", "b"]
+    },
+    "notEmptyString": {
+      "not": {
+        "type": "string",
+        "maxLength": 0
+      }
+    },
+    "notEmptyString2": {
+      "type": "string",
+      "minLength": 1
+    },
+    "emptyString": {
+      "not": {
+        "minLength": 0,
+        "type": "string"
+      }
+    },
+    "emptyString2": {
+      "maxLength": 0,
+      "type": "string"
     },
     "dollarData": {
       "type": "object",

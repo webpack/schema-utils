@@ -2,6 +2,7 @@ const Range = require('./Range');
 
 module.exports.stringHints = function stringHints(schema, logic) {
   const hints = [];
+  let type = 'string';
   const currentSchema = { ...schema };
 
   if (!logic) {
@@ -17,21 +18,26 @@ module.exports.stringHints = function stringHints(schema, logic) {
     currentSchema.formatExclusiveMinimum = !tmpExclusive;
   }
 
-  if (
-    typeof currentSchema.minLength === 'number' &&
-    currentSchema.minLength > 1
-  ) {
-    const length = currentSchema.minLength - 1;
-    hints.push(
-      `should be longer than ${length} character${length > 1 ? 's' : ''}`
-    );
+  if (typeof currentSchema.minLength === 'number') {
+    if (currentSchema.minLength === 1) {
+      type = 'non-empty string';
+    } else {
+      const length = Math.max(currentSchema.minLength - 1, 0);
+      hints.push(
+        `should be longer than ${length} character${length > 1 ? 's' : ''}`
+      );
+    }
   }
 
   if (typeof currentSchema.maxLength === 'number') {
-    const length = currentSchema.maxLength + 1;
-    hints.push(
-      `should be shorter than ${length} character${length > 1 ? 's' : ''}`
-    );
+    if (currentSchema.maxLength === 0) {
+      type = 'empty string';
+    } else {
+      const length = currentSchema.maxLength + 1;
+      hints.push(
+        `should be shorter than ${length} character${length > 1 ? 's' : ''}`
+      );
+    }
   }
 
   if (currentSchema.pattern) {
@@ -66,11 +72,11 @@ module.exports.stringHints = function stringHints(schema, logic) {
     );
   }
 
-  return hints;
+  return [type].concat(hints);
 };
 
 module.exports.numberHints = function numberHints(schema, logic) {
-  const hints = [];
+  const hints = [schema.type === 'integer' ? 'integer' : 'number'];
   const range = new Range();
 
   if (typeof schema.minimum === 'number') {
