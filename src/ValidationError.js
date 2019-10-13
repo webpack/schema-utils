@@ -1,3 +1,4 @@
+const humanize = require('./util/humanize');
 const Range = require('./util/Range');
 
 const SPECIFICITY = {
@@ -427,7 +428,7 @@ class ValidationError extends Error {
       }
 
       if (schema.format) {
-        hints.push(`should match format ${JSON.stringify(schema.format)}`);
+        type = `${humanize(schema.format)} ${type}`;
       }
 
       if (schema.formatMinimum) {

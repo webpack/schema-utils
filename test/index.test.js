@@ -2785,6 +2785,14 @@ describe('Validation', () => {
   );
 
   createFailedTestCase(
+    'format #1',
+    {
+      absolutePath: {},
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
     '$data',
     {
       dollarData: {
