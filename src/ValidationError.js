@@ -408,7 +408,7 @@ class ValidationError extends Error {
         if (schema.minLength === 1) {
           type = 'non-empty string';
         } else if (schema.minLength !== 0) {
-          /* if min length === 0 it does not make hint to user */
+          /* if min length === 0 it does not make hint for user */
           const length = schema.minLength - 1;
 
           hints.push(
