@@ -407,19 +407,24 @@ class ValidationError extends Error {
       if (typeof schema.minLength === 'number') {
         if (schema.minLength === 1) {
           type = 'non-empty string';
-        } else {
+        } else if (schema.minLength !== 0) {
+          /* if min length === 0 it does not make hint to user */
+          const length = schema.minLength - 1;
+
           hints.push(
-            `should not be shorter than ${schema.minLength} characters`
+            `should be longer than ${length} character${length > 1 ? 's' : ''}`
           );
         }
       }
 
       if (typeof schema.maxLength === 'number') {
-        hints.push(
-          `should not be longer than ${schema.maxLength} character${
-            schema.maxLength > 1 ? 's' : ''
-          }`
-        );
+        if (schema.maxLength === 0) {
+          type = 'empty string';
+        } else {
+          hints.push(
+            `should be shorter than ${schema.maxLength + 1} characters`
+          );
+        }
       }
 
       if (schema.pattern) {
@@ -791,10 +796,11 @@ class ValidationError extends Error {
             error.parentSchema
           )}.${this.getSchemaPartDescription(error.parentSchema)}`;
         }
+        const length = error.params.limit - 1;
 
-        return `${dataPath} should not be shorter than ${
-          error.params.limit
-        } characters${getSchemaNonTypes(
+        return `${dataPath} should be longer than ${length} character${
+          length > 1 ? 's' : ''
+        }${getSchemaNonTypes(
           error.parentSchema
         )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       }
@@ -825,9 +831,8 @@ class ValidationError extends Error {
         )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       }
       case 'maxLength':
-        return `${dataPath} should not be longer than ${
-          error.params.limit
-        } characters${getSchemaNonTypes(
+        return `${dataPath} should be shorter than ${error.params.limit +
+          1} characters${getSchemaNonTypes(
           error.parentSchema
         )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       case 'maxItems':
