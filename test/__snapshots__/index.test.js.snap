@@ -411,7 +411,7 @@ exports[`Validation should fail validation for array with only number 1`] = `
 exports[`Validation should fail validation for array with string items and minLength 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
  - configuration.longString should be an array:
-   [string (should not be shorter than 2 characters), ...]"
+   [string (should be longer than 1 character), ...]"
 `;
 
 exports[`Validation should fail validation for array without items 1`] = `
@@ -880,12 +880,12 @@ exports[`Validation should fail validation for maxItems Keyword 1`] = `
 
 exports[`Validation should fail validation for maxLength 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.customObject.maxLength should not be longer than 3 characters."
+ - configuration.customObject.maxLength should be shorter than 4 characters."
 `;
 
 exports[`Validation should fail validation for maxLength with type string 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.stringWithMaxLength should not be longer than 2 characters."
+ - configuration.stringWithMaxLength should be shorter than 3 characters."
 `;
 
 exports[`Validation should fail validation for maxProperties 1`] = `
@@ -931,7 +931,7 @@ exports[`Validation should fail validation for maximum with type number 1`] = `
 
 exports[`Validation should fail validation for min length 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.minLengthTwo should not be shorter than 2 characters."
+ - configuration.minLengthTwo should be longer than 1 character."
 `;
 
 exports[`Validation should fail validation for min properties 1`] = `
@@ -947,7 +947,7 @@ exports[`Validation should fail validation for minItems Keyword 1`] = `
 
 exports[`Validation should fail validation for minLength with type string 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.stringWithMinLength should not be shorter than 2 characters."
+ - configuration.stringWithMinLength should be longer than 1 character."
 `;
 
 exports[`Validation should fail validation for minProperties 1`] = `
@@ -1177,12 +1177,12 @@ exports[`Validation should fail validation for no type like string with formatMa
 
 exports[`Validation should fail validation for no type like string with maxLength 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.noTypeLikeStringMaxLength should not be longer than 2 characters | should be any non-string."
+ - configuration.noTypeLikeStringMaxLength should be shorter than 3 characters | should be any non-string."
 `;
 
 exports[`Validation should fail validation for no type like string with minLength 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.noTypeLikeStringMinLength should not be shorter than 2 characters | should be any non-string."
+ - configuration.noTypeLikeStringMinLength should be longer than 1 character | should be any non-string."
 `;
 
 exports[`Validation should fail validation for no type like string with minLength equals 1 1`] = `
@@ -1481,7 +1481,7 @@ exports[`Validation should fail validation for oneOf #1 1`] = `
 exports[`Validation should fail validation for oneOf #2 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
  - configuration.optimization.runtimeChunk should be one of these:
-   boolean | \\"single\\" | \\"multiple\\" | object { name? }
+   boolean | \\"single\\" | \\"multiple\\" | empty string | object { name? }
    -> Create an additional chunk which contains only the webpack runtime and chunk hash maps
    Details:
     * configuration.optimization.runtimeChunk.name should be one of these:
@@ -1495,12 +1495,13 @@ exports[`Validation should fail validation for oneOf #2 1`] = `
 exports[`Validation should fail validation for oneOf #3 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
  - configuration.optimization.runtimeChunk should be one of these:
-   boolean | \\"single\\" | \\"multiple\\" | object { name? }
+   boolean | \\"single\\" | \\"multiple\\" | empty string | object { name? }
    -> Create an additional chunk which contains only the webpack runtime and chunk hash maps
    Details:
     * configuration.optimization.runtimeChunk should be a boolean.
     * configuration.optimization.runtimeChunk should be one of these:
       \\"single\\" | \\"multiple\\"
+    * configuration.optimization.runtimeChunk should be a empty string.
     * configuration.optimization.runtimeChunk should be an object:
       object { name? }"
 `;
@@ -1712,7 +1713,7 @@ exports[`Validation should fail validation for string #1 1`] = `
 
 exports[`Validation should fail validation for string 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.stringKeyword should not be shorter than 11 characters."
+ - configuration.stringKeyword should be longer than 10 characters."
 `;
 
 exports[`Validation should fail validation for string with empty pattern 1`] = `
@@ -1727,7 +1728,7 @@ exports[`Validation should fail validation for string with minLength and maxLeng
 
 exports[`Validation should fail validation for string with minLength, maxLength and pattern 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.stringWithMinAndMaxLength should be a string (should not be shorter than 2 characters, should not be longer than 5 characters, should match pattern \\"[bc]+\\")."
+ - configuration.stringWithMinAndMaxLength should be a string (should be longer than 1 character, should be shorter than 6 characters, should match pattern \\"[bc]+\\")."
 `;
 
 exports[`Validation should fail validation for terser-webpack-plugin name 1`] = `

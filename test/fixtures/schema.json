@@ -592,6 +592,10 @@
               "enum": ["single", "multiple"]
             },
             {
+              "type": "string",
+              "maxLength": 0
+            },
+            {
               "type": "object",
               "additionalProperties": false,
               "properties": {
