@@ -1,12 +1,16 @@
-import {JSONSchema4, JSONSchema6, JSONSchema7} from 'json-schema';
-import {ErrorObject} from 'ajv';
+import { JSONSchema4, JSONSchema6, JSONSchema7 } from 'json-schema';
+import { ErrorObject } from 'ajv';
 
 type Schema = JSONSchema4 | JSONSchema6 | JSONSchema7;
 type PostFormatter = (formattedError: string, error: ErrorObject) => string;
 
 declare namespace SchemaUtils {
-  class ValidateError extends Error {
-    constructor(errors: Array<ErrorObject>, schema: Schema, configuration?: Partial<ValidateErrorConfiguration>);
+  class ValidationError extends Error {
+    constructor(
+      errors: Array<ErrorObject>,
+      schema: Schema,
+      configuration?: Partial<ValidationErrorConfiguration>
+    );
 
     name: string;
     errors: Array<ErrorObject>;
@@ -17,16 +21,21 @@ declare namespace SchemaUtils {
     message: string;
   }
 
-  interface ValidateErrorConfiguration {
-    name: string,
-    baseDataPath: string,
-    postFormatter: PostFormatter
+  interface ValidationErrorConfiguration {
+    name: string;
+    baseDataPath: string;
+    postFormatter: PostFormatter;
   }
 }
 
 declare var validate: {
-  (schema: Schema, options: Array<object> | object, configuration?: Partial<SchemaUtils.ValidateErrorConfiguration>): void;
-  ValidateError: typeof SchemaUtils.ValidateError
-}
+  (
+    schema: Schema,
+    options: Array<object> | object,
+    configuration?: Partial<SchemaUtils.ValidationErrorConfiguration>
+  ): void;
+  ValidateError: typeof SchemaUtils.ValidationError;
+  ValidationError: typeof SchemaUtils.ValidationError;
+};
 
 export = validate;
