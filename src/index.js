@@ -1,5 +1,8 @@
 const validate = require('./validate');
-const validateError = require('./ValidationError');
+const ValidationError = require('./ValidationError');
 
 module.exports = validate.default;
-module.exports.ValidateError = validateError.default;
+module.exports.ValidationError = ValidationError.default;
+
+// Todo remove this in next major release
+module.exports.ValidateError = ValidationError.default;
