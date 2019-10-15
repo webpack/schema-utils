@@ -1,36 +1,42 @@
 import { JSONSchema4, JSONSchema6, JSONSchema7 } from 'json-schema';
 import { ErrorObject } from 'ajv';
 
-type Schema = JSONSchema4 | JSONSchema6 | JSONSchema7;
-type PostFormatter = (formattedError: string, error: ErrorObject) => string;
-
 declare namespace SchemaUtils {
-  class ValidationError extends Error {
-    constructor(
-      errors: Array<ErrorObject>,
-      schema: Schema,
-      configuration?: Partial<ValidationErrorConfiguration>
-    );
-
-    name: string;
-    errors: Array<ErrorObject>;
-    schema: Schema;
-    headerName: string;
-    baseDataPath: string;
-    postFormatter: PostFormatter | null;
-    message: string;
-  }
+  type Schema = JSONSchema4 | JSONSchema6 | JSONSchema7;
+  type SchemaUtilErrorObject = ErrorObject & {
+    children?: SchemaUtilErrorObject[];
+  };
+  type PostFormatter = (
+    formattedError: string,
+    error: SchemaUtilErrorObject
+  ) => string;
 
   interface ValidationErrorConfiguration {
     name: string;
     baseDataPath: string;
     postFormatter: PostFormatter;
   }
+
+  class ValidationError extends Error {
+    constructor(
+      errors: Array<SchemaUtilErrorObject>,
+      schema: Schema,
+      configuration?: Partial<ValidationErrorConfiguration>
+    );
+
+    name: string;
+    errors: Array<SchemaUtilErrorObject>;
+    schema: Schema;
+    headerName: string;
+    baseDataPath: string;
+    postFormatter: PostFormatter | null;
+    message: string;
+  }
 }
 
-declare var validate: {
+declare const validate: {
   (
-    schema: Schema,
+    schema: SchemaUtils.Schema,
     options: Array<object> | object,
     configuration?: Partial<SchemaUtils.ValidationErrorConfiguration>
   ): void;
