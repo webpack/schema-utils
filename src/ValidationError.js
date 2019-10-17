@@ -1,5 +1,14 @@
 const Range = require('./util/Range');
 
+/** @typedef {import("json-schema").JSONSchema6} JSONSchema6 */
+/** @typedef {import("json-schema").JSONSchema7} JSONSchema7 */
+
+/** @typedef {import("./validate").Schema} Schema */
+/** @typedef {import("./validate").ValidationErrorConfiguration} ValidationErrorConfiguration */
+/** @typedef {import("./validate").PostFormatter} PostFormatter */
+/** @typedef {import("./validate").SchemaUtilErrorObject} SchemaUtilErrorObject */
+
+/** @enum {number} */
 const SPECIFICITY = {
   type: 1,
   not: 1,
@@ -35,21 +44,43 @@ const SPECIFICITY = {
   absolutePath: 2,
 };
 
+/**
+ *
+ * @param {Array<SchemaUtilErrorObject>} array
+ * @param {(item: SchemaUtilErrorObject) => number} fn
+ * @returns {Array<SchemaUtilErrorObject>}
+ */
 function filterMax(array, fn) {
   const evaluatedMax = array.reduce((max, item) => Math.max(max, fn(item)), 0);
 
   return array.filter((item) => fn(item) === evaluatedMax);
 }
 
+/**
+ *
+ * @param {Array<SchemaUtilErrorObject>} children
+ * @returns {Array<SchemaUtilErrorObject>}
+ */
 function filterChildren(children) {
   let newChildren = children;
 
-  newChildren = filterMax(newChildren, (error) =>
-    error.dataPath ? error.dataPath.length : 0
+  newChildren = filterMax(
+    newChildren,
+    /**
+     *
+     * @param {SchemaUtilErrorObject} error
+     * @returns {number}
+     */
+    (error) => (error.dataPath ? error.dataPath.length : 0)
   );
   newChildren = filterMax(
     newChildren,
-    (error) => SPECIFICITY[error.keyword] || 2
+    /**
+     * @param {SchemaUtilErrorObject} error
+     * @returns {number}
+     */
+    (error) =>
+      SPECIFICITY[/** @type {keyof typeof SPECIFICITY} */ (error.keyword)] || 2
   );
 
   return newChildren;
@@ -57,14 +88,18 @@ function filterChildren(children) {
 
 /**
  * Find all children errors
- * @param children
- * @param {string[]} schemaPaths
+ * @param {Array<SchemaUtilErrorObject>} children
+ * @param {Array<string>} schemaPaths
  * @return {number} returns index of first child
  */
 function findAllChildren(children, schemaPaths) {
   let i = children.length - 1;
-  const predicate = (schemaPath) =>
-    children[i].schemaPath.indexOf(schemaPath) !== 0;
+  const predicate =
+    /**
+     * @param {string} schemaPath
+     * @returns {boolean}
+     */
+    (schemaPath) => children[i].schemaPath.indexOf(schemaPath) !== 0;
 
   while (i > -1 && !schemaPaths.every(predicate)) {
     if (children[i].keyword === 'anyOf' || children[i].keyword === 'oneOf') {
@@ -73,6 +108,7 @@ function findAllChildren(children, schemaPaths) {
         children.slice(0, i),
         refs.concat(children[i].schemaPath)
       );
+
       i = childrenStart - 1;
     } else {
       i -= 1;
@@ -84,8 +120,8 @@ function findAllChildren(children, schemaPaths) {
 
 /**
  * Extracts all refs from schema
- * @param error
- * @return {string[]}
+ * @param {SchemaUtilErrorObject} error
+ * @return {Array<string>}
  */
 function extractRefs(error) {
   const { schema } = error;
@@ -99,8 +135,8 @@ function extractRefs(error) {
 
 /**
  * Groups children by their first level parent (assuming that error is root)
- * @param children
- * @return {any[]}
+ * @param {Array<SchemaUtilErrorObject>} children
+ * @return {Array<SchemaUtilErrorObject>}
  */
 function groupChildrenByFirstChild(children) {
   const result = [];
@@ -140,14 +176,27 @@ function groupChildrenByFirstChild(children) {
   return result.reverse();
 }
 
+/**
+ * @param {string} str
+ * @param {string} prefix
+ * @returns {string}
+ */
 function indent(str, prefix) {
   return str.replace(/\n(?!$)/g, `\n${prefix}`);
 }
 
-function isObject(maybyObj) {
-  return typeof maybyObj === 'object' && maybyObj !== null;
+/**
+ * @param {any} maybeObj
+ * @returns {boolean}
+ */
+function isObject(maybeObj) {
+  return typeof maybeObj === 'object' && maybeObj !== null;
 }
 
+/**
+ * @param {Schema} schema
+ * @returns {boolean}
+ */
 function likeNumber(schema) {
   return (
     schema.type === 'number' ||
@@ -159,6 +208,10 @@ function likeNumber(schema) {
   );
 }
 
+/**
+ * @param {Schema} schema
+ * @returns {boolean}
+ */
 function likeInteger(schema) {
   return (
     schema.type === 'integer' ||
@@ -170,6 +223,10 @@ function likeInteger(schema) {
   );
 }
 
+/**
+ * @param {Schema & {formatMinimum?: string; formatMaximum?: string;}} schema
+ * @returns {boolean}
+ */
 function likeString(schema) {
   return (
     schema.type === 'string' ||
@@ -182,10 +239,18 @@ function likeString(schema) {
   );
 }
 
+/**
+ * @param {Schema} schema
+ * @returns {boolean}
+ */
 function likeBoolean(schema) {
   return schema.type === 'boolean';
 }
 
+/**
+ * @param {Schema} schema
+ * @returns {boolean}
+ */
 function likeArray(schema) {
   return (
     schema.type === 'array' ||
@@ -198,6 +263,10 @@ function likeArray(schema) {
   );
 }
 
+/**
+ * @param {Schema & {patternRequired?: Array<string>}} schema
+ * @returns {boolean}
+ */
 function likeObject(schema) {
   return (
     schema.type === 'object' ||
@@ -213,10 +282,18 @@ function likeObject(schema) {
   );
 }
 
+/**
+ * @param {Schema} schema
+ * @returns {boolean}
+ */
 function likeNull(schema) {
   return schema.type === 'null';
 }
 
+/**
+ * @param {string} type
+ * @returns {string}
+ */
 function getArticle(type) {
   if (/^[aeiou]/i.test(type)) {
     return 'an';
@@ -225,7 +302,15 @@ function getArticle(type) {
   return 'a';
 }
 
+/**
+ * @param {Schema=} schema
+ * @returns {string}
+ */
 function getSchemaNonTypes(schema) {
+  if (!schema) {
+    return '';
+  }
+
   if (!schema.type) {
     if (likeNumber(schema) || likeInteger(schema)) {
       return ' | should be any non-number';
@@ -247,7 +332,15 @@ function getSchemaNonTypes(schema) {
   return '';
 }
 
+/**
+ * @param {Schema=} schema
+ * @returns {Array<string>}
+ */
 function numberHints(schema) {
+  if (!schema) {
+    return [];
+  }
+
   const hints = [];
   const range = new Range();
 
@@ -280,10 +373,18 @@ function numberHints(schema) {
   return hints;
 }
 
+/**
+ * @param {Array<string>} hints
+ * @returns {string}
+ */
 function formatHints(hints) {
   return hints.length > 0 ? `(${hints.join(', ')})` : '';
 }
 
+/**
+ * @param {Schema} schema
+ * @returns {string}
+ */
 function getHints(schema) {
   if (likeNumber(schema) || likeInteger(schema)) {
     return formatHints(numberHints(schema));
@@ -293,14 +394,25 @@ function getHints(schema) {
 }
 
 class ValidationError extends Error {
+  /**
+   * @param {Array<SchemaUtilErrorObject>} errors
+   * @param {Schema} schema
+   * @param {ValidationErrorConfiguration} configuration
+   */
   constructor(errors, schema, configuration = {}) {
     super();
 
+    /** @type {string} */
     this.name = 'ValidationError';
+    /** @type {Array<SchemaUtilErrorObject>} */
     this.errors = errors;
+    /** @type {Schema} */
     this.schema = schema;
+    /** @type {string} */
     this.headerName = configuration.name || 'Object';
+    /** @type {string} */
     this.baseDataPath = configuration.baseDataPath || 'configuration';
+    /** @type {PostFormatter | null} */
     this.postFormatter = configuration.postFormatter || null;
 
     const header = `Invalid ${this.baseDataPath} object. ${
@@ -309,18 +421,23 @@ class ValidationError extends Error {
       this.baseDataPath
     } object that does not match the API schema.\n`;
 
+    /** @type {string} */
     this.message = `${header}${this.formatValidationErrors(errors)}`;
 
     Error.captureStackTrace(this, this.constructor);
   }
 
+  /**
+   * @param {string} path
+   * @returns {Schema}
+   */
   getSchemaPart(path) {
     const newPath = path.split('/');
 
     let schemaPart = this.schema;
 
     for (let i = 1; i < newPath.length; i++) {
-      const inner = schemaPart[newPath[i]];
+      const inner = schemaPart[/** @type {keyof Schema} */ (newPath[i])];
 
       if (!inner) {
         break;
@@ -332,39 +449,59 @@ class ValidationError extends Error {
     return schemaPart;
   }
 
+  /**
+   * @param {Schema} schema
+   * @param {Array<Object>} prevSchemas
+   * @returns {string}
+   */
   formatSchema(schema, prevSchemas = []) {
-    const formatInnerSchema = (innerSchema, addSelf) => {
-      if (!addSelf) {
-        return this.formatSchema(innerSchema, prevSchemas);
-      }
+    const formatInnerSchema =
+      /**
+       *
+       * @param {Object} innerSchema
+       * @param {boolean=} addSelf
+       * @returns {string}
+       */
+      (innerSchema, addSelf) => {
+        if (!addSelf) {
+          return this.formatSchema(innerSchema, prevSchemas);
+        }
 
-      if (prevSchemas.includes(innerSchema)) {
-        return '(recursive)';
-      }
+        if (prevSchemas.includes(innerSchema)) {
+          return '(recursive)';
+        }
 
-      return this.formatSchema(innerSchema, prevSchemas.concat(schema));
-    };
+        return this.formatSchema(innerSchema, prevSchemas.concat(schema));
+      };
 
     if (schema.not && !likeObject(schema)) {
       return `non ${formatInnerSchema(schema.not)}`;
     }
 
-    if (schema.instanceof) {
-      if (Array.isArray(schema.instanceof)) {
-        return schema.instanceof.map(formatInnerSchema).join(' | ');
-      }
+    if (
+      /** @type {Schema & {instanceof: string | Array<string>}} */ (schema).instanceof
+    ) {
+      const {
+        instanceof: value,
+      } = /** @type {Schema & {instanceof: string | Array<string>}} */ (schema);
 
-      // eslint-disable-next-line default-case
-      switch (schema.instanceof) {
-        case 'Function':
-          return 'function';
-        case 'RegExp':
-          return 'RegExp';
-      }
+      const values = !Array.isArray(value) ? [value] : value;
+
+      return values
+        .map(
+          /**
+           * @param {string} item
+           * @returns {string}
+           */
+          (item) => (item === 'Function' ? 'function' : item)
+        )
+        .join(' | ');
     }
 
     if (schema.enum) {
-      return schema.enum.map((item) => JSON.stringify(item)).join(' | ');
+      return /** @type {Array<any>} */ (schema.enum)
+        .map((item) => JSON.stringify(item))
+        .join(' | ');
     }
 
     if (typeof schema.const !== 'undefined') {
@@ -372,21 +509,33 @@ class ValidationError extends Error {
     }
 
     if (schema.oneOf) {
-      return schema.oneOf.map(formatInnerSchema).join(' | ');
+      return /** @type {Array<Schema>} */ (schema.oneOf)
+        .map((item) => formatInnerSchema(item, true))
+        .join(' | ');
     }
 
     if (schema.anyOf) {
-      return schema.anyOf.map(formatInnerSchema).join(' | ');
+      return /** @type {Array<Schema>} */ (schema.anyOf)
+        .map((item) => formatInnerSchema(item, true))
+        .join(' | ');
     }
 
     if (schema.allOf) {
-      return schema.allOf.map(formatInnerSchema).join(' & ');
+      return /** @type {Array<Schema>} */ (schema.allOf)
+        .map((item) => formatInnerSchema(item, true))
+        .join(' & ');
     }
 
-    if (schema.if) {
-      return `if ${formatInnerSchema(schema.if)} then ${formatInnerSchema(
-        schema.then
-      )}${schema.else ? ` else ${formatInnerSchema(schema.else)}` : ''}`;
+    if (/** @type {JSONSchema7} */ (schema).if) {
+      const {
+        if: ifValue,
+        then: thenValue,
+        else: elseValue,
+      } = /** @type {JSONSchema7} */ (schema);
+
+      return `${ifValue ? `if ${formatInnerSchema(ifValue)}` : ''}${
+        thenValue ? ` then ${formatInnerSchema(thenValue)}` : ''
+      }${elseValue ? ` else ${formatInnerSchema(elseValue)}` : ''}`;
     }
 
     if (schema.$ref) {
@@ -435,19 +584,33 @@ class ValidationError extends Error {
         hints.push(`should match format ${JSON.stringify(schema.format)}`);
       }
 
-      if (schema.formatMinimum) {
+      if (
+        /** @type {Schema & {formatMinimum?: string; formatExclusiveMinimum?: boolean;}} */ (schema).formatMinimum
+      ) {
+        const {
+          formatExclusiveMinimum,
+          formatMinimum,
+        } = /** @type {Schema & {formatMinimum?: string; formatExclusiveMinimum?: boolean;}} */ (schema);
+
         hints.push(
-          `should be ${
-            schema.formatExclusiveMinimum ? '>' : '>='
-          } ${JSON.stringify(schema.formatMinimum)}`
+          `should be ${formatExclusiveMinimum ? '>' : '>='} ${JSON.stringify(
+            formatMinimum
+          )}`
         );
       }
 
-      if (schema.formatMaximum) {
+      if (
+        /** @type {Schema & {formatMaximum?: string; formatExclusiveMaximum?: boolean;}} */ (schema).formatMaximum
+      ) {
+        const {
+          formatExclusiveMaximum,
+          formatMaximum,
+        } = /** @type {Schema & {formatMaximum?: string; formatExclusiveMaximum?: boolean;}} */ (schema);
+
         hints.push(
-          `should be ${
-            schema.formatExclusiveMaximum ? '<' : '<='
-          } ${JSON.stringify(schema.formatMaximum)}`
+          `should be ${formatExclusiveMaximum ? '<' : '<='} ${JSON.stringify(
+            formatMaximum
+          )}`
         );
       }
 
@@ -488,10 +651,15 @@ class ValidationError extends Error {
 
       if (schema.items) {
         if (Array.isArray(schema.items) && schema.items.length > 0) {
-          items = `${schema.items.map(formatInnerSchema).join(', ')}`;
+          items = `${
+            /** @type {Array<Schema>} */ (schema.items)
+              .map((item) => formatInnerSchema(item))
+              .join(', ')
+          }`;
 
           if (hasAdditionalItems) {
             if (
+              schema.additionalItems &&
               isObject(schema.additionalItems) &&
               Object.keys(schema.additionalItems).length > 0
             ) {
@@ -541,7 +709,9 @@ class ValidationError extends Error {
       if (typeof schema.maxProperties === 'number') {
         hints.push(
           `should not have more than ${schema.maxProperties} ${
-            schema.minProperties > 1 ? 'properties' : 'property'
+            schema.minProperties && schema.minProperties > 1
+              ? 'properties'
+              : 'property'
           }`
         );
       }
@@ -566,11 +736,10 @@ class ValidationError extends Error {
         : [];
       const required = schema.required ? schema.required : [];
       const allProperties = [
-        ...new Set([].concat(required).concat(properties)),
+        ...new Set(
+          /** @type {Array<string>} */ ([]).concat(required).concat(properties)
+        ),
       ];
-      const hasAdditionalProperties =
-        typeof schema.additionalProperties === 'undefined' ||
-        Boolean(schema.additionalProperties);
 
       const objectStructure = allProperties
         .map((property) => {
@@ -581,17 +750,25 @@ class ValidationError extends Error {
           return `${property}${isRequired ? '' : '?'}`;
         })
         .concat(
-          hasAdditionalProperties
-            ? isObject(schema.additionalProperties)
+          typeof schema.additionalProperties === 'undefined' ||
+            Boolean(schema.additionalProperties)
+            ? schema.additionalProperties &&
+              isObject(schema.additionalProperties)
               ? [`<key>: ${formatInnerSchema(schema.additionalProperties)}`]
               : ['…']
             : []
         )
         .join(', ');
 
-      if (schema.dependencies) {
-        Object.keys(schema.dependencies).forEach((dependencyName) => {
-          const dependency = schema.dependencies[dependencyName];
+      const {
+        dependencies,
+        propertyNames,
+        patternRequired,
+      } = /** @type {Schema & {patternRequired?: Array<string>;}} */ (schema);
+
+      if (dependencies) {
+        Object.keys(dependencies).forEach((dependencyName) => {
+          const dependency = dependencies[dependencyName];
 
           if (Array.isArray(dependency)) {
             hints.push(
@@ -611,10 +788,7 @@ class ValidationError extends Error {
         });
       }
 
-      if (
-        schema.propertyNames &&
-        Object.keys(schema.propertyNames).length > 0
-      ) {
+      if (propertyNames && Object.keys(propertyNames).length > 0) {
         hints.push(
           `each property name should match format ${JSON.stringify(
             schema.propertyNames.format
@@ -622,9 +796,13 @@ class ValidationError extends Error {
         );
       }
 
-      if (schema.patternRequired && schema.patternRequired.length > 0) {
+      if (patternRequired && patternRequired.length > 0) {
         hints.push(
-          `should have property matching pattern ${schema.patternRequired.map(
+          `should have property matching pattern ${patternRequired.map(
+            /**
+             * @param {string} item
+             * @returns {string}
+             */
             (item) => JSON.stringify(item)
           )}`
         );
@@ -640,7 +818,7 @@ class ValidationError extends Error {
     }
 
     if (Array.isArray(schema.type)) {
-      return `${schema.type.map((item) => item).join(' | ')}`;
+      return `${schema.type.join(' | ')}`;
     }
 
     // Fallback for unknown keywords
@@ -648,10 +826,22 @@ class ValidationError extends Error {
     return JSON.stringify(schema, null, 2);
   }
 
+  /**
+   * @param {Schema=} schemaPart
+   * @param {(boolean | Array<string>)=} additionalPath
+   * @param {boolean=} needDot
+   * @returns {string}
+   */
   getSchemaPartText(schemaPart, additionalPath, needDot = false) {
-    if (additionalPath) {
+    if (!schemaPart) {
+      return '';
+    }
+
+    if (Array.isArray(additionalPath)) {
       for (let i = 0; i < additionalPath.length; i++) {
-        const inner = schemaPart[additionalPath[i]];
+        /** @type {Schema | undefined} */
+        const inner =
+          schemaPart[/** @type {keyof Schema} */ (additionalPath[i])];
 
         if (inner) {
           // eslint-disable-next-line no-param-reassign
@@ -676,7 +866,15 @@ class ValidationError extends Error {
     return schemaText;
   }
 
+  /**
+   * @param {Schema=} schemaPart
+   * @returns {string}
+   */
   getSchemaPartDescription(schemaPart) {
+    if (!schemaPart) {
+      return '';
+    }
+
     while (schemaPart.$ref) {
       // eslint-disable-next-line no-param-reassign
       schemaPart = this.getSchemaPart(schemaPart.$ref);
@@ -689,293 +887,389 @@ class ValidationError extends Error {
     return '';
   }
 
+  /**
+   * @param {SchemaUtilErrorObject} error
+   * @returns {string}
+   */
   formatValidationError(error) {
-    const dataPath = `${this.baseDataPath}${error.dataPath}`;
+    const { keyword, dataPath: errorDataPath } = error;
+    const dataPath = `${this.baseDataPath}${errorDataPath}`;
 
-    switch (error.keyword) {
-      case 'type':
+    switch (keyword) {
+      case 'type': {
+        const { parentSchema, params } = error;
+
         // eslint-disable-next-line default-case
-        switch (error.params.type) {
+        switch (/** @type {import("ajv").TypeParams} */ (params).type) {
           case 'number':
             return `${dataPath} should be a ${this.getSchemaPartText(
-              error.parentSchema,
+              parentSchema,
               false,
               true
             )}`;
           case 'integer':
             return `${dataPath} should be a ${this.getSchemaPartText(
-              error.parentSchema,
+              parentSchema,
               false,
               true
             )}`;
           case 'string':
             return `${dataPath} should be a ${this.getSchemaPartText(
-              error.parentSchema,
+              parentSchema,
               false,
               true
             )}`;
           case 'boolean':
             return `${dataPath} should be a ${this.getSchemaPartText(
-              error.parentSchema,
+              parentSchema,
               false,
               true
             )}`;
           case 'array':
             return `${dataPath} should be an array:\n${this.getSchemaPartText(
-              error.parentSchema
+              parentSchema
             )}`;
           case 'object':
             return `${dataPath} should be an object:\n${this.getSchemaPartText(
-              error.parentSchema
+              parentSchema
             )}`;
           case 'null':
             return `${dataPath} should be a ${this.getSchemaPartText(
-              error.parentSchema,
+              parentSchema,
               false,
               true
             )}`;
           default:
             return `${dataPath} should be:\n${this.getSchemaPartText(
-              error.parentSchema
+              parentSchema
             )}`;
         }
-      case 'instanceof':
+      }
+      case 'instanceof': {
+        const { parentSchema } = error;
+
         return `${dataPath} should be an instance of ${this.getSchemaPartText(
-          error.parentSchema
+          parentSchema
         )}.`;
-      case 'pattern':
+      }
+      case 'pattern': {
+        const { params, parentSchema } = error;
+        const { pattern } = /** @type {import("ajv").PatternParams} */ (params);
+
         return `${dataPath} should match pattern ${JSON.stringify(
-          error.params.pattern
-        )}${getSchemaNonTypes(
-          error.parentSchema
-        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
-      case 'format':
+          pattern
+        )}${getSchemaNonTypes(parentSchema)}.${this.getSchemaPartDescription(
+          parentSchema
+        )}`;
+      }
+      case 'format': {
+        const { params, parentSchema } = error;
+        const { format } = /** @type {import("ajv").FormatParams} */ (params);
+
         return `${dataPath} should match format ${JSON.stringify(
-          error.params.format
-        )}${getSchemaNonTypes(
-          error.parentSchema
-        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
+          format
+        )}${getSchemaNonTypes(parentSchema)}.${this.getSchemaPartDescription(
+          parentSchema
+        )}`;
+      }
       case 'formatMinimum':
-      case 'formatMaximum':
-        return `${dataPath} should be ${
-          error.params.comparison
-        } ${JSON.stringify(error.params.limit)}${getSchemaNonTypes(
-          error.parentSchema
-        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
+      case 'formatMaximum': {
+        const { params, parentSchema } = error;
+        const {
+          comparison,
+          limit,
+        } = /** @type {import("ajv").ComparisonParams} */ (params);
+
+        return `${dataPath} should be ${comparison} ${JSON.stringify(
+          limit
+        )}${getSchemaNonTypes(parentSchema)}.${this.getSchemaPartDescription(
+          parentSchema
+        )}`;
+      }
       case 'minimum':
       case 'maximum':
       case 'exclusiveMinimum':
       case 'exclusiveMaximum': {
-        const hints = numberHints(error.parentSchema);
+        const { parentSchema, params } = error;
+        const {
+          comparison,
+          limit,
+        } = /** @type {import("ajv").ComparisonParams} */ (params);
+        const hints = numberHints(parentSchema);
 
         if (hints.length === 0) {
-          hints.push(
-            `should be ${error.params.comparison} ${error.params.limit}`
-          );
+          hints.push(`should be ${comparison} ${limit}`);
         }
 
         return `${dataPath} ${hints.join(' ')}${getSchemaNonTypes(
-          error.parentSchema
-        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
+          parentSchema
+        )}.${this.getSchemaPartDescription(parentSchema)}`;
       }
-      case 'multipleOf':
-        return `${dataPath} should be multiple of ${
-          error.params.multipleOf
-        }${getSchemaNonTypes(
-          error.parentSchema
-        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
-      case 'patternRequired':
+      case 'multipleOf': {
+        const { params, parentSchema } = error;
+        const {
+          multipleOf,
+        } = /** @type {import("ajv").MultipleOfParams} */ (params);
+
+        return `${dataPath} should be multiple of ${multipleOf}${getSchemaNonTypes(
+          parentSchema
+        )}.${this.getSchemaPartDescription(parentSchema)}`;
+      }
+      case 'patternRequired': {
+        const { params, parentSchema } = error;
+        const {
+          missingPattern,
+        } = /** @type {import("ajv").PatternRequiredParams} */ (params);
+
         return `${dataPath} should have property matching pattern ${JSON.stringify(
-          error.params.missingPattern
-        )}${getSchemaNonTypes(
-          error.parentSchema
-        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
+          missingPattern
+        )}${getSchemaNonTypes(parentSchema)}.${this.getSchemaPartDescription(
+          parentSchema
+        )}`;
+      }
       case 'minLength': {
-        if (error.params.limit === 1) {
+        const { params, parentSchema } = error;
+        const { limit } = /** @type {import("ajv").LimitParams} */ (params);
+
+        if (limit === 1) {
           return `${dataPath} should be an non-empty string${getSchemaNonTypes(
-            error.parentSchema
-          )}.${this.getSchemaPartDescription(error.parentSchema)}`;
+            parentSchema
+          )}.${this.getSchemaPartDescription(parentSchema)}`;
         }
-        const length = error.params.limit - 1;
+
+        const length = limit - 1;
 
         return `${dataPath} should be longer than ${length} character${
           length > 1 ? 's' : ''
-        }${getSchemaNonTypes(
-          error.parentSchema
-        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
+        }${getSchemaNonTypes(parentSchema)}.${this.getSchemaPartDescription(
+          parentSchema
+        )}`;
       }
       case 'minItems': {
-        if (error.params.limit === 1) {
+        const { params, parentSchema } = error;
+        const { limit } = /** @type {import("ajv").LimitParams} */ (params);
+
+        if (limit === 1) {
           return `${dataPath} should be an non-empty array${getSchemaNonTypes(
-            error.parentSchema
-          )}.${this.getSchemaPartDescription(error.parentSchema)}`;
+            parentSchema
+          )}.${this.getSchemaPartDescription(parentSchema)}`;
         }
 
-        return `${dataPath} should not have fewer than ${
-          error.params.limit
-        } items${getSchemaNonTypes(
-          error.parentSchema
-        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
+        return `${dataPath} should not have fewer than ${limit} items${getSchemaNonTypes(
+          parentSchema
+        )}.${this.getSchemaPartDescription(parentSchema)}`;
       }
       case 'minProperties': {
-        if (error.params.limit === 1) {
+        const { params, parentSchema } = error;
+        const { limit } = /** @type {import("ajv").LimitParams} */ (params);
+
+        if (limit === 1) {
           return `${dataPath} should be an non-empty object${getSchemaNonTypes(
-            error.parentSchema
-          )}.${this.getSchemaPartDescription(error.parentSchema)}`;
+            parentSchema
+          )}.${this.getSchemaPartDescription(parentSchema)}`;
         }
 
-        return `${dataPath} should not have fewer than ${
-          error.params.limit
-        } properties${getSchemaNonTypes(
-          error.parentSchema
-        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
+        return `${dataPath} should not have fewer than ${limit} properties${getSchemaNonTypes(
+          parentSchema
+        )}.${this.getSchemaPartDescription(parentSchema)}`;
       }
-      case 'maxLength':
-        return `${dataPath} should be shorter than ${error.params.limit +
+
+      case 'maxLength': {
+        const { params, parentSchema } = error;
+        const { limit } = /** @type {import("ajv").LimitParams} */ (params);
+
+        return `${dataPath} should be shorter than ${limit +
           1} characters${getSchemaNonTypes(
-          error.parentSchema
-        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
-      case 'maxItems':
-        return `${dataPath} should not have more than ${
-          error.params.limit
-        } items${getSchemaNonTypes(
-          error.parentSchema
-        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
-      case 'maxProperties':
-        return `${dataPath} should not have more than ${
-          error.params.limit
-        } properties${getSchemaNonTypes(
-          error.parentSchema
-        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
-      case 'uniqueItems':
+          parentSchema
+        )}.${this.getSchemaPartDescription(parentSchema)}`;
+      }
+      case 'maxItems': {
+        const { params, parentSchema } = error;
+        const { limit } = /** @type {import("ajv").LimitParams} */ (params);
+
+        return `${dataPath} should not have more than ${limit} items${getSchemaNonTypes(
+          parentSchema
+        )}.${this.getSchemaPartDescription(parentSchema)}`;
+      }
+      case 'maxProperties': {
+        const { params, parentSchema } = error;
+        const { limit } = /** @type {import("ajv").LimitParams} */ (params);
+
+        return `${dataPath} should not have more than ${limit} properties${getSchemaNonTypes(
+          parentSchema
+        )}.${this.getSchemaPartDescription(parentSchema)}`;
+      }
+      case 'uniqueItems': {
+        const { params, parentSchema } = error;
+        const { i } = /** @type {import("ajv").UniqueItemsParams} */ (params);
+
         return `${dataPath} should not contain the item '${
-          error.data[error.params.i]
+          error.data[i]
         }' twice${getSchemaNonTypes(
-          error.parentSchema
-        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
-      case 'additionalItems':
-        return `${dataPath} should not have more than ${
-          error.params.limit
-        } items${getSchemaNonTypes(
-          error.parentSchema
-        )}. These items are valid:\n${this.getSchemaPartText(
-          error.parentSchema
-        )}`;
-      case 'contains':
+          parentSchema
+        )}.${this.getSchemaPartDescription(parentSchema)}`;
+      }
+      case 'additionalItems': {
+        const { params, parentSchema } = error;
+        const { limit } = /** @type {import("ajv").LimitParams} */ (params);
+
+        return `${dataPath} should not have more than ${limit} items${getSchemaNonTypes(
+          parentSchema
+        )}. These items are valid:\n${this.getSchemaPartText(parentSchema)}`;
+      }
+      case 'contains': {
+        const { parentSchema } = error;
+
         return `${dataPath} should contains at least one ${this.getSchemaPartText(
-          error.parentSchema,
+          parentSchema,
           ['contains']
-        )} item${getSchemaNonTypes(error.parentSchema)}.`;
+        )} item${getSchemaNonTypes(parentSchema)}.`;
+      }
       case 'required': {
-        const missingProperty = error.params.missingProperty.replace(/^\./, '');
-        const hasProperty = Boolean(
-          error.parentSchema.properties &&
-            error.parentSchema.properties[missingProperty]
+        const { parentSchema, params } = error;
+        const missingProperty = /** @type {import("ajv").DependenciesParams} */ (params).missingProperty.replace(
+          /^\./,
+          ''
         );
+        const hasProperty =
+          parentSchema &&
+          Boolean(
+            /** @type {Schema} */
+            (parentSchema).properties &&
+              /** @type {Schema} */
+              (parentSchema).properties[missingProperty]
+          );
 
         return `${dataPath} misses the property '${missingProperty}'${getSchemaNonTypes(
-          error.parentSchema
+          parentSchema
         )}.${
           hasProperty
-            ? ` Should be:\n${this.getSchemaPartText(error.parentSchema, [
+            ? ` Should be:\n${this.getSchemaPartText(parentSchema, [
                 'properties',
                 missingProperty,
               ])}`
-            : this.getSchemaPartDescription(error.parentSchema)
+            : this.getSchemaPartDescription(parentSchema)
         }`;
       }
-      case 'additionalProperties':
-        return `${dataPath} has an unknown property '${
-          error.params.additionalProperty
-        }'${getSchemaNonTypes(
-          error.parentSchema
+      case 'additionalProperties': {
+        const { params, parentSchema } = error;
+        const {
+          additionalProperty,
+        } = /** @type {import("ajv").AdditionalPropertiesParams} */ (params);
+
+        return `${dataPath} has an unknown property '${additionalProperty}'${getSchemaNonTypes(
+          parentSchema
         )}. These properties are valid:\n${this.getSchemaPartText(
-          error.parentSchema
+          parentSchema
         )}`;
+      }
       case 'dependencies': {
-        const dependencies = error.params.deps
+        const { params, parentSchema } = error;
+        const {
+          property,
+          deps,
+        } = /** @type {import("ajv").DependenciesParams} */ (params);
+        const dependencies = deps
           .split(',')
-          .map((dep) => `'${dep.trim()}'`)
+          .map(
+            /**
+             * @param {string} dep
+             * @returns {string}
+             */
+            (dep) => `'${dep.trim()}'`
+          )
           .join(', ');
 
-        return `${dataPath} should have properties ${dependencies} when property '${
-          error.params.property
-        }' is present${getSchemaNonTypes(
-          error.parentSchema
-        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
+        return `${dataPath} should have properties ${dependencies} when property '${property}' is present${getSchemaNonTypes(
+          parentSchema
+        )}.${this.getSchemaPartDescription(parentSchema)}`;
       }
       case 'propertyNames': {
-        return `${dataPath} property name '${
-          error.params.propertyName
-        }' is invalid${getSchemaNonTypes(
-          error.parentSchema
+        const { params, parentSchema, schema } = error;
+        const {
+          propertyName,
+        } = /** @type {import("ajv").PropertyNamesParams} */ (params);
+
+        return `${dataPath} property name '${propertyName}' is invalid${getSchemaNonTypes(
+          parentSchema
         )}. Property names should be match format ${JSON.stringify(
-          error.schema.format
-        )}.${this.getSchemaPartDescription(error.parentSchema)}`;
+          schema.format
+        )}.${this.getSchemaPartDescription(parentSchema)}`;
       }
       case 'enum': {
+        const { parentSchema } = error;
+
         if (
-          error.parentSchema &&
-          error.parentSchema.enum &&
-          error.parentSchema.enum.length === 1
+          parentSchema &&
+          /** @type {Schema} */
+          (parentSchema).enum &&
+          /** @type {Schema} */
+          (parentSchema).enum.length === 1
         ) {
           return `${dataPath} should be ${this.getSchemaPartText(
-            error.parentSchema,
+            parentSchema,
             false,
             true
           )}`;
         }
 
         return `${dataPath} should be one of these:\n${this.getSchemaPartText(
-          error.parentSchema
+          parentSchema
         )}`;
       }
-      case 'const':
+      case 'const': {
+        const { parentSchema } = error;
+
         return `${dataPath} should be equal to constant ${this.getSchemaPartText(
-          error.parentSchema
+          parentSchema
         )}`;
-      case 'not':
-        return `${dataPath} should not be ${this.getSchemaPartText(
-          error.schema
-        )}${
-          likeObject(error.parentSchema)
-            ? `\n${this.getSchemaPartText(error.parentSchema)}`
+      }
+      case 'not': {
+        const { schema, parentSchema } = error;
+
+        return `${dataPath} should not be ${this.getSchemaPartText(schema)}${
+          parentSchema && likeObject(parentSchema)
+            ? `\n${this.getSchemaPartText(parentSchema)}`
             : ''
         }`;
+      }
       case 'oneOf':
       case 'anyOf': {
-        if (error.children && error.children.length > 0) {
+        const { parentSchema, children } = error;
+
+        if (children && children.length > 0) {
           if (error.schema.length === 1) {
-            const lastChild = error.children[error.children.length - 1];
-            const remainingChildren = error.children.slice(
-              0,
-              error.children.length - 1
-            );
+            const lastChild = children[children.length - 1];
+            const remainingChildren = children.slice(0, children.length - 1);
 
             return this.formatValidationError(
               Object.assign({}, lastChild, {
                 children: remainingChildren,
                 parentSchema: Object.assign(
                   {},
-                  error.parentSchema,
+                  parentSchema,
                   lastChild.parentSchema
                 ),
               })
             );
           }
 
-          let children = filterChildren(error.children);
+          let filteredChildren = filterChildren(children);
 
-          if (children.length === 1) {
-            return this.formatValidationError(children[0]);
+          if (filteredChildren.length === 1) {
+            return this.formatValidationError(filteredChildren[0]);
           }
 
-          children = groupChildrenByFirstChild(children);
+          filteredChildren = groupChildrenByFirstChild(filteredChildren);
 
           return `${dataPath} should be one of these:\n${this.getSchemaPartText(
-            error.parentSchema
-          )}\nDetails:\n${children
+            parentSchema
+          )}\nDetails:\n${filteredChildren
             .map(
+              /**
+               * @param {SchemaUtilErrorObject} nestedError
+               * @returns {string}
+               */
               (nestedError) =>
                 ` * ${indent(this.formatValidationError(nestedError), '   ')}`
             )
@@ -983,35 +1277,50 @@ class ValidationError extends Error {
         }
 
         return `${dataPath} should be one of these:\n${this.getSchemaPartText(
-          error.parentSchema
+          parentSchema
         )}`;
       }
-      case 'if':
-        return `${dataPath} should match "${
-          error.params.failingKeyword
-        }" schema:\n${this.getSchemaPartText(error.parentSchema, [
-          error.params.failingKeyword,
-        ])}`;
-      case 'absolutePath':
-        return `${dataPath}: ${error.message}${this.getSchemaPartDescription(
-          error.parentSchema
+      case 'if': {
+        const { params, parentSchema } = error;
+        const {
+          failingKeyword,
+        } = /** @type {import("ajv").IfParams} */ (params);
+
+        return `${dataPath} should match "${failingKeyword}" schema:\n${this.getSchemaPartText(
+          parentSchema,
+          [failingKeyword]
         )}`;
-      default:
+      }
+      case 'absolutePath': {
+        const { message, parentSchema } = error;
+
+        return `${dataPath}: ${message}${this.getSchemaPartDescription(
+          parentSchema
+        )}`;
+      }
+      /* istanbul ignore next */
+      default: {
+        const { message, parentSchema } = error;
+        const ErrorInJSON = JSON.stringify(error, null, 2);
+
         // For `custom`, `false schema`, `$ref` keywords
         // Fallback for unknown keywords
-        /* istanbul ignore next */
-        return `${dataPath} ${error.message} (${JSON.stringify(
-          error,
-          null,
-          2
-        )}).\n${this.getSchemaPartText(error.parentSchema)}`;
+        return `${dataPath} ${message} (${ErrorInJSON}).\n${this.getSchemaPartText(
+          parentSchema,
+          false
+        )}`;
+      }
     }
   }
 
+  /**
+   * @param {Array<SchemaUtilErrorObject>} errors
+   * @returns {string}
+   */
   formatValidationErrors(errors) {
     return errors
       .map((error) => {
-        let formattedError = this.formatValidationError(error, this.schema);
+        let formattedError = this.formatValidationError(error);
 
         if (this.postFormatter) {
           formattedError = this.postFormatter(formattedError, error);

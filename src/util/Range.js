@@ -1,11 +1,18 @@
-const left = Symbol('left');
-const right = Symbol('right');
+/**
+ * @typedef {[number, boolean]} RangeValue
+ */
+
+/**
+ * @callback RangeValueCallback
+ * @param {RangeValue} rangeValue
+ * @returns {boolean}
+ */
 
 class Range {
   /**
    * @param {"left" | "right"} side
    * @param {boolean} exclusive
-   * @returns {">" | ">" | ">=" | "<="}
+   * @returns {">" | ">=" | "<" | "<="}
    */
   static getOperator(side, exclusive) {
     if (side === 'left') {
@@ -68,20 +75,22 @@ class Range {
   }
 
   /**
-   * @param {[number, boolean][]} values
+   * @param {Array<RangeValue>} values
    * @param {boolean} logic is not logic applied
-   * @return {[number, boolean]} computed value and it's exclusive flag
+   * @return {RangeValue} computed value and it's exclusive flag
    */
   static getRangeValue(values, logic) {
     let minMax = logic ? Infinity : -Infinity;
     let j = -1;
     const predicate = logic
-      ? ([value]) => value <= minMax
-      : ([value]) => value >= minMax;
+      ? /** @type {RangeValueCallback} */
+        ([value]) => value <= minMax
+      : /** @type {RangeValueCallback} */
+        ([value]) => value >= minMax;
 
     for (let i = 0; i < values.length; i++) {
       if (predicate(values[i])) {
-        minMax = values[i][0];
+        [minMax] = values[i];
         j = i;
       }
     }
@@ -94,16 +103,26 @@ class Range {
   }
 
   constructor() {
-    this[left] = [];
-    this[right] = [];
+    /** @type {Array<RangeValue>} */
+    this._left = [];
+    /** @type {Array<RangeValue>} */
+    this._right = [];
   }
 
+  /**
+   * @param {number} value
+   * @param {boolean=} exclusive
+   */
   left(value, exclusive = false) {
-    this[left].push([value, exclusive]);
+    this._left.push([value, exclusive]);
   }
 
+  /**
+   * @param {number} value
+   * @param {boolean=} exclusive
+   */
   right(value, exclusive = false) {
-    this[right].push([value, exclusive]);
+    this._right.push([value, exclusive]);
   }
 
   /**
@@ -111,8 +130,8 @@ class Range {
    * @return {string} "smart" range string representation
    */
   format(logic = true) {
-    const [start, leftExclusive] = Range.getRangeValue(this[left], logic);
-    const [end, rightExclusive] = Range.getRangeValue(this[right], !logic);
+    const [start, leftExclusive] = Range.getRangeValue(this._left, logic);
+    const [end, rightExclusive] = Range.getRangeValue(this._right, !logic);
 
     if (!Number.isFinite(start) && !Number.isFinite(end)) {
       return '';
