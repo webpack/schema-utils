@@ -3712,6 +3712,18 @@
         "type": "string",
         "format": { "$data": "0#" }
       }
+    },
+    "absolutePath": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "format": "absolutePath"
+        },
+        {
+          "type": "number"
+        }
+      ]
     }
   }
 }

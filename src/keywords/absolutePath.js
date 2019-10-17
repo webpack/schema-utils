@@ -17,7 +17,8 @@ function getErrorFor(shouldBeAbsolute, data, schema) {
   return errorMessage(schema, data, message);
 }
 
-export default (ajv) =>
+export default (ajv) => {
+  ajv.addFormat('absolutePath', () => true);
   ajv.addKeyword('absolutePath', {
     errors: true,
     type: 'string',
@@ -54,3 +55,6 @@ export default (ajv) =>
       return callback;
     },
   });
+
+  return ajv;
+};
