@@ -6,6 +6,7 @@ describe('api', () => {
   it('should export validate and ValidateError', () => {
     expect(typeof schemaUtils).toBe('function');
     expect(typeof schemaUtils.ValidateError).toBe('function');
+    expect(typeof schemaUtils.ValidationError).toBe('function');
   });
 
   it('should work', () => {

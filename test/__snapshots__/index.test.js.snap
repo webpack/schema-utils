@@ -593,7 +593,7 @@ exports[`Validation should fail validation for empty string #1 1`] = `
 
 exports[`Validation should fail validation for empty string #2 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.emptyString2 should be an empty string."
+ - configuration.emptyString2 should be shorter than 1 characters."
 `;
 
 exports[`Validation should fail validation for enum 1`] = `
@@ -961,7 +961,7 @@ exports[`Validation should fail validation for maximum with type number 1`] = `
 
 exports[`Validation should fail validation for min length 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.minLengthTwo should be longer than 1 characters."
+ - configuration.minLengthTwo should be longer than 1 character."
 `;
 
 exports[`Validation should fail validation for min properties 1`] = `
@@ -977,7 +977,7 @@ exports[`Validation should fail validation for minItems Keyword 1`] = `
 
 exports[`Validation should fail validation for minLength with type string 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.stringWithMinLength should be longer than 1 characters."
+ - configuration.stringWithMinLength should be longer than 1 character."
 `;
 
 exports[`Validation should fail validation for minProperties 1`] = `
@@ -1212,7 +1212,7 @@ exports[`Validation should fail validation for no type like string with maxLengt
 
 exports[`Validation should fail validation for no type like string with minLength 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
- - configuration.noTypeLikeStringMinLength should be longer than 1 characters | should be any non-string."
+ - configuration.noTypeLikeStringMinLength should be longer than 1 character | should be any non-string."
 `;
 
 exports[`Validation should fail validation for no type like string with minLength equals 1 1`] = `
@@ -1521,7 +1521,7 @@ exports[`Validation should fail validation for oneOf #1 1`] = `
 exports[`Validation should fail validation for oneOf #2 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
  - configuration.optimization.runtimeChunk should be one of these:
-   boolean | \\"single\\" | \\"multiple\\" | object { name? }
+   boolean | \\"single\\" | \\"multiple\\" | empty string | object { name? }
    -> Create an additional chunk which contains only the webpack runtime and chunk hash maps
    Details:
     * configuration.optimization.runtimeChunk.name should be one of these:
@@ -1535,12 +1535,13 @@ exports[`Validation should fail validation for oneOf #2 1`] = `
 exports[`Validation should fail validation for oneOf #3 1`] = `
 "Invalid configuration object. Object has been initialised using a configuration object that does not match the API schema.
  - configuration.optimization.runtimeChunk should be one of these:
-   boolean | \\"single\\" | \\"multiple\\" | object { name? }
+   boolean | \\"single\\" | \\"multiple\\" | empty string | object { name? }
    -> Create an additional chunk which contains only the webpack runtime and chunk hash maps
    Details:
     * configuration.optimization.runtimeChunk should be a boolean.
     * configuration.optimization.runtimeChunk should be one of these:
       \\"single\\" | \\"multiple\\"
+    * configuration.optimization.runtimeChunk should be a empty string.
     * configuration.optimization.runtimeChunk should be an object:
       object { name? }"
 `;

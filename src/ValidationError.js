@@ -772,11 +772,11 @@ class ValidationError extends Error {
             error.parentSchema
           )}.${this.getSchemaPartDescription(error.parentSchema)}`;
         }
+        const length = error.params.limit - 1;
 
-        return `${dataPath} should be longer than ${Math.max(
-          error.params.limit - 1,
-          0
-        )} characters${getSchemaNonTypes(
+        return `${dataPath} should be longer than ${length} character${
+          length > 1 ? 's' : ''
+        }${getSchemaNonTypes(
           error.parentSchema
         )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       }
@@ -807,12 +807,6 @@ class ValidationError extends Error {
         )}.${this.getSchemaPartDescription(error.parentSchema)}`;
       }
       case 'maxLength':
-        if (error.params.limit === 0) {
-          return `${dataPath} should be an empty string${getSchemaNonTypes(
-            error.parentSchema
-          )}.${this.getSchemaPartDescription(error.parentSchema)}`;
-        }
-
         return `${dataPath} should be shorter than ${error.params.limit +
           1} characters${getSchemaNonTypes(
           error.parentSchema
