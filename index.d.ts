@@ -36,10 +36,15 @@ declare namespace SchemaUtils {
 
 declare const validate: {
   (
-    schema: SchemaUtils.Schema,
-    options: Array<object> | object,
+    schema: Schema,
+    options: object | object[],
     configuration?: Partial<SchemaUtils.ValidationErrorConfiguration>
   ): void;
+  <T extends object | object[]>(
+    schema: Schema,
+    options: object | object[],
+    configuration?: Partial<SchemaUtils.ValidationErrorConfiguration>
+  ): asserts options is T;
   ValidateError: typeof SchemaUtils.ValidationError;
   ValidationError: typeof SchemaUtils.ValidationError;
 };
