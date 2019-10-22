@@ -36,12 +36,12 @@ declare namespace SchemaUtils {
 
 declare const validate: {
   (
-    schema: Schema,
+    schema: SchemaUtils.Schema,
     options: object | object[],
     configuration?: Partial<SchemaUtils.ValidationErrorConfiguration>
   ): void;
   <T extends object | object[]>(
-    schema: Schema,
+    schema: SchemaUtils.Schema,
     options: object | object[],
     configuration?: Partial<SchemaUtils.ValidationErrorConfiguration>
   ): asserts options is T;
