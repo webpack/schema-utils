@@ -8,18 +8,20 @@
   "homepage": "https://github.com/webpack/schema-utils",
   "bugs": "https://github.com/webpack/schema-utils/issues",
   "main": "dist/index.js",
-  "types": "index.d.ts",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">= 8.9.0"
   },
   "scripts": {
     "start": "npm run build -- -w",
-    "prebuild": "npm run clean",
-    "build": "cross-env NODE_ENV=production babel src -d dist --ignore \"src/**/*.test.js\" --copy-files",
+    "prebuild": "npm-run-all --serial clean build:types",
+    "build:types": "tsc --declaration --emitDeclarationOnly --outDir dist",
+    "build": "cross-env NODE_ENV=production babel src -d dist --copy-files",
     "clean": "del-cli dist",
     "commitlint": "commitlint --from=master",
-    "lint:prettier": "prettier \"{**/*,*}.{js,json,md,yml,css}\" --list-different",
+    "lint:prettier": "prettier \"{**/*,*}.{js,json,ts,md,yml,css}\" --list-different",
     "lint:js": "eslint --cache src test",
+    "lint:types": "tsc --pretty --noEmit",
     "lint": "npm-run-all -l -p \"lint:**\"",
     "prepare": "npm run build",
     "release": "standard-version",
@@ -32,37 +34,37 @@
     "defaults": "webpack-defaults"
   },
   "files": [
-    "dist",
-    "index.d.ts"
+    "dist"
   ],
   "dependencies": {
     "ajv": "^6.10.2",
     "ajv-keywords": "^3.4.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.6.2",
-    "@babel/core": "^7.6.2",
-    "@babel/preset-env": "^7.6.2",
+    "@babel/cli": "^7.7.0",
+    "@babel/core": "^7.7.0",
+    "@babel/preset-env": "^7.7.1",
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-conventional": "^8.2.0",
     "@types/json-schema": "^7.0.3",
-    "@webpack-contrib/defaults": "^5.0.2",
+    "@webpack-contrib/defaults": "^5.1.1",
     "@webpack-contrib/eslint-config-webpack": "^3.0.0",
     "babel-jest": "^24.9.0",
     "commitlint-azure-pipelines-cli": "^1.0.2",
     "cross-env": "^6.0.0",
     "del": "^5.1.0",
     "del-cli": "^3.0.0",
-    "eslint": "^6.4.0",
-    "eslint-config-prettier": "^6.3.0",
+    "eslint": "^6.6.0",
+    "eslint-config-prettier": "^6.5.0",
     "eslint-plugin-import": "^2.18.2",
     "husky": "^3.0.5",
     "jest": "^24.9.0",
-    "jest-junit": "^8.0.0",
+    "jest-junit": "^9.0.0",
     "lint-staged": "^9.4.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^1.18.2",
-    "standard-version": "^7.0.0"
+    "standard-version": "^7.0.0",
+    "typescript": "^3.7.2"
   },
   "keywords": [
     "webpack"
