@@ -8,14 +8,14 @@
   "homepage": "https://github.com/webpack/schema-utils",
   "bugs": "https://github.com/webpack/schema-utils/issues",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "types": "declarations/index.d.ts",
   "engines": {
     "node": ">= 8.9.0"
   },
   "scripts": {
     "start": "npm run build -- -w",
     "prebuild": "npm-run-all --serial clean build:types",
-    "build:types": "tsc --declaration --emitDeclarationOnly --outDir dist",
+    "build:types": "tsc --declaration --emitDeclarationOnly --outDir declarations",
     "build": "cross-env NODE_ENV=production babel src -d dist --copy-files",
     "clean": "del-cli dist",
     "commitlint": "commitlint --from=master",
