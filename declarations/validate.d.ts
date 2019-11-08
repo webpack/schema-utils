@@ -1,19 +1,25 @@
 export default validate;
-export type JSONSchema4 = import("json-schema").JSONSchema4;
-export type JSONSchema6 = import("json-schema").JSONSchema6;
-export type JSONSchema7 = import("json-schema").JSONSchema7;
+export type JSONSchema4 = import('json-schema').JSONSchema4;
+export type JSONSchema6 = import('json-schema').JSONSchema6;
+export type JSONSchema7 = import('json-schema').JSONSchema7;
 export type ErrorObject = Ajv.ErrorObject;
-export type Schema = import("json-schema").JSONSchema4 | import("json-schema").JSONSchema6 | import("json-schema").JSONSchema7;
+export type Schema =
+  | import('json-schema').JSONSchema4
+  | import('json-schema').JSONSchema6
+  | import('json-schema').JSONSchema7;
 export type SchemaUtilErrorObject = Ajv.ErrorObject & {
-    children?: Ajv.ErrorObject[] | undefined;
+  children?: Ajv.ErrorObject[] | undefined;
 };
-export type PostFormatter = (formattedError: string, error: Ajv.ErrorObject & {
+export type PostFormatter = (
+  formattedError: string,
+  error: Ajv.ErrorObject & {
     children?: Ajv.ErrorObject[] | undefined;
-}) => string;
+  }
+) => string;
 export type ValidationErrorConfiguration = {
-    name?: string | undefined;
-    baseDataPath?: string | undefined;
-    postFormatter?: PostFormatter | undefined;
+  name?: string | undefined;
+  baseDataPath?: string | undefined;
+  postFormatter?: PostFormatter | undefined;
 };
 /**
  * @param {Schema} schema
@@ -21,8 +27,15 @@ export type ValidationErrorConfiguration = {
  * @param {ValidationErrorConfiguration=} configuration
  * @returns {void}
  */
-declare function validate(schema: import("json-schema").JSONSchema4 | import("json-schema").JSONSchema6 | import("json-schema").JSONSchema7, options: any, configuration?: ValidationErrorConfiguration | undefined): void;
+declare function validate(
+  schema:
+    | import('json-schema').JSONSchema4
+    | import('json-schema').JSONSchema6
+    | import('json-schema').JSONSchema7,
+  options: any,
+  configuration?: ValidationErrorConfiguration | undefined
+): void;
 declare namespace validate {
-    export { _default as ValidationError, _default as ValidateError };
+  export { _default as ValidationError, _default as ValidateError };
 }
-import Ajv from "ajv";
+import Ajv from 'ajv';
