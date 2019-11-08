@@ -10,7 +10,6 @@ yarn-debug.log*
 
 .eslintcache
 
-/dist
 /local
 /reports
 /coverage
