@@ -34,7 +34,9 @@
     "defaults": "webpack-defaults"
   },
   "files": [
-    "dist"
+    "dist",
+    "declarations",
+    "README.md"
   ],
   "dependencies": {
     "ajv": "^6.10.2",
