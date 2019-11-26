@@ -408,10 +408,30 @@ class ValidationError extends Error {
     this.errors = errors;
     /** @type {Schema} */
     this.schema = schema;
+
+    let headerNameFromSchema;
+    let baseDataPathFromSchema;
+
+    if (schema.title && (!configuration.name || !configuration.baseDataPath)) {
+      const splittedTitleFromSchema = schema.title.match(/^(.+) (.+)$/);
+
+      if (splittedTitleFromSchema) {
+        if (!configuration.name) {
+          [, headerNameFromSchema] = splittedTitleFromSchema;
+        }
+
+        if (!configuration.name) {
+          [, , baseDataPathFromSchema] = splittedTitleFromSchema;
+        }
+      }
+    }
+
     /** @type {string} */
-    this.headerName = configuration.name || 'Object';
+    this.headerName = configuration.name || headerNameFromSchema || 'Object';
     /** @type {string} */
-    this.baseDataPath = configuration.baseDataPath || 'configuration';
+    this.baseDataPath =
+      configuration.baseDataPath || baseDataPathFromSchema || 'configuration';
+
     /** @type {PostFormatter | null} */
     this.postFormatter = configuration.postFormatter || null;
 
