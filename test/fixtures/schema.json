@@ -592,6 +592,10 @@
               "enum": ["single", "multiple"]
             },
             {
+              "type": "string",
+              "maxLength": 0
+            },
+            {
               "type": "object",
               "additionalProperties": false,
               "properties": {
@@ -2925,6 +2929,11 @@
         "minLength": 2
       }
     },
+    "integerEqualsTo5": {
+      "type": "integer",
+      "minimum": 5,
+      "exclusiveMaximum": 6
+    },
     "integerWithMinimum": {
       "type": "integer",
       "minimum": 5,
@@ -3703,6 +3712,9 @@
         "type": "string",
         "format": { "$data": "0#" }
       }
+    },
+    "enumNested": {
+      "enum": [1, 2, 3, [4, 5, 6]]
     }
   }
 }

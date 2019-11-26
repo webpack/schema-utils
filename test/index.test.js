@@ -1640,6 +1640,14 @@ describe('Validation', () => {
   );
 
   createFailedTestCase(
+    'integer equals to 5',
+    {
+      integerEqualsTo5: 6,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
     'integer with minimum',
     {
       integerWithMinimum: true,
@@ -2794,6 +2802,14 @@ describe('Validation', () => {
         'date-time': '1',
         email: 'joe.bloggs@example.com',
       },
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'enum nested',
+    {
+      enumNested: 'string',
     },
     (msg) => expect(msg).toMatchSnapshot()
   );

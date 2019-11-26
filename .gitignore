@@ -10,7 +10,6 @@ yarn-debug.log*
 
 .eslintcache
 
-/dist
 /local
 /reports
 /coverage
@@ -27,3 +26,6 @@ DS_Store
 .DS_Store
 Thumbs.db
 *.iml
+
+#build
+dist

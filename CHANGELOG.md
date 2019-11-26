@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.5.0](https://github.com/webpack/schema-utils/compare/v2.4.1...v2.5.0) (2019-10-15)
+
+
+### Bug Fixes
+
+* rework format for maxLength, minLength ([#67](https://github.com/webpack/schema-utils/issues/67)) ([0d12259](https://github.com/webpack/schema-utils/commit/0d12259))
+* support all cases with one number in range ([#64](https://github.com/webpack/schema-utils/issues/64)) ([7fc8069](https://github.com/webpack/schema-utils/commit/7fc8069))
+* typescript definition and export naming ([#69](https://github.com/webpack/schema-utils/issues/69)) ([a435b79](https://github.com/webpack/schema-utils/commit/a435b79))
+
+
+### Features
+
+* "smart" numbers range ([62fb107](https://github.com/webpack/schema-utils/commit/62fb107))
+
 ### [2.4.1](https://github.com/webpack/schema-utils/compare/v2.4.0...v2.4.1) (2019-09-27)
 
 
