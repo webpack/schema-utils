@@ -45,6 +45,47 @@ const SPECIFICITY = {
 };
 
 /**
+ * @param {Schema | boolean} [schema]
+ * @returns {schema is Schema}
+ */
+function hasType(schema) {
+  return (schema && typeof schema !== 'boolean') || false;
+}
+
+/**
+ *
+ * @param {Schema} schema
+ * @return {(property: string) => string}
+ */
+function createPropertyFormatter(schema) {
+  const required = new Set(schema.required || []);
+  /** @type {(property: string) => string} */
+  const format = (property) => property + (required.has(property) ? '' : '?');
+
+  return function formatProperty(property) {
+    let type;
+
+    if (typeof schema.properties === 'object' && schema.properties !== null) {
+      const subSchema = schema.properties[property];
+
+      if (hasType(subSchema)) {
+        const { type: subSchemaType } = subSchema;
+
+        type = subSchemaType;
+      }
+    }
+
+    const name = format(property);
+
+    if (type) {
+      return `${name}: ${type}`;
+    }
+
+    return name;
+  };
+}
+
+/**
  *
  * @param {Array<SchemaUtilErrorObject>} array
  * @param {(item: SchemaUtilErrorObject) => number} fn
@@ -731,6 +772,7 @@ class ValidationError extends Error {
         );
       }
 
+      const formatter = createPropertyFormatter(schema);
       const properties = schema.properties
         ? Object.keys(schema.properties)
         : [];
@@ -742,13 +784,7 @@ class ValidationError extends Error {
       ];
 
       const objectStructure = allProperties
-        .map((property) => {
-          const isRequired = required.includes(property);
-
-          // Some properties need quotes, maybe we should add check
-          // Maybe we should output type of property (`foo: string`), but it is looks very unreadable
-          return `${property}${isRequired ? '' : '?'}`;
-        })
+        .map(formatter)
         .concat(
           typeof schema.additionalProperties === 'undefined' ||
             Boolean(schema.additionalProperties)
