@@ -69,7 +69,9 @@ function createPropertyFormatter(schema) {
       const subSchema = schema.properties[property];
 
       if (hasType(subSchema)) {
-        type = subSchema.type;
+        const { type: subSchemaType } = subSchema;
+
+        type = subSchemaType;
       }
     }
 
