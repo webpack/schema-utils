@@ -44,15 +44,35 @@ const SPECIFICITY = {
   absolutePath: 2,
 };
 
+/**
+ * @param {Schema | boolean} [schema]
+ * @returns {schema is Schema}
+ */
+function hasType(schema) {
+  return (schema && typeof schema !== 'boolean') || false;
+}
+
+/**
+ *
+ * @param {Schema} schema
+ * @return {(property: string) => string}
+ */
 function createPropertyFormatter(schema) {
   const required = new Set(schema.required || []);
+  /** @type {(property: string) => string} */
   const format = (property) => property + (required.has(property) ? '' : '?');
 
   return function formatProperty(property) {
-    const { type } =
-      typeof schema.properties === 'object' && schema.properties !== null
-        ? schema.properties[property] || {}
-        : {};
+    let type;
+
+    if (typeof schema.properties === 'object' && schema.properties !== null) {
+      const subSchema = schema.properties[property];
+
+      if (hasType(subSchema)) {
+        type = subSchema.type;
+      }
+    }
+
     const name = format(property);
 
     if (type) {
