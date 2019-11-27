@@ -23,7 +23,7 @@ jobs:
           node -v
           npm -v
         displayName: 'Print versions'
-      - task: CacheBeta@0
+      - task: CacheBeta@1
         inputs:
           key: npm | $(Agent.OS) | package-lock.json
           path: $(npm_config_cache)
@@ -72,7 +72,7 @@ jobs:
           node -v
           npm -v
         displayName: 'Print versions'
-      - task: CacheBeta@0
+      - task: CacheBeta@1
         inputs:
           key: npm | $(Agent.OS) | package-lock.json
           path: $(npm_config_cache)
@@ -119,7 +119,7 @@ jobs:
           node -v
           npm -v
         displayName: 'Print versions'
-      - task: CacheBeta@0
+      - task: CacheBeta@1
         inputs:
           key: npm | $(Agent.OS) | package-lock.json
           path: $(npm_config_cache)
@@ -169,7 +169,7 @@ jobs:
           node -v
           npm -v
         displayName: 'Print versions'
-      - task: CacheBeta@0
+      - task: CacheBeta@1
         inputs:
           key: npm | $(Agent.OS) | package-lock.json
           path: $(npm_config_cache)

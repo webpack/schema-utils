@@ -7,6 +7,10 @@
   "author": "webpack Contrib (https://github.com/webpack-contrib)",
   "homepage": "https://github.com/webpack/schema-utils",
   "bugs": "https://github.com/webpack/schema-utils/issues",
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/webpack"
+  },
   "main": "dist/index.js",
   "types": "declarations/index.d.ts",
   "engines": {
@@ -20,18 +24,18 @@
     "build:code": "cross-env NODE_ENV=production babel src -d dist --copy-files",
     "build": "npm-run-all -p \"build:**\"",
     "commitlint": "commitlint --from=master",
-    "lint:prettier": "prettier \"{**/*,*}.{js,json,ts,md,yml,css}\" --list-different",
-    "lint:js": "eslint --cache src test",
+    "security": "npm audit",
+    "lint:prettier": "prettier \"{**/*,*}.{js,json,md,yml,css,ts}\" --list-different",
+    "lint:js": "eslint --cache .",
     "lint:types": "tsc --pretty --noEmit",
     "lint": "npm-run-all -l -p \"lint:**\"",
+    "test:only": "cross-env NODE_ENV=test jest",
+    "test:watch": "npm run test:only -- --watch",
+    "test:coverage": "npm run test:only -- --collectCoverageFrom=\"src/**/*.js\" --coverage",
+    "pretest": "npm run lint",
+    "test": "npm run test:coverage",
     "prepare": "npm run build",
     "release": "standard-version",
-    "security": "npm audit",
-    "test:only": "cross-env NODE_ENV=test jest",
-    "test:watch": "cross-env NODE_ENV=test jest --watch",
-    "test:coverage": "cross-env NODE_ENV=test jest --collectCoverageFrom=\"src/**/*.js\" --coverage",
-    "pretest": "npm run lint",
-    "test": "cross-env NODE_ENV=test npm run test:coverage",
     "defaults": "webpack-defaults"
   },
   "files": [
