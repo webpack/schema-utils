@@ -96,6 +96,26 @@ validate(
 
 Allow to configure validator.
 
+There is an alternative method to configure the `name` and`baseDataPath` options via the `title` property in the schema.
+For example:
+
+```json
+{
+  "title": "My Loader options",
+  "type": "object",
+  "properties": {
+    "name": {
+      "description": "This is description of option.",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}
+```
+
+The last word used for the `baseDataPath` option, other words used for the `name` option.
+Based on the example above the `name` option equals `My Loader`, the `baseDataPath` option equals `options`.
+
 #### `name`
 
 Type: `Object`
