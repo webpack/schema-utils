@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.6.1](https://github.com/webpack/schema-utils/compare/v2.6.0...v2.6.1) (2019-11-28)
+
+
+### Bug Fixes
+
+* typescript declarations ([#84](https://github.com/webpack/schema-utils/issues/84)) ([89d55a9](https://github.com/webpack/schema-utils/commit/89d55a9a8edfa6a8ac8b112f226bb3154e260319))
+
 ## [2.6.0](https://github.com/webpack/schema-utils/compare/v2.5.0...v2.6.0) (2019-11-27)
 
 
