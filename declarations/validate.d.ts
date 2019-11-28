@@ -36,6 +36,8 @@ declare function validate(
   configuration?: ValidationErrorConfiguration | undefined
 ): void;
 declare namespace validate {
-  export { _default as ValidationError, _default as ValidateError };
+  export { ValidationError };
+  export { ValidationError as ValidateError };
 }
 import Ajv from 'ajv';
+import ValidationError from './ValidationError';

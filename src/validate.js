@@ -140,4 +140,8 @@ function filterErrors(errors) {
   return newErrors;
 }
 
+// TODO change after resolve https://github.com/microsoft/TypeScript/issues/34994
+validate.ValidationError = ValidationError;
+validate.ValidateError = ValidationError;
+
 export default validate;
