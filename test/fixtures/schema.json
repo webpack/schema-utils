@@ -3715,6 +3715,10 @@
     },
     "enumNested": {
       "enum": [1, 2, 3, [4, 5, 6]]
+    },
+    "testAbsolutePath": {
+      "type": "string",
+      "absolutePath": true
     }
   }
 }

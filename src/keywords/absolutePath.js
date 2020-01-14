@@ -50,8 +50,6 @@ function addAbsolutePathKeyword(ajv) {
       function callback(data) {
         let passes = true;
         const isExclamationMarkPresent = data.includes('!');
-        const isCorrectAbsoluteOrRelativePath =
-          schema === /^(?:[A-Za-z]:\\|\/)/.test(data);
 
         if (isExclamationMarkPresent) {
           callback.errors = [
@@ -66,7 +64,13 @@ function addAbsolutePathKeyword(ajv) {
           passes = false;
         }
 
-        if (!isCorrectAbsoluteOrRelativePath) {
+        // ?:[A-Za-z]:\\ - Windows absolute path
+        // \\\\ - Windows network absolute path
+        // \/ - Unix-like OS absolute path
+        const isCorrectAbsolutePath =
+          schema === /^(?:[A-Za-z]:(\\|\/)|\\\\|\/)/.test(data);
+
+        if (!isCorrectAbsolutePath) {
           callback.errors = [getErrorFor(schema, parentSchema, data)];
           passes = false;
         }
