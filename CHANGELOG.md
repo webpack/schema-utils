@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.6.2](https://github.com/webpack/schema-utils/compare/v2.6.1...v2.6.2) (2020-01-14)
+
+
+### Bug Fixes
+
+* better handle Windows absolute paths ([#85](https://github.com/webpack/schema-utils/issues/85)) ([1fa2930](https://github.com/webpack/schema-utils/commit/1fa2930a161e907b9fc53a7233d605910afdb883))
+
 ### [2.6.1](https://github.com/webpack/schema-utils/compare/v2.6.0...v2.6.1) (2019-11-28)
 
 
