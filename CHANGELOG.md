@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.6.3](https://github.com/webpack/schema-utils/compare/v2.6.2...v2.6.3) (2020-01-17)
+
+
+### Bug Fixes
+
+* prefer the `baseDataPath` option from arguments ([#86](https://github.com/webpack/schema-utils/issues/86)) ([e236859](https://github.com/webpack/schema-utils/commit/e236859e85b28e35e1294f86fc1ff596a5031cea))
+
 ### [2.6.2](https://github.com/webpack/schema-utils/compare/v2.6.1...v2.6.2) (2020-01-14)
 
 
