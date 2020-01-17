@@ -7,8 +7,8 @@ exports[`api should get configuration from schema 1`] = `
 `;
 
 exports[`api should prefer configuration over "title" #1 1`] = `
-"Invalid configuration object. NAME has been initialised using a configuration object that does not match the API schema.
- - configuration has an unknown property 'foo'. These properties are valid:
+"Invalid options object. NAME has been initialised using an options object that does not match the API schema.
+ - options has an unknown property 'foo'. These properties are valid:
    object { name? }"
 `;
 
