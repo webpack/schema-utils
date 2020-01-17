@@ -169,7 +169,7 @@ validate(schema, options, {
 ```
 
 ```shell
-Invalid options object. MyPlugin has been initialised using an options object that does not match the API schema.
+Invalid options object. MyPlugin has been initialized using an options object that does not match the API schema.
  - options.optionName should be a integer.
    Additional Information.
 ```
