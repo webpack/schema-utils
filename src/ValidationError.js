@@ -420,7 +420,7 @@ class ValidationError extends Error {
           [, headerNameFromSchema] = splittedTitleFromSchema;
         }
 
-        if (!configuration.name) {
+        if (!configuration.baseDataPath) {
           [, , baseDataPathFromSchema] = splittedTitleFromSchema;
         }
       }
