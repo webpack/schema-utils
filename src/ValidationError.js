@@ -437,7 +437,7 @@ class ValidationError extends Error {
 
     const header = `Invalid ${this.baseDataPath} object. ${
       this.headerName
-    } has been initialised using ${getArticle(this.baseDataPath)} ${
+    } has been initialized using ${getArticle(this.baseDataPath)} ${
       this.baseDataPath
     } object that does not match the API schema.\n`;
 
