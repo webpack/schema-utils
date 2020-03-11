@@ -25,8 +25,8 @@ exports[`Validation should fail validation for Invalid plugin provided: int 1`] 
     * configuration.plugins[0] should be an object:
       object { apply, … }
       -> Plugin instance
-    * configuration.plugins[0] should be an instance of function
-      -> Function acting as plugin."
+    * configuration.plugins[0] should be an instance of function.
+      -> Function acting as plugin"
 `;
 
 exports[`Validation should fail validation for Invalid plugin provided: object without apply function 1`] = `
@@ -492,33 +492,33 @@ exports[`Validation should fail validation for configuration dataPath 1`] = `
 
 exports[`Validation should fail validation for const with array notation 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.constWithArrayNotation should be equal to constant [1,2,3]"
+ - configuration.constWithArrayNotation should be equal to constant [1,2,3]."
 `;
 
 exports[`Validation should fail validation for const with description 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.constWithDescription should be equal to constant \\"foo\\"
+ - configuration.constWithDescription should be equal to constant \\"foo\\".
    -> Foo and Bar description."
 `;
 
 exports[`Validation should fail validation for const with empty string 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.constWithEmptyString should be equal to constant [\\"foo\\",\\"\\",2]"
+ - configuration.constWithEmptyString should be equal to constant [\\"foo\\",\\"\\",2]."
 `;
 
 exports[`Validation should fail validation for const with object notation 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.constWithObjectNotation should be equal to constant {\\"foo\\":\\"bar\\",\\"baz\\":123}"
+ - configuration.constWithObjectNotation should be equal to constant {\\"foo\\":\\"bar\\",\\"baz\\":123}."
 `;
 
 exports[`Validation should fail validation for constKeyword #2 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.constKeyword2 should be equal to constant [\\"foo\\",\\"bar\\"]"
+ - configuration.constKeyword2 should be equal to constant [\\"foo\\",\\"bar\\"]."
 `;
 
 exports[`Validation should fail validation for constKeyword 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.constKeyword should be equal to constant \\"foo\\""
+ - configuration.constKeyword should be equal to constant \\"foo\\"."
 `;
 
 exports[`Validation should fail validation for contains #1 1`] = `
@@ -584,7 +584,7 @@ exports[`Validation should fail validation for dependencies without object type 
 
 exports[`Validation should fail validation for empty const 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.emptyConst should be equal to constant \\"\\""
+ - configuration.emptyConst should be equal to constant \\"\\"."
 `;
 
 exports[`Validation should fail validation for empty entry bundle array 1`] = `
@@ -815,8 +815,8 @@ exports[`Validation should fail validation for integer with minimum and maximum 
 
 exports[`Validation should fail validation for invalid instanceof 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.module.wrappedContextRegExp should be an instance of RegExp
-   -> Set the inner regular expression for partial dynamic dependencies."
+ - configuration.module.wrappedContextRegExp should be an instance of RegExp.
+   -> Set the inner regular expression for partial dynamic dependencies"
 `;
 
 exports[`Validation should fail validation for invalid minimum 1`] = `
@@ -841,8 +841,8 @@ exports[`Validation should fail validation for invalid plugin provided: array 1`
     * configuration.plugins[0] should be an object:
       object { apply, … }
       -> Plugin instance
-    * configuration.plugins[0] should be an instance of function
-      -> Function acting as plugin."
+    * configuration.plugins[0] should be an instance of function.
+      -> Function acting as plugin"
 `;
 
 exports[`Validation should fail validation for invalid plugin provided: bool 1`] = `
@@ -854,8 +854,8 @@ exports[`Validation should fail validation for invalid plugin provided: bool 1`]
     * configuration.plugins[0] should be an object:
       object { apply, … }
       -> Plugin instance
-    * configuration.plugins[0] should be an instance of function
-      -> Function acting as plugin."
+    * configuration.plugins[0] should be an instance of function.
+      -> Function acting as plugin"
 `;
 
 exports[`Validation should fail validation for invalid plugin provided: string 1`] = `
@@ -867,8 +867,8 @@ exports[`Validation should fail validation for invalid plugin provided: string 1
     * configuration.plugins[0] should be an object:
       object { apply, … }
       -> Plugin instance
-    * configuration.plugins[0] should be an instance of function
-      -> Function acting as plugin."
+    * configuration.plugins[0] should be an instance of function.
+      -> Function acting as plugin"
 `;
 
 exports[`Validation should fail validation for items 1`] = `
@@ -998,7 +998,7 @@ exports[`Validation should fail validation for minimum with type number 1`] = `
 
 exports[`Validation should fail validation for missing cache group name 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.optimization.splitChunks.cacheGroups should not be object { test, … }
+ - configuration.optimization.splitChunks.cacheGroups should not be object { test, … }.
    -> Using the cacheGroup shorthand syntax with a cache group named 'test' is a potential config error
    Did you intent to define a cache group with a test instead?
    cacheGroups: {
@@ -1247,67 +1247,67 @@ exports[`Validation should fail validation for non empty string in object with a
 
 exports[`Validation should fail validation for not array 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.notArray should not be [any, ...]"
+ - configuration.notArray should not be [any, ...]."
 `;
 
 exports[`Validation should fail validation for not array less than 3 items 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.notMaxItemsArray should not be [integer, ...]"
+ - configuration.notMaxItemsArray should not be [integer, ...]."
 `;
 
 exports[`Validation should fail validation for not boolean 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.notBoolean should not be boolean"
+ - configuration.notBoolean should not be boolean."
 `;
 
 exports[`Validation should fail validation for not const 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.notConst should not be \\"foo\\""
+ - configuration.notConst should not be \\"foo\\"."
 `;
 
 exports[`Validation should fail validation for not enum 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.notEnum should not be 2 | \\"foo\\" | {\\"foo\\":\\"bar\\"} | [1,2,3]"
+ - configuration.notEnum should not be 2 | \\"foo\\" | {\\"foo\\":\\"bar\\"} | [1,2,3]."
 `;
 
 exports[`Validation should fail validation for not integer 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.notNumber should not be number"
+ - configuration.notNumber should not be number."
 `;
 
 exports[`Validation should fail validation for not not not null 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.NotNotNotNull should not be non non null"
+ - configuration.NotNotNotNull should not be non non null."
 `;
 
 exports[`Validation should fail validation for not not not null 2`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.notMultipleTypes should not be number | string"
+ - configuration.notMultipleTypes should not be number | string."
 `;
 
 exports[`Validation should fail validation for not not null 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.notNotNull should not be non null"
+ - configuration.notNotNull should not be non null."
 `;
 
 exports[`Validation should fail validation for not null 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.notNull should not be null"
+ - configuration.notNull should not be null."
 `;
 
 exports[`Validation should fail validation for not number 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.notNumber should not be number"
+ - configuration.notNumber should not be number."
 `;
 
 exports[`Validation should fail validation for not object 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.notObject should not be object { … }"
+ - configuration.notObject should not be object { … }."
 `;
 
 exports[`Validation should fail validation for not string 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.notString should not be string"
+ - configuration.notString should not be string."
 `;
 
 exports[`Validation should fail validation for null configuration 1`] = `
@@ -1489,7 +1489,7 @@ exports[`Validation should fail validation for object without items 1`] = `
 
 exports[`Validation should fail validation for one const 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.oneConst should be equal to constant [\\"foo\\"]"
+ - configuration.oneConst should be equal to constant [\\"foo\\"]."
 `;
 
 exports[`Validation should fail validation for oneOf #1 1`] = `
