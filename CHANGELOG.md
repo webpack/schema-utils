@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.6.5](https://github.com/webpack/schema-utils/compare/v2.6.4...v2.6.5) (2020-03-11)
+
+
+### Bug Fixes
+
+* correct dots at end of sentence ([7284beb](https://github.com/webpack/schema-utils/commit/7284bebe00cd570f1bef2c15951a07b9794038e6))
+
 ### [2.6.4](https://github.com/webpack/schema-utils/compare/v2.6.3...v2.6.4) (2020-01-17)
 
 
