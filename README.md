@@ -25,7 +25,7 @@ Package for validate options in loaders and plugins.
 
 To begin, you'll need to install `schema-utils`:
 
-```console
+```
 npm install schema-utils
 ```
 
