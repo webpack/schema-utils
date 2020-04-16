@@ -276,6 +276,30 @@ describe('Validation', () => {
     noTypeLikeArrayAdditionalItems: true,
   });
 
+  createSuccessTestCase('absolutePath', {
+    testAbsolutePath: '/directory/deep/tree',
+  });
+
+  createSuccessTestCase('absolutePath #1', {
+    testAbsolutePath: 'c:\\directory\\deep\\tree',
+  });
+
+  createSuccessTestCase('absolutePath #2', {
+    testAbsolutePath: 'C:\\directory\\deep\\tree',
+  });
+
+  createSuccessTestCase('absolutePath #3', {
+    testAbsolutePath: 'C:/directory/deep/tree',
+  });
+
+  createSuccessTestCase('absolutePath #4', {
+    testAbsolutePath: '\\\\server\\directory\\deep\\tree',
+  });
+
+  createSuccessTestCase('absolutePath #5', {
+    testAbsolutePath: '//server/directory/deep/tree',
+  });
+
   createSuccessTestCase('$data', {
     dollarData: {
       smaller: 5,
@@ -2882,6 +2906,46 @@ describe('Validation', () => {
     'enum nested',
     {
       enumNested: 'string',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'absolute path',
+    {
+      testAbsolutePath: 'bar',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'absolute path #1',
+    {
+      testAbsolutePath: 'bar\\\\baz',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'absolute path #2',
+    {
+      testAbsolutePath: 'bar/baz',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'absolute path #3',
+    {
+      testAbsolutePath: '.',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'absolute path #4',
+    {
+      testAbsolutePath: '..',
     },
     (msg) => expect(msg).toMatchSnapshot()
   );

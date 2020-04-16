@@ -1,0 +1,10 @@
+{
+  "title": "CSS Loader options",
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "boolean"
+    }
+  },
+  "type": "object"
+}

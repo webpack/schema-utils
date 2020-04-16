@@ -406,16 +406,36 @@ class ValidationError extends Error {
     this.errors = errors;
     /** @type {Schema} */
     this.schema = schema;
+
+    let headerNameFromSchema;
+    let baseDataPathFromSchema;
+
+    if (schema.title && (!configuration.name || !configuration.baseDataPath)) {
+      const splittedTitleFromSchema = schema.title.match(/^(.+) (.+)$/);
+
+      if (splittedTitleFromSchema) {
+        if (!configuration.name) {
+          [, headerNameFromSchema] = splittedTitleFromSchema;
+        }
+
+        if (!configuration.baseDataPath) {
+          [, , baseDataPathFromSchema] = splittedTitleFromSchema;
+        }
+      }
+    }
+
     /** @type {string} */
-    this.headerName = configuration.name || 'Object';
+    this.headerName = configuration.name || headerNameFromSchema || 'Object';
     /** @type {string} */
-    this.baseDataPath = configuration.baseDataPath || 'configuration';
+    this.baseDataPath =
+      configuration.baseDataPath || baseDataPathFromSchema || 'configuration';
+
     /** @type {PostFormatter | null} */
     this.postFormatter = configuration.postFormatter || null;
 
     const header = `Invalid ${this.baseDataPath} object. ${
       this.headerName
-    } has been initialised using ${getArticle(this.baseDataPath)} ${
+    } has been initialized using ${getArticle(this.baseDataPath)} ${
       this.baseDataPath
     } object that does not match the API schema.\n`;
 
@@ -920,8 +940,10 @@ class ValidationError extends Error {
         const { parentSchema } = error;
 
         return `${dataPath} should be an instance of ${this.getSchemaPartText(
-          parentSchema
-        )}.`;
+          parentSchema,
+          false,
+          true
+        )}`;
       }
       case 'pattern': {
         const { params, parentSchema } = error;
@@ -1195,7 +1217,9 @@ class ValidationError extends Error {
         const { parentSchema } = error;
 
         return `${dataPath} should be equal to constant ${this.getSchemaPartText(
-          parentSchema
+          parentSchema,
+          false,
+          true
         )}`;
       }
       case 'not': {
@@ -1213,7 +1237,15 @@ class ValidationError extends Error {
           return `${dataPath} should be any ${schemaOutput}${postfix}`;
         }
 
-        return `${dataPath} should not be ${schemaOutput}${postfix}`;
+        return `${dataPath} should not be ${this.getSchemaPartText(
+          error.schema,
+          false,
+          true
+        )}${
+          error.parentSchema && likeObject(error.parentSchema)
+            ? `\n${this.getSchemaPartText(error.parentSchema)}`
+            : ''
+        }`;
       }
       case 'oneOf':
       case 'anyOf': {

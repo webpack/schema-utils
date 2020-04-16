@@ -1,15 +1,21 @@
 /** @typedef {import("ajv").Ajv} Ajv */
+/** @typedef {import("ajv").ValidateFunction} ValidateFunction */
 /** @typedef {import("../validate").SchemaUtilErrorObject} SchemaUtilErrorObject */
 
 /**
- *
- * @param {string} data
- * @param {object} schema
  * @param {string} message
- * @returns {object} // Todo `returns` should be `SchemaUtilErrorObject`
+ * @param {object} schema
+ * @param {string} data
+ * @returns {SchemaUtilErrorObject}
  */
 function errorMessage(message, schema, data) {
   return {
+    // @ts-ignore
+    // eslint-disable-next-line no-undefined
+    dataPath: undefined,
+    // @ts-ignore
+    // eslint-disable-next-line no-undefined
+    schemaPath: undefined,
     keyword: 'absolutePath',
     params: { absolutePath: data },
     message,
@@ -21,7 +27,7 @@ function errorMessage(message, schema, data) {
  * @param {boolean} shouldBeAbsolute
  * @param {object} schema
  * @param {string} data
- * @returns {object}
+ * @returns {SchemaUtilErrorObject}
  */
 function getErrorFor(shouldBeAbsolute, schema, data) {
   const message = shouldBeAbsolute
@@ -43,15 +49,10 @@ function addAbsolutePathKeyword(ajv) {
     errors: true,
     type: 'string',
     compile(schema, parentSchema) {
-      /**
-       * @param {any} data
-       * @returns {boolean}
-       */
-      function callback(data) {
+      /** @type {ValidateFunction} */
+      const callback = (data) => {
         let passes = true;
         const isExclamationMarkPresent = data.includes('!');
-        const isCorrectAbsoluteOrRelativePath =
-          schema === /^(?:[A-Za-z]:\\|\/)/.test(data);
 
         if (isExclamationMarkPresent) {
           callback.errors = [
@@ -66,15 +67,20 @@ function addAbsolutePathKeyword(ajv) {
           passes = false;
         }
 
-        if (!isCorrectAbsoluteOrRelativePath) {
+        // ?:[A-Za-z]:\\ - Windows absolute path
+        // \\\\ - Windows network absolute path
+        // \/ - Unix-like OS absolute path
+        const isCorrectAbsolutePath =
+          schema === /^(?:[A-Za-z]:(\\|\/)|\\\\|\/)/.test(data);
+
+        if (!isCorrectAbsolutePath) {
           callback.errors = [getErrorFor(schema, parentSchema, data)];
           passes = false;
         }
 
         return passes;
-      }
+      };
 
-      /** @type {null | Array<SchemaUtilErrorObject>}*/
       callback.errors = [];
 
       return callback;

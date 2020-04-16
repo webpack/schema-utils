@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`api should get configuration from schema 1`] = `
+"Invalid options object. CSS Loader has been initialized using an options object that does not match the API schema.
+ - options has an unknown property 'foo'. These properties are valid:
+   object { name? }"
+`;
+
+exports[`api should prefer configuration over "title" #1 1`] = `
+"Invalid options object. NAME has been initialized using an options object that does not match the API schema.
+ - options has an unknown property 'foo'. These properties are valid:
+   object { name? }"
+`;
+
+exports[`api should prefer configuration over "title" #2 1`] = `
+"Invalid BaseDataPath object. CSS Loader has been initialized using a BaseDataPath object that does not match the API schema.
+ - BaseDataPath has an unknown property 'foo'. These properties are valid:
+   object { name? }"
+`;
+
+exports[`api should prefer configuration over "title" 1`] = `
+"Invalid BaseDataPath object. NAME has been initialized using a BaseDataPath object that does not match the API schema.
+ - BaseDataPath has an unknown property 'foo'. These properties are valid:
+   object { name? }"
+`;
+
+exports[`api should use default values when "title" is broken 1`] = `
+"Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
+ - configuration has an unknown property 'foo'. These properties are valid:
+   object { name? }"
+`;

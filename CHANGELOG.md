@@ -2,6 +2,53 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.6.5](https://github.com/webpack/schema-utils/compare/v2.6.4...v2.6.5) (2020-03-11)
+
+
+### Bug Fixes
+
+* correct dots at end of sentence ([7284beb](https://github.com/webpack/schema-utils/commit/7284bebe00cd570f1bef2c15951a07b9794038e6))
+
+### [2.6.4](https://github.com/webpack/schema-utils/compare/v2.6.3...v2.6.4) (2020-01-17)
+
+
+### Bug Fixes
+
+* change `initialised` to `initialized` ([#87](https://github.com/webpack/schema-utils/issues/87)) ([70f12d3](https://github.com/webpack/schema-utils/commit/70f12d33a8eaa27249bc9c1a27f886724cf91ea7))
+
+### [2.6.3](https://github.com/webpack/schema-utils/compare/v2.6.2...v2.6.3) (2020-01-17)
+
+
+### Bug Fixes
+
+* prefer the `baseDataPath` option from arguments ([#86](https://github.com/webpack/schema-utils/issues/86)) ([e236859](https://github.com/webpack/schema-utils/commit/e236859e85b28e35e1294f86fc1ff596a5031cea))
+
+### [2.6.2](https://github.com/webpack/schema-utils/compare/v2.6.1...v2.6.2) (2020-01-14)
+
+
+### Bug Fixes
+
+* better handle Windows absolute paths ([#85](https://github.com/webpack/schema-utils/issues/85)) ([1fa2930](https://github.com/webpack/schema-utils/commit/1fa2930a161e907b9fc53a7233d605910afdb883))
+
+### [2.6.1](https://github.com/webpack/schema-utils/compare/v2.6.0...v2.6.1) (2019-11-28)
+
+
+### Bug Fixes
+
+* typescript declarations ([#84](https://github.com/webpack/schema-utils/issues/84)) ([89d55a9](https://github.com/webpack/schema-utils/commit/89d55a9a8edfa6a8ac8b112f226bb3154e260319))
+
+## [2.6.0](https://github.com/webpack/schema-utils/compare/v2.5.0...v2.6.0) (2019-11-27)
+
+
+### Features
+
+* support configuration via title ([#81](https://github.com/webpack/schema-utils/issues/81)) ([afddc10](https://github.com/webpack/schema-utils/commit/afddc109f6891cd37a9f1835d50862d119a072bf))
+
+
+### Bug Fixes
+
+* typescript definitions ([#70](https://github.com/webpack/schema-utils/issues/70)) ([f38158d](https://github.com/webpack/schema-utils/commit/f38158d6d040e2c701622778ae8122fb26a4f990))
+
 ## [2.5.0](https://github.com/webpack/schema-utils/compare/v2.4.1...v2.5.0) (2019-10-15)
 
 
