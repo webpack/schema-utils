@@ -2877,4 +2877,12 @@ describe('Validation', () => {
     },
     (msg) => expect(msg).toMatchSnapshot()
   );
+
+  createFailedTestCase(
+    'enum nested',
+    {
+      enumNested: 'string',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
 });

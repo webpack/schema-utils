@@ -1,5 +1,12 @@
 const Range = require('./Range');
 
+/** @typedef {import("../validate").Schema} Schema */
+
+/**
+ * @param {Schema} schema
+ * @param {boolean} logic
+ * @return {string[]}
+ */
 module.exports.stringHints = function stringHints(schema, logic) {
   const hints = [];
   let type = 'string';
@@ -75,6 +82,11 @@ module.exports.stringHints = function stringHints(schema, logic) {
   return [type].concat(hints);
 };
 
+/**
+ * @param {Schema} schema
+ * @param {boolean} logic
+ * @return {string[]}
+ */
 module.exports.numberHints = function numberHints(schema, logic) {
   const hints = [schema.type === 'integer' ? 'integer' : 'number'];
   const range = new Range();
