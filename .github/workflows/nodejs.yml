@@ -56,7 +56,7 @@ jobs:
         uses: wagoid/commitlint-github-action@v1
 
   test:
-    name: Test - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}
+    name: Test - ${{ matrix.os }} - Node v${{ matrix.node-version }}
 
     strategy:
       matrix:
