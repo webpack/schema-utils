@@ -43,6 +43,12 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Build declarations
+        run: npm run build:types
+
+      - name: Run lint declarations
+        run: if [ -n "$(git status declarations --porcelain)" ]; then echo "Missing declarations in git"; exit 1; else echo "All declarations are valid"; fi
+
       - name: Security audit
         run: npm run security
 
@@ -56,7 +62,6 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         node-version: [8.x, 10.x, 12.x, 13.x]
-        webpack-version: [latest, next]
 
     runs-on: ${{ matrix.os }}
 
@@ -83,10 +88,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install webpack ${{ matrix.webpack-version }}
-        run: npm i webpack@${{ matrix.webpack-version }}
-
-      - name: Run tests for webpack version ${{ matrix.webpack-version }}
+      - name: Run tests with coverage
         run: npm run test:coverage -- --ci
 
       - name: Submit coverage data to codecov
