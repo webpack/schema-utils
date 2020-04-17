@@ -54,7 +54,7 @@ function validate(schema, options, configuration) {
   let errors = [];
 
   if (Array.isArray(options)) {
-    errors = Array.from(options).map((nestedOptions) =>
+    errors = Array.from(options, (nestedOptions) =>
       validateObject(schema, nestedOptions)
     );
 
@@ -75,7 +75,10 @@ function validate(schema, options, configuration) {
       list.forEach(applyPrefix);
     });
 
-    errors = errors.reduce((arr, items) => arr.concat(items), []);
+    errors = errors.reduce((arr, items) => {
+      arr.push(...items);
+      return arr;
+    }, []);
   } else {
     errors = validateObject(schema, options);
   }
@@ -94,11 +97,9 @@ function validateObject(schema, options) {
   const compiledSchema = ajv.compile(schema);
   const valid = compiledSchema(options);
 
-  if (!compiledSchema.errors) {
-    return [];
-  }
+  if (valid) return [];
 
-  return valid ? [] : filterErrors(compiledSchema.errors);
+  return compiledSchema.errors ? filterErrors(compiledSchema.errors) : [];
 }
 
 /**
