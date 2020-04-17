@@ -499,7 +499,8 @@ class ValidationError extends Error {
     }
 
     if (
-      /** @type {Schema & {instanceof: string | Array<string>}} */ (schema).instanceof
+      /** @type {Schema & {instanceof: string | Array<string>}} */ (schema)
+        .instanceof
     ) {
       const {
         instanceof: value,
@@ -605,7 +606,8 @@ class ValidationError extends Error {
       }
 
       if (
-        /** @type {Schema & {formatMinimum?: string; formatExclusiveMinimum?: boolean;}} */ (schema).formatMinimum
+        /** @type {Schema & {formatMinimum?: string; formatExclusiveMinimum?: boolean;}} */ (schema)
+          .formatMinimum
       ) {
         const {
           formatExclusiveMinimum,
@@ -620,7 +622,8 @@ class ValidationError extends Error {
       }
 
       if (
-        /** @type {Schema & {formatMaximum?: string; formatExclusiveMaximum?: boolean;}} */ (schema).formatMaximum
+        /** @type {Schema & {formatMaximum?: string; formatExclusiveMaximum?: boolean;}} */ (schema)
+          .formatMaximum
       ) {
         const {
           formatExclusiveMaximum,
@@ -1100,8 +1103,9 @@ class ValidationError extends Error {
         const { params, parentSchema } = error;
         const { limit } = /** @type {import("ajv").LimitParams} */ (params);
 
-        return `${dataPath} should be shorter than ${limit +
-          1} characters${getSchemaNonTypes(
+        return `${dataPath} should be shorter than ${
+          limit + 1
+        } characters${getSchemaNonTypes(
           parentSchema
         )}.${this.getSchemaPartDescription(parentSchema)}`;
       }
