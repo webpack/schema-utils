@@ -2877,4 +2877,36 @@ describe('Validation', () => {
     },
     (msg) => expect(msg).toMatchSnapshot()
   );
+
+  createFailedTestCase(
+    'not empty string #1',
+    {
+      notEmptyString: '',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'not empty string #2',
+    {
+      notEmptyString2: '',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'empty string #1',
+    {
+      emptyString: '1',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'empty string #2',
+    {
+      emptyString2: '1',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
 });

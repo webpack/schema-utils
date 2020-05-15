@@ -3719,6 +3719,26 @@
     "testAbsolutePath": {
       "type": "string",
       "absolutePath": true
+    },
+    "notEmptyString": {
+      "not": {
+        "type": "string",
+        "maxLength": 0
+      }
+    },
+    "notEmptyString2": {
+      "type": "string",
+      "minLength": 1
+    },
+    "emptyString": {
+      "not": {
+        "minLength": 0,
+        "type": "string"
+      }
+    },
+    "emptyString2": {
+      "maxLength": 0,
+      "type": "string"
     }
   }
 }
