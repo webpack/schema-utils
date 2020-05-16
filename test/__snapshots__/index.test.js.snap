@@ -618,7 +618,7 @@ exports[`Validation should fail validation for empty string #1 1`] = `
 
 exports[`Validation should fail validation for empty string #2 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.emptyString2 should be shorter than 1 characters."
+ - configuration.emptyString2 should be shorter than 1 character."
 `;
 
 exports[`Validation should fail validation for enum 1`] = `

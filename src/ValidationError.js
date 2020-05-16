@@ -1060,11 +1060,13 @@ class ValidationError extends Error {
       case 'maxLength': {
         const { params, parentSchema } = error;
         const { limit } = /** @type {import("ajv").LimitParams} */ (params);
+        const max = limit + 1;
 
-        return `${dataPath} should be shorter than ${limit +
-          1} characters${getSchemaNonTypes(
+        return `${dataPath} should be shorter than ${max} character${
+          max > 1 ? 's' : ''
+        }${getSchemaNonTypes(parentSchema)}.${this.getSchemaPartDescription(
           parentSchema
-        )}.${this.getSchemaPartDescription(parentSchema)}`;
+        )}`;
       }
       case 'maxItems': {
         const { params, parentSchema } = error;
