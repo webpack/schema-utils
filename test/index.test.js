@@ -2909,4 +2909,44 @@ describe('Validation', () => {
     },
     (msg) => expect(msg).toMatchSnapshot()
   );
+
+  createFailedTestCase(
+    'integer with not minimum and maximum',
+    {
+      integerWithNotMinMax: 10,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'integer with not minimum',
+    {
+      integerNotWithMinimum: 5,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'integer zero',
+    {
+      integerZero: 1,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'integer not zero',
+    {
+      integerNotZero: 0,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'several not in number type',
+    {
+      notMultipleOf: 5,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
 });
