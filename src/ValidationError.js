@@ -1,4 +1,4 @@
-const Range = require('./util/Range');
+const { stringHints, numberHints } = require('./util/hints');
 
 /** @typedef {import("json-schema").JSONSchema6} JSONSchema6 */
 /** @typedef {import("json-schema").JSONSchema7} JSONSchema7 */
@@ -224,7 +224,7 @@ function likeInteger(schema) {
 }
 
 /**
- * @param {Schema & {formatMinimum?: string; formatMaximum?: string;}} schema
+ * @param {Schema} schema
  * @returns {boolean}
  */
 function likeString(schema) {
@@ -333,47 +333,6 @@ function getSchemaNonTypes(schema) {
 }
 
 /**
- * @param {Schema=} schema
- * @returns {Array<string>}
- */
-function numberHints(schema) {
-  if (!schema) {
-    return [];
-  }
-
-  const hints = [];
-  const range = new Range();
-
-  if (typeof schema.minimum === 'number') {
-    range.left(schema.minimum);
-  }
-
-  if (typeof schema.exclusiveMinimum === 'number') {
-    range.left(schema.exclusiveMinimum, true);
-  }
-
-  if (typeof schema.maximum === 'number') {
-    range.right(schema.maximum);
-  }
-
-  if (typeof schema.exclusiveMaximum === 'number') {
-    range.right(schema.exclusiveMaximum, true);
-  }
-
-  const rangeFormat = range.format();
-
-  if (rangeFormat) {
-    hints.push(rangeFormat);
-  }
-
-  if (typeof schema.multipleOf === 'number') {
-    hints.push(`should be multiple of ${schema.multipleOf}`);
-  }
-
-  return hints;
-}
-
-/**
  * @param {Array<string>} hints
  * @returns {string}
  */
@@ -383,14 +342,16 @@ function formatHints(hints) {
 
 /**
  * @param {Schema} schema
- * @returns {string}
+ * @returns {string[]}
  */
 function getHints(schema) {
   if (likeNumber(schema) || likeInteger(schema)) {
-    return formatHints(numberHints(schema));
+    return numberHints(schema, true);
+  } else if (likeString(schema)) {
+    return stringHints(schema, true);
   }
 
-  return '';
+  return [];
 }
 
 class ValidationError extends Error {
@@ -563,10 +524,10 @@ class ValidationError extends Error {
     }
 
     if (likeNumber(schema) || likeInteger(schema)) {
-      const type = schema.type === 'integer' ? 'integer' : 'number';
-      const hints = getHints(schema);
+      const [type, ...hints] = getHints(schema);
+      const str = `${type}${hints.length > 0 ? ` ${formatHints(hints)}` : ''}`;
 
-      return `${type}${hints.length > 0 ? ` ${hints}` : ''}`;
+      return str;
     }
 
     if (likeString(schema)) {
@@ -1017,7 +978,7 @@ class ValidationError extends Error {
           comparison,
           limit,
         } = /** @type {import("ajv").ComparisonParams} */ (params);
-        const hints = numberHints(parentSchema);
+        const [, ...hints] = getHints(/** @type {Schema} */ (parentSchema));
 
         if (hints.length === 0) {
           hints.push(`should be ${comparison} ${limit}`);
@@ -1099,11 +1060,13 @@ class ValidationError extends Error {
       case 'maxLength': {
         const { params, parentSchema } = error;
         const { limit } = /** @type {import("ajv").LimitParams} */ (params);
+        const max = limit + 1;
 
-        return `${dataPath} should be shorter than ${limit +
-          1} characters${getSchemaNonTypes(
+        return `${dataPath} should be shorter than ${max} character${
+          max > 1 ? 's' : ''
+        }${getSchemaNonTypes(parentSchema)}.${this.getSchemaPartDescription(
           parentSchema
-        )}.${this.getSchemaPartDescription(parentSchema)}`;
+        )}`;
       }
       case 'maxItems': {
         const { params, parentSchema } = error;

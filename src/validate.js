@@ -10,7 +10,15 @@ import ValidationError from './ValidationError';
 /** @typedef {import("json-schema").JSONSchema7} JSONSchema7 */
 /** @typedef {import("ajv").ErrorObject} ErrorObject */
 
-/** @typedef {(JSONSchema4 | JSONSchema6 | JSONSchema7)} Schema */
+/**
+ * @typedef {Object} Extend
+ * @property {number=} formatMinimum
+ * @property {number=} formatMaximum
+ * @property {boolean=} formatExclusiveMinimum
+ * @property {boolean=} formatExclusiveMaximum
+ */
+
+/** @typedef {(JSONSchema4 | JSONSchema6 | JSONSchema7) & Extend} Schema */
 
 /** @typedef {ErrorObject & { children?: Array<ErrorObject>}} SchemaUtilErrorObject */
 
