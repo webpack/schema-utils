@@ -2939,6 +2939,19 @@
       "minimum": 5,
       "maximum": 20
     },
+    "integerNotWithMinimum": {
+      "not": {
+        "type": "integer",
+        "minimum": 5
+      }
+    },
+    "integerWithNotMinMax": {
+      "not": {
+        "type": "integer",
+        "minimum": 5,
+        "maximum": 20
+      }
+    },
     "integerWithExclusiveMinimum": {
       "type": "integer",
       "exclusiveMinimum": 5
@@ -2946,6 +2959,18 @@
     "integerWithExclusiveMaximum": {
       "type": "integer",
       "exclusiveMaximum": 0
+    },
+    "integerNotZero": {
+      "not": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 0
+      }
+    },
+    "integerZero": {
+      "type": "integer",
+      "exclusiveMinimum": -1,
+      "exclusiveMaximum": 1
     },
     "numberWithMinimum": {
       "type": "number",
@@ -2957,6 +2982,18 @@
       "minimum": 5,
       "maximum": 20,
       "multipleOf": 5
+    },
+    "notMultipleOf": {
+      "not": {
+        "not": {
+          "not": {
+            "type": "number",
+            "minimum": -100,
+            "maximum": 100,
+            "multipleOf": 5
+          }
+        }
+      }
     },
     "stringWithMinAndMaxLength": {
       "type": "string",

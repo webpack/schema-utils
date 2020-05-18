@@ -186,6 +186,42 @@ function indent(str, prefix) {
 }
 
 /**
+ * @param {Schema} schema
+ * @returns {schema is (Schema & {not: Schema})}
+ */
+function hasNotInSchema(schema) {
+  return !!schema.not;
+}
+
+/**
+ * @param {Schema} schema
+ * @return {Schema}
+ */
+function findFirstTypedSchema(schema) {
+  if (hasNotInSchema(schema)) {
+    return findFirstTypedSchema(schema.not);
+  }
+
+  return schema;
+}
+
+/**
+ * @param {Schema} schema
+ * @return {boolean}
+ */
+function canApplyNot(schema) {
+  const typedSchema = findFirstTypedSchema(schema);
+
+  return (
+    likeNumber(typedSchema) ||
+    likeInteger(typedSchema) ||
+    likeString(typedSchema) ||
+    likeNull(typedSchema) ||
+    likeBoolean(typedSchema)
+  );
+}
+
+/**
  * @param {any} maybeObj
  * @returns {boolean}
  */
@@ -342,13 +378,14 @@ function formatHints(hints) {
 
 /**
  * @param {Schema} schema
+ * @param {boolean} logic
  * @returns {string[]}
  */
-function getHints(schema) {
+function getHints(schema, logic) {
   if (likeNumber(schema) || likeInteger(schema)) {
-    return numberHints(schema, true);
+    return numberHints(schema, logic);
   } else if (likeString(schema)) {
-    return stringHints(schema, true);
+    return stringHints(schema, logic);
   }
 
   return [];
@@ -432,10 +469,12 @@ class ValidationError extends Error {
 
   /**
    * @param {Schema} schema
+   * @param {boolean} logic
    * @param {Array<Object>} prevSchemas
    * @returns {string}
    */
-  formatSchema(schema, prevSchemas = []) {
+  formatSchema(schema, logic = true, prevSchemas = []) {
+    let newLogic = logic;
     const formatInnerSchema =
       /**
        *
@@ -445,18 +484,34 @@ class ValidationError extends Error {
        */
       (innerSchema, addSelf) => {
         if (!addSelf) {
-          return this.formatSchema(innerSchema, prevSchemas);
+          return this.formatSchema(innerSchema, newLogic, prevSchemas);
         }
 
         if (prevSchemas.includes(innerSchema)) {
           return '(recursive)';
         }
 
-        return this.formatSchema(innerSchema, prevSchemas.concat(schema));
+        return this.formatSchema(
+          innerSchema,
+          newLogic,
+          prevSchemas.concat(schema)
+        );
       };
 
-    if (schema.not && !likeObject(schema)) {
-      return `non ${formatInnerSchema(schema.not)}`;
+    if (hasNotInSchema(schema) && !likeObject(schema)) {
+      if (canApplyNot(schema.not)) {
+        newLogic = !logic;
+
+        return formatInnerSchema(schema.not);
+      }
+
+      const needApplyLogicHere = !schema.not.not;
+      const prefix = logic ? '' : 'non ';
+      newLogic = !logic;
+
+      return needApplyLogicHere
+        ? prefix + formatInnerSchema(schema.not)
+        : formatInnerSchema(schema.not);
     }
 
     if (
@@ -524,85 +579,34 @@ class ValidationError extends Error {
     }
 
     if (likeNumber(schema) || likeInteger(schema)) {
-      const [type, ...hints] = getHints(schema);
+      const [type, ...hints] = getHints(schema, logic);
       const str = `${type}${hints.length > 0 ? ` ${formatHints(hints)}` : ''}`;
 
-      return str;
+      return logic
+        ? str
+        : hints.length > 0
+        ? `non-${type} | ${str}`
+        : `non-${type}`;
     }
 
     if (likeString(schema)) {
-      let type = 'string';
-      const hints = [];
+      const [type, ...hints] = getHints(schema, logic);
+      const str = `${type}${hints.length > 0 ? ` ${formatHints(hints)}` : ''}`;
 
-      if (typeof schema.minLength === 'number') {
-        if (schema.minLength === 1) {
-          type = 'non-empty string';
-        } else if (schema.minLength !== 0) {
-          /* if min length === 0 it does not make hint for user */
-          const length = schema.minLength - 1;
-
-          hints.push(
-            `should be longer than ${length} character${length > 1 ? 's' : ''}`
-          );
-        }
-      }
-
-      if (typeof schema.maxLength === 'number') {
-        if (schema.maxLength === 0) {
-          type = 'empty string';
-        } else {
-          hints.push(
-            `should be shorter than ${schema.maxLength + 1} characters`
-          );
-        }
-      }
-
-      if (schema.pattern) {
-        hints.push(`should match pattern ${JSON.stringify(schema.pattern)}`);
-      }
-
-      if (schema.format) {
-        hints.push(`should match format ${JSON.stringify(schema.format)}`);
-      }
-
-      if (
-        /** @type {Schema & {formatMinimum?: string; formatExclusiveMinimum?: boolean;}} */ (schema).formatMinimum
-      ) {
-        const {
-          formatExclusiveMinimum,
-          formatMinimum,
-        } = /** @type {Schema & {formatMinimum?: string; formatExclusiveMinimum?: boolean;}} */ (schema);
-
-        hints.push(
-          `should be ${formatExclusiveMinimum ? '>' : '>='} ${JSON.stringify(
-            formatMinimum
-          )}`
-        );
-      }
-
-      if (
-        /** @type {Schema & {formatMaximum?: string; formatExclusiveMaximum?: boolean;}} */ (schema).formatMaximum
-      ) {
-        const {
-          formatExclusiveMaximum,
-          formatMaximum,
-        } = /** @type {Schema & {formatMaximum?: string; formatExclusiveMaximum?: boolean;}} */ (schema);
-
-        hints.push(
-          `should be ${formatExclusiveMaximum ? '<' : '<='} ${JSON.stringify(
-            formatMaximum
-          )}`
-        );
-      }
-
-      return `${type}${hints.length > 0 ? ` (${hints.join(', ')})` : ''}`;
+      return logic
+        ? str
+        : str === 'string'
+        ? 'non-string'
+        : `non-string | ${str}`;
     }
 
     if (likeBoolean(schema)) {
-      return 'boolean';
+      return `${logic ? '' : 'non-'}boolean`;
     }
 
     if (likeArray(schema)) {
+      // not logic already applied in formatValidationError
+      newLogic = true;
       const hints = [];
 
       if (typeof schema.minItems === 'number') {
@@ -677,6 +681,8 @@ class ValidationError extends Error {
     }
 
     if (likeObject(schema)) {
+      // not logic already applied in formatValidationError
+      newLogic = true;
       const hints = [];
 
       if (typeof schema.minProperties === 'number') {
@@ -795,14 +801,16 @@ class ValidationError extends Error {
     }
 
     if (likeNull(schema)) {
-      return 'null';
+      return `${logic ? '' : 'non-'}null`;
     }
 
     if (Array.isArray(schema.type)) {
+      // not logic already applied in formatValidationError
       return `${schema.type.join(' | ')}`;
     }
 
     // Fallback for unknown keywords
+    // not logic already applied in formatValidationError
     /* istanbul ignore next */
     return JSON.stringify(schema, null, 2);
   }
@@ -811,9 +819,10 @@ class ValidationError extends Error {
    * @param {Schema=} schemaPart
    * @param {(boolean | Array<string>)=} additionalPath
    * @param {boolean=} needDot
+   * @param {boolean=} logic
    * @returns {string}
    */
-  getSchemaPartText(schemaPart, additionalPath, needDot = false) {
+  getSchemaPartText(schemaPart, additionalPath, needDot = false, logic = true) {
     if (!schemaPart) {
       return '';
     }
@@ -838,7 +847,9 @@ class ValidationError extends Error {
       schemaPart = this.getSchemaPart(schemaPart.$ref);
     }
 
-    let schemaText = `${this.formatSchema(schemaPart)}${needDot ? '.' : ''}`;
+    let schemaText = `${this.formatSchema(schemaPart, logic)}${
+      needDot ? '.' : ''
+    }`;
 
     if (schemaPart.description) {
       schemaText += `\n-> ${schemaPart.description}`;
@@ -978,7 +989,10 @@ class ValidationError extends Error {
           comparison,
           limit,
         } = /** @type {import("ajv").ComparisonParams} */ (params);
-        const [, ...hints] = getHints(/** @type {Schema} */ (parentSchema));
+        const [, ...hints] = getHints(
+          /** @type {Schema} */ (parentSchema),
+          true
+        );
 
         if (hints.length === 0) {
           hints.push(`should be ${comparison} ${limit}`);
@@ -1212,6 +1226,20 @@ class ValidationError extends Error {
         )}`;
       }
       case 'not': {
+        const postfix = likeObject(/** @type {Schema} */ (error.parentSchema))
+          ? `\n${this.getSchemaPartText(error.parentSchema)}`
+          : '';
+        const schemaOutput = this.getSchemaPartText(
+          error.schema,
+          false,
+          false,
+          false
+        );
+
+        if (canApplyNot(error.schema)) {
+          return `${dataPath} should be any ${schemaOutput}${postfix}.`;
+        }
+
         const { schema, parentSchema } = error;
 
         return `${dataPath} should not be ${this.getSchemaPartText(
