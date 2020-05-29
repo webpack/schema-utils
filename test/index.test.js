@@ -2877,4 +2877,76 @@ describe('Validation', () => {
     },
     (msg) => expect(msg).toMatchSnapshot()
   );
+
+  createFailedTestCase(
+    'not empty string #1',
+    {
+      notEmptyString: '',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'not empty string #2',
+    {
+      notEmptyString2: '',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'empty string #1',
+    {
+      emptyString: '1',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'empty string #2',
+    {
+      emptyString2: '1',
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'integer with not minimum and maximum',
+    {
+      integerWithNotMinMax: 10,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'integer with not minimum',
+    {
+      integerNotWithMinimum: 5,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'integer zero',
+    {
+      integerZero: 1,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'integer not zero',
+    {
+      integerNotZero: 0,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    'several not in number type',
+    {
+      notMultipleOf: 5,
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
 });
