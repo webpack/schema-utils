@@ -27,14 +27,9 @@ declare class ValidationError extends Error {
    * @param {ValidationErrorConfiguration} configuration
    */
   constructor(
-    errors: (import('ajv').ErrorObject & {
-      children?: import('ajv').ErrorObject[] | undefined;
-    })[],
-    schema:
-      | (import('json-schema').JSONSchema4 & import('./validate').Extend)
-      | (import('json-schema').JSONSchema6 & import('./validate').Extend)
-      | (import('json-schema').JSONSchema7 & import('./validate').Extend),
-    configuration?: import('./validate').ValidationErrorConfiguration
+    errors: Array<SchemaUtilErrorObject>,
+    schema: Schema,
+    configuration?: ValidationErrorConfiguration
   );
   /** @type {Array<SchemaUtilErrorObject>} */
   errors: Array<SchemaUtilErrorObject>;
@@ -50,66 +45,44 @@ declare class ValidationError extends Error {
    * @param {string} path
    * @returns {Schema}
    */
-  getSchemaPart(
-    path: string
-  ):
-    | (import('json-schema').JSONSchema4 & import('./validate').Extend)
-    | (import('json-schema').JSONSchema6 & import('./validate').Extend)
-    | (import('json-schema').JSONSchema7 & import('./validate').Extend);
+  getSchemaPart(path: string): Schema;
   /**
    * @param {Schema} schema
+   * @param {boolean} logic
    * @param {Array<Object>} prevSchemas
    * @returns {string}
    */
   formatSchema(
-    schema:
-      | (import('json-schema').JSONSchema4 & import('./validate').Extend)
-      | (import('json-schema').JSONSchema6 & import('./validate').Extend)
-      | (import('json-schema').JSONSchema7 & import('./validate').Extend),
-    prevSchemas?: Object[]
+    schema: Schema,
+    logic?: boolean,
+    prevSchemas?: Array<Object>
   ): string;
   /**
    * @param {Schema=} schemaPart
    * @param {(boolean | Array<string>)=} additionalPath
    * @param {boolean=} needDot
+   * @param {boolean=} logic
    * @returns {string}
    */
   getSchemaPartText(
-    schemaPart?:
-      | (import('json-schema').JSONSchema4 & import('./validate').Extend)
-      | (import('json-schema').JSONSchema6 & import('./validate').Extend)
-      | (import('json-schema').JSONSchema7 & import('./validate').Extend)
-      | undefined,
-    additionalPath?: boolean | string[] | undefined,
-    needDot?: boolean | undefined
+    schemaPart?: Schema | undefined,
+    additionalPath?: (boolean | Array<string>) | undefined,
+    needDot?: boolean | undefined,
+    logic?: boolean | undefined
   ): string;
   /**
    * @param {Schema=} schemaPart
    * @returns {string}
    */
-  getSchemaPartDescription(
-    schemaPart?:
-      | (import('json-schema').JSONSchema4 & import('./validate').Extend)
-      | (import('json-schema').JSONSchema6 & import('./validate').Extend)
-      | (import('json-schema').JSONSchema7 & import('./validate').Extend)
-      | undefined
-  ): string;
+  getSchemaPartDescription(schemaPart?: Schema | undefined): string;
   /**
    * @param {SchemaUtilErrorObject} error
    * @returns {string}
    */
-  formatValidationError(
-    error: import('ajv').ErrorObject & {
-      children?: import('ajv').ErrorObject[] | undefined;
-    }
-  ): string;
+  formatValidationError(error: SchemaUtilErrorObject): string;
   /**
    * @param {Array<SchemaUtilErrorObject>} errors
    * @returns {string}
    */
-  formatValidationErrors(
-    errors: (import('ajv').ErrorObject & {
-      children?: import('ajv').ErrorObject[] | undefined;
-    })[]
-  ): string;
+  formatValidationErrors(errors: Array<SchemaUtilErrorObject>): string;
 }

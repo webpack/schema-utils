@@ -18,9 +18,7 @@ export type SchemaUtilErrorObject = Ajv.ErrorObject & {
 };
 export type PostFormatter = (
   formattedError: string,
-  error: Ajv.ErrorObject & {
-    children?: Ajv.ErrorObject[] | undefined;
-  }
+  error: SchemaUtilErrorObject
 ) => string;
 export type ValidationErrorConfiguration = {
   name?: string | undefined;
@@ -34,11 +32,8 @@ export type ValidationErrorConfiguration = {
  * @returns {void}
  */
 declare function validate(
-  schema:
-    | (import('json-schema').JSONSchema4 & Extend)
-    | (import('json-schema').JSONSchema6 & Extend)
-    | (import('json-schema').JSONSchema7 & Extend),
-  options: object | object[],
+  schema: Schema,
+  options: Array<object> | object,
   configuration?: ValidationErrorConfiguration | undefined
 ): void;
 declare namespace validate {
