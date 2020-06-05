@@ -10,7 +10,7 @@ const Range = require('./Range');
 module.exports.stringHints = function stringHints(schema, logic) {
   const hints = [];
   let type = 'string';
-  const currentSchema = { ...schema };
+  const currentSchema = Object.assign({}, schema);
 
   if (!logic) {
     const tmpLength = currentSchema.minLength;
