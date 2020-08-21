@@ -38,7 +38,7 @@ npm install schema-utils
   "type": "object",
   "properties": {
     "option": {
-      "type": ["boolean"]
+      "type": "boolean"
     }
   },
   "additionalProperties": false
