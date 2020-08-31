@@ -8,5 +8,5 @@
     "types": ["node"],
     "resolveJsonModule": true
   },
-  "include": ["./types/**/*", "./src/**/*"]
+  "include": ["./src/**/*"]
 }
