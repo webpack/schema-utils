@@ -1,9 +1,10 @@
-import Ajv from 'ajv';
-import ajvKeywords from 'ajv-keywords';
-
 import addAbsolutePathKeyword from './keywords/absolutePath';
 
 import ValidationError from './ValidationError';
+
+// Use CommonJS require for ajv libs so TypeScript consumers aren't locked into esModuleInterop (see #110).
+const Ajv = require('ajv');
+const ajvKeywords = require('ajv-keywords');
 
 /** @typedef {import("json-schema").JSONSchema4} JSONSchema4 */
 /** @typedef {import("json-schema").JSONSchema6} JSONSchema6 */
