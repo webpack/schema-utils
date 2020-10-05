@@ -515,7 +515,8 @@ class ValidationError extends Error {
     }
 
     if (
-      /** @type {Schema & {instanceof: string | Array<string>}} */ (schema).instanceof
+      /** @type {Schema & {instanceof: string | Array<string>}} */ (schema)
+        .instanceof
     ) {
       const {
         instanceof: value,
