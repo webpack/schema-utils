@@ -1030,7 +1030,7 @@ class ValidationError extends Error {
         const { limit } = /** @type {import("ajv").LimitParams} */ (params);
 
         if (limit === 1) {
-          return `${dataPath} should be an non-empty string${getSchemaNonTypes(
+          return `${dataPath} should be a non-empty string${getSchemaNonTypes(
             parentSchema
           )}.${this.getSchemaPartDescription(parentSchema)}`;
         }
@@ -1048,7 +1048,7 @@ class ValidationError extends Error {
         const { limit } = /** @type {import("ajv").LimitParams} */ (params);
 
         if (limit === 1) {
-          return `${dataPath} should be an non-empty array${getSchemaNonTypes(
+          return `${dataPath} should be a non-empty array${getSchemaNonTypes(
             parentSchema
           )}.${this.getSchemaPartDescription(parentSchema)}`;
         }
@@ -1062,7 +1062,7 @@ class ValidationError extends Error {
         const { limit } = /** @type {import("ajv").LimitParams} */ (params);
 
         if (limit === 1) {
-          return `${dataPath} should be an non-empty object${getSchemaNonTypes(
+          return `${dataPath} should be a non-empty object${getSchemaNonTypes(
             parentSchema
           )}.${this.getSchemaPartDescription(parentSchema)}`;
         }
