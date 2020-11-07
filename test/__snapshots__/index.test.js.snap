@@ -425,7 +425,7 @@ exports[`Validation should fail validation for array with maxItems 1`] = `
 
 exports[`Validation should fail validation for array with minItems 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.arrayWithMinItems should be an non-empty array."
+ - configuration.arrayWithMinItems should be a non-empty array."
 `;
 
 exports[`Validation should fail validation for array with only number 1`] = `
@@ -480,13 +480,13 @@ exports[`Validation should fail validation for boolean type 1`] = `
 
 exports[`Validation should fail validation for configuration dataPath #1 1`] = `
 "Invalid options object. MyPlugin has been initialized using an options object that does not match the API schema.
- - options.entry should be an non-empty string.
+ - options.entry should be a non-empty string.
    -> An entry point without name. The string is resolved to a module which is loaded upon startup."
 `;
 
 exports[`Validation should fail validation for configuration dataPath 1`] = `
 "Invalid configuration object. Webpack has been initialized using a configuration object that does not match the API schema.
- - configuration.entry should be an non-empty string.
+ - configuration.entry should be a non-empty string.
    -> An entry point without name. The string is resolved to a module which is loaded upon startup."
 `;
 
@@ -556,7 +556,7 @@ exports[`Validation should fail validation for contains inside items 1`] = `
 
 exports[`Validation should fail validation for css-loader name 1`] = `
 "Invalid configuration object. CSS Loader has been initialized using a configuration object that does not match the API schema.
- - configuration.entry should be an non-empty string.
+ - configuration.entry should be a non-empty string.
    -> An entry point without name. The string is resolved to a module which is loaded upon startup."
 `;
 
@@ -589,13 +589,13 @@ exports[`Validation should fail validation for empty const 1`] = `
 
 exports[`Validation should fail validation for empty entry bundle array 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.entry['bundle'] should be an non-empty array.
+ - configuration.entry['bundle'] should be a non-empty array.
    -> A non-empty array of non-empty strings"
 `;
 
 exports[`Validation should fail validation for empty entry string 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.entry should be an non-empty string.
+ - configuration.entry should be a non-empty string.
    -> An entry point without name. The string is resolved to a module which is loaded upon startup."
 `;
 
@@ -997,7 +997,7 @@ exports[`Validation should fail validation for min length 1`] = `
 
 exports[`Validation should fail validation for min properties 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.entry should be an non-empty object.
+ - configuration.entry should be a non-empty object.
    -> Multiple entry bundles are created. The key is the chunk name. The value can be a string or an array."
 `;
 
@@ -1152,7 +1152,7 @@ exports[`Validation should fail validation for no type like array with minItems 
 
 exports[`Validation should fail validation for no type like array with minItems 3`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.noTypeMinProperties1 should be an non-empty object | should be any non-object."
+ - configuration.noTypeMinProperties1 should be a non-empty object | should be any non-object."
 `;
 
 exports[`Validation should fail validation for no type like array with minItems 4`] = `
@@ -1162,7 +1162,7 @@ exports[`Validation should fail validation for no type like array with minItems 
 
 exports[`Validation should fail validation for no type like array with minItems equals 1 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.noTypeLikeArrayMinItems1 should be an non-empty array | should be any non-array."
+ - configuration.noTypeLikeArrayMinItems1 should be a non-empty array | should be any non-array."
 `;
 
 exports[`Validation should fail validation for no type like number with exclusive maximum 1`] = `
@@ -1248,7 +1248,7 @@ exports[`Validation should fail validation for no type like string with minLengt
 
 exports[`Validation should fail validation for no type like string with minLength equals 1 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.noTypeLikeStringMinLength1 should be an non-empty string | should be any non-string."
+ - configuration.noTypeLikeStringMinLength1 should be a non-empty string | should be any non-string."
 `;
 
 exports[`Validation should fail validation for no type like string with pattern 1`] = `
@@ -1302,7 +1302,7 @@ exports[`Validation should fail validation for not empty string #1 1`] = `
 
 exports[`Validation should fail validation for not empty string #2 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.notEmptyString2 should be an non-empty string."
+ - configuration.notEmptyString2 should be a non-empty string."
 `;
 
 exports[`Validation should fail validation for not enum 1`] = `
@@ -1809,7 +1809,7 @@ exports[`Validation should fail validation for string with minLength, maxLength 
 
 exports[`Validation should fail validation for terser-webpack-plugin name 1`] = `
 "Invalid configuration object. Terser Plugin has been initialized using a configuration object that does not match the API schema.
- - configuration.entry should be an non-empty string.
+ - configuration.entry should be a non-empty string.
    -> An entry point without name. The string is resolved to a module which is loaded upon startup."
 `;
 
@@ -1837,7 +1837,7 @@ exports[`Validation should fail validation for uniqueItems 2`] = `
 
 exports[`Validation should fail validation for webpack name 1`] = `
 "Invalid configuration object. Webpack has been initialized using a configuration object that does not match the API schema.
- - configuration.entry should be an non-empty string.
+ - configuration.entry should be a non-empty string.
    -> An entry point without name. The string is resolved to a module which is loaded upon startup."
 `;
 
