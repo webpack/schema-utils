@@ -12,14 +12,11 @@ export type ValidationErrorConfiguration = {
 };
 export type PostFormatter = (
   formattedError: string,
-  error: import('ajv').ErrorObject & {
-    children?: import('ajv').ErrorObject[] | undefined;
-  }
+  error: import('./validate').SchemaUtilErrorObject
 ) => string;
 export type SchemaUtilErrorObject = import('ajv').ErrorObject & {
   children?: import('ajv').ErrorObject[] | undefined;
 };
-export type SPECIFICITY = number;
 declare class ValidationError extends Error {
   /**
    * @param {Array<SchemaUtilErrorObject>} errors

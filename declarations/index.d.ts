@@ -1,2 +1,3 @@
-export const validate: typeof import('./validate').validate;
-export const ValidationError: typeof import('./ValidationError').default;
+import { validate } from './validate';
+import { ValidationError } from './validate';
+export { validate, ValidationError };

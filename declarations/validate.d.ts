@@ -1,7 +1,7 @@
 export type JSONSchema4 = import('json-schema').JSONSchema4;
 export type JSONSchema6 = import('json-schema').JSONSchema6;
 export type JSONSchema7 = import('json-schema').JSONSchema7;
-export type ErrorObject = import('ajv').ErrorObject;
+export type ErrorObject = Ajv.ErrorObject;
 export type Extend = {
   formatMinimum?: number | undefined;
   formatMaximum?: number | undefined;
@@ -12,8 +12,8 @@ export type Schema =
   | (import('json-schema').JSONSchema4 & Extend)
   | (import('json-schema').JSONSchema6 & Extend)
   | (import('json-schema').JSONSchema7 & Extend);
-export type SchemaUtilErrorObject = import('ajv').ErrorObject & {
-  children?: import('ajv').ErrorObject[] | undefined;
+export type SchemaUtilErrorObject = Ajv.ErrorObject & {
+  children?: Ajv.ErrorObject[] | undefined;
 };
 export type PostFormatter = (
   formattedError: string,
@@ -36,4 +36,5 @@ export function validate(
   configuration?: ValidationErrorConfiguration | undefined
 ): void;
 import ValidationError from './ValidationError';
+import Ajv = require('ajv');
 export { ValidationError };
