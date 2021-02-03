@@ -1,14 +1,21 @@
+import webpackSchema from 'webpack/schemas/WebpackOptions.json';
+
 import { validate } from '../src';
 
 import schema from './fixtures/schema.json';
 
 describe('Validation', () => {
-  function createSuccessTestCase(name, config, options = {}) {
+  function createSuccessTestCase(
+    name,
+    config,
+    options = {},
+    testSchema = schema
+  ) {
     it(`should pass validation for ${name}`, () => {
       let error;
 
       try {
-        validate(schema, config, options.name);
+        validate(testSchema, config, options.name);
       } catch (maybeValidationError) {
         if (maybeValidationError.name !== 'ValidationError') {
           throw maybeValidationError;
@@ -2948,5 +2955,12 @@ describe('Validation', () => {
       notMultipleOf: 5,
     },
     (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createSuccessTestCase(
+    'webpack schema',
+    { mode: 'development' },
+    {},
+    webpackSchema
   );
 });
