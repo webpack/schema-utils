@@ -1,3 +1,4 @@
+import { getLoaderOptions } from './getLoaderOptions';
 import { validate } from './validate';
 import { ValidationError } from './validate';
-export { validate, ValidationError };
+export { getLoaderOptions, validate, ValidationError };

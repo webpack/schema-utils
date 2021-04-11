@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getLoaderOptions parses and validates given JSON string 1`] = `
+"Invalid options object. CSS Loader has been initialized using an options object that does not match the API schema.
+ - options has an unknown property 'namee'. These properties are valid:
+   object { name? }"
+`;
+
+exports[`getLoaderOptions parses and validates given query string 1`] = `
+"Invalid options object. CSS Loader has been initialized using an options object that does not match the API schema.
+ - options has an unknown property 'namee'. These properties are valid:
+   object { name? }"
+`;
+
+exports[`getLoaderOptions returns and validates given object as-is 1`] = `
+"Invalid options object. CSS Loader has been initialized using an options object that does not match the API schema.
+ - options has an unknown property 'namee'. These properties are valid:
+   object { name? }"
+`;
+
+exports[`getLoaderOptions throws an error for invalid JSON 1`] = `"Cannot parse string options: Unexpected token u in JSON at position 10 while parsing near '{\\"name\\":faulse}'"`;

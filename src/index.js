@@ -1,3 +1,4 @@
 const { validate, ValidationError } = require('./validate');
+const { getLoaderOptions } = require('./getLoaderOptions');
 
-module.exports = { validate, ValidationError };
+module.exports = { getLoaderOptions, validate, ValidationError };

@@ -43,9 +43,11 @@
     "declarations"
   ],
   "dependencies": {
+    "@types/json-parse-better-errors": "^1.0.0",
+    "@types/json-schema": "^7.0.7",
     "ajv": "^6.12.5",
     "ajv-keywords": "^3.5.2",
-    "@types/json-schema": "^7.0.7"
+    "json-parse-better-errors": "^1.0.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.13",
