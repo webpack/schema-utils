@@ -29,7 +29,7 @@
     "lint:js": "eslint --cache .",
     "lint:types": "tsc --pretty --noEmit",
     "lint": "npm-run-all lint:js lint:types fmt:check",
-    "fmt": "npm run lint:prettier -- --write",
+    "fmt": "npm run fmt:check -- --write",
     "fix:js": "npm run lint:js -- --fix",
     "fix": "npm-run-all fix:js fmt",
     "test:only": "cross-env NODE_ENV=test jest",
