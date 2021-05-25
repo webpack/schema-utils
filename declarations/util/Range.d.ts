@@ -14,9 +14,9 @@ declare class Range {
    * @returns {">" | ">=" | "<" | "<="}
    */
   static getOperator(
-    side: 'left' | 'right',
+    side: "left" | "right",
     exclusive: boolean
-  ): '>' | '>=' | '<' | '<=';
+  ): ">" | ">=" | "<" | "<=";
   /**
    * @param {number} value
    * @param {boolean} logic is not logic applied

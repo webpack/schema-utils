@@ -46,11 +46,11 @@ npm install schema-utils
 ```
 
 ```js
-import schema from './path/to/schema.json';
-import { validate } from 'schema-utils';
+import schema from "./path/to/schema.json";
+import { validate } from "schema-utils";
 
 const options = { option: true };
-const configuration = { name: 'Loader Name/Plugin Name/Name' };
+const configuration = { name: "Loader Name/Plugin Name/Name" };
 
 validate(schema, options, configuration);
 ```
@@ -83,12 +83,12 @@ Type: `Object`
 Object with options.
 
 ```js
-import schema from './path/to/schema.json';
-import { validate } from 'schema-utils';
+import schema from "./path/to/schema.json";
+import { validate } from "schema-utils";
 
-const options = { foo: 'bar' };
+const options = { foo: "bar" };
 
-validate(schema, { name: 123 }, { name: 'MyPlugin' });
+validate(schema, { name: 123 }, { name: "MyPlugin" });
 ```
 
 ### `configuration`
@@ -123,12 +123,12 @@ Default: `"Object"`
 Allow to setup name in validation errors.
 
 ```js
-import schema from './path/to/schema.json';
-import { validate } from 'schema-utils';
+import schema from "./path/to/schema.json";
+import { validate } from "schema-utils";
 
-const options = { foo: 'bar' };
+const options = { foo: "bar" };
 
-validate(schema, options, { name: 'MyPlugin' });
+validate(schema, options, { name: "MyPlugin" });
 ```
 
 ```shell
@@ -144,12 +144,12 @@ Default: `"configuration"`
 Allow to setup base data path in validation errors.
 
 ```js
-import schema from './path/to/schema.json';
-import { validate } from 'schema-utils';
+import schema from "./path/to/schema.json";
+import { validate } from "schema-utils";
 
-const options = { foo: 'bar' };
+const options = { foo: "bar" };
 
-validate(schema, options, { name: 'MyPlugin', baseDataPath: 'options' });
+validate(schema, options, { name: "MyPlugin", baseDataPath: "options" });
 ```
 
 ```shell
@@ -165,15 +165,15 @@ Default: `undefined`
 Allow to reformat errors.
 
 ```js
-import schema from './path/to/schema.json';
-import { validate } from 'schema-utils';
+import schema from "./path/to/schema.json";
+import { validate } from "schema-utils";
 
-const options = { foo: 'bar' };
+const options = { foo: "bar" };
 
 validate(schema, options, {
-  name: 'MyPlugin',
+  name: "MyPlugin",
   postFormatter: (formattedError, error) => {
-    if (error.keyword === 'type') {
+    if (error.keyword === "type") {
       return `${formattedError}\nAdditional Information.`;
     }
 
@@ -220,17 +220,17 @@ Invalid options object. MyPlugin has been initialized using an options object th
 ### `Loader`
 
 ```js
-import { getOptions } from 'loader-utils';
-import { validate } from 'schema-utils';
+import { getOptions } from "loader-utils";
+import { validate } from "schema-utils";
 
-import schema from 'path/to/schema.json';
+import schema from "path/to/schema.json";
 
 function loader(src, map) {
   const options = getOptions(this);
 
   validate(schema, options, {
-    name: 'Loader Name',
-    baseDataPath: 'options',
+    name: "Loader Name",
+    baseDataPath: "options",
   });
 
   // Code...
@@ -242,15 +242,15 @@ export default loader;
 ### `Plugin`
 
 ```js
-import { validate } from 'schema-utils';
+import { validate } from "schema-utils";
 
-import schema from 'path/to/schema.json';
+import schema from "path/to/schema.json";
 
 class Plugin {
   constructor(options) {
     validate(schema, options, {
-      name: 'Plugin Name',
-      baseDataPath: 'options',
+      name: "Plugin Name",
+      baseDataPath: "options",
     });
 
     this.options = options;

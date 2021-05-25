@@ -1,3 +1,3 @@
-const { validate, ValidationError } = require('./validate');
+const { validate, ValidationError } = require("./validate");
 
 module.exports = { validate, ValidationError };
