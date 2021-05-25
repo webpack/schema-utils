@@ -1,7 +1,7 @@
-export type JSONSchema4 = import('json-schema').JSONSchema4;
-export type JSONSchema6 = import('json-schema').JSONSchema6;
-export type JSONSchema7 = import('json-schema').JSONSchema7;
-export type ErrorObject = import('ajv').ErrorObject;
+export type JSONSchema4 = import("json-schema").JSONSchema4;
+export type JSONSchema6 = import("json-schema").JSONSchema6;
+export type JSONSchema7 = import("json-schema").JSONSchema7;
+export type ErrorObject = import("ajv").ErrorObject;
 export type Extend = {
   formatMinimum?: number | undefined;
   formatMaximum?: number | undefined;
@@ -32,5 +32,5 @@ export function validate(
   options: Array<object> | object,
   configuration?: ValidationErrorConfiguration | undefined
 ): void;
-import ValidationError from './ValidationError';
+import ValidationError from "./ValidationError";
 export { ValidationError };

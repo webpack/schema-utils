@@ -1,4 +1,4 @@
-const Range = require('./Range');
+const Range = require("./Range");
 
 /** @typedef {import("../validate").Schema} Schema */
 
@@ -9,7 +9,7 @@ const Range = require('./Range');
  */
 module.exports.stringHints = function stringHints(schema, logic) {
   const hints = [];
-  let type = 'string';
+  let type = "string";
   const currentSchema = { ...schema };
 
   if (!logic) {
@@ -26,31 +26,31 @@ module.exports.stringHints = function stringHints(schema, logic) {
     currentSchema.formatExclusiveMinimum = !tmpExclusive;
   }
 
-  if (typeof currentSchema.minLength === 'number') {
+  if (typeof currentSchema.minLength === "number") {
     if (currentSchema.minLength === 1) {
-      type = 'non-empty string';
+      type = "non-empty string";
     } else {
       const length = Math.max(currentSchema.minLength - 1, 0);
       hints.push(
-        `should be longer than ${length} character${length > 1 ? 's' : ''}`
+        `should be longer than ${length} character${length > 1 ? "s" : ""}`
       );
     }
   }
 
-  if (typeof currentSchema.maxLength === 'number') {
+  if (typeof currentSchema.maxLength === "number") {
     if (currentSchema.maxLength === 0) {
-      type = 'empty string';
+      type = "empty string";
     } else {
       const length = currentSchema.maxLength + 1;
       hints.push(
-        `should be shorter than ${length} character${length > 1 ? 's' : ''}`
+        `should be shorter than ${length} character${length > 1 ? "s" : ""}`
       );
     }
   }
 
   if (currentSchema.pattern) {
     hints.push(
-      `should${logic ? '' : ' not'} match pattern ${JSON.stringify(
+      `should${logic ? "" : " not"} match pattern ${JSON.stringify(
         currentSchema.pattern
       )}`
     );
@@ -58,7 +58,7 @@ module.exports.stringHints = function stringHints(schema, logic) {
 
   if (currentSchema.format) {
     hints.push(
-      `should${logic ? '' : ' not'} match format ${JSON.stringify(
+      `should${logic ? "" : " not"} match format ${JSON.stringify(
         currentSchema.format
       )}`
     );
@@ -67,7 +67,7 @@ module.exports.stringHints = function stringHints(schema, logic) {
   if (currentSchema.formatMinimum) {
     hints.push(
       `should be ${
-        currentSchema.formatExclusiveMinimum ? '>' : '>='
+        currentSchema.formatExclusiveMinimum ? ">" : ">="
       } ${JSON.stringify(currentSchema.formatMinimum)}`
     );
   }
@@ -75,7 +75,7 @@ module.exports.stringHints = function stringHints(schema, logic) {
   if (currentSchema.formatMaximum) {
     hints.push(
       `should be ${
-        currentSchema.formatExclusiveMaximum ? '<' : '<='
+        currentSchema.formatExclusiveMaximum ? "<" : "<="
       } ${JSON.stringify(currentSchema.formatMaximum)}`
     );
   }
@@ -89,22 +89,22 @@ module.exports.stringHints = function stringHints(schema, logic) {
  * @return {string[]}
  */
 module.exports.numberHints = function numberHints(schema, logic) {
-  const hints = [schema.type === 'integer' ? 'integer' : 'number'];
+  const hints = [schema.type === "integer" ? "integer" : "number"];
   const range = new Range();
 
-  if (typeof schema.minimum === 'number') {
+  if (typeof schema.minimum === "number") {
     range.left(schema.minimum);
   }
 
-  if (typeof schema.exclusiveMinimum === 'number') {
+  if (typeof schema.exclusiveMinimum === "number") {
     range.left(schema.exclusiveMinimum, true);
   }
 
-  if (typeof schema.maximum === 'number') {
+  if (typeof schema.maximum === "number") {
     range.right(schema.maximum);
   }
 
-  if (typeof schema.exclusiveMaximum === 'number') {
+  if (typeof schema.exclusiveMaximum === "number") {
     range.right(schema.exclusiveMaximum, true);
   }
 
@@ -114,9 +114,9 @@ module.exports.numberHints = function numberHints(schema, logic) {
     hints.push(rangeFormat);
   }
 
-  if (typeof schema.multipleOf === 'number') {
+  if (typeof schema.multipleOf === "number") {
     hints.push(
-      `should${logic ? '' : ' not'} be multiple of ${schema.multipleOf}`
+      `should${logic ? "" : " not"} be multiple of ${schema.multipleOf}`
     );
   }
 

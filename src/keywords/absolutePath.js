@@ -16,7 +16,7 @@ function errorMessage(message, schema, data) {
     // @ts-ignore
     // eslint-disable-next-line no-undefined
     schemaPath: undefined,
-    keyword: 'absolutePath',
+    keyword: "absolutePath",
     params: { absolutePath: data },
     message,
     parentSchema: schema,
@@ -45,14 +45,14 @@ function getErrorFor(shouldBeAbsolute, schema, data) {
  * @returns {Ajv}
  */
 function addAbsolutePathKeyword(ajv) {
-  ajv.addKeyword('absolutePath', {
+  ajv.addKeyword("absolutePath", {
     errors: true,
-    type: 'string',
+    type: "string",
     compile(schema, parentSchema) {
       /** @type {ValidateFunction} */
       const callback = (data) => {
         let passes = true;
-        const isExclamationMarkPresent = data.includes('!');
+        const isExclamationMarkPresent = data.includes("!");
 
         if (isExclamationMarkPresent) {
           callback.errors = [

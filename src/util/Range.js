@@ -15,11 +15,11 @@ class Range {
    * @returns {">" | ">=" | "<" | "<="}
    */
   static getOperator(side, exclusive) {
-    if (side === 'left') {
-      return exclusive ? '>' : '>=';
+    if (side === "left") {
+      return exclusive ? ">" : ">=";
     }
 
-    return exclusive ? '<' : '<=';
+    return exclusive ? "<" : "<=";
   }
 
   /**
@@ -33,7 +33,7 @@ class Range {
       return Range.formatLeft(value, !logic, !exclusive);
     }
 
-    return `should be ${Range.getOperator('right', exclusive)} ${value}`;
+    return `should be ${Range.getOperator("right", exclusive)} ${value}`;
   }
 
   /**
@@ -47,7 +47,7 @@ class Range {
       return Range.formatRight(value, !logic, !exclusive);
     }
 
-    return `should be ${Range.getOperator('left', exclusive)} ${value}`;
+    return `should be ${Range.getOperator("left", exclusive)} ${value}`;
   }
 
   /**
@@ -59,15 +59,15 @@ class Range {
    * @returns {string}
    */
   static formatRange(start, end, startExclusive, endExclusive, logic) {
-    let result = 'should be';
+    let result = "should be";
 
     result += ` ${Range.getOperator(
-      logic ? 'left' : 'right',
+      logic ? "left" : "right",
       logic ? startExclusive : !startExclusive
     )} ${start} `;
-    result += logic ? 'and' : 'or';
+    result += logic ? "and" : "or";
     result += ` ${Range.getOperator(
-      logic ? 'right' : 'left',
+      logic ? "right" : "left",
       logic ? endExclusive : !endExclusive
     )} ${end}`;
 
@@ -134,7 +134,7 @@ class Range {
     const [end, rightExclusive] = Range.getRangeValue(this._right, !logic);
 
     if (!Number.isFinite(start) && !Number.isFinite(end)) {
-      return '';
+      return "";
     }
 
     const realStart = leftExclusive ? start + 1 : start;
@@ -142,7 +142,7 @@ class Range {
 
     // e.g. 5 < x < 7, 5 < x <= 6, 6 <= x <= 6
     if (realStart === realEnd) {
-      return `should be ${logic ? '' : '!'}= ${realStart}`;
+      return `should be ${logic ? "" : "!"}= ${realStart}`;
     }
 
     // e.g. 4 < x < ∞
