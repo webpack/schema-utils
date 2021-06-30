@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0](https://github.com/webpack/schema-utils/compare/v3.0.0...v3.1.0) (2021-06-30)
+
+
+### Features
+
+* added the `link` property in validation error ([589aa59](https://github.com/webpack/schema-utils/commit/589aa5993424a8bc45ec22b67dff55be92c456a9))
+
+
+### Bug Fixes
+
+* non-empty validation error message ([#116](https://github.com/webpack/schema-utils/issues/116)) ([c51abef](https://github.com/webpack/schema-utils/commit/c51abefa4d4d62e1346b3a105182d36675595077))
+
 ## [3.0.0](https://github.com/webpack/schema-utils/compare/v2.7.1...v3.0.0) (2020-10-05)
 
 
