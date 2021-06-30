@@ -873,11 +873,17 @@ class ValidationError extends Error {
       schemaPart = this.getSchemaPart(schemaPart.$ref);
     }
 
+    let schemaText = "";
+
     if (schemaPart.description) {
-      return `\n-> ${schemaPart.description}`;
+      schemaText += `\n-> ${schemaPart.description}`;
     }
 
-    return "";
+    if (schemaPart.link) {
+      schemaText += `\n-> Read more at ${schemaPart.link}`;
+    }
+
+    return schemaText;
   }
 
   /**

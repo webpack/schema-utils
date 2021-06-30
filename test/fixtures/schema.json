@@ -2079,6 +2079,14 @@
       "description": "Options for the webpack-dev-server",
       "type": "object"
     },
+    "stringKeywordWithLink": {
+      "type": "string",
+      "minLength": 11,
+      "format": "date",
+      "pattern": "[0-9\\-]+",
+      "description": "Description",
+      "link": "https://webpack.js.org/configuration/link/"
+    },
     "devtool": {
       "description": "A developer tool to enhance debugging.",
       "link": "https://webpack.js.org/configuration/devtool/",
