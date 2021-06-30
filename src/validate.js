@@ -17,6 +17,7 @@ const ajvKeywords = require("ajv-keywords");
  * @property {number=} formatMaximum
  * @property {boolean=} formatExclusiveMinimum
  * @property {boolean=} formatExclusiveMaximum
+ * @property {string=} link
  */
 
 /** @typedef {(JSONSchema4 | JSONSchema6 | JSONSchema7) & Extend} Schema */

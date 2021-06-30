@@ -852,6 +852,10 @@ class ValidationError extends Error {
       schemaText += `\n-> ${schemaPart.description}`;
     }
 
+    if (schemaPart.link) {
+      schemaText += `\n-> Read more at ${schemaPart.link}`;
+    }
+
     return schemaText;
   }
 

@@ -7,6 +7,7 @@ export type Extend = {
   formatMaximum?: number | undefined;
   formatExclusiveMinimum?: boolean | undefined;
   formatExclusiveMaximum?: boolean | undefined;
+  link?: string | undefined;
 };
 export type Schema = (JSONSchema4 | JSONSchema6 | JSONSchema7) & Extend;
 export type SchemaUtilErrorObject = ErrorObject & {
