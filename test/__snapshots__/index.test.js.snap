@@ -626,6 +626,7 @@ exports[`Validation should fail validation for enum 1`] = `
  - configuration.devtool should be one of these:
    string | false
    -> A developer tool to enhance debugging.
+   -> Read more at https://webpack.js.org/configuration/devtool/
    Details:
     * configuration.devtool should be a string.
     * configuration.devtool should be false."
@@ -1537,6 +1538,7 @@ exports[`Validation should fail validation for oneOf #1 1`] = `
  - configuration.entry should be one of these:
    function | object { <key>: non-empty string | [non-empty string, ...] (should not have fewer than 1 item, should not have duplicate items) } (should not have fewer than 1 property) | non-empty string | [non-empty string, ...] (should not have fewer than 1 item, should not have duplicate items)
    -> The entry point(s) of the compilation.
+   -> Read more at https://webpack.js.org/configuration/entry-context/#entry
    Details:
     * configuration.entry['foo'] should be one of these:
       non-empty string | [non-empty string, ...] (should not have fewer than 1 item, should not have duplicate items)

@@ -2081,6 +2081,7 @@
     },
     "devtool": {
       "description": "A developer tool to enhance debugging.",
+      "link": "https://webpack.js.org/configuration/devtool/",
       "anyOf": [
         {
           "type": "string"
@@ -2092,6 +2093,7 @@
     },
     "entry": {
       "description": "The entry point(s) of the compilation.",
+      "link": "https://webpack.js.org/configuration/entry-context/#entry",
       "anyOf": [
         {
           "$ref": "#/definitions/Entry"
