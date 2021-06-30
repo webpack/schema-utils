@@ -2,8 +2,7 @@ export default ValidationError;
 export type JSONSchema6 = import("json-schema").JSONSchema6;
 export type JSONSchema7 = import("json-schema").JSONSchema7;
 export type Schema = import("./validate").Schema;
-export type ValidationErrorConfiguration =
-  import("./validate").ValidationErrorConfiguration;
+export type ValidationErrorConfiguration = import("./validate").ValidationErrorConfiguration;
 export type PostFormatter = import("./validate").PostFormatter;
 export type SchemaUtilErrorObject = import("./validate").SchemaUtilErrorObject;
 declare class ValidationError extends Error {
