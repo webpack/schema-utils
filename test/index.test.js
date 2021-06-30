@@ -1401,6 +1401,14 @@ describe("Validation", () => {
   );
 
   createFailedTestCase(
+    "string with link",
+    {
+      stringKeywordWithLink: "abc",
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
     "array",
     {
       arrayKeyword: "abc",

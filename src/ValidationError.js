@@ -518,8 +518,9 @@ class ValidationError extends Error {
       /** @type {Schema & {instanceof: string | Array<string>}} */ (schema)
         .instanceof
     ) {
-      const { instanceof: value } =
-        /** @type {Schema & {instanceof: string | Array<string>}} */ (schema);
+      const {
+        instanceof: value,
+      } = /** @type {Schema & {instanceof: string | Array<string>}} */ (schema);
 
       const values = !Array.isArray(value) ? [value] : value;
 
@@ -747,8 +748,11 @@ class ValidationError extends Error {
         )
         .join(", ");
 
-      const { dependencies, propertyNames, patternRequired } =
-        /** @type {Schema & {patternRequired?: Array<string>;}} */ (schema);
+      const {
+        dependencies,
+        propertyNames,
+        patternRequired,
+      } = /** @type {Schema & {patternRequired?: Array<string>;}} */ (schema);
 
       if (dependencies) {
         Object.keys(dependencies).forEach((dependencyName) => {
@@ -873,11 +877,17 @@ class ValidationError extends Error {
       schemaPart = this.getSchemaPart(schemaPart.$ref);
     }
 
+    let schemaText = "";
+
     if (schemaPart.description) {
-      return `\n-> ${schemaPart.description}`;
+      schemaText += `\n-> ${schemaPart.description}`;
     }
 
-    return "";
+    if (schemaPart.link) {
+      schemaText += `\n-> Read more at ${schemaPart.link}`;
+    }
+
+    return schemaText;
   }
 
   /**
@@ -970,8 +980,10 @@ class ValidationError extends Error {
       case "formatMinimum":
       case "formatMaximum": {
         const { params, parentSchema } = error;
-        const { comparison, limit } =
-          /** @type {import("ajv").ComparisonParams} */ (params);
+        const {
+          comparison,
+          limit,
+        } = /** @type {import("ajv").ComparisonParams} */ (params);
 
         return `${dataPath} should be ${comparison} ${JSON.stringify(
           limit
@@ -984,8 +996,10 @@ class ValidationError extends Error {
       case "exclusiveMinimum":
       case "exclusiveMaximum": {
         const { parentSchema, params } = error;
-        const { comparison, limit } =
-          /** @type {import("ajv").ComparisonParams} */ (params);
+        const {
+          comparison,
+          limit,
+        } = /** @type {import("ajv").ComparisonParams} */ (params);
         const [, ...hints] = getHints(
           /** @type {Schema} */ (parentSchema),
           true
@@ -1001,9 +1015,9 @@ class ValidationError extends Error {
       }
       case "multipleOf": {
         const { params, parentSchema } = error;
-        const { multipleOf } = /** @type {import("ajv").MultipleOfParams} */ (
-          params
-        );
+        const {
+          multipleOf,
+        } = /** @type {import("ajv").MultipleOfParams} */ (params);
 
         return `${dataPath} should be multiple of ${multipleOf}${getSchemaNonTypes(
           parentSchema
@@ -1011,8 +1025,9 @@ class ValidationError extends Error {
       }
       case "patternRequired": {
         const { params, parentSchema } = error;
-        const { missingPattern } =
-          /** @type {import("ajv").PatternRequiredParams} */ (params);
+        const {
+          missingPattern,
+        } = /** @type {import("ajv").PatternRequiredParams} */ (params);
 
         return `${dataPath} should have property matching pattern ${JSON.stringify(
           missingPattern
@@ -1122,10 +1137,10 @@ class ValidationError extends Error {
       }
       case "required": {
         const { parentSchema, params } = error;
-        const missingProperty =
-          /** @type {import("ajv").DependenciesParams} */ (
-            params
-          ).missingProperty.replace(/^\./, "");
+        const missingProperty = /** @type {import("ajv").DependenciesParams} */ (params).missingProperty.replace(
+          /^\./,
+          ""
+        );
         const hasProperty =
           parentSchema &&
           Boolean(
@@ -1148,8 +1163,9 @@ class ValidationError extends Error {
       }
       case "additionalProperties": {
         const { params, parentSchema } = error;
-        const { additionalProperty } =
-          /** @type {import("ajv").AdditionalPropertiesParams} */ (params);
+        const {
+          additionalProperty,
+        } = /** @type {import("ajv").AdditionalPropertiesParams} */ (params);
 
         return `${dataPath} has an unknown property '${additionalProperty}'${getSchemaNonTypes(
           parentSchema
@@ -1159,8 +1175,10 @@ class ValidationError extends Error {
       }
       case "dependencies": {
         const { params, parentSchema } = error;
-        const { property, deps } =
-          /** @type {import("ajv").DependenciesParams} */ (params);
+        const {
+          property,
+          deps,
+        } = /** @type {import("ajv").DependenciesParams} */ (params);
         const dependencies = deps
           .split(",")
           .map(
@@ -1178,8 +1196,9 @@ class ValidationError extends Error {
       }
       case "propertyNames": {
         const { params, parentSchema, schema } = error;
-        const { propertyName } =
-          /** @type {import("ajv").PropertyNamesParams} */ (params);
+        const {
+          propertyName,
+        } = /** @type {import("ajv").PropertyNamesParams} */ (params);
 
         return `${dataPath} property name '${propertyName}' is invalid${getSchemaNonTypes(
           parentSchema
@@ -1293,9 +1312,9 @@ class ValidationError extends Error {
       }
       case "if": {
         const { params, parentSchema } = error;
-        const { failingKeyword } = /** @type {import("ajv").IfParams} */ (
-          params
-        );
+        const {
+          failingKeyword,
+        } = /** @type {import("ajv").IfParams} */ (params);
 
         return `${dataPath} should match "${failingKeyword}" schema:\n${this.getSchemaPartText(
           parentSchema,
