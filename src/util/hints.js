@@ -21,7 +21,8 @@ module.exports.stringHints = function stringHints(schema, logic) {
     currentSchema.maxLength = tmpLength;
     currentSchema.formatMinimum = currentSchema.formatMaximum;
     currentSchema.formatMaximum = tmpFormat;
-    currentSchema.formatExclusiveMaximum = !currentSchema.formatExclusiveMinimum;
+    currentSchema.formatExclusiveMaximum =
+      !currentSchema.formatExclusiveMinimum;
     currentSchema.formatExclusiveMinimum = !tmpExclusive;
   }
 
