@@ -24,7 +24,7 @@
     "build:code": "cross-env NODE_ENV=production babel src -d dist --copy-files",
     "build": "npm-run-all -p \"build:**\"",
     "commitlint": "commitlint --from=master",
-    "security": "npm audit",
+    "security": "npm audit --production",
     "fmt:check": "prettier \"{**/*,*}.{js,json,md,yml,css,ts}\" --list-different",
     "lint:js": "eslint --cache .",
     "lint:types": "tsc --pretty --noEmit",
