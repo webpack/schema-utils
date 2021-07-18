@@ -75,12 +75,12 @@ exports[`Validation should fail validation for additional key on root 1`] = `
 
 exports[`Validation should fail validation for additionalItems #2 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.additionalItemsKeyword2[0] should be a integer."
+ - configuration.additionalItemsKeyword2[0] should be an integer."
 `;
 
 exports[`Validation should fail validation for additionalItems #3 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.additionalItemsKeyword3[0] should be a integer."
+ - configuration.additionalItemsKeyword3[0] should be an integer."
 `;
 
 exports[`Validation should fail validation for additionalItems #4 1`] = `
@@ -91,7 +91,7 @@ exports[`Validation should fail validation for additionalItems #4 1`] = `
 
 exports[`Validation should fail validation for additionalItems 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.additionalItemsKeyword[1] should be a integer."
+ - configuration.additionalItemsKeyword[1] should be an integer."
 `;
 
 exports[`Validation should fail validation for additionalItems with false 1`] = `
@@ -145,7 +145,7 @@ exports[`Validation should fail validation for additionalProperties inside oneOf
  - configuration.additionalPropertiesInsideOneOf2 should be one of these:
    integer (should be <= 3) | object { foo?, … }
    Details:
-    * configuration.additionalPropertiesInsideOneOf2 should be a integer (should be <= 3).
+    * configuration.additionalPropertiesInsideOneOf2 should be an integer (should be <= 3).
     * configuration.additionalPropertiesInsideOneOf2 should be an object:
       object { foo?, … }"
 `;
@@ -155,7 +155,7 @@ exports[`Validation should fail validation for additionalProperties inside oneOf
  - configuration.additionalPropertiesInsideOneOf should be one of these:
    integer (should be <= 3) | object { foo? }
    Details:
-    * configuration.additionalPropertiesInsideOneOf should be a integer (should be <= 3).
+    * configuration.additionalPropertiesInsideOneOf should be an integer (should be <= 3).
     * configuration.additionalPropertiesInsideOneOf should be an object:
       object { foo? }"
 `;
@@ -168,7 +168,7 @@ exports[`Validation should fail validation for additionalProperties without obje
 
 exports[`Validation should fail validation for allOf #1 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.allOfKeyword should be a integer."
+ - configuration.allOfKeyword should be an integer."
 `;
 
 exports[`Validation should fail validation for allOf #2 1`] = `
@@ -188,7 +188,7 @@ exports[`Validation should fail validation for allOf 1`] = `
 
 exports[`Validation should fail validation for allOf 2`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.allOfKeyword should be a integer."
+ - configuration.allOfKeyword should be an integer."
 `;
 
 exports[`Validation should fail validation for anyOf 1`] = `
@@ -215,7 +215,7 @@ exports[`Validation should fail validation for anyOf with item without type 1`] 
 
 exports[`Validation should fail validation for array #1 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.arrayKeyword[0] should be a integer."
+ - configuration.arrayKeyword[0] should be an integer."
 `;
 
 exports[`Validation should fail validation for array #2 1`] = `
@@ -235,8 +235,8 @@ exports[`Validation should fail validation for array #4 1`] = `
 
 exports[`Validation should fail validation for array #4 2`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.arrayKeyword3[0] should be a integer.
- - configuration.arrayKeyword3[1] should be a integer."
+ - configuration.arrayKeyword3[0] should be an integer.
+ - configuration.arrayKeyword3[1] should be an integer."
 `;
 
 exports[`Validation should fail validation for array #5 1`] = `
@@ -379,7 +379,7 @@ exports[`Validation should fail validation for array 1`] = `
 
 exports[`Validation should fail validation for array keywords without array type 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.likeArray[0] should be a integer."
+ - configuration.likeArray[0] should be an integer."
 `;
 
 exports[`Validation should fail validation for array type 1`] = `
@@ -780,7 +780,7 @@ exports[`Validation should fail validation for integer and null in object with a
  - configuration.customObject.anyOfKeyword should be one of these:
    integer | null
    Details:
-    * configuration.customObject.anyOfKeyword should be a integer.
+    * configuration.customObject.anyOfKeyword should be an integer.
     * configuration.customObject.anyOfKeyword should be a null."
 `;
 
@@ -796,12 +796,12 @@ exports[`Validation should fail validation for integer not zero 1`] = `
 
 exports[`Validation should fail validation for integer type 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.integerType should be a integer."
+ - configuration.integerType should be an integer."
 `;
 
 exports[`Validation should fail validation for integer with exclusive maximum 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.integerWithExclusiveMaximum should be a integer (should be < 0)."
+ - configuration.integerWithExclusiveMaximum should be an integer (should be < 0)."
 `;
 
 exports[`Validation should fail validation for integer with exclusive maximum 2`] = `
@@ -811,7 +811,7 @@ exports[`Validation should fail validation for integer with exclusive maximum 2`
 
 exports[`Validation should fail validation for integer with exclusive minimum 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.integerWithExclusiveMinimum should be a integer (should be > 5)."
+ - configuration.integerWithExclusiveMinimum should be an integer (should be > 5)."
 `;
 
 exports[`Validation should fail validation for integer with exclusive minimum 2`] = `
@@ -821,7 +821,7 @@ exports[`Validation should fail validation for integer with exclusive minimum 2`
 
 exports[`Validation should fail validation for integer with minimum 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.integerWithMinimum should be a integer (should be >= 5 and <= 20)."
+ - configuration.integerWithMinimum should be an integer (should be >= 5 and <= 20)."
 `;
 
 exports[`Validation should fail validation for integer with minimum and maximum 1`] = `
@@ -904,12 +904,12 @@ exports[`Validation should fail validation for invalid plugin provided: string 1
 
 exports[`Validation should fail validation for items 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.itemsKeyword[0] should be a integer."
+ - configuration.itemsKeyword[0] should be an integer."
 `;
 
 exports[`Validation should fail validation for items 2`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.itemsKeyword2[0] should be a integer."
+ - configuration.itemsKeyword2[0] should be an integer."
 `;
 
 exports[`Validation should fail validation for items and additionalItems #2 1`] = `
@@ -1598,7 +1598,7 @@ exports[`Validation should fail validation for oneOf with if 1`] = `
    Details:
     * configuration.oneOfWithIf should be an object:
       if object { power?, … } then object { disbelief, … } else object { confidence, … }
-    * configuration.oneOfWithIf should be a integer."
+    * configuration.oneOfWithIf should be an integer."
 `;
 
 exports[`Validation should fail validation for oneOf with item without type 1`] = `
@@ -1608,13 +1608,13 @@ exports[`Validation should fail validation for oneOf with item without type 1`] 
 
 exports[`Validation should fail validation for only items #2 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.onlyItems2[0] should be a integer.
+ - configuration.onlyItems2[0] should be an integer.
  - configuration.onlyItems2[1] should be a string."
 `;
 
 exports[`Validation should fail validation for only items 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.onlyItems[1] should be a integer."
+ - configuration.onlyItems[1] should be an integer."
 `;
 
 exports[`Validation should fail validation for only properties #2 1`] = `
