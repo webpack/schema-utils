@@ -907,7 +907,7 @@ class ValidationError extends Error {
               true
             )}`;
           case "integer":
-            return `${dataPath} should be a ${this.getSchemaPartText(
+            return `${dataPath} should be an ${this.getSchemaPartText(
               parentSchema,
               false,
               true
