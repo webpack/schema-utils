@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.1](https://github.com/webpack/schema-utils/compare/v3.1.0...v3.1.1) (2021-07-19)
+
+
+### Bug Fixes
+
+* update error message for `integer` ([#136](https://github.com/webpack/schema-utils/issues/136)) ([2daa97e](https://github.com/webpack/schema-utils/commit/2daa97eae87e6790b92711746a6a527b859ac13b))
+
 ## [3.1.0](https://github.com/webpack/schema-utils/compare/v3.0.0...v3.1.0) (2021-06-30)
 
 
