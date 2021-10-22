@@ -721,6 +721,8 @@ class ValidationError extends Error {
       const properties = schema.properties
         ? Object.keys(schema.properties)
         : [];
+      /** @type {Array<string>} */
+      // @ts-ignore
       const required = schema.required ? schema.required : [];
       const allProperties = [
         ...new Set(
