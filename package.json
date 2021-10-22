@@ -50,13 +50,13 @@
     "ajv-keywords": "^3.5.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.14.3",
-    "@babel/core": "^7.14.6",
-    "@babel/preset-env": "^7.14.7",
+    "@babel/cli": "^7.15.7",
+    "@babel/core": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
     "@webpack-contrib/eslint-config-webpack": "^3.0.0",
-    "babel-jest": "^27.0.6",
+    "babel-jest": "^27.3.1",
     "cross-env": "^7.0.3",
     "del": "^6.0.0",
     "del-cli": "^3.0.1",
@@ -64,13 +64,13 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.23.4",
     "husky": "^6.0.0",
-    "jest": "^27.0.6",
-    "lint-staged": "^11.0.1",
+    "jest": "^27.3.1",
+    "lint-staged": "^11.2.3",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.3.2",
-    "standard-version": "^9.3.1",
+    "prettier": "^2.4.1",
+    "standard-version": "^9.3.2",
     "typescript": "^4.3.5",
-    "webpack": "^5.45.1"
+    "webpack": "^5.59.1"
   },
   "keywords": [
     "webpack"
