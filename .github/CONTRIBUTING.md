@@ -1,4 +1,4 @@
-# Contributing in @webpack-contrib
+# Contributing
 
 We'd always love contributions to further improve the webpack / webpack-contrib ecosystem!
 Here are the guidelines we'd like you to follow:
