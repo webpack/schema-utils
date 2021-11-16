@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/webpack/schema-utils/compare/v3.1.1...v4.0.0) (2021-11-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* minimum supported `Node.js` version is `>= 12.13.0`
+* update `ajv` to `8.8.0` version, please read [internal changes](https://github.com/ajv-validator/ajv/releases), `postFormatter` require attention due some properties were changed
+* logic for `formatExclusiveMaximum` and `formatExclusiveMinimum` was changed (due usage `ajv-formats` package)
+
 ### [3.1.1](https://github.com/webpack/schema-utils/compare/v3.1.0...v3.1.1) (2021-07-19)
 
 
