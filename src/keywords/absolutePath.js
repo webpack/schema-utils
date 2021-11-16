@@ -1,5 +1,6 @@
-/** @typedef {import("ajv").Ajv} Ajv */
-/** @typedef {import("ajv").ValidateFunction} ValidateFunction */
+/** @typedef {import("ajv").default} Ajv */
+/** @typedef {import("ajv").SchemaValidateFunction} SchemaValidateFunction */
+/** @typedef {import("ajv").AnySchemaObject} AnySchemaObject */
 /** @typedef {import("../validate").SchemaUtilErrorObject} SchemaUtilErrorObject */
 
 /**
@@ -45,11 +46,17 @@ function getErrorFor(shouldBeAbsolute, schema, data) {
  * @returns {Ajv}
  */
 function addAbsolutePathKeyword(ajv) {
-  ajv.addKeyword("absolutePath", {
-    errors: true,
+  ajv.addKeyword({
+    keyword: "absolutePath",
     type: "string",
+    errors: true,
+    /**
+     * @param {boolean} schema
+     * @param {AnySchemaObject} parentSchema
+     * @returns {SchemaValidateFunction}
+     */
     compile(schema, parentSchema) {
-      /** @type {ValidateFunction} */
+      /** @type {SchemaValidateFunction} */
       const callback = (data) => {
         let passes = true;
         const isExclamationMarkPresent = data.includes("!");

@@ -45,6 +45,14 @@ const SPECIFICITY = {
 };
 
 /**
+ * @param {string} value
+ * @returns {value is number}
+ */
+function isNumeric(value) {
+  return /^-?\d+$/.test(value);
+}
+
+/**
  *
  * @param {Array<SchemaUtilErrorObject>} array
  * @param {(item: SchemaUtilErrorObject) => number} fn
@@ -71,7 +79,7 @@ function filterChildren(children) {
      * @param {SchemaUtilErrorObject} error
      * @returns {number}
      */
-    (error) => (error.dataPath ? error.dataPath.length : 0)
+    (error) => (error.instancePath ? error.instancePath.length : 0)
   );
   newChildren = filterMax(
     newChildren,
@@ -893,55 +901,79 @@ class ValidationError extends Error {
    * @returns {string}
    */
   formatValidationError(error) {
-    const { keyword, dataPath: errorDataPath } = error;
-    const dataPath = `${this.baseDataPath}${errorDataPath}`;
+    const { keyword, instancePath: errorInstancePath } = error;
+
+    const splittedInstancePath = errorInstancePath.split("/");
+    /**
+     * @type {Array<string>}
+     */
+    const defaultValue = [];
+    const prettyInstancePath = splittedInstancePath
+      .reduce((acc, val) => {
+        if (val.length > 0) {
+          if (isNumeric(val)) {
+            acc.push(`[${val}]`);
+          } else if (/^\[/.test(val)) {
+            acc.push(val);
+          } else {
+            acc.push(`.${val}`);
+          }
+        }
+
+        return acc;
+      }, defaultValue)
+      .join("");
+    const instancePath = `${this.baseDataPath}${prettyInstancePath}`;
+
+    // const { keyword, instancePath: errorInstancePath } = error;
+    // const instancePath = `${this.baseDataPath}${errorInstancePath.replace(/\//g, '.')}`;
 
     switch (keyword) {
       case "type": {
         const { parentSchema, params } = error;
 
         // eslint-disable-next-line default-case
-        switch (/** @type {import("ajv").TypeParams} */ (params).type) {
+        switch (params.type) {
           case "number":
-            return `${dataPath} should be a ${this.getSchemaPartText(
+            return `${instancePath} should be a ${this.getSchemaPartText(
               parentSchema,
               false,
               true
             )}`;
           case "integer":
-            return `${dataPath} should be an ${this.getSchemaPartText(
+            return `${instancePath} should be an ${this.getSchemaPartText(
               parentSchema,
               false,
               true
             )}`;
           case "string":
-            return `${dataPath} should be a ${this.getSchemaPartText(
+            return `${instancePath} should be a ${this.getSchemaPartText(
               parentSchema,
               false,
               true
             )}`;
           case "boolean":
-            return `${dataPath} should be a ${this.getSchemaPartText(
+            return `${instancePath} should be a ${this.getSchemaPartText(
               parentSchema,
               false,
               true
             )}`;
           case "array":
-            return `${dataPath} should be an array:\n${this.getSchemaPartText(
+            return `${instancePath} should be an array:\n${this.getSchemaPartText(
               parentSchema
             )}`;
           case "object":
-            return `${dataPath} should be an object:\n${this.getSchemaPartText(
+            return `${instancePath} should be an object:\n${this.getSchemaPartText(
               parentSchema
             )}`;
           case "null":
-            return `${dataPath} should be a ${this.getSchemaPartText(
+            return `${instancePath} should be a ${this.getSchemaPartText(
               parentSchema,
               false,
               true
             )}`;
           default:
-            return `${dataPath} should be:\n${this.getSchemaPartText(
+            return `${instancePath} should be:\n${this.getSchemaPartText(
               parentSchema
             )}`;
         }
@@ -949,7 +981,7 @@ class ValidationError extends Error {
       case "instanceof": {
         const { parentSchema } = error;
 
-        return `${dataPath} should be an instance of ${this.getSchemaPartText(
+        return `${instancePath} should be an instance of ${this.getSchemaPartText(
           parentSchema,
           false,
           true
@@ -957,9 +989,9 @@ class ValidationError extends Error {
       }
       case "pattern": {
         const { params, parentSchema } = error;
-        const { pattern } = /** @type {import("ajv").PatternParams} */ (params);
+        const { pattern } = params;
 
-        return `${dataPath} should match pattern ${JSON.stringify(
+        return `${instancePath} should match pattern ${JSON.stringify(
           pattern
         )}${getSchemaNonTypes(parentSchema)}.${this.getSchemaPartDescription(
           parentSchema
@@ -967,21 +999,22 @@ class ValidationError extends Error {
       }
       case "format": {
         const { params, parentSchema } = error;
-        const { format } = /** @type {import("ajv").FormatParams} */ (params);
+        const { format } = params;
 
-        return `${dataPath} should match format ${JSON.stringify(
+        return `${instancePath} should match format ${JSON.stringify(
           format
         )}${getSchemaNonTypes(parentSchema)}.${this.getSchemaPartDescription(
           parentSchema
         )}`;
       }
       case "formatMinimum":
-      case "formatMaximum": {
+      case "formatExclusiveMinimum":
+      case "formatMaximum":
+      case "formatExclusiveMaximum": {
         const { params, parentSchema } = error;
-        const { comparison, limit } =
-          /** @type {import("ajv").ComparisonParams} */ (params);
+        const { comparison, limit } = params;
 
-        return `${dataPath} should be ${comparison} ${JSON.stringify(
+        return `${instancePath} should be ${comparison} ${JSON.stringify(
           limit
         )}${getSchemaNonTypes(parentSchema)}.${this.getSchemaPartDescription(
           parentSchema
@@ -992,8 +1025,7 @@ class ValidationError extends Error {
       case "exclusiveMinimum":
       case "exclusiveMaximum": {
         const { parentSchema, params } = error;
-        const { comparison, limit } =
-          /** @type {import("ajv").ComparisonParams} */ (params);
+        const { comparison, limit } = params;
         const [, ...hints] = getHints(
           /** @type {Schema} */ (parentSchema),
           true
@@ -1003,26 +1035,23 @@ class ValidationError extends Error {
           hints.push(`should be ${comparison} ${limit}`);
         }
 
-        return `${dataPath} ${hints.join(" ")}${getSchemaNonTypes(
+        return `${instancePath} ${hints.join(" ")}${getSchemaNonTypes(
           parentSchema
         )}.${this.getSchemaPartDescription(parentSchema)}`;
       }
       case "multipleOf": {
         const { params, parentSchema } = error;
-        const { multipleOf } = /** @type {import("ajv").MultipleOfParams} */ (
-          params
-        );
+        const { multipleOf } = params;
 
-        return `${dataPath} should be multiple of ${multipleOf}${getSchemaNonTypes(
+        return `${instancePath} should be multiple of ${multipleOf}${getSchemaNonTypes(
           parentSchema
         )}.${this.getSchemaPartDescription(parentSchema)}`;
       }
       case "patternRequired": {
         const { params, parentSchema } = error;
-        const { missingPattern } =
-          /** @type {import("ajv").PatternRequiredParams} */ (params);
+        const { missingPattern } = params;
 
-        return `${dataPath} should have property matching pattern ${JSON.stringify(
+        return `${instancePath} should have property matching pattern ${JSON.stringify(
           missingPattern
         )}${getSchemaNonTypes(parentSchema)}.${this.getSchemaPartDescription(
           parentSchema
@@ -1030,17 +1059,17 @@ class ValidationError extends Error {
       }
       case "minLength": {
         const { params, parentSchema } = error;
-        const { limit } = /** @type {import("ajv").LimitParams} */ (params);
+        const { limit } = params;
 
         if (limit === 1) {
-          return `${dataPath} should be a non-empty string${getSchemaNonTypes(
+          return `${instancePath} should be a non-empty string${getSchemaNonTypes(
             parentSchema
           )}.${this.getSchemaPartDescription(parentSchema)}`;
         }
 
         const length = limit - 1;
 
-        return `${dataPath} should be longer than ${length} character${
+        return `${instancePath} should be longer than ${length} character${
           length > 1 ? "s" : ""
         }${getSchemaNonTypes(parentSchema)}.${this.getSchemaPartDescription(
           parentSchema
@@ -1048,39 +1077,39 @@ class ValidationError extends Error {
       }
       case "minItems": {
         const { params, parentSchema } = error;
-        const { limit } = /** @type {import("ajv").LimitParams} */ (params);
+        const { limit } = params;
 
         if (limit === 1) {
-          return `${dataPath} should be a non-empty array${getSchemaNonTypes(
+          return `${instancePath} should be a non-empty array${getSchemaNonTypes(
             parentSchema
           )}.${this.getSchemaPartDescription(parentSchema)}`;
         }
 
-        return `${dataPath} should not have fewer than ${limit} items${getSchemaNonTypes(
+        return `${instancePath} should not have fewer than ${limit} items${getSchemaNonTypes(
           parentSchema
         )}.${this.getSchemaPartDescription(parentSchema)}`;
       }
       case "minProperties": {
         const { params, parentSchema } = error;
-        const { limit } = /** @type {import("ajv").LimitParams} */ (params);
+        const { limit } = params;
 
         if (limit === 1) {
-          return `${dataPath} should be a non-empty object${getSchemaNonTypes(
+          return `${instancePath} should be a non-empty object${getSchemaNonTypes(
             parentSchema
           )}.${this.getSchemaPartDescription(parentSchema)}`;
         }
 
-        return `${dataPath} should not have fewer than ${limit} properties${getSchemaNonTypes(
+        return `${instancePath} should not have fewer than ${limit} properties${getSchemaNonTypes(
           parentSchema
         )}.${this.getSchemaPartDescription(parentSchema)}`;
       }
 
       case "maxLength": {
         const { params, parentSchema } = error;
-        const { limit } = /** @type {import("ajv").LimitParams} */ (params);
+        const { limit } = params;
         const max = limit + 1;
 
-        return `${dataPath} should be shorter than ${max} character${
+        return `${instancePath} should be shorter than ${max} character${
           max > 1 ? "s" : ""
         }${getSchemaNonTypes(parentSchema)}.${this.getSchemaPartDescription(
           parentSchema
@@ -1088,52 +1117,50 @@ class ValidationError extends Error {
       }
       case "maxItems": {
         const { params, parentSchema } = error;
-        const { limit } = /** @type {import("ajv").LimitParams} */ (params);
+        const { limit } = params;
 
-        return `${dataPath} should not have more than ${limit} items${getSchemaNonTypes(
+        return `${instancePath} should not have more than ${limit} items${getSchemaNonTypes(
           parentSchema
         )}.${this.getSchemaPartDescription(parentSchema)}`;
       }
       case "maxProperties": {
         const { params, parentSchema } = error;
-        const { limit } = /** @type {import("ajv").LimitParams} */ (params);
+        const { limit } = params;
 
-        return `${dataPath} should not have more than ${limit} properties${getSchemaNonTypes(
+        return `${instancePath} should not have more than ${limit} properties${getSchemaNonTypes(
           parentSchema
         )}.${this.getSchemaPartDescription(parentSchema)}`;
       }
       case "uniqueItems": {
         const { params, parentSchema } = error;
-        const { i } = /** @type {import("ajv").UniqueItemsParams} */ (params);
+        const { i } = params;
 
-        return `${dataPath} should not contain the item '${
-          error.data[i]
+        return `${instancePath} should not contain the item '${
+          /** @type {{ data: Array<any> }} **/
+          (error).data[i]
         }' twice${getSchemaNonTypes(
           parentSchema
         )}.${this.getSchemaPartDescription(parentSchema)}`;
       }
       case "additionalItems": {
         const { params, parentSchema } = error;
-        const { limit } = /** @type {import("ajv").LimitParams} */ (params);
+        const { limit } = params;
 
-        return `${dataPath} should not have more than ${limit} items${getSchemaNonTypes(
+        return `${instancePath} should not have more than ${limit} items${getSchemaNonTypes(
           parentSchema
         )}. These items are valid:\n${this.getSchemaPartText(parentSchema)}`;
       }
       case "contains": {
         const { parentSchema } = error;
 
-        return `${dataPath} should contains at least one ${this.getSchemaPartText(
+        return `${instancePath} should contains at least one ${this.getSchemaPartText(
           parentSchema,
           ["contains"]
         )} item${getSchemaNonTypes(parentSchema)}.`;
       }
       case "required": {
         const { parentSchema, params } = error;
-        const missingProperty =
-          /** @type {import("ajv").DependenciesParams} */ (
-            params
-          ).missingProperty.replace(/^\./, "");
+        const missingProperty = params.missingProperty.replace(/^\./, "");
         const hasProperty =
           parentSchema &&
           Boolean(
@@ -1143,7 +1170,7 @@ class ValidationError extends Error {
               (parentSchema).properties[missingProperty]
           );
 
-        return `${dataPath} misses the property '${missingProperty}'${getSchemaNonTypes(
+        return `${instancePath} misses the property '${missingProperty}'${getSchemaNonTypes(
           parentSchema
         )}.${
           hasProperty
@@ -1156,10 +1183,9 @@ class ValidationError extends Error {
       }
       case "additionalProperties": {
         const { params, parentSchema } = error;
-        const { additionalProperty } =
-          /** @type {import("ajv").AdditionalPropertiesParams} */ (params);
+        const { additionalProperty } = params;
 
-        return `${dataPath} has an unknown property '${additionalProperty}'${getSchemaNonTypes(
+        return `${instancePath} has an unknown property '${additionalProperty}'${getSchemaNonTypes(
           parentSchema
         )}. These properties are valid:\n${this.getSchemaPartText(
           parentSchema
@@ -1167,8 +1193,7 @@ class ValidationError extends Error {
       }
       case "dependencies": {
         const { params, parentSchema } = error;
-        const { property, deps } =
-          /** @type {import("ajv").DependenciesParams} */ (params);
+        const { property, deps } = params;
         const dependencies = deps
           .split(",")
           .map(
@@ -1180,16 +1205,15 @@ class ValidationError extends Error {
           )
           .join(", ");
 
-        return `${dataPath} should have properties ${dependencies} when property '${property}' is present${getSchemaNonTypes(
+        return `${instancePath} should have properties ${dependencies} when property '${property}' is present${getSchemaNonTypes(
           parentSchema
         )}.${this.getSchemaPartDescription(parentSchema)}`;
       }
       case "propertyNames": {
         const { params, parentSchema, schema } = error;
-        const { propertyName } =
-          /** @type {import("ajv").PropertyNamesParams} */ (params);
+        const { propertyName } = params;
 
-        return `${dataPath} property name '${propertyName}' is invalid${getSchemaNonTypes(
+        return `${instancePath} property name '${propertyName}' is invalid${getSchemaNonTypes(
           parentSchema
         )}. Property names should be match format ${JSON.stringify(
           schema.format
@@ -1205,21 +1229,21 @@ class ValidationError extends Error {
           /** @type {Schema} */
           (parentSchema).enum.length === 1
         ) {
-          return `${dataPath} should be ${this.getSchemaPartText(
+          return `${instancePath} should be ${this.getSchemaPartText(
             parentSchema,
             false,
             true
           )}`;
         }
 
-        return `${dataPath} should be one of these:\n${this.getSchemaPartText(
+        return `${instancePath} should be one of these:\n${this.getSchemaPartText(
           parentSchema
         )}`;
       }
       case "const": {
         const { parentSchema } = error;
 
-        return `${dataPath} should be equal to constant ${this.getSchemaPartText(
+        return `${instancePath} should be equal to constant ${this.getSchemaPartText(
           parentSchema,
           false,
           true
@@ -1237,12 +1261,12 @@ class ValidationError extends Error {
         );
 
         if (canApplyNot(error.schema)) {
-          return `${dataPath} should be any ${schemaOutput}${postfix}.`;
+          return `${instancePath} should be any ${schemaOutput}${postfix}.`;
         }
 
         const { schema, parentSchema } = error;
 
-        return `${dataPath} should not be ${this.getSchemaPartText(
+        return `${instancePath} should not be ${this.getSchemaPartText(
           schema,
           false,
           true
@@ -1281,7 +1305,7 @@ class ValidationError extends Error {
 
           filteredChildren = groupChildrenByFirstChild(filteredChildren);
 
-          return `${dataPath} should be one of these:\n${this.getSchemaPartText(
+          return `${instancePath} should be one of these:\n${this.getSchemaPartText(
             parentSchema
           )}\nDetails:\n${filteredChildren
             .map(
@@ -1295,17 +1319,15 @@ class ValidationError extends Error {
             .join("\n")}`;
         }
 
-        return `${dataPath} should be one of these:\n${this.getSchemaPartText(
+        return `${instancePath} should be one of these:\n${this.getSchemaPartText(
           parentSchema
         )}`;
       }
       case "if": {
         const { params, parentSchema } = error;
-        const { failingKeyword } = /** @type {import("ajv").IfParams} */ (
-          params
-        );
+        const { failingKeyword } = params;
 
-        return `${dataPath} should match "${failingKeyword}" schema:\n${this.getSchemaPartText(
+        return `${instancePath} should match "${failingKeyword}" schema:\n${this.getSchemaPartText(
           parentSchema,
           [failingKeyword]
         )}`;
@@ -1313,7 +1335,7 @@ class ValidationError extends Error {
       case "absolutePath": {
         const { message, parentSchema } = error;
 
-        return `${dataPath}: ${message}${this.getSchemaPartDescription(
+        return `${instancePath}: ${message}${this.getSchemaPartDescription(
           parentSchema
         )}`;
       }
@@ -1324,7 +1346,7 @@ class ValidationError extends Error {
 
         // For `custom`, `false schema`, `$ref` keywords
         // Fallback for unknown keywords
-        return `${dataPath} ${message} (${ErrorInJSON}).\n${this.getSchemaPartText(
+        return `${instancePath} ${message} (${ErrorInJSON}).\n${this.getSchemaPartText(
           parentSchema,
           false
         )}`;
