@@ -3,8 +3,9 @@ import addAbsolutePathKeyword from "./keywords/absolutePath";
 import ValidationError from "./ValidationError";
 
 // Use CommonJS require for ajv libs so TypeScript consumers aren't locked into esModuleInterop (see #110).
-const Ajv = require("ajv");
-const ajvKeywords = require("ajv-keywords");
+const Ajv = require("ajv").default;
+const ajvKeywords = require("ajv-keywords").default;
+const addFormats = require("ajv-formats").default;
 
 /** @typedef {import("json-schema").JSONSchema4} JSONSchema4 */
 /** @typedef {import("json-schema").JSONSchema6} JSONSchema6 */
@@ -13,10 +14,10 @@ const ajvKeywords = require("ajv-keywords");
 
 /**
  * @typedef {Object} Extend
- * @property {number=} formatMinimum
- * @property {number=} formatMaximum
- * @property {boolean=} formatExclusiveMinimum
- * @property {boolean=} formatExclusiveMaximum
+ * @property {string=} formatMinimum
+ * @property {string=} formatMaximum
+ * @property {string=} formatExclusiveMinimum
+ * @property {string=} formatExclusiveMaximum
  * @property {string=} link
  */
 
@@ -38,18 +39,19 @@ const ajvKeywords = require("ajv-keywords");
  * @property {PostFormatter=} postFormatter
  */
 
+/**
+ * @type {Ajv}
+ */
 const ajv = new Ajv({
+  strict: false,
   allErrors: true,
   verbose: true,
   $data: true,
 });
 
-ajvKeywords(ajv, [
-  "instanceof",
-  "formatMinimum",
-  "formatMaximum",
-  "patternRequired",
-]);
+ajvKeywords(ajv, ["instanceof", "patternRequired"]);
+
+addFormats(ajv, { keywords: true });
 
 // Custom keywords
 addAbsolutePathKeyword(ajv);
@@ -75,7 +77,7 @@ function validate(schema, options, configuration) {
          */
         (error) => {
           // eslint-disable-next-line no-param-reassign
-          error.dataPath = `[${idx}]${error.dataPath}`;
+          error.instancePath = `[${idx}]${error.instancePath}`;
 
           if (error.children) {
             error.children.forEach(applyPrefix);
@@ -121,12 +123,12 @@ function filterErrors(errors) {
   let newErrors = [];
 
   for (const error of /** @type {Array<SchemaUtilErrorObject>} */ (errors)) {
-    const { dataPath } = error;
+    const { instancePath } = error;
     /** @type {Array<SchemaUtilErrorObject>} */
     let children = [];
 
     newErrors = newErrors.filter((oldError) => {
-      if (oldError.dataPath.includes(dataPath)) {
+      if (oldError.instancePath.includes(instancePath)) {
         if (oldError.children) {
           children = children.concat(oldError.children.slice(0));
         }

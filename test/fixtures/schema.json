@@ -2516,24 +2516,24 @@
     "formatExclusiveMinimumKeyword": {
       "format": "date",
       "formatMinimum": "2016-02-06",
-      "formatExclusiveMinimum": true
+      "formatExclusiveMinimum": "2016-02-06"
     },
     "formatExclusiveMaximumKeyword": {
       "format": "date",
       "formatMaximum": "2016-02-06",
-      "formatExclusiveMaximum": true
+      "formatExclusiveMaximum": "2016-02-06"
     },
     "formatMinMaxExclusiveMinKeyword": {
       "format": "date",
       "formatMinimum": "2016-02-06",
       "formatMaximum": "2016-12-27",
-      "formatExclusiveMinimum": true
+      "formatExclusiveMinimum": "2016-12-27"
     },
     "formatMinMaxExclusiveMaxKeyword": {
       "format": "date",
       "formatMinimum": "2016-02-06",
       "formatMaximum": "2016-12-27",
-      "formatExclusiveMaximum": true
+      "formatExclusiveMaximum": "2016-12-27"
     },
     "minItemsKeyword": {
       "minItems": 2
@@ -3015,13 +3015,13 @@
       "type": "string",
       "format": "date",
       "formatMaximum": "2016-02-06",
-      "formatExclusiveMaximum": true
+      "formatExclusiveMaximum": "2016-02-06"
     },
     "strictFormat2": {
       "type": "string",
       "format": "date",
       "formatMinimum": "2016-02-06",
-      "formatExclusiveMinimum": true
+      "formatExclusiveMinimum": "2016-02-06"
     },
     "uniqueItemsProp": {
       "type": "array",
@@ -3613,13 +3613,13 @@
     "noTypeLikeStringFormatMaximum": {
       "format": "date",
       "formatMaximum": "2016-02-06",
-      "formatExclusiveMaximum": true
+      "formatExclusiveMaximum": "2016-02-06"
     },
     "stringWithFormatMaximum": {
       "type": "string",
       "format": "date",
       "formatMaximum": "2016-02-06",
-      "formatExclusiveMaximum": true
+      "formatExclusiveMaximum": "2016-02-06"
     },
     "multipleInstanceof": {
       "instanceof": ["Array", "Function"]
@@ -3786,6 +3786,11 @@
     "emptyString2": {
       "maxLength": 0,
       "type": "string"
+    },
+    "formatExclusiveMaximum": {
+      "format": "date",
+      "formatMinimum": "2016-02-06",
+      "formatExclusiveMaximum": "2016-12-27"
     }
   }
 }

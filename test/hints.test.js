@@ -33,20 +33,11 @@ const testCases = [
   [
     {
       format: "date",
-      formatMinimum: "01.01.1970",
       formatMaximum: "01.01.2022",
-      formatExclusiveMaximum: true,
+      formatExclusiveMaximum: "01.01.2022",
     },
-    [
-      'should match format "date"',
-      'should be >= "01.01.1970"',
-      'should be < "01.01.2022"',
-    ],
-    [
-      'should not match format "date"',
-      'should be < "01.01.1970"',
-      'should be >= "01.01.2022"',
-    ],
+    ['should match format "date"', 'should be < "01.01.2022"'],
+    ['should not match format "date"', 'should be >= "01.01.2022"'],
   ],
 ];
 

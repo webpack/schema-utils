@@ -45,9 +45,10 @@
     "declarations"
   ],
   "dependencies": {
-    "@types/json-schema": "^7.0.8",
-    "ajv": "^6.12.5",
-    "ajv-keywords": "^3.5.2"
+    "@types/json-schema": "^7.0.9",
+    "ajv": "^8.8.0",
+    "ajv-keywords": "^5.0.0",
+    "ajv-formats": "^2.1.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.0",

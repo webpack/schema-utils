@@ -15,15 +15,11 @@ module.exports.stringHints = function stringHints(schema, logic) {
   if (!logic) {
     const tmpLength = currentSchema.minLength;
     const tmpFormat = currentSchema.formatMinimum;
-    const tmpExclusive = currentSchema.formatExclusiveMaximum;
 
     currentSchema.minLength = currentSchema.maxLength;
     currentSchema.maxLength = tmpLength;
     currentSchema.formatMinimum = currentSchema.formatMaximum;
     currentSchema.formatMaximum = tmpFormat;
-    currentSchema.formatExclusiveMaximum =
-      !currentSchema.formatExclusiveMinimum;
-    currentSchema.formatExclusiveMinimum = !tmpExclusive;
   }
 
   if (typeof currentSchema.minLength === "number") {

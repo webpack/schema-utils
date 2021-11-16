@@ -462,7 +462,7 @@ describe("Validation", () => {
           error.children.some(
             (child) =>
               child.keyword === "absolutePath" &&
-              child.dataPath === ".output.filename"
+              child.instancePath === "/output/filename"
           )
         ) {
           return (
@@ -2970,5 +2970,21 @@ describe("Validation", () => {
     { mode: "development" },
     {},
     webpackSchema
+  );
+
+  createFailedTestCase(
+    "formatExclusiveMaximum #1",
+    {
+      formatExclusiveMaximum: "2016-02-05",
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    "formatExclusiveMaximum #2",
+    {
+      formatExclusiveMaximum: "2016-12-27",
+    },
+    (msg) => expect(msg).toMatchSnapshot()
   );
 });
