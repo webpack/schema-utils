@@ -932,7 +932,6 @@ class ValidationError extends Error {
       case "type": {
         const { parentSchema, params } = error;
 
-        // eslint-disable-next-line default-case
         switch (params.type) {
           case "number":
             return `${instancePath} should be a ${this.getSchemaPartText(
