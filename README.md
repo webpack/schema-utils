@@ -11,7 +11,6 @@
 
 [![npm][npm]][npm-url]
 [![node][node]][node-url]
-[![deps][deps]][deps-url]
 [![tests][tests]][tests-url]
 [![coverage][cover]][cover-url]
 [![chat][chat]][chat-url]
@@ -278,8 +277,6 @@ Please take a moment to read our contributing guidelines if you haven't yet done
 [npm-url]: https://npmjs.com/package/schema-utils
 [node]: https://img.shields.io/node/v/schema-utils.svg
 [node-url]: https://nodejs.org
-[deps]: https://david-dm.org/webpack/schema-utils.svg
-[deps-url]: https://david-dm.org/webpack/schema-utils
 [tests]: https://github.com/webpack/schema-utils/workflows/schema-utils/badge.svg
 [tests-url]: https://github.com/webpack/schema-utils/actions
 [cover]: https://codecov.io/gh/webpack/schema-utils/branch/master/graph/badge.svg
