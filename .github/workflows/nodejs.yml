@@ -24,6 +24,10 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
+    concurrency:
+      group: lint-${{ matrix.os }}-v${{ matrix.node-version }}-${{ github.ref }}
+      cancel-in-progress: true
+
     steps:
       - uses: actions/checkout@v3
         with:
@@ -62,6 +66,10 @@ jobs:
         node-version: [12.x, 14.x, 16.x, 18.x]
 
     runs-on: ${{ matrix.os }}
+
+    concurrency:
+      group: test-${{ matrix.os }}-v${{ matrix.node-version }}-${{ github.ref }}
+      cancel-in-progress: true
 
     steps:
       - name: Setup Git
