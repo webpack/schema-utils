@@ -2,9 +2,56 @@ import addAbsolutePathKeyword from "./keywords/absolutePath";
 
 import ValidationError from "./ValidationError";
 
-// Use CommonJS require for ajv libs so TypeScript consumers aren't locked into esModuleInterop (see #110).
-const Ajv = require("ajv");
-const ajvKeywords = require("ajv-keywords");
+/**
+ * @template T
+ * @param fn {(function(): any) | undefined}
+ * @returns {function(): T}
+ */
+const memoize = (fn) => {
+  let cache = false;
+  /** @type {T} */
+  let result;
+
+  return () => {
+    if (cache) {
+      return result;
+    }
+    result = /** @type {function(): any} */ (fn)();
+    cache = true;
+    // Allow to clean up memory for fn
+    // and all dependent resources
+    // eslint-disable-next-line no-undefined, no-param-reassign
+    fn = undefined;
+
+    return result;
+  };
+};
+
+
+const getAjv = memoize(() => {
+  // Use CommonJS require for ajv libs so TypeScript consumers aren't locked into esModuleInterop (see #110).
+  const Ajv = require("ajv");
+  const ajvKeywords = require("ajv-keywords");
+
+  const ajv = new Ajv({
+    allErrors: true,
+    verbose: true,
+    $data: true,
+  });
+
+  ajvKeywords(ajv, [
+    "instanceof",
+    "formatMinimum",
+    "formatMaximum",
+    "patternRequired",
+  ]);
+
+// Custom keywords
+  addAbsolutePathKeyword(ajv);
+
+  return ajv;
+});
+
 
 /** @typedef {import("json-schema").JSONSchema4} JSONSchema4 */
 /** @typedef {import("json-schema").JSONSchema6} JSONSchema6 */
@@ -37,22 +84,6 @@ const ajvKeywords = require("ajv-keywords");
  * @property {string=} baseDataPath
  * @property {PostFormatter=} postFormatter
  */
-
-const ajv = new Ajv({
-  allErrors: true,
-  verbose: true,
-  $data: true,
-});
-
-ajvKeywords(ajv, [
-  "instanceof",
-  "formatMinimum",
-  "formatMaximum",
-  "patternRequired",
-]);
-
-// Custom keywords
-addAbsolutePathKeyword(ajv);
 
 /**
  * @param {Schema} schema
@@ -104,7 +135,7 @@ function validate(schema, options, configuration) {
  * @returns {Array<SchemaUtilErrorObject>}
  */
 function validateObject(schema, options) {
-  const compiledSchema = ajv.compile(schema);
+  const compiledSchema = getAjv().compile(schema);
   const valid = compiledSchema(options);
 
   if (valid) return [];
