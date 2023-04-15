@@ -2,13 +2,13 @@
 
 exports[`Validation should fail validation for ! in path 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.output.path: The provided value \\"/somepath/!test\\" contains exclamation mark (!) which is not allowed because it's reserved for loader syntax.
+ - configuration.output.path: The provided value "/somepath/!test" contains exclamation mark (!) which is not allowed because it's reserved for loader syntax.
    -> The output directory as **absolute path** (required)."
 `;
 
 exports[`Validation should fail validation for $data #2 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.dollarData2.date-time should match format \\"date-time\\"."
+ - configuration.dollarData2.date-time should match format "date-time"."
 `;
 
 exports[`Validation should fail validation for $data 1`] = `
@@ -38,33 +38,33 @@ exports[`Validation should fail validation for Invalid plugin provided: object w
 
 exports[`Validation should fail validation for absolute path #1 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.testAbsolutePath: The provided value \\"bar\\\\\\\\\\\\\\\\baz\\" is not an absolute path!"
+ - configuration.testAbsolutePath: The provided value "bar\\\\\\\\baz" is not an absolute path!"
 `;
 
 exports[`Validation should fail validation for absolute path #2 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.testAbsolutePath: The provided value \\"bar/baz\\" is not an absolute path!"
+ - configuration.testAbsolutePath: The provided value "bar/baz" is not an absolute path!"
 `;
 
 exports[`Validation should fail validation for absolute path #3 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.testAbsolutePath: The provided value \\".\\" is not an absolute path!"
+ - configuration.testAbsolutePath: The provided value "." is not an absolute path!"
 `;
 
 exports[`Validation should fail validation for absolute path #4 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.testAbsolutePath: The provided value \\"..\\" is not an absolute path!"
+ - configuration.testAbsolutePath: The provided value ".." is not an absolute path!"
 `;
 
 exports[`Validation should fail validation for absolute path 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.context: The provided value \\"baz\\" is not an absolute path!
+ - configuration.context: The provided value "baz" is not an absolute path!
    -> The base directory (absolute path!) for resolving the \`entry\` option. If \`output.pathinfo\` is set, the included pathinfo is shortened to this directory."
 `;
 
 exports[`Validation should fail validation for absolute path 2`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.testAbsolutePath: The provided value \\"bar\\" is not an absolute path!"
+ - configuration.testAbsolutePath: The provided value "bar" is not an absolute path!"
 `;
 
 exports[`Validation should fail validation for additional key on root 1`] = `
@@ -103,13 +103,13 @@ exports[`Validation should fail validation for additionalItems with false 1`] = 
 exports[`Validation should fail validation for additionalProperties #2 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.additionalPropertiesKeyword has an unknown property 'baz' | should be any non-object. These properties are valid:
-   object { foo? } (additional property names should match pattern \\"^.*r$\\")"
+   object { foo? } (additional property names should match pattern "^.*r$")"
 `;
 
 exports[`Validation should fail validation for additionalProperties #3 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.additionalPropertiesKeyword has an unknown property 'baz' | should be any non-object. These properties are valid:
-   object { foo? } (additional property names should match pattern \\"^.*r$\\")
+   object { foo? } (additional property names should match pattern "^.*r$")
  - configuration.additionalPropertiesKeyword.foo should be a number."
 `;
 
@@ -131,7 +131,7 @@ exports[`Validation should fail validation for additionalProperties #6 1`] = `
 exports[`Validation should fail validation for additionalProperties 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.additionalPropertiesKeyword has an unknown property 'a' | should be any non-object. These properties are valid:
-   object { foo? } (additional property names should match pattern \\"^.*r$\\")"
+   object { foo? } (additional property names should match pattern "^.*r$")"
 `;
 
 exports[`Validation should fail validation for additionalProperties inside oneOf #2 1`] = `
@@ -312,7 +312,7 @@ exports[`Validation should fail validation for array #16 1`] = `
 exports[`Validation should fail validation for array #17 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.arrayKeyword11 should be an array:
-   [number, string, \\"Street\\" | \\"Avenue\\" | \\"Boulevard\\", \\"NW\\" | \\"NE\\" | \\"SW\\" | \\"SE\\", ...]"
+   [number, string, "Street" | "Avenue" | "Boulevard", "NW" | "NE" | "SW" | "SE", ...]"
 `;
 
 exports[`Validation should fail validation for array #18 1`] = `
@@ -497,28 +497,28 @@ exports[`Validation should fail validation for const with array notation 1`] = `
 
 exports[`Validation should fail validation for const with description 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.constWithDescription should be equal to constant \\"foo\\".
+ - configuration.constWithDescription should be equal to constant "foo".
    -> Foo and Bar description."
 `;
 
 exports[`Validation should fail validation for const with empty string 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.constWithEmptyString should be equal to constant [\\"foo\\",\\"\\",2]."
+ - configuration.constWithEmptyString should be equal to constant ["foo","",2]."
 `;
 
 exports[`Validation should fail validation for const with object notation 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.constWithObjectNotation should be equal to constant {\\"foo\\":\\"bar\\",\\"baz\\":123}."
+ - configuration.constWithObjectNotation should be equal to constant {"foo":"bar","baz":123}."
 `;
 
 exports[`Validation should fail validation for constKeyword #2 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.constKeyword2 should be equal to constant [\\"foo\\",\\"bar\\"]."
+ - configuration.constKeyword2 should be equal to constant ["foo","bar"]."
 `;
 
 exports[`Validation should fail validation for constKeyword 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.constKeyword should be equal to constant \\"foo\\"."
+ - configuration.constKeyword should be equal to constant "foo"."
 `;
 
 exports[`Validation should fail validation for contains #1 1`] = `
@@ -584,7 +584,7 @@ exports[`Validation should fail validation for dependencies without object type 
 
 exports[`Validation should fail validation for empty const 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.emptyConst should be equal to constant \\"\\"."
+ - configuration.emptyConst should be equal to constant ""."
 `;
 
 exports[`Validation should fail validation for empty entry bundle array 1`] = `
@@ -635,7 +635,7 @@ exports[`Validation should fail validation for enum 1`] = `
 exports[`Validation should fail validation for enum 2`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.enumKeyword should be one of these:
-   2 | \\"foo\\" | {\\"foo\\":\\"bar\\"} | [1,2,3]"
+   2 | "foo" | {"foo":"bar"} | [1,2,3]"
 `;
 
 exports[`Validation should fail validation for enum nested 1`] = `
@@ -667,82 +667,82 @@ exports[`Validation should fail validation for exclusiveMinimum 1`] = `
 exports[`Validation should fail validation for extending 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.extending.shipping_address misses the property 'type' | should be any non-object. Should be:
-   \\"residential\\" | \\"business\\""
+   "residential" | "business""
 `;
 
 exports[`Validation should fail validation for format 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.customObject.formatKeyword should match format \\"ipv4\\" | should be any non-string."
+ - configuration.customObject.formatKeyword should match format "ipv4" | should be any non-string."
 `;
 
 exports[`Validation should fail validation for format and formatMinimum and formatMaximum and formatExclusiveMaximum 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.formatMinMaxExclusiveMinKeyword should be > \\"2016-12-27\\" | should be any non-string."
+ - configuration.formatMinMaxExclusiveMinKeyword should be > "2016-12-27" | should be any non-string."
 `;
 
 exports[`Validation should fail validation for format and formatMinimum and formatMaximum and formatExclusiveMaximum 2`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.formatMinMaxExclusiveMaxKeyword should be >= \\"2016-02-06\\" | should be any non-string."
+ - configuration.formatMinMaxExclusiveMaxKeyword should be >= "2016-02-06" | should be any non-string."
 `;
 
 exports[`Validation should fail validation for format with type string 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.stringWithFormat should match format \\"date\\"."
+ - configuration.stringWithFormat should match format "date"."
 `;
 
 exports[`Validation should fail validation for format, formatMaximum and formatExclusiveMaximum #2 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.strictFormat should be < \\"2016-02-06\\"."
+ - configuration.strictFormat should be < "2016-02-06"."
 `;
 
 exports[`Validation should fail validation for format, formatMaximum and formatExclusiveMaximum 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.strictFormat should be a string (should match format \\"date\\", should be < \\"2016-02-06\\")."
+ - configuration.strictFormat should be a string (should match format "date", should be < "2016-02-06")."
 `;
 
 exports[`Validation should fail validation for format, formatMinimum and formatExclusiveMinimum #2 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.strictFormat2 should be > \\"2016-02-06\\"."
+ - configuration.strictFormat2 should be > "2016-02-06"."
 `;
 
 exports[`Validation should fail validation for format, formatMinimum and formatExclusiveMinimum 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.strictFormat2 should be a string (should match format \\"date\\", should be > \\"2016-02-06\\")."
+ - configuration.strictFormat2 should be a string (should match format "date", should be > "2016-02-06")."
 `;
 
 exports[`Validation should fail validation for formatExclusiveMaximum #1 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.formatExclusiveMaximum should be >= \\"2016-02-06\\" | should be any non-string."
+ - configuration.formatExclusiveMaximum should be >= "2016-02-06" | should be any non-string."
 `;
 
 exports[`Validation should fail validation for formatExclusiveMaximum #2 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.formatExclusiveMaximum should be < \\"2016-12-27\\" | should be any non-string."
+ - configuration.formatExclusiveMaximum should be < "2016-12-27" | should be any non-string."
 `;
 
 exports[`Validation should fail validation for formatExclusiveMaximum 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.formatExclusiveMaximumKeyword should be < \\"2016-02-06\\" | should be any non-string."
+ - configuration.formatExclusiveMaximumKeyword should be < "2016-02-06" | should be any non-string."
 `;
 
 exports[`Validation should fail validation for formatExclusiveMinimum 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.formatExclusiveMinimumKeyword should be > \\"2016-02-06\\" | should be any non-string."
+ - configuration.formatExclusiveMinimumKeyword should be > "2016-02-06" | should be any non-string."
 `;
 
 exports[`Validation should fail validation for formatMaximum 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.formatMaximumKeyword should be <= \\"2016-02-06\\" | should be any non-string."
+ - configuration.formatMaximumKeyword should be <= "2016-02-06" | should be any non-string."
 `;
 
 exports[`Validation should fail validation for formatMaximum with type string 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.stringWithFormatMaximum should be < \\"2016-02-06\\"."
+ - configuration.stringWithFormatMaximum should be < "2016-02-06"."
 `;
 
 exports[`Validation should fail validation for formatMinimum 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.formatMinimumKeyword should be >= \\"2016-02-06\\" | should be any non-string."
+ - configuration.formatMinimumKeyword should be >= "2016-02-06" | should be any non-string."
 `;
 
 exports[`Validation should fail validation for holey array 1`] = `
@@ -753,19 +753,19 @@ exports[`Validation should fail validation for holey array 1`] = `
 
 exports[`Validation should fail validation for if/then/else #2 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.ifThenElseKeyword should match \\"then\\" schema:
+ - configuration.ifThenElseKeyword should match "then" schema:
    object { disbelief, … }"
 `;
 
 exports[`Validation should fail validation for if/then/else #3 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.ifThenElseKeyword should match \\"else\\" schema:
+ - configuration.ifThenElseKeyword should match "else" schema:
    object { confidence, … } (should not have fewer than 3 properties)"
 `;
 
 exports[`Validation should fail validation for if/then/else #4 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.ifThenElseKeyword2 should match \\"else\\" schema:
+ - configuration.ifThenElseKeyword2 should match "else" schema:
    if number (should be >= 10) then number (should be multiple of 10)"
 `;
 
@@ -781,7 +781,7 @@ exports[`Validation should fail validation for if/then/else #6 1`] = `
 
 exports[`Validation should fail validation for if/then/else 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.ifThenElseKeyword should match \\"then\\" schema:
+ - configuration.ifThenElseKeyword should match "then" schema:
    object { disbelief, … }"
 `;
 
@@ -869,7 +869,7 @@ exports[`Validation should fail validation for invalid minimum 1`] = `
 exports[`Validation should fail validation for invalid mode 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.mode should be one of these:
-   \\"development\\" | \\"production\\" | \\"none\\"
+   "development" | "production" | "none"
    -> Enable production optimizations or development hints."
 `;
 
@@ -1204,7 +1204,7 @@ exports[`Validation should fail validation for no type like number with multiple
 exports[`Validation should fail validation for no type like object additionalProperties 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.noTypeLikeObjectAdditionalProperties has an unknown property 'baz' | should be any non-object. These properties are valid:
-   object { foo? } (additional property names should match pattern \\"^.*r$\\")"
+   object { foo? } (additional property names should match pattern "^.*r$")"
 `;
 
 exports[`Validation should fail validation for no type like object dependencies 1`] = `
@@ -1214,7 +1214,7 @@ exports[`Validation should fail validation for no type like object dependencies 
 
 exports[`Validation should fail validation for no type like object propertyNames 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.noTypeLikeObjectPropertyNames property name 'foo' is invalid | should be any non-object. Property names should be match format \\"email\\"."
+ - configuration.noTypeLikeObjectPropertyNames property name 'foo' is invalid | should be any non-object. Property names should be match format "email"."
 `;
 
 exports[`Validation should fail validation for no type like object required 1`] = `
@@ -1234,17 +1234,17 @@ exports[`Validation should fail validation for no type like object with maxPrope
 
 exports[`Validation should fail validation for no type like object with patternRequired 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.noTypeLikeObjectPatternRequired should have property matching pattern \\"f.*o\\" | should be any non-object."
+ - configuration.noTypeLikeObjectPatternRequired should have property matching pattern "f.*o" | should be any non-object."
 `;
 
 exports[`Validation should fail validation for no type like string with format 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.noTypeLikeStringFormat should match format \\"date\\" | should be any non-string."
+ - configuration.noTypeLikeStringFormat should match format "date" | should be any non-string."
 `;
 
 exports[`Validation should fail validation for no type like string with formatMaximum 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.noTypeLikeStringFormatMaximum should be < \\"2016-02-06\\" | should be any non-string."
+ - configuration.noTypeLikeStringFormatMaximum should be < "2016-02-06" | should be any non-string."
 `;
 
 exports[`Validation should fail validation for no type like string with maxLength 1`] = `
@@ -1264,7 +1264,7 @@ exports[`Validation should fail validation for no type like string with minLengt
 
 exports[`Validation should fail validation for no type like string with pattern 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.noTypeLikeStringPattern should match pattern \\"[abc]+\\" | should be any non-string."
+ - configuration.noTypeLikeStringPattern should match pattern "[abc]+" | should be any non-string."
 `;
 
 exports[`Validation should fail validation for non empty object #2 1`] = `
@@ -1303,7 +1303,7 @@ exports[`Validation should fail validation for not boolean 1`] = `
 
 exports[`Validation should fail validation for not const 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.notConst should not be \\"foo\\"."
+ - configuration.notConst should not be "foo"."
 `;
 
 exports[`Validation should fail validation for not empty string #1 1`] = `
@@ -1318,7 +1318,7 @@ exports[`Validation should fail validation for not empty string #2 1`] = `
 
 exports[`Validation should fail validation for not enum 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.notEnum should not be 2 | \\"foo\\" | {\\"foo\\":\\"bar\\"} | [1,2,3]."
+ - configuration.notEnum should not be 2 | "foo" | {"foo":"bar"} | [1,2,3]."
 `;
 
 exports[`Validation should fail validation for not integer 1`] = `
@@ -1404,7 +1404,7 @@ exports[`Validation should fail validation for object #3 1`] = `
 exports[`Validation should fail validation for object #4 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.objectTest4 should be an object:
-   object { fao, fbo, c, … } (should have property matching pattern \\"f.*o\\")"
+   object { fao, fbo, c, … } (should have property matching pattern "f.*o")"
 `;
 
 exports[`Validation should fail validation for object #5 1`] = `
@@ -1421,13 +1421,13 @@ exports[`Validation should fail validation for object #6 1`] = `
 exports[`Validation should fail validation for object #7 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.objectTest5 should be an object:
-   object { foo@bar.com, <key>: string } (each property name should match format \\"email\\")"
+   object { foo@bar.com, <key>: string } (each property name should match format "email")"
 `;
 
 exports[`Validation should fail validation for object #8 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.objectTest6 should be an object:
-   object { foo, … } (additional property names should match patterns \\"^fo.*$\\" | \\"^ba.*$\\")"
+   object { foo, … } (additional property names should match patterns "^fo.*$" | "^ba.*$")"
 `;
 
 exports[`Validation should fail validation for object #9 1`] = `
@@ -1468,7 +1468,7 @@ exports[`Validation should fail validation for object 1`] = `
 
 exports[`Validation should fail validation for object dependencies 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.objectPropertyNames property name 'foo' is invalid. Property names should be match format \\"email\\"."
+ - configuration.objectPropertyNames property name 'foo' is invalid. Property names should be match format "email"."
 `;
 
 exports[`Validation should fail validation for object dependencies 2`] = `
@@ -1540,7 +1540,7 @@ exports[`Validation should fail validation for object without items 1`] = `
 
 exports[`Validation should fail validation for one const 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.oneConst should be equal to constant [\\"foo\\"]."
+ - configuration.oneConst should be equal to constant ["foo"]."
 `;
 
 exports[`Validation should fail validation for oneOf #1 1`] = `
@@ -1564,7 +1564,7 @@ exports[`Validation should fail validation for oneOf #1 1`] = `
 exports[`Validation should fail validation for oneOf #2 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.optimization.runtimeChunk should be one of these:
-   boolean | \\"single\\" | \\"multiple\\" | empty string | object { name? }
+   boolean | "single" | "multiple" | empty string | object { name? }
    -> Create an additional chunk which contains only the webpack runtime and chunk hash maps
    Details:
     * configuration.optimization.runtimeChunk.name should be one of these:
@@ -1578,12 +1578,12 @@ exports[`Validation should fail validation for oneOf #2 1`] = `
 exports[`Validation should fail validation for oneOf #3 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.optimization.runtimeChunk should be one of these:
-   boolean | \\"single\\" | \\"multiple\\" | empty string | object { name? }
+   boolean | "single" | "multiple" | empty string | object { name? }
    -> Create an additional chunk which contains only the webpack runtime and chunk hash maps
    Details:
     * configuration.optimization.runtimeChunk should be a boolean.
     * configuration.optimization.runtimeChunk should be one of these:
-      \\"single\\" | \\"multiple\\"
+      "single" | "multiple"
     * configuration.optimization.runtimeChunk should be a empty string.
     * configuration.optimization.runtimeChunk should be an object:
       object { name? }"
@@ -1645,12 +1645,12 @@ exports[`Validation should fail validation for only required 1`] = `
 
 exports[`Validation should fail validation for pattern 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.customObject.patternKeyword should match pattern \\"[abc]+\\" | should be any non-string."
+ - configuration.customObject.patternKeyword should match pattern "[abc]+" | should be any non-string."
 `;
 
 exports[`Validation should fail validation for pattern with type string 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.patternWithStringType should match pattern \\"[abc]+\\"."
+ - configuration.patternWithStringType should match pattern "[abc]+"."
 `;
 
 exports[`Validation should fail validation for patternProperties #1 1`] = `
@@ -1665,23 +1665,23 @@ exports[`Validation should fail validation for patternProperties 1`] = `
 
 exports[`Validation should fail validation for patternRequired #2 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.patternRequiredKeyword2 should have property matching pattern \\"b.*r\\" | should be any non-object."
+ - configuration.patternRequiredKeyword2 should have property matching pattern "b.*r" | should be any non-object."
 `;
 
 exports[`Validation should fail validation for patternRequired 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.patternRequiredKeyword should have property matching pattern \\"f.*o\\" | should be any non-object."
+ - configuration.patternRequiredKeyword should have property matching pattern "f.*o" | should be any non-object."
 `;
 
 exports[`Validation should fail validation for patternRequired with type object 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.objectWithPatternRequired should have property matching pattern \\"f.*o\\"."
+ - configuration.objectWithPatternRequired should have property matching pattern "f.*o"."
 `;
 
 exports[`Validation should fail validation for patternRequired without object type 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.patternRequiredWithoutType has an unknown property 'boo' | should be any non-object. These properties are valid:
-   object {} (should have property matching pattern \\"b.*o\\")"
+   object {} (should have property matching pattern "b.*o")"
 `;
 
 exports[`Validation should fail validation for postFormatter #1 1`] = `
@@ -1694,7 +1694,7 @@ exports[`Validation should fail validation for postFormatter #1 1`] = `
      Until loaders are updated one can use the LoaderOptionsPlugin to pass these options to the loader:
      plugins: [
        new webpack.LoaderOptionsPlugin({
-         // test: /\\\\.xxx$/, // may apply this only for some modules
+         // test: /\\.xxx$/, // may apply this only for some modules
          options: {
            minify: …
          }
@@ -1704,7 +1704,7 @@ exports[`Validation should fail validation for postFormatter #1 1`] = `
 
 exports[`Validation should fail validation for postFormatter #2 1`] = `
 "Invalid configuration object. Webpack has been initialized using a configuration object that does not match the API schema.
- - configuration.output.filename: A relative path is expected. However, the provided value \\"/bar\\" is an absolute path!
+ - configuration.output.filename: A relative path is expected. However, the provided value "/bar" is an absolute path!
    Please use output.path to specify absolute path and output.filename for the file name."
 `;
 
@@ -1729,14 +1729,14 @@ exports[`Validation should fail validation for properties 1`] = `
 
 exports[`Validation should fail validation for propertyNames 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.propertyNamesKeyword property name 'foo' is invalid | should be any non-object. Property names should be match format \\"email\\".
+ - configuration.propertyNamesKeyword property name 'foo' is invalid | should be any non-object. Property names should be match format "email".
    -> Description"
 `;
 
 exports[`Validation should fail validation for propertyNames without object type 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.propertyNamesWithoutType has an unknown property 'foo' | should be any non-object. These properties are valid:
-   object {} (each property name should match format \\"email\\")"
+   object {} (each property name should match format "email")"
 `;
 
 exports[`Validation should fail validation for recursion 1`] = `
@@ -1753,7 +1753,7 @@ exports[`Validation should fail validation for ref inside object inside allOf 1`
 
 exports[`Validation should fail validation for relative path 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.output.filename: A relative path is expected. However, the provided value \\"/bar\\" is an absolute path!"
+ - configuration.output.filename: A relative path is expected. However, the provided value "/bar" is an absolute path!"
 `;
 
 exports[`Validation should fail validation for repeated value 1`] = `
@@ -1796,7 +1796,7 @@ exports[`Validation should fail validation for single item in contains 1`] = `
 
 exports[`Validation should fail validation for string #1 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.stringKeyword should match format \\"date\\"."
+ - configuration.stringKeyword should match format "date"."
 `;
 
 exports[`Validation should fail validation for string 1`] = `
@@ -1811,19 +1811,19 @@ exports[`Validation should fail validation for string with empty pattern 1`] = `
 
 exports[`Validation should fail validation for string with link 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.stringKeywordWithLink should match format \\"date\\".
+ - configuration.stringKeywordWithLink should match format "date".
    -> Description
    -> Read more at https://webpack.js.org/configuration/link/"
 `;
 
 exports[`Validation should fail validation for string with minLength and maxLength 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.stringWithMinAndMaxLength should match pattern \\"[bc]+\\"."
+ - configuration.stringWithMinAndMaxLength should match pattern "[bc]+"."
 `;
 
 exports[`Validation should fail validation for string with minLength, maxLength and pattern 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.stringWithMinAndMaxLength should be a string (should be longer than 1 character, should be shorter than 6 characters, should match pattern \\"[bc]+\\")."
+ - configuration.stringWithMinAndMaxLength should be a string (should be longer than 1 character, should be shorter than 6 characters, should match pattern "[bc]+")."
 `;
 
 exports[`Validation should fail validation for terser-webpack-plugin name 1`] = `
