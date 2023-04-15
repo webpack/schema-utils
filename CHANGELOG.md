@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.2](https://github.com/webpack/schema-utils/compare/v3.1.1...v3.1.2) (2023-04-15)
+
+
+### Bug Fixes
+
+* **perf:** reduced initial start time ([#170](https://github.com/webpack/schema-utils/issues/170)) ([8d052e6](https://github.com/webpack/schema-utils/commit/8d052e6764dc9247e7d5b7b1ae8f87ca5047b2b0))
+
 ### [3.1.1](https://github.com/webpack/schema-utils/compare/v3.1.0...v3.1.1) (2021-07-19)
 
 
