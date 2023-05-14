@@ -13,7 +13,7 @@
 [![node][node]][node-url]
 [![tests][tests]][tests-url]
 [![coverage][cover]][cover-url]
-[![chat][chat]][chat-url]
+[![GitHub Discussions][discussion]][discussion-url]
 [![size][size]][size-url]
 
 # schema-utils
@@ -281,7 +281,7 @@ Please take a moment to read our contributing guidelines if you haven't yet done
 [tests-url]: https://github.com/webpack/schema-utils/actions
 [cover]: https://codecov.io/gh/webpack/schema-utils/branch/master/graph/badge.svg
 [cover-url]: https://codecov.io/gh/webpack/schema-utils
-[chat]: https://badges.gitter.im/webpack/webpack.svg
-[chat-url]: https://gitter.im/webpack/webpack
+[discussion]: https://img.shields.io/github/discussions/webpack/webpack
+[discussion-url]: https://github.com/webpack/webpack/discussions
 [size]: https://packagephobia.com/badge?p=schema-utils
 [size-url]: https://packagephobia.com/result?p=schema-utils
