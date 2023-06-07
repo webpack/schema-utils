@@ -535,9 +535,17 @@ class ValidationError extends Error {
     }
 
     if (schema.enum) {
-      return /** @type {Array<any>} */ (schema.enum)
-        .map((item) => JSON.stringify(item))
+      const enumValues = /** @type {Array<any>} */ (schema.enum)
+        .map((item) => {
+          if (item === null && schema.undefinedAsNull) {
+            return `${JSON.stringify(item)} | undefined`;
+          }
+
+          return JSON.stringify(item);
+        })
         .join(" | ");
+
+      return `${enumValues}`;
     }
 
     if (typeof schema.const !== "undefined") {

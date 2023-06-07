@@ -3786,6 +3786,42 @@
     "emptyString2": {
       "maxLength": 0,
       "type": "string"
+    },
+    "enumKeywordAndUndefined": {
+      "undefinedAsNull": true,
+      "enum": [ 0, false, "", null ]
+    },
+    "arrayStringAndEnum": {
+      "description": "References to other configurations to depend on.",
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "undefinedAsNull": true,
+            "enum": [ 0, false, "", null ]
+          },
+          {
+            "type": "string",
+            "minLength": 1
+          }
+        ]
+      }
+    },
+    "arrayStringAndEnumAndNoUndefined": {
+      "description": "References to other configurations to depend on.",
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "undefinedAsNull": false,
+            "enum": [ 0, false, "", null ]
+          },
+          {
+            "type": "string",
+            "minLength": 1
+          }
+        ]
+      }
     }
   }
 }

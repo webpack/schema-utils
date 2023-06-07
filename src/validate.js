@@ -1,4 +1,5 @@
 import addAbsolutePathKeyword from "./keywords/absolutePath";
+import addUndefinedAsNullKeyword from "./keywords/undefinedAsNull";
 
 import ValidationError from "./ValidationError";
 
@@ -27,10 +28,11 @@ const memoize = (fn) => {
   };
 };
 
-
 const getAjv = memoize(() => {
   // Use CommonJS require for ajv libs so TypeScript consumers aren't locked into esModuleInterop (see #110).
+  // eslint-disable-next-line global-require
   const Ajv = require("ajv");
+  // eslint-disable-next-line global-require
   const ajvKeywords = require("ajv-keywords");
 
   const ajv = new Ajv({
@@ -46,12 +48,12 @@ const getAjv = memoize(() => {
     "patternRequired",
   ]);
 
-// Custom keywords
+  // Custom keywords
   addAbsolutePathKeyword(ajv);
+  addUndefinedAsNullKeyword(ajv);
 
   return ajv;
 });
-
 
 /** @typedef {import("json-schema").JSONSchema4} JSONSchema4 */
 /** @typedef {import("json-schema").JSONSchema6} JSONSchema6 */
@@ -65,6 +67,7 @@ const getAjv = memoize(() => {
  * @property {boolean=} formatExclusiveMinimum
  * @property {boolean=} formatExclusiveMaximum
  * @property {string=} link
+ * @property {boolean=} undefinedAsNull
  */
 
 /** @typedef {(JSONSchema4 | JSONSchema6 | JSONSchema7) & Extend} Schema */
