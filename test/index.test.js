@@ -3026,4 +3026,12 @@ describe("Validation", () => {
     },
     (msg) => expect(msg).toMatchSnapshot()
   );
+
+  createFailedTestCase(
+    "array with enum and undefined #3",
+    {
+      arrayStringAndEnumAndNoUndefined: ["foo", "bar", undefined],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
 });

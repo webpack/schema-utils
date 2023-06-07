@@ -3811,6 +3811,22 @@
           }
         ]
       }
+    },
+    "arrayStringAndEnumAndNoUndefined": {
+      "description": "References to other configurations to depend on.",
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "allowUndefined": false,
+            "enum": [ 0, false, "", null ]
+          },
+          {
+            "type": "string",
+            "minLength": 1
+          }
+        ]
+      }
     }
   }
 }

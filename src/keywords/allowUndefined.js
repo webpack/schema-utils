@@ -15,12 +15,7 @@ function addAllowUndefinedKeyword(ajv) {
     modifying: true,
     /** @type {SchemaValidateFunction} */
     validate(kwVal, data, metadata, dataCxt) {
-      if (
-        kwVal &&
-        dataCxt &&
-        dataCxt.parentData &&
-        typeof dataCxt.parentDataProperty === "number"
-      ) {
+      if (kwVal && dataCxt) {
         const idx = dataCxt.parentDataProperty;
 
         if (typeof dataCxt.parentData[idx] === "undefined") {
