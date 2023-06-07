@@ -15,7 +15,12 @@ function addUndefinedAsNullKeyword(ajv) {
     modifying: true,
     /** @type {SchemaValidateFunction} */
     validate(kwVal, data, metadata, dataCxt) {
-      if (kwVal && dataCxt) {
+      if (
+        kwVal &&
+        dataCxt &&
+        metadata &&
+        typeof metadata.enum !== "undefined"
+      ) {
         const idx = dataCxt.parentDataProperty;
 
         if (typeof dataCxt.parentData[idx] === "undefined") {

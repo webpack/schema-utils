@@ -314,27 +314,31 @@ describe("Validation", () => {
     },
   });
 
-  createSuccessTestCase("enum with undefined", {
+  createSuccessTestCase("enum with undefinedAsNull", {
     // eslint-disable-next-line no-undefined
     enumKeywordAndUndefined: undefined,
   });
 
-  createSuccessTestCase("enum with undefined #2", {
+  createSuccessTestCase("enum with undefinedAsNull #2", {
     enumKeywordAndUndefined: 0,
   });
 
-  createSuccessTestCase("array with enum and undefined", {
+  createSuccessTestCase("array with enum and undefinedAsNull", {
     arrayStringAndEnum: ["a", "b", "c"],
   });
 
-  createSuccessTestCase("array with enum and undefined #2", {
+  createSuccessTestCase("array with enum and undefinedAsNull #2", {
     // eslint-disable-next-line no-undefined
     arrayStringAndEnum: [undefined, false, undefined, 0, "test", undefined],
   });
 
-  createSuccessTestCase("array with enum and undefined #3", {
+  createSuccessTestCase("array with enum and undefinedAsNull #3", {
     // eslint-disable-next-line no-undefined
     arrayStringAndEnum: [undefined, null, false, 0, ""],
+  });
+
+  createSuccessTestCase("string and undefinedAsNull #3", {
+    stringTypeAndUndefinedAsNull: "test",
   });
 
   // The "name" option
@@ -3012,7 +3016,15 @@ describe("Validation", () => {
   );
 
   createFailedTestCase(
-    "array with enum and undefined",
+    "enum and undefinedAsNull",
+    {
+      enumKeywordAndUndefined: "foo",
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    "array with enum and undefinedAsNull",
     {
       arrayStringAndEnum: ["foo", "bar", 1],
     },
@@ -3020,7 +3032,7 @@ describe("Validation", () => {
   );
 
   createFailedTestCase(
-    "array with enum and undefined #2",
+    "array with enum and undefinedAsNull #2",
     {
       // eslint-disable-next-line no-undefined
       arrayStringAndEnum: ["foo", "bar", undefined, 1],
@@ -3029,10 +3041,18 @@ describe("Validation", () => {
   );
 
   createFailedTestCase(
-    "array with enum and undefined #3",
+    "array with enum and undefinedAsNull #3",
     {
       // eslint-disable-next-line no-undefined
       arrayStringAndEnumAndNoUndefined: ["foo", "bar", undefined],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    "string and undefinedAsNull",
+    {
+      stringTypeAndUndefinedAsNull: 1,
     },
     (msg) => expect(msg).toMatchSnapshot()
   );

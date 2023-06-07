@@ -3827,6 +3827,11 @@
           }
         ]
       }
+    },
+    "stringTypeAndUndefinedAsNull": {
+      "description": "References to other configurations to depend on.",
+      "type": "string",
+      "undefinedAsNull": true
     }
   }
 }
