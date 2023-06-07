@@ -71,7 +71,13 @@ function addUndefinedAsNullKeyword(ajv) {
       parentData,
       parentDataProperty
     ) {
-      if (kwVal && parentData && typeof parentDataProperty === "number") {
+      if (
+        kwVal &&
+        parentSchema &&
+        typeof parentSchema.enum !== "undefined" &&
+        parentData &&
+        typeof parentDataProperty === "number"
+      ) {
         const idx = /** @type {number} */ (parentDataProperty);
         const parentDataRef = /** @type {any[]} */ (parentData);
 
