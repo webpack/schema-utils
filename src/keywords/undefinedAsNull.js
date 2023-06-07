@@ -19,6 +19,7 @@ function addUndefinedAsNullKeyword(ajv) {
         const idx = dataCxt.parentDataProperty;
 
         if (typeof dataCxt.parentData[idx] === "undefined") {
+          // eslint-disable-next-line no-param-reassign
           dataCxt.parentData[dataCxt.parentDataProperty] = null;
         }
       }

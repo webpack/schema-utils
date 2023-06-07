@@ -3022,6 +3022,7 @@ describe("Validation", () => {
   createFailedTestCase(
     "array with enum and undefined #2",
     {
+      // eslint-disable-next-line no-undefined
       arrayStringAndEnum: ["foo", "bar", undefined, 1],
     },
     (msg) => expect(msg).toMatchSnapshot()
@@ -3030,6 +3031,7 @@ describe("Validation", () => {
   createFailedTestCase(
     "array with enum and undefined #3",
     {
+      // eslint-disable-next-line no-undefined
       arrayStringAndEnumAndNoUndefined: ["foo", "bar", undefined],
     },
     (msg) => expect(msg).toMatchSnapshot()

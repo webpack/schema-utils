@@ -544,10 +544,16 @@ class ValidationError extends Error {
 
     if (schema.enum) {
       const enumValues = /** @type {Array<any>} */ (schema.enum)
-        .map((item) => JSON.stringify(item))
+        .map((item) => {
+          if (item === null && schema.undefinedAsNull) {
+            return `${JSON.stringify(item)} | undefined`;
+          }
+
+          return JSON.stringify(item);
+        })
         .join(" | ");
 
-      return `${enumValues}${schema.undefinedAsNull ? " | undefined" : ""}`;
+      return `${enumValues}`;
     }
 
     if (typeof schema.const !== "undefined") {
