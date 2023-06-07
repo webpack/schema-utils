@@ -3791,6 +3791,26 @@
       "format": "date",
       "formatMinimum": "2016-02-06",
       "formatExclusiveMaximum": "2016-12-27"
+    },
+    "enumKeywordAndUndefined": {
+      "allowUndefined": true,
+      "enum": [ 0, false, "", null ]
+    },
+    "arrayStringAndEnum": {
+      "description": "References to other configurations to depend on.",
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "allowUndefined": true,
+            "enum": [ 0, false, "", null ]
+          },
+          {
+            "type": "string",
+            "minLength": 1
+          }
+        ]
+      }
     }
   }
 }

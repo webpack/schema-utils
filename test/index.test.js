@@ -314,6 +314,29 @@ describe("Validation", () => {
     },
   });
 
+  createSuccessTestCase("enum with undefined", {
+    // eslint-disable-next-line no-undefined
+    enumKeywordAndUndefined: undefined,
+  });
+
+  createSuccessTestCase("enum with undefined #2", {
+    enumKeywordAndUndefined: 0,
+  });
+
+  createSuccessTestCase("array with enum and undefined", {
+    arrayStringAndEnum: ["a", "b", "c"],
+  });
+
+  createSuccessTestCase("array with enum and undefined #2", {
+    // eslint-disable-next-line no-undefined
+    arrayStringAndEnum: [undefined, false, undefined, 0, "test", undefined],
+  });
+
+  createSuccessTestCase("array with enum and undefined #3", {
+    // eslint-disable-next-line no-undefined
+    arrayStringAndEnum: [undefined, null, false, 0, ""],
+  });
+
   // The "name" option
   createFailedTestCase(
     "webpack name",
@@ -2984,6 +3007,22 @@ describe("Validation", () => {
     "formatExclusiveMaximum #2",
     {
       formatExclusiveMaximum: "2016-12-27",
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    "array with enum and undefined",
+    {
+      arrayStringAndEnum: ["foo", "bar", 1],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    "array with enum and undefined #2",
+    {
+      arrayStringAndEnum: ["foo", "bar", undefined, 1],
     },
     (msg) => expect(msg).toMatchSnapshot()
   );
