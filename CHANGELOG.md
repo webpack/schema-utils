@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.1.0](https://github.com/webpack/schema-utils/compare/v4.0.1...v4.1.0) (2023-06-07)
+
+
+### Features
+
+* implement `undefinedAsNull` keyword for `enum` type ([#175](https://github.com/webpack/schema-utils/issues/175)) ([1265eac](https://github.com/webpack/schema-utils/commit/1265eac8621cddf2f4dad342efc2d76a169912f7))
+
 ### [4.0.1](https://github.com/webpack/schema-utils/compare/v4.0.0...v4.0.1) (2023-04-15)
 
 ### Bug Fixes
