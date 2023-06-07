@@ -3793,7 +3793,7 @@
       "formatExclusiveMaximum": "2016-12-27"
     },
     "enumKeywordAndUndefined": {
-      "allowUndefined": true,
+      "undefinedAsNull": true,
       "enum": [ 0, false, "", null ]
     },
     "arrayStringAndEnum": {
@@ -3802,7 +3802,7 @@
       "items": {
         "anyOf": [
           {
-            "allowUndefined": true,
+            "undefinedAsNull": true,
             "enum": [ 0, false, "", null ]
           },
           {
@@ -3818,7 +3818,7 @@
       "items": {
         "anyOf": [
           {
-            "allowUndefined": false,
+            "undefinedAsNull": false,
             "enum": [ 0, false, "", null ]
           },
           {

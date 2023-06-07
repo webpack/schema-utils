@@ -547,7 +547,7 @@ class ValidationError extends Error {
         .map((item) => JSON.stringify(item))
         .join(" | ");
 
-      return `${enumValues}${schema.allowUndefined ? " | undefined" : ""}`;
+      return `${enumValues}${schema.undefinedAsNull ? " | undefined" : ""}`;
     }
 
     if (typeof schema.const !== "undefined") {

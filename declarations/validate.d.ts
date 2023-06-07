@@ -8,7 +8,7 @@ export type Extend = {
   formatExclusiveMinimum?: string | undefined;
   formatExclusiveMaximum?: string | undefined;
   link?: string | undefined;
-  allowUndefined?: boolean | undefined;
+  undefinedAsNull?: boolean | undefined;
 };
 export type Schema = (JSONSchema4 | JSONSchema6 | JSONSchema7) & Extend;
 export type SchemaUtilErrorObject = ErrorObject & {
@@ -34,7 +34,7 @@ export type ValidationErrorConfiguration = {
  * @property {string=} formatExclusiveMinimum
  * @property {string=} formatExclusiveMaximum
  * @property {string=} link
- * @property {boolean=} allowUndefined
+ * @property {boolean=} undefinedAsNull
  */
 /** @typedef {(JSONSchema4 | JSONSchema6 | JSONSchema7) & Extend} Schema */
 /** @typedef {ErrorObject & { children?: Array<ErrorObject>}} SchemaUtilErrorObject */

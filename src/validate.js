@@ -1,5 +1,5 @@
 import addAbsolutePathKeyword from "./keywords/absolutePath";
-import addAllowUndefinedKeyword from "./keywords/allowUndefined";
+import addUndefinedAsNullKeyword from "./keywords/undefinedAsNull";
 
 import ValidationError from "./ValidationError";
 
@@ -52,7 +52,7 @@ const getAjv = memoize(() => {
 
   // Custom keywords
   addAbsolutePathKeyword(ajv);
-  addAllowUndefinedKeyword(ajv);
+  addUndefinedAsNullKeyword(ajv);
 
   return ajv;
 });
@@ -69,7 +69,7 @@ const getAjv = memoize(() => {
  * @property {string=} formatExclusiveMinimum
  * @property {string=} formatExclusiveMaximum
  * @property {string=} link
- * @property {boolean=} allowUndefined
+ * @property {boolean=} undefinedAsNull
  */
 
 /** @typedef {(JSONSchema4 | JSONSchema6 | JSONSchema7) & Extend} Schema */

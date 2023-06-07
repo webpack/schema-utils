@@ -8,9 +8,9 @@
  * @param {Ajv} ajv
  * @returns {Ajv}
  */
-function addAllowUndefinedKeyword(ajv) {
+function addUndefinedAsNullKeyword(ajv) {
   ajv.addKeyword({
-    keyword: "allowUndefined",
+    keyword: "undefinedAsNull",
     before: "enum",
     modifying: true,
     /** @type {SchemaValidateFunction} */
@@ -30,4 +30,4 @@ function addAllowUndefinedKeyword(ajv) {
   return ajv;
 }
 
-export default addAllowUndefinedKeyword;
+export default addUndefinedAsNullKeyword;
