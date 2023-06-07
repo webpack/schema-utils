@@ -414,12 +414,6 @@ exports[`Validation should fail validation for array with empty items, empty add
 
 exports[`Validation should fail validation for array with enum and undefined #2 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.arrayStringAndEnum[2] should be one of these:
-   0 | false | \\"\\" | null | undefined | non-empty string
-   Details:
-    * configuration.arrayStringAndEnum[2] should be one of these:
-      0 | false | \\"\\" | null | undefined
-    * configuration.arrayStringAndEnum[2] should be a non-empty string.
  - configuration.arrayStringAndEnum[3] should be one of these:
    0 | false | \\"\\" | null | undefined | non-empty string
    Details:

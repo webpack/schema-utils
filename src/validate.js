@@ -30,7 +30,9 @@ const memoize = (fn) => {
 
 const getAjv = memoize(() => {
   // Use CommonJS require for ajv libs so TypeScript consumers aren't locked into esModuleInterop (see #110).
+  // eslint-disable-next-line global-require
   const Ajv = require("ajv");
+  // eslint-disable-next-line global-require
   const ajvKeywords = require("ajv-keywords");
 
   const ajv = new Ajv({
