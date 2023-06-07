@@ -3791,6 +3791,47 @@
       "format": "date",
       "formatMinimum": "2016-02-06",
       "formatExclusiveMaximum": "2016-12-27"
+    },
+    "enumKeywordAndUndefined": {
+      "undefinedAsNull": true,
+      "enum": [ 0, false, "", null ]
+    },
+    "arrayStringAndEnum": {
+      "description": "References to other configurations to depend on.",
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "undefinedAsNull": true,
+            "enum": [ 0, false, "", null ]
+          },
+          {
+            "type": "string",
+            "minLength": 1
+          }
+        ]
+      }
+    },
+    "arrayStringAndEnumAndNoUndefined": {
+      "description": "References to other configurations to depend on.",
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "undefinedAsNull": false,
+            "enum": [ 0, false, "", null ]
+          },
+          {
+            "type": "string",
+            "minLength": 1
+          }
+        ]
+      }
+    },
+    "stringTypeAndUndefinedAsNull": {
+      "description": "References to other configurations to depend on.",
+      "type": "string",
+      "undefinedAsNull": true
     }
   }
 }
