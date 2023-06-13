@@ -1,32 +1,5 @@
-import addAbsolutePathKeyword from "./keywords/absolutePath";
-import addUndefinedAsNullKeyword from "./keywords/undefinedAsNull";
-
 import ValidationError from "./ValidationError";
-
-/**
- * @template T
- * @param fn {(function(): any) | undefined}
- * @returns {function(): T}
- */
-const memoize = (fn) => {
-  let cache = false;
-  /** @type {T} */
-  let result;
-
-  return () => {
-    if (cache) {
-      return result;
-    }
-    result = /** @type {function(): any} */ (fn)();
-    cache = true;
-    // Allow to clean up memory for fn
-    // and all dependent resources
-    // eslint-disable-next-line no-undefined, no-param-reassign
-    fn = undefined;
-
-    return result;
-  };
-};
+import memoize from "./util/memorize";
 
 const getAjv = memoize(() => {
   // Use CommonJS require for ajv libs so TypeScript consumers aren't locked into esModuleInterop (see #110).
@@ -51,7 +24,15 @@ const getAjv = memoize(() => {
   addFormats(ajv, { keywords: true });
 
   // Custom keywords
+  // eslint-disable-next-line global-require
+  const addAbsolutePathKeyword = require("./keywords/absolutePath").default;
+
   addAbsolutePathKeyword(ajv);
+
+  const addUndefinedAsNullKeyword =
+    // eslint-disable-next-line global-require
+    require("./keywords/undefinedAsNull").default;
+
   addUndefinedAsNullKeyword(ajv);
 
   return ajv;

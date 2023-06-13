@@ -1,4 +1,4 @@
-const { stringHints, numberHints } = require("./util/hints");
+import memoize from "./util/memorize";
 
 /** @typedef {import("json-schema").JSONSchema6} JSONSchema6 */
 /** @typedef {import("json-schema").JSONSchema7} JSONSchema7 */
@@ -384,6 +384,11 @@ function formatHints(hints) {
   return hints.length > 0 ? `(${hints.join(", ")})` : "";
 }
 
+const getUtilHints = memoize(() =>
+  // eslint-disable-next-line global-require
+  require("./util/hints")
+);
+
 /**
  * @param {Schema} schema
  * @param {boolean} logic
@@ -391,9 +396,13 @@ function formatHints(hints) {
  */
 function getHints(schema, logic) {
   if (likeNumber(schema) || likeInteger(schema)) {
-    return numberHints(schema, logic);
+    const util = getUtilHints();
+
+    return util.numberHints(schema, logic);
   } else if (likeString(schema)) {
-    return stringHints(schema, logic);
+    const util = getUtilHints();
+
+    return util.stringHints(schema, logic);
   }
 
   return [];
