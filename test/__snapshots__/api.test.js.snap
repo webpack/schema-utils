@@ -29,3 +29,30 @@ exports[`api should use default values when "title" is broken 1`] = `
  - configuration has an unknown property 'foo'. These properties are valid:
    object { name? }"
 `;
+
+exports[`api should work with anyOf 1`] = `
+"Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
+ - configuration should be one of these:
+   object { bar, … } | object { baz, … }
+   Details:
+    * configuration misses the property 'bar' | should be any non-object. Should be:
+      number
+    * configuration misses the property 'baz' | should be any non-object. Should be:
+      number"
+`;
+
+exports[`api should work with minProperties properties 1`] = `
+"Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
+ - configuration should be a non-empty object."
+`;
+
+exports[`api should work with required properties #2 1`] = `
+"Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
+ - configuration misses the property 'e'."
+`;
+
+exports[`api should work with required properties 1`] = `
+"Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
+ - configuration.c misses the property 'e'. Should be:
+   string"
+`;
