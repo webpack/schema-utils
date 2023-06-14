@@ -72,6 +72,22 @@ const getAjv = memoize(() => {
  */
 
 /**
+ * @param {SchemaUtilErrorObject} error
+ * @param {number} idx
+ * @returns {SchemaUtilErrorObject}
+ */
+function applyPrefix(error, idx) {
+  // eslint-disable-next-line no-param-reassign
+  error.instancePath = `[${idx}]${error.instancePath}`;
+
+  if (error.children) {
+    error.children.forEach((err) => applyPrefix(err, idx));
+  }
+
+  return error;
+}
+
+/**
  * @param {Schema} schema
  * @param {Array<object> | object} options
  * @param {ValidationErrorConfiguration=} configuration
@@ -81,31 +97,11 @@ function validate(schema, options, configuration) {
   let errors = [];
 
   if (Array.isArray(options)) {
-    errors = Array.from(options, (nestedOptions) =>
-      validateObject(schema, nestedOptions)
-    );
-
-    errors.forEach((list, idx) => {
-      const applyPrefix =
-        /**
-         * @param {SchemaUtilErrorObject} error
-         */
-        (error) => {
-          // eslint-disable-next-line no-param-reassign
-          error.instancePath = `[${idx}]${error.instancePath}`;
-
-          if (error.children) {
-            error.children.forEach(applyPrefix);
-          }
-        };
-
-      list.forEach(applyPrefix);
-    });
-
-    errors = errors.reduce((arr, items) => {
-      arr.push(...items);
-      return arr;
-    }, []);
+    for (let i = 0; i <= options.length - 1; i++) {
+      errors.push(
+        ...validateObject(schema, options[i]).map((err) => applyPrefix(err, i))
+      );
+    }
   } else {
     errors = validateObject(schema, options);
   }

@@ -97,4 +97,103 @@ describe("api", () => {
       expect(error.message).toMatchSnapshot();
     }
   });
+
+  it("should work with required properties", () => {
+    try {
+      validate(
+        {
+          type: "object",
+          properties: {
+            c: {
+              type: "object",
+              properties: {
+                d: {
+                  type: "string",
+                },
+                e: {
+                  type: "string",
+                },
+              },
+              additionalProperties: true,
+              required: ["d", "e"],
+            },
+          },
+        },
+        { c: { d: "e" } }
+      );
+    } catch (error) {
+      if (error.name !== "ValidationError") {
+        throw error;
+      }
+
+      expect(error.message).toMatchSnapshot();
+    }
+  });
+
+  it("should work with required properties #2", () => {
+    try {
+      validate(
+        {
+          type: "object",
+          properties: {},
+          required: ["d", "e"],
+        },
+        {}
+      );
+    } catch (error) {
+      if (error.name !== "ValidationError") {
+        throw error;
+      }
+
+      expect(error.message).toMatchSnapshot();
+    }
+  });
+
+  it("should work with minProperties properties", () => {
+    try {
+      validate(
+        {
+          type: "object",
+          properties: {},
+          minProperties: 1,
+        },
+        {}
+      );
+    } catch (error) {
+      if (error.name !== "ValidationError") {
+        throw error;
+      }
+
+      expect(error.message).toMatchSnapshot();
+    }
+  });
+
+  it("should work with anyOf", () => {
+    try {
+      validate(
+        {
+          type: "object",
+          properties: { foo: { type: "number" } },
+          unevaluatedProperties: false,
+          anyOf: [
+            {
+              required: ["bar"],
+              properties: { bar: { type: "number" } },
+            },
+            {
+              required: ["baz"],
+              properties: { baz: { type: "number" } },
+            },
+          ],
+        },
+        {}
+      );
+    } catch (error) {
+      if (error.name !== "ValidationError") {
+        throw error;
+      }
+
+      expect(error.message).toMatchSnapshot();
+    }
+  });
 });
