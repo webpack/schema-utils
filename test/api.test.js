@@ -306,7 +306,21 @@ describe("api", () => {
     }
   });
 
-  it("should allow to enable and disable validation using API", () => {
+  it.only("should allow to enable and disable validation using API", () => {
+    process.env.SKIP_VALIDATION = "unknown";
+    expect(needValidate()).toBe(true);
+
+    process.env.SKIP_VALIDATION = "no";
+    expect(needValidate()).toBe(true);
+
+    process.env.SKIP_VALIDATION = "yes";
+    expect(needValidate()).toBe(false);
+
+    enableValidation();
+    expect(process.env.SKIP_VALIDATION).toBe("n");
+
+    process.env.SKIP_VALIDATION = "undefined";
+
     enableValidation();
     expect(needValidate()).toBe(true);
 
