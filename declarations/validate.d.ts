@@ -35,5 +35,8 @@ export function validate(
   options: Array<object> | object,
   configuration?: ValidationErrorConfiguration | undefined
 ): void;
+export function enableValidation(): void;
+export function disableValidation(): void;
+export function needValidate(): boolean;
 import ValidationError from "./ValidationError";
 export { ValidationError };

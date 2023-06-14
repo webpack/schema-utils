@@ -105,6 +105,51 @@ function applyPrefix(error, idx) {
   return error;
 }
 
+let skipValidation = false;
+
+// We use `process.env.SKIP_VALIDATION` because you can have multiple `schema-utils` with different version,
+// so we want to disable it globally, `process.env` doesn't supported by browsers, so we have the local `skipValidation` variables
+
+// Enable validation
+function enableValidation() {
+  skipValidation = false;
+
+  // Disable validation for any versions
+  if (process && process.env) {
+    process.env.SKIP_VALIDATION = "n";
+  }
+}
+
+// Disable validation
+function disableValidation() {
+  skipValidation = true;
+
+  if (process && process.env) {
+    process.env.SKIP_VALIDATION = "y";
+  }
+}
+
+// Check if we need to confirm
+function needValidate() {
+  if (skipValidation) {
+    return false;
+  }
+
+  if (process && process.env && process.env.SKIP_VALIDATION) {
+    const value = process.env.SKIP_VALIDATION.trim();
+
+    if (/^(?:y|yes|true|1|on)$/i.test(value)) {
+      return false;
+    }
+
+    if (/^(?:n|no|false|0|off)$/i.test(value)) {
+      return true;
+    }
+  }
+
+  return true;
+}
+
 /**
  * @param {Schema} schema
  * @param {Array<object> | object} options
@@ -112,6 +157,10 @@ function applyPrefix(error, idx) {
  * @returns {void}
  */
 function validate(schema, options, configuration) {
+  if (!needValidate()) {
+    return;
+  }
+
   let errors = [];
 
   if (Array.isArray(options)) {
@@ -191,4 +240,10 @@ function filterErrors(errors) {
   return newErrors;
 }
 
-export { validate, ValidationError };
+export {
+  validate,
+  enableValidation,
+  disableValidation,
+  needValidate,
+  ValidationError,
+};
