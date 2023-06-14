@@ -117,6 +117,7 @@ function validate(schema, options, configuration) {
  * @returns {Array<SchemaUtilErrorObject>}
  */
 function validateObject(schema, options) {
+  // Not need to cache, because `ajv@8` has built-in cache
   const compiledSchema = getAjv().compile(schema);
   const valid = compiledSchema(options);
 
