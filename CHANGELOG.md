@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.3.0](https://github.com/webpack/schema-utils/compare/v3.2.0...v3.3.0) (2023-06-14)
+
+
+### Features
+
+* added API to disable and enable validation ([#183](https://github.com/webpack/schema-utils/issues/183)) ([d4d334f](https://github.com/webpack/schema-utils/commit/d4d334f0ba22eb6b6564b1119e8f3ea439e1f2bb))
+
+
+### Bug Fixes
+
+* **perf:** cache compiled schema ([#182](https://github.com/webpack/schema-utils/issues/182)) ([02aa068](https://github.com/webpack/schema-utils/commit/02aa068df80d99cc576a5ed385f947eb5204c5db))
+
 ## [3.2.0](https://github.com/webpack/schema-utils/compare/v3.1.2...v3.2.0) (2023-06-07)
 
 
