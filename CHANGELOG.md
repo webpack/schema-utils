@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.2.0](https://github.com/webpack/schema-utils/compare/v4.1.0...v4.2.0) (2023-06-14)
+
+
+### Features
+
+* added API to disable and enable validation ([#180](https://github.com/webpack/schema-utils/issues/180)) ([d6b9c9e](https://github.com/webpack/schema-utils/commit/d6b9c9e14bc5304f28f713b3bbf0497461bb117e))
+
+
+### Bug Fixes
+
+* lazy loading some modules ([#178](https://github.com/webpack/schema-utils/issues/178)) ([3806c65](https://github.com/webpack/schema-utils/commit/3806c65167f880051a331b8b728ea03ad0632840))
+
 ## [4.1.0](https://github.com/webpack/schema-utils/compare/v4.0.1...v4.1.0) (2023-06-07)
 
 
