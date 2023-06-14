@@ -263,6 +263,36 @@ class Plugin {
 export default Plugin;
 ```
 
+### Allow to disable and enable validation (the `validate` function do nothing)
+
+This can be useful when you don't want to do validation for `production` builds.
+
+```js
+import { disableValidation, enableValidation, validate } from "schema-utils";
+
+// Disable validation
+disableValidation();
+// Do nothing
+validate(schema, options);
+
+// Enable validation
+enableValidation();
+// Will throw an error if schema is not valid
+validate(schema, options);
+
+// Allow to undestand do you need validation or not
+const need = needValidate();
+
+console.log(need);
+```
+
+Also you can enable/disable validation using the `process.env.SKIP_VALIDATION` env variable.
+
+Supported values (case insensitive):
+
+- `yes`/`y`/`true`/`1`/`on`
+- `no`/`n`/`false`/`0`/`off`
+
 ## Contributing
 
 Please take a moment to read our contributing guidelines if you haven't yet done so.
