@@ -772,6 +772,14 @@ describe("Validation", () => {
   );
 
   createFailedTestCase(
+    "object type",
+    {
+      devServer: [],
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
     "array type",
     {
       dependencies: {},

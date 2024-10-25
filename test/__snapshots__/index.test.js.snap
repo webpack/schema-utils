@@ -1524,6 +1524,13 @@ exports[`Validation should fail validation for object in object with anyOf 1`] =
       [object { alias?, name?, onlyModule? }, ...]"
 `;
 
+exports[`Validation should fail validation for object type 1`] = `
+"Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
+ - configuration.devServer should be an object:
+   object { … }
+   -> Options for the webpack-dev-server"
+`;
+
 exports[`Validation should fail validation for object with dependencies #2 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.objectWithPropertyDependency2 should be an object:
