@@ -234,7 +234,11 @@ function canApplyNot(schema) {
  * @returns {boolean}
  */
 function isObject(maybeObj) {
-  return typeof maybeObj === "object" && maybeObj !== null;
+  return (
+    typeof maybeObj === "object" &&
+    !Array.isArray(maybeObj) &&
+    maybeObj !== null
+  );
 }
 
 /**
