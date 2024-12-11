@@ -21,13 +21,19 @@ const getAjv = memoize(() => {
   });
 
   ajvKeywords(ajv, ["instanceof", "patternRequired"]);
-  addFormats(ajv, { keywords: true });
+  // TODO set `{ keywords: true }` for the next major release and remove `keywords/limit.js`
+  addFormats(ajv, { keywords: false });
 
   // Custom keywords
   // eslint-disable-next-line global-require
   const addAbsolutePathKeyword = require("./keywords/absolutePath").default;
 
   addAbsolutePathKeyword(ajv);
+
+  // eslint-disable-next-line global-require
+  const addLimitKeyword = require("./keywords/limit").default;
+
+  addLimitKeyword(ajv);
 
   const addUndefinedAsNullKeyword =
     // eslint-disable-next-line global-require
@@ -45,10 +51,10 @@ const getAjv = memoize(() => {
 
 /**
  * @typedef {Object} Extend
- * @property {string=} formatMinimum
- * @property {string=} formatMaximum
- * @property {string=} formatExclusiveMinimum
- * @property {string=} formatExclusiveMaximum
+ * @property {(string | number)=} formatMinimum
+ * @property {(string | number)=} formatMaximum
+ * @property {(string | boolean)=} formatExclusiveMinimum
+ * @property {(string | boolean)=} formatExclusiveMaximum
  * @property {string=} link
  * @property {boolean=} undefinedAsNull
  */

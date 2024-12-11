@@ -1108,9 +1108,41 @@ describe("Validation", () => {
   );
 
   createFailedTestCase(
+    "formatExclusiveMinimumKeyword #2",
+    {
+      formatExclusiveMinimumKeyword: "2016-02-05",
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    "formatExclusiveMinimumKeyword #3",
+    {
+      formatExclusiveMinimumKeyword: "2016-02-06",
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
     "formatExclusiveMaximum",
     {
       formatExclusiveMaximumKeyword: "2016-02-06",
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    "formatExclusiveMaximum #2",
+    {
+      formatExclusiveMaximumKeyword: "2016-02-06",
+    },
+    (msg) => expect(msg).toMatchSnapshot()
+  );
+
+  createFailedTestCase(
+    "formatExclusiveMaximum #3",
+    {
+      formatExclusiveMaximumKeyword: "2016-02-07",
     },
     (msg) => expect(msg).toMatchSnapshot()
   );

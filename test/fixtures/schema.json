@@ -2518,10 +2518,20 @@
       "formatMinimum": "2016-02-06",
       "formatExclusiveMinimum": "2016-02-06"
     },
+    "formatExclusiveMinimumKeyword1": {
+      "format": "date",
+      "formatMinimum": "2016-02-06",
+      "formatExclusiveMinimum": true
+    },
     "formatExclusiveMaximumKeyword": {
       "format": "date",
       "formatMaximum": "2016-02-06",
       "formatExclusiveMaximum": "2016-02-06"
+    },
+    "formatExclusiveMaximumKeyword1": {
+      "format": "date",
+      "formatMaximum": "2016-02-06",
+      "formatExclusiveMaximum": true
     },
     "formatMinMaxExclusiveMinKeyword": {
       "format": "date",
