@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.3.0](https://github.com/webpack/schema-utils/compare/v4.2.0...v4.3.0) (2024-12-11)
+
+
+### Features
+
+* backport old logic from v3 ([2e2ba9d](https://github.com/webpack/schema-utils/commit/2e2ba9dd84575d11326d6fff3d795df2e33db935))
+
+
+### Bug Fixes
+
+* disallow arrays as the object type ([#194](https://github.com/webpack/schema-utils/issues/194)) ([4b8acf2](https://github.com/webpack/schema-utils/commit/4b8acf2b1a2bc787af24546c7039bd6102a8f038))
+
 ## [4.2.0](https://github.com/webpack/schema-utils/compare/v4.1.0...v4.2.0) (2023-06-14)
 
 
