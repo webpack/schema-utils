@@ -59,6 +59,9 @@ const getAjv = memoize(() => {
  * @property {boolean=} undefinedAsNull
  */
 
+// TODO remove me in the next major release
+/** @typedef {ExtendedSchema} Extend */
+
 /** @typedef {(JSONSchema4 | JSONSchema6 | JSONSchema7) & ExtendedSchema} Schema */
 
 /** @typedef {ErrorObject & { children?: Array<ErrorObject> }} SchemaUtilErrorObject */
