@@ -10,6 +10,7 @@ export type ExtendedSchema = {
   link?: string | undefined;
   undefinedAsNull?: boolean | undefined;
 };
+export type Extend = ExtendedSchema;
 export type Schema = (JSONSchema4 | JSONSchema6 | JSONSchema7) & ExtendedSchema;
 export type SchemaUtilErrorObject = ErrorObject & {
   children?: Array<ErrorObject>;
