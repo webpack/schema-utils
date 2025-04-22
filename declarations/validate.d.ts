@@ -2,7 +2,7 @@ export type JSONSchema4 = import("json-schema").JSONSchema4;
 export type JSONSchema6 = import("json-schema").JSONSchema6;
 export type JSONSchema7 = import("json-schema").JSONSchema7;
 export type ErrorObject = import("ajv").ErrorObject;
-export type Extend = {
+export type ExtendedSchema = {
   formatMinimum?: (string | number) | undefined;
   formatMaximum?: (string | number) | undefined;
   formatExclusiveMinimum?: (string | boolean) | undefined;
@@ -10,7 +10,7 @@ export type Extend = {
   link?: string | undefined;
   undefinedAsNull?: boolean | undefined;
 };
-export type Schema = (JSONSchema4 | JSONSchema6 | JSONSchema7) & Extend;
+export type Schema = (JSONSchema4 | JSONSchema6 | JSONSchema7) & ExtendedSchema;
 export type SchemaUtilErrorObject = ErrorObject & {
   children?: Array<ErrorObject>;
 };

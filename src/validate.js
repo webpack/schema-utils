@@ -50,7 +50,7 @@ const getAjv = memoize(() => {
 /** @typedef {import("ajv").ErrorObject} ErrorObject */
 
 /**
- * @typedef {Object} Extend
+ * @typedef {Object} ExtendedSchema
  * @property {(string | number)=} formatMinimum
  * @property {(string | number)=} formatMaximum
  * @property {(string | boolean)=} formatExclusiveMinimum
@@ -59,7 +59,7 @@ const getAjv = memoize(() => {
  * @property {boolean=} undefinedAsNull
  */
 
-/** @typedef {(JSONSchema4 | JSONSchema6 | JSONSchema7) & Extend} Schema */
+/** @typedef {(JSONSchema4 | JSONSchema6 | JSONSchema7) & ExtendedSchema} Schema */
 
 /** @typedef {ErrorObject & { children?: Array<ErrorObject> }} SchemaUtilErrorObject */
 
