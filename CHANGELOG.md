@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.3.1](https://github.com/webpack/schema-utils/compare/v4.3.0...v4.3.1) (2025-04-22)
+
+
+### Bug Fixes
+
+* export `Schema` and additional schemas ([#197](https://github.com/webpack/schema-utils/issues/197)) ([f72cd60](https://github.com/webpack/schema-utils/commit/f72cd6063dc8af6e191540a44333c0624b3fbcab))
+
 ## [4.3.0](https://github.com/webpack/schema-utils/compare/v4.2.0...v4.3.0) (2024-12-11)
 
 
