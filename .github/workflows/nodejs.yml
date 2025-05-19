@@ -13,71 +13,52 @@ on:
 jobs:
   lint:
     name: Lint - ${{ matrix.os }} - Node v${{ matrix.node-version }}
-
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
     strategy:
       matrix:
         os: [ubuntu-latest]
         node-version: [lts/*]
-
     runs-on: ${{ matrix.os }}
-
     concurrency:
       group: lint-${{ matrix.os }}-v${{ matrix.node-version }}-${{ github.ref }}
       cancel-in-progress: true
-
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-
       - name: Install dependencies
         run: npm ci
-
       - name: Lint
         run: npm run lint
-
       - name: Build declarations
         run: npm run build:types
-
       - name: Run lint declarations
         run: if [ -n "$(git status declarations --porcelain)" ]; then echo "Missing declarations in git"; exit 1; else echo "All declarations are valid"; fi
-
       - name: Security audit
         run: npm run security
-
       - name: Check commit message
         uses: wagoid/commitlint-github-action@v4
-
   test:
     name: Test - ${{ matrix.os }} - Node v${{ matrix.node-version }}
-
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         node-version: [10.x, 12.x, 14.x, 16.x, 18.x, 20.x, 22.x, 24.x]
-
     runs-on: ${{ matrix.os }}
-
     concurrency:
       group: test-${{ matrix.os }}-v${{ matrix.node-version }}-${{ github.ref }}
       cancel-in-progress: true
-
     steps:
       - name: Setup Git
         if: matrix.os == 'windows-latest'
         run: git config --global core.autocrlf input
-
       - uses: actions/checkout@v4
-
       - uses: actions/github-script@v7
         id: calculate_architecture
         with:
@@ -88,27 +69,22 @@ jobs:
             } else {
               return ''
             }
-
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           architecture: ${{ steps.calculate_architecture.outputs.result }}
           cache: "npm"
-
       - name: Install dependencies
         run: |
           npm i del-cli@^3
           npm i --ignore-engines
-        if: matrix.node-version == '10.x' || matrix.node-version == '12.x' || matrix.node-version == '14.x' || matrix.node-version == '16.x'
-
+        if: matrix.node-version == '10.x' || matrix.node-version == '12.x' || matrix.node-version == '14.x' || matrix.node-version == '16.x' || matrix.node-version == '18.x'
       - name: Install dependencies
         run: npm ci
-        if: matrix.node-version == '18.x' || matrix.node-version == '20.x' || matrix.node-version == '22.x' || matrix.node-version == '23.x'
-
+        if: matrix.node-version == '20.x' || matrix.node-version == '22.x' || matrix.node-version == '24.x'
       - name: Run tests with coverage
         run: npm run test:coverage -- --ci
-
       - name: Submit coverage data to codecov
         uses: codecov/codecov-action@v5
         with:
