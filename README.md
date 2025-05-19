@@ -1,7 +1,7 @@
 <div align="center">
   <a href="http://json-schema.org">
     <img width="160" height="160"
-      src="https://raw.githubusercontent.com/webpack-contrib/schema-utils/master/.github/assets/logo.png">
+      src="https://raw.githubusercontent.com/webpack-contrib/schema-utils/main/.github/assets/logo.png">
   </a>
   <a href="https://github.com/webpack/webpack">
     <img width="200" height="200"
@@ -309,7 +309,7 @@ Please take a moment to read our contributing guidelines if you haven't yet done
 [node-url]: https://nodejs.org
 [tests]: https://github.com/webpack/schema-utils/workflows/schema-utils/badge.svg
 [tests-url]: https://github.com/webpack/schema-utils/actions
-[cover]: https://codecov.io/gh/webpack/schema-utils/branch/master/graph/badge.svg
+[cover]: https://codecov.io/gh/webpack/schema-utils/branch/main/graph/badge.svg
 [cover-url]: https://codecov.io/gh/webpack/schema-utils
 [discussion]: https://img.shields.io/github/discussions/webpack/webpack
 [discussion-url]: https://github.com/webpack/webpack/discussions

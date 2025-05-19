@@ -3,11 +3,11 @@ name: schema-utils
 on:
   push:
     branches:
-      - master
+      - main
       - next
   pull_request:
     branches:
-      - master
+      - main
       - next
 
 jobs:
@@ -85,7 +85,7 @@ jobs:
         if: matrix.node-version == '20.x' || matrix.node-version == '22.x' || matrix.node-version == '24.x'
       - name: Run tests with coverage
         run: npm run test:coverage -- --ci
-      - name: Submit coverage data to codecov
-        uses: codecov/codecov-action@v5
+      - uses: codecov/codecov-action@v5
         with:
+          flags: integration
           token: ${{ secrets.CODECOV_TOKEN }}
