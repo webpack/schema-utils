@@ -41,13 +41,15 @@ const testCases = [
   ],
 ];
 
-testCases.forEach((testCase) => {
-  it(JSON.stringify(testCase[0]), () => {
-    const [input, withoutNot, withNot] = testCase;
-    const computedWithoutNot = stringHints(input, true);
-    const computedWithNot = stringHints(input, false);
+describe("hints", () => {
+  for (const testCase of testCases) {
+    it(JSON.stringify(testCase[0]), () => {
+      const [input, withoutNot, withNot] = testCase;
+      const computedWithoutNot = stringHints(input, true);
+      const computedWithNot = stringHints(input, false);
 
-    expect(computedWithNot).toEqual(expect.arrayContaining(withNot));
-    expect(computedWithoutNot).toEqual(expect.arrayContaining(withoutNot));
-  });
+      expect(computedWithNot).toEqual(expect.arrayContaining(withNot));
+      expect(computedWithoutNot).toEqual(expect.arrayContaining(withoutNot));
+    });
+  }
 });

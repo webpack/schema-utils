@@ -1,7 +1,12 @@
 /**
  * @template T
- * @param fn {(function(): any) | undefined}
- * @returns {function(): T}
+ * @typedef {() => T} FunctionReturning
+ */
+
+/**
+ * @template T
+ * @param {FunctionReturning<T>} fn memorized function
+ * @returns {FunctionReturning<T>} new function
  */
 const memoize = (fn) => {
   let cache = false;
@@ -12,12 +17,12 @@ const memoize = (fn) => {
     if (cache) {
       return result;
     }
-    result = /** @type {function(): any} */ (fn)();
+    result = fn();
     cache = true;
     // Allow to clean up memory for fn
     // and all dependent resources
-    // eslint-disable-next-line no-undefined, no-param-reassign
-    fn = undefined;
+    /** @type {FunctionReturning<T> | undefined} */
+    (fn) = undefined;
 
     return result;
   };

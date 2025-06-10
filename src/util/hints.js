@@ -3,9 +3,9 @@ const Range = require("./Range");
 /** @typedef {import("../validate").Schema} Schema */
 
 /**
- * @param {Schema} schema
- * @param {boolean} logic
- * @return {string[]}
+ * @param {Schema} schema schema
+ * @param {boolean} logic logic
+ * @returns {string[]} array of hints
  */
 module.exports.stringHints = function stringHints(schema, logic) {
   const hints = [];
@@ -28,7 +28,7 @@ module.exports.stringHints = function stringHints(schema, logic) {
     } else {
       const length = Math.max(currentSchema.minLength - 1, 0);
       hints.push(
-        `should be longer than ${length} character${length > 1 ? "s" : ""}`
+        `should be longer than ${length} character${length > 1 ? "s" : ""}`,
       );
     }
   }
@@ -39,7 +39,7 @@ module.exports.stringHints = function stringHints(schema, logic) {
     } else {
       const length = currentSchema.maxLength + 1;
       hints.push(
-        `should be shorter than ${length} character${length > 1 ? "s" : ""}`
+        `should be shorter than ${length} character${length > 1 ? "s" : ""}`,
       );
     }
   }
@@ -47,16 +47,16 @@ module.exports.stringHints = function stringHints(schema, logic) {
   if (currentSchema.pattern) {
     hints.push(
       `should${logic ? "" : " not"} match pattern ${JSON.stringify(
-        currentSchema.pattern
-      )}`
+        currentSchema.pattern,
+      )}`,
     );
   }
 
   if (currentSchema.format) {
     hints.push(
       `should${logic ? "" : " not"} match format ${JSON.stringify(
-        currentSchema.format
-      )}`
+        currentSchema.format,
+      )}`,
     );
   }
 
@@ -64,7 +64,7 @@ module.exports.stringHints = function stringHints(schema, logic) {
     hints.push(
       `should be ${
         currentSchema.formatExclusiveMinimum ? ">" : ">="
-      } ${JSON.stringify(currentSchema.formatMinimum)}`
+      } ${JSON.stringify(currentSchema.formatMinimum)}`,
     );
   }
 
@@ -72,17 +72,17 @@ module.exports.stringHints = function stringHints(schema, logic) {
     hints.push(
       `should be ${
         currentSchema.formatExclusiveMaximum ? "<" : "<="
-      } ${JSON.stringify(currentSchema.formatMaximum)}`
+      } ${JSON.stringify(currentSchema.formatMaximum)}`,
     );
   }
 
-  return [type].concat(hints);
+  return [type, ...hints];
 };
 
 /**
- * @param {Schema} schema
- * @param {boolean} logic
- * @return {string[]}
+ * @param {Schema} schema schema
+ * @param {boolean} logic logic
+ * @returns {string[]} array of hints
  */
 module.exports.numberHints = function numberHints(schema, logic) {
   const hints = [schema.type === "integer" ? "integer" : "number"];
@@ -112,7 +112,7 @@ module.exports.numberHints = function numberHints(schema, logic) {
 
   if (typeof schema.multipleOf === "number") {
     hints.push(
-      `should${logic ? "" : " not"} be multiple of ${schema.multipleOf}`
+      `should${logic ? "" : " not"} be multiple of ${schema.multipleOf}`,
     );
   }
 

@@ -4,30 +4,46 @@ import { validate } from "../src";
 
 import schema from "./fixtures/schema.json";
 
-describe("Validation", () => {
+/* eslint-disable jest/no-standalone-expect */
+
+describe("validation", () => {
+  // eslint-disable-next-line jsdoc/no-restricted-syntax
+  /**
+   * @param {string} name name
+   * @param {Record<string, any>} config config
+   * @param {({ name: string })=} options options
+   * @param {Record<string, any>} testSchema test schema
+   */
   function createSuccessTestCase(
     name,
     config,
     options = {},
-    testSchema = schema
+    testSchema = schema,
   ) {
     it(`should pass validation for ${name}`, () => {
       let error;
 
       try {
         validate(testSchema, config, options.name);
-      } catch (maybeValidationError) {
-        if (maybeValidationError.name !== "ValidationError") {
-          throw maybeValidationError;
+      } catch (err) {
+        if (err.name !== "ValidationError") {
+          throw err;
         }
 
-        error = maybeValidationError;
+        error = err;
       }
 
       expect(error).toBeUndefined();
     });
   }
 
+  // eslint-disable-next-line jsdoc/no-restricted-syntax
+  /**
+   * @param {string} name name
+   * @param {Record<string, any>} config config
+   * @param {(message: string) => void} fn fn
+   * @param {{ baseDataPath?: string }} configuration configuration
+   */
   function createFailedTestCase(name, config, fn, configuration = {}) {
     it(`should fail validation for ${name}`, () => {
       try {
@@ -39,9 +55,10 @@ describe("Validation", () => {
 
         expect(error.message).toMatch(
           new RegExp(
-            `^Invalid ${configuration.baseDataPath || "configuration"} object`
-          )
+            `^Invalid ${configuration.baseDataPath || "configuration"} object`,
+          ),
         );
+
         fn(error.message);
 
         return;
@@ -315,7 +332,6 @@ describe("Validation", () => {
   });
 
   createSuccessTestCase("enum with undefinedAsNull", {
-    // eslint-disable-next-line no-undefined
     enumKeywordAndUndefined: undefined,
   });
 
@@ -328,12 +344,10 @@ describe("Validation", () => {
   });
 
   createSuccessTestCase("array with enum and undefinedAsNull #2", {
-    // eslint-disable-next-line no-undefined
     arrayStringAndEnum: [undefined, false, undefined, 0, "test", undefined],
   });
 
   createSuccessTestCase("array with enum and undefinedAsNull #3", {
-    // eslint-disable-next-line no-undefined
     arrayStringAndEnum: [undefined, null, false, 0, ""],
   });
 
@@ -350,7 +364,7 @@ describe("Validation", () => {
     (msg) => expect(msg).toMatchSnapshot(),
     {
       name: "Webpack",
-    }
+    },
   );
 
   createFailedTestCase(
@@ -361,7 +375,7 @@ describe("Validation", () => {
     (msg) => expect(msg).toMatchSnapshot(),
     {
       name: "CSS Loader",
-    }
+    },
   );
 
   createFailedTestCase(
@@ -372,7 +386,7 @@ describe("Validation", () => {
     (msg) => expect(msg).toMatchSnapshot(),
     {
       name: "Terser Plugin",
-    }
+    },
   );
 
   // The "dataPath" option
@@ -385,7 +399,7 @@ describe("Validation", () => {
     {
       name: "Webpack",
       baseDataPath: "configuration",
-    }
+    },
   );
 
   createFailedTestCase(
@@ -397,7 +411,7 @@ describe("Validation", () => {
     {
       name: "MyPlugin",
       baseDataPath: "options",
-    }
+    },
   );
 
   // The "postFormatter" option
@@ -431,7 +445,7 @@ describe("Validation", () => {
 
         return formattedError;
       },
-    }
+    },
   );
 
   createFailedTestCase(
@@ -468,7 +482,7 @@ describe("Validation", () => {
 
         return formattedError;
       },
-    }
+    },
   );
 
   createFailedTestCase(
@@ -489,7 +503,7 @@ describe("Validation", () => {
           error.children.some(
             (child) =>
               child.keyword === "absolutePath" &&
-              child.instancePath === "/output/filename"
+              child.instancePath === "/output/filename",
           )
         ) {
           return (
@@ -500,16 +514,15 @@ describe("Validation", () => {
 
         return formattedError;
       },
-    }
+    },
   );
 
-  // eslint-disable-next-line no-undefined
   createFailedTestCase("undefined configuration", undefined, (msg) =>
-    expect(msg).toMatchSnapshot()
+    expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase("null configuration", null, (msg) =>
-    expect(msg).toMatchSnapshot()
+    expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -517,7 +530,7 @@ describe("Validation", () => {
     {
       entry: "",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -527,7 +540,7 @@ describe("Validation", () => {
         bundle: [],
       },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -538,7 +551,7 @@ describe("Validation", () => {
         wrappedContextRegExp: 1337,
       },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -547,7 +560,7 @@ describe("Validation", () => {
       entry: "a",
       parallelism: 0,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -555,7 +568,7 @@ describe("Validation", () => {
     {
       entry: ["abc", "def", "abc"],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -566,7 +579,7 @@ describe("Validation", () => {
         filename: /a/,
       },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -582,7 +595,7 @@ describe("Validation", () => {
         },
       },
     ],
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -604,7 +617,7 @@ describe("Validation", () => {
         ],
       },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -613,7 +626,7 @@ describe("Validation", () => {
       entry: "a",
       postcss: () => {},
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -622,7 +635,7 @@ describe("Validation", () => {
       entry: "a",
       devtool: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   // Require for integration with webpack
@@ -635,7 +648,7 @@ describe("Validation", () => {
         filename: "bar",
       },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -646,7 +659,7 @@ describe("Validation", () => {
         filename: "/bar",
       },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -658,7 +671,7 @@ describe("Validation", () => {
       },
       context: "baz",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -673,9 +686,9 @@ describe("Validation", () => {
       expect(
         msg
           .replace(/object \{ .* \}/g, "object {...}")
-          .replace(/"none" \| .+/g, '"none" | ...')
+          .replace(/"none" \| .+/g, '"none" | ...'),
       ).toMatchSnapshot();
-    }
+    },
   );
 
   createFailedTestCase(
@@ -684,7 +697,7 @@ describe("Validation", () => {
       entry: "foo.js",
       plugins: [false],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -693,7 +706,7 @@ describe("Validation", () => {
       entry: "foo.js",
       plugins: [[]],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -702,7 +715,7 @@ describe("Validation", () => {
       entry: "foo.js",
       plugins: ["abc123"],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -711,7 +724,7 @@ describe("Validation", () => {
       entry: "foo.js",
       plugins: [12],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -720,7 +733,7 @@ describe("Validation", () => {
       entry: "foo.js",
       plugins: [{}],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -728,7 +741,7 @@ describe("Validation", () => {
     {
       mode: "protuction",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -736,7 +749,7 @@ describe("Validation", () => {
     {
       minLengthTwo: "1",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -744,7 +757,7 @@ describe("Validation", () => {
     {
       entry: {},
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -752,7 +765,7 @@ describe("Validation", () => {
     {
       integerType: "type",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -760,7 +773,7 @@ describe("Validation", () => {
     {
       nullType: "type",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -768,7 +781,7 @@ describe("Validation", () => {
     {
       bail: "true",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -776,7 +789,7 @@ describe("Validation", () => {
     {
       devServer: [],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -784,7 +797,7 @@ describe("Validation", () => {
     {
       dependencies: {},
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -792,7 +805,7 @@ describe("Validation", () => {
     {
       parallelism: "1",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -800,7 +813,7 @@ describe("Validation", () => {
     {
       allOfRef: { alias: 123 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -808,7 +821,7 @@ describe("Validation", () => {
     {
       allOfRef: { aliasFields: 123 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -816,7 +829,7 @@ describe("Validation", () => {
     {
       allOfRef: { unsafeCache: [] },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -824,7 +837,7 @@ describe("Validation", () => {
     {
       watchOptions: { poll: "1" },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -832,7 +845,7 @@ describe("Validation", () => {
     {
       customObject: { anyOfKeyword: "1" },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -840,7 +853,7 @@ describe("Validation", () => {
     {
       customObject: { maxLength: "11111" },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -848,7 +861,7 @@ describe("Validation", () => {
     {
       customObject: { maxItems: ["1", "2", "3", "4"] },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -858,7 +871,7 @@ describe("Validation", () => {
         maxProperties: { one: "one", two: "two", three: "three", four: "four" },
       },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -866,7 +879,7 @@ describe("Validation", () => {
     {
       customObject: { minimumKeyword: 1 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -874,7 +887,7 @@ describe("Validation", () => {
     {
       customObject: { maximumKeyword: 11111 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -882,7 +895,7 @@ describe("Validation", () => {
     {
       customObject: { multipleOfKeyword: 11111 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -890,7 +903,7 @@ describe("Validation", () => {
     {
       customObject: { patternKeyword: "def" },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -898,7 +911,7 @@ describe("Validation", () => {
     {
       customObject: { formatKeyword: "def" },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -906,7 +919,7 @@ describe("Validation", () => {
     {
       customObject: { containsKeyword: ["def"] },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -914,7 +927,7 @@ describe("Validation", () => {
     {
       multipleContains2: [/test/],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -922,7 +935,7 @@ describe("Validation", () => {
     {
       entry: { foo: () => [] },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -934,7 +947,7 @@ describe("Validation", () => {
         },
       },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -944,7 +957,7 @@ describe("Validation", () => {
         runtimeChunk: (name) => name,
       },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -952,7 +965,7 @@ describe("Validation", () => {
     {
       objectType: { objectProperty: 1 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -960,7 +973,7 @@ describe("Validation", () => {
     {
       anyOfKeyword: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -968,7 +981,7 @@ describe("Validation", () => {
     {
       nestedArrayWithoutItems: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -976,7 +989,7 @@ describe("Validation", () => {
     {
       nestedObjectWithoutItems: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -984,7 +997,7 @@ describe("Validation", () => {
     {
       arrayType2: ["1", 2, true, /test/],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -992,7 +1005,7 @@ describe("Validation", () => {
     {
       multipleTypes: /test/,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1000,7 +1013,7 @@ describe("Validation", () => {
     {
       zeroMaxItems: [1],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1008,7 +1021,7 @@ describe("Validation", () => {
     {
       multipleContains: [/test/],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1016,7 +1029,7 @@ describe("Validation", () => {
     {
       exclusiveMinimumKeyword: 4.5,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1024,7 +1037,7 @@ describe("Validation", () => {
     {
       exclusiveMaximumKeyword: 5.5,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1032,7 +1045,7 @@ describe("Validation", () => {
     {
       uniqueItemsKeyword: [1, 2, 1],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1040,7 +1053,7 @@ describe("Validation", () => {
     {
       minPropertiesKeyword: { foo: "bar" },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1048,7 +1061,7 @@ describe("Validation", () => {
     {
       maxPropertiesKeyword: { foo: "bar", bar: "foo", foobaz: "foobaz" },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1056,7 +1069,7 @@ describe("Validation", () => {
     {
       requiredKeyword: {},
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1064,7 +1077,7 @@ describe("Validation", () => {
     {
       requiredKeyword: { b: 1 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1072,7 +1085,7 @@ describe("Validation", () => {
     {
       requiredKeywordWithAdditionalProperties: { b: 1 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1080,7 +1093,7 @@ describe("Validation", () => {
     {
       enumKeyword: 1,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1088,7 +1101,7 @@ describe("Validation", () => {
     {
       formatMinimumKeyword: "2016-02-05",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1096,7 +1109,7 @@ describe("Validation", () => {
     {
       formatMaximumKeyword: "2016-02-07",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1104,7 +1117,7 @@ describe("Validation", () => {
     {
       formatExclusiveMinimumKeyword: "2016-02-06",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1112,7 +1125,7 @@ describe("Validation", () => {
     {
       formatExclusiveMinimumKeyword: "2016-02-05",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1120,7 +1133,7 @@ describe("Validation", () => {
     {
       formatExclusiveMinimumKeyword: "2016-02-06",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1128,7 +1141,7 @@ describe("Validation", () => {
     {
       formatExclusiveMaximumKeyword: "2016-02-06",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1136,7 +1149,7 @@ describe("Validation", () => {
     {
       formatExclusiveMaximumKeyword: "2016-02-06",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1144,7 +1157,7 @@ describe("Validation", () => {
     {
       formatExclusiveMaximumKeyword: "2016-02-07",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1152,7 +1165,7 @@ describe("Validation", () => {
     {
       formatMinMaxExclusiveMinKeyword: "2016-02-05",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1160,7 +1173,7 @@ describe("Validation", () => {
     {
       formatMinMaxExclusiveMaxKeyword: "2016-02-05",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1168,7 +1181,7 @@ describe("Validation", () => {
     {
       minItemsKeyword: ["1"],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1176,7 +1189,7 @@ describe("Validation", () => {
     {
       maxItemsKeyword: ["1", "2", "3", "4"],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1184,7 +1197,7 @@ describe("Validation", () => {
     {
       itemsKeyword: ["1"],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1192,7 +1205,7 @@ describe("Validation", () => {
     {
       itemsKeyword2: [true],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1200,7 +1213,7 @@ describe("Validation", () => {
     {
       additionalItemsKeyword: [1, "abc"],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1208,7 +1221,7 @@ describe("Validation", () => {
     {
       additionalItemsKeyword2: ["abc"],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1216,7 +1229,7 @@ describe("Validation", () => {
     {
       additionalItemsKeyword3: ["abc"],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1224,7 +1237,7 @@ describe("Validation", () => {
     {
       additionalItemsKeyword4: [1, 1, "foo"],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1232,7 +1245,7 @@ describe("Validation", () => {
     {
       propertiesKeyword: { foo: 1 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1240,7 +1253,7 @@ describe("Validation", () => {
     {
       patternPropertiesKeyword: { foo: 1 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1248,7 +1261,7 @@ describe("Validation", () => {
     {
       patternPropertiesKeyword2: { b: "t" },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1256,7 +1269,7 @@ describe("Validation", () => {
     {
       arrayWithOnlyNumber: ["foo"],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1264,7 +1277,7 @@ describe("Validation", () => {
     {
       onlyRequired: {},
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1272,7 +1285,7 @@ describe("Validation", () => {
     {
       dependenciesKeyword: { foo: 1, bar: 2 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1280,7 +1293,7 @@ describe("Validation", () => {
     {
       dependenciesKeyword2: { foo: 1, bar: "2" },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1288,7 +1301,7 @@ describe("Validation", () => {
     {
       patternRequiredKeyword: { bar: 2 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1296,7 +1309,7 @@ describe("Validation", () => {
     {
       patternRequiredKeyword2: { foo: 1 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1304,7 +1317,7 @@ describe("Validation", () => {
     {
       onlyProperties: { foo: 1 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1312,7 +1325,7 @@ describe("Validation", () => {
     {
       onlyProperties2: { foo: "a", bar: 2, break: "test" },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1320,7 +1333,7 @@ describe("Validation", () => {
     {
       onlyItems: [1, "abc"],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1328,7 +1341,7 @@ describe("Validation", () => {
     {
       onlyItems2: ["abc", 1],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1336,7 +1349,7 @@ describe("Validation", () => {
     {
       additionalPropertiesKeyword: { a: 3 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1344,7 +1357,7 @@ describe("Validation", () => {
     {
       additionalPropertiesKeyword: { foo: 1, baz: 3 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1352,7 +1365,7 @@ describe("Validation", () => {
     {
       additionalPropertiesKeyword: { foo: "1", baz: 3 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1360,7 +1373,7 @@ describe("Validation", () => {
     {
       additionalPropertiesKeyword2: { a: 3 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1368,7 +1381,7 @@ describe("Validation", () => {
     {
       additionalPropertiesKeyword2: { foo: 1, baz: 3 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1376,7 +1389,7 @@ describe("Validation", () => {
     {
       additionalPropertiesKeyword2: { foo: 1, bar: "3" },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1384,7 +1397,7 @@ describe("Validation", () => {
     {
       propertyNamesKeyword: { foo: "any value" },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1392,7 +1405,7 @@ describe("Validation", () => {
     {
       constKeyword: "bar",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1400,7 +1413,7 @@ describe("Validation", () => {
     {
       constKeyword2: "baz",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1408,7 +1421,7 @@ describe("Validation", () => {
     {
       ifThenElseKeyword: { power: 10000 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1416,7 +1429,7 @@ describe("Validation", () => {
     {
       ifThenElseKeyword: { power: 10000, confidence: true },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1424,7 +1437,7 @@ describe("Validation", () => {
     {
       ifThenElseKeyword: { power: 1000 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1432,7 +1445,7 @@ describe("Validation", () => {
     {
       ifThenElseKeyword2: 11,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1440,7 +1453,7 @@ describe("Validation", () => {
     {
       ifThenElseKeyword2: 2000,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1448,7 +1461,7 @@ describe("Validation", () => {
     {
       ifThenElseKeyword2: 0,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1456,7 +1469,7 @@ describe("Validation", () => {
     {
       stringKeyword: "2016-02-06",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1464,7 +1477,7 @@ describe("Validation", () => {
     {
       stringKeyword: "abc",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1472,7 +1485,7 @@ describe("Validation", () => {
     {
       stringKeywordWithLink: "abc",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1480,7 +1493,7 @@ describe("Validation", () => {
     {
       arrayKeyword: "abc",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1488,7 +1501,7 @@ describe("Validation", () => {
     {
       arrayKeyword: ["abc"],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1496,7 +1509,7 @@ describe("Validation", () => {
     {
       arrayKeyword: [1, "string", 1],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1504,7 +1517,7 @@ describe("Validation", () => {
     {
       arrayKeyword: [1, "string", "1", "other", "foo"],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1512,7 +1525,7 @@ describe("Validation", () => {
     {
       arrayKeyword2: [1, "1", 1],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1520,7 +1533,7 @@ describe("Validation", () => {
     {
       arrayKeyword2: [1, 2, true, false],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1528,7 +1541,7 @@ describe("Validation", () => {
     {
       arrayKeyword3: ["1", "2", "3"],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1536,7 +1549,7 @@ describe("Validation", () => {
     {
       arrayKeyword3: [1, "1", 1],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1544,7 +1557,7 @@ describe("Validation", () => {
     {
       arrayKeyword3: [1, 2, true, false],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1552,7 +1565,7 @@ describe("Validation", () => {
     {
       arrayKeyword4: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1560,7 +1573,7 @@ describe("Validation", () => {
     {
       arrayKeyword5: [1],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1568,7 +1581,7 @@ describe("Validation", () => {
     {
       arrayKeyword6: [1],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1576,7 +1589,7 @@ describe("Validation", () => {
     {
       arrayKeyword6: ["true", "1"],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1584,7 +1597,7 @@ describe("Validation", () => {
     {
       arrayKeyword6: [true, "1"],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1592,7 +1605,7 @@ describe("Validation", () => {
     {
       arrayKeyword7: ["test", 1, /test/],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1600,7 +1613,7 @@ describe("Validation", () => {
     {
       arrayKeyword8: ["test", 1, "test", true],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1608,7 +1621,7 @@ describe("Validation", () => {
     {
       arrayKeyword8: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1616,7 +1629,7 @@ describe("Validation", () => {
     {
       arrayKeyword9: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1624,7 +1637,7 @@ describe("Validation", () => {
     {
       arrayKeyword10: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1632,7 +1645,7 @@ describe("Validation", () => {
     {
       arrayKeyword11: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1640,7 +1653,7 @@ describe("Validation", () => {
     {
       arrayKeyword12: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1648,7 +1661,7 @@ describe("Validation", () => {
     {
       arrayKeyword13: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1656,7 +1669,7 @@ describe("Validation", () => {
     {
       arrayKeyword14: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1664,7 +1677,7 @@ describe("Validation", () => {
     {
       arrayKeyword15: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1672,7 +1685,7 @@ describe("Validation", () => {
     {
       arrayKeyword16: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1680,7 +1693,7 @@ describe("Validation", () => {
     {
       arrayKeyword17: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1688,7 +1701,7 @@ describe("Validation", () => {
     {
       arrayKeyword17: [1, /test/, () => {}],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1696,7 +1709,7 @@ describe("Validation", () => {
     {
       arrayKeyword18: [1, 2, 3],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1704,7 +1717,7 @@ describe("Validation", () => {
     {
       arrayKeyword19: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1712,21 +1725,23 @@ describe("Validation", () => {
     {
       recursion: { person: { name: "Foo", children: {} } },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
     "extending",
     {
       extending: {
+        // eslint-disable-next-line camelcase
         shipping_address: {
+          // eslint-disable-next-line camelcase
           street_address: "1600 Pennsylvania Avenue NW",
           city: "Washington",
           state: "DC",
         },
       },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1734,7 +1749,7 @@ describe("Validation", () => {
     {
       module: { rules: [{ compiler: true }] },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1742,7 +1757,7 @@ describe("Validation", () => {
     {
       longString: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1750,7 +1765,7 @@ describe("Validation", () => {
     {
       integerEqualsTo5: 6,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1758,7 +1773,7 @@ describe("Validation", () => {
     {
       integerWithMinimum: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1766,7 +1781,7 @@ describe("Validation", () => {
     {
       integerWithMinimum: 1,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1774,7 +1789,7 @@ describe("Validation", () => {
     {
       integerWithExclusiveMinimum: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1782,7 +1797,7 @@ describe("Validation", () => {
     {
       integerWithExclusiveMinimum: 1,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1790,7 +1805,7 @@ describe("Validation", () => {
     {
       integerWithExclusiveMaximum: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1798,7 +1813,7 @@ describe("Validation", () => {
     {
       integerWithExclusiveMaximum: 1,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1806,7 +1821,7 @@ describe("Validation", () => {
     {
       numberWithMinimum: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1814,7 +1829,7 @@ describe("Validation", () => {
     {
       multipleOfProp: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1822,7 +1837,7 @@ describe("Validation", () => {
     {
       stringWithMinAndMaxLength: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1830,7 +1845,7 @@ describe("Validation", () => {
     {
       stringWithMinAndMaxLength: "def",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1838,7 +1853,7 @@ describe("Validation", () => {
     {
       strictFormat: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1846,7 +1861,7 @@ describe("Validation", () => {
     {
       strictFormat: "2016-02-07",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1854,7 +1869,7 @@ describe("Validation", () => {
     {
       strictFormat2: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1862,7 +1877,7 @@ describe("Validation", () => {
     {
       strictFormat2: "2016-02-06",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1870,7 +1885,7 @@ describe("Validation", () => {
     {
       uniqueItemsProp: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1878,7 +1893,7 @@ describe("Validation", () => {
     {
       uniqueItemsProp: [1, 1],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1886,7 +1901,7 @@ describe("Validation", () => {
     {
       maxPropertiesAndMinProperties: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1894,7 +1909,7 @@ describe("Validation", () => {
     {
       maxPropertiesAndMinProperties: {},
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1902,7 +1917,7 @@ describe("Validation", () => {
     {
       maxPropertiesAndMinProperties: { a: 1, b: 2, c: 3, d: 4, e: 5, f: 6 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1910,7 +1925,7 @@ describe("Validation", () => {
     {
       objectTest: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1918,7 +1933,7 @@ describe("Validation", () => {
     {
       objectTest2: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1926,7 +1941,7 @@ describe("Validation", () => {
     {
       objectTest3: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1934,7 +1949,7 @@ describe("Validation", () => {
     {
       objectTest4: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1942,7 +1957,7 @@ describe("Validation", () => {
     {
       objectTest4: { foo: "test", b: "test" },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1954,7 +1969,7 @@ describe("Validation", () => {
         "foo@bar.com": 1,
       },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1962,7 +1977,7 @@ describe("Validation", () => {
     {
       objectTest5: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1970,7 +1985,7 @@ describe("Validation", () => {
     {
       objectTest6: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1978,7 +1993,7 @@ describe("Validation", () => {
     {
       objectTest7: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1986,7 +2001,7 @@ describe("Validation", () => {
     {
       objectTest8: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -1994,7 +2009,7 @@ describe("Validation", () => {
     {
       objectTest7: { baz: "test" },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2002,7 +2017,7 @@ describe("Validation", () => {
     {
       objectTest9: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2010,7 +2025,7 @@ describe("Validation", () => {
     {
       objectTest9: { foo: "test", baz: "test", bar: 1 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2018,7 +2033,7 @@ describe("Validation", () => {
     {
       stringWithEmptyPattern: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2026,7 +2041,7 @@ describe("Validation", () => {
     {
       likeArray: ["test"],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2034,7 +2049,7 @@ describe("Validation", () => {
     {
       arrayWithEmptyItemsAndEmptyAdditionalItemsAndEmptyContains: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2042,7 +2057,7 @@ describe("Validation", () => {
     {
       additionalItemsFalse: [1, 1, "foo"],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2050,7 +2065,7 @@ describe("Validation", () => {
     {
       requiredWithoutType: { b: "test" },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2058,7 +2073,7 @@ describe("Validation", () => {
     {
       dependenciesWithoutType: { foo: "test" },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2066,7 +2081,7 @@ describe("Validation", () => {
     {
       propertyNamesWithoutType: { foo: "test" },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2074,7 +2089,7 @@ describe("Validation", () => {
     {
       patternRequiredWithoutType: { boo: "test" },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2082,7 +2097,7 @@ describe("Validation", () => {
     {
       additionalPropertiesWithoutType: { boo: "test" },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2090,7 +2105,7 @@ describe("Validation", () => {
     {
       maxPropertiesWithoutType: { boo: "test" },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2098,7 +2113,7 @@ describe("Validation", () => {
     {
       justAnObject: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2106,7 +2121,7 @@ describe("Validation", () => {
     {
       arrayWithAbsolutePath: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2114,7 +2129,7 @@ describe("Validation", () => {
     {
       allOfKeyword: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2122,7 +2137,7 @@ describe("Validation", () => {
     {
       allOfKeyword: 4.5,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2130,7 +2145,7 @@ describe("Validation", () => {
     {
       allOfKeyword: 5,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2138,7 +2153,7 @@ describe("Validation", () => {
     {
       oneOfnumberAndDescriptionAndArray: "2016-02-06",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2146,7 +2161,7 @@ describe("Validation", () => {
     {
       numberAndDescription: "2016-02-06",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2154,7 +2169,7 @@ describe("Validation", () => {
     {
       constWithDescription: "2016-02-06",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2162,7 +2177,7 @@ describe("Validation", () => {
     {
       itemsTrue: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2170,7 +2185,7 @@ describe("Validation", () => {
     {
       emptyConst: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2178,7 +2193,7 @@ describe("Validation", () => {
     {
       oneConst: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2186,7 +2201,7 @@ describe("Validation", () => {
     {
       constWithEmptyString: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2194,7 +2209,7 @@ describe("Validation", () => {
     {
       refAndAnyOf: {},
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2202,7 +2217,7 @@ describe("Validation", () => {
     {
       additionalPropertiesInsideOneOf: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2210,7 +2225,7 @@ describe("Validation", () => {
     {
       additionalPropertiesInsideOneOf: { foo: 100, bar: "test" },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2218,7 +2233,7 @@ describe("Validation", () => {
     {
       additionalPropertiesInsideOneOf2: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2226,7 +2241,7 @@ describe("Validation", () => {
     {
       singleContainsItems: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2234,7 +2249,7 @@ describe("Validation", () => {
     {
       objectWithPropertyDependency: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2242,7 +2257,7 @@ describe("Validation", () => {
     {
       objectWithPropertyDependency2: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2250,7 +2265,7 @@ describe("Validation", () => {
     {
       objectWithPropertyDependency3: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2258,7 +2273,7 @@ describe("Validation", () => {
     {
       objectWithPropertyDependency4: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2266,7 +2281,7 @@ describe("Validation", () => {
     {
       oneOfWithIf: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2274,7 +2289,7 @@ describe("Validation", () => {
     {
       constWithArrayNotation: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2282,7 +2297,7 @@ describe("Validation", () => {
     {
       constWithObjectNotation: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2290,7 +2305,7 @@ describe("Validation", () => {
     {
       additionalItemsWithoutType: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2298,7 +2313,7 @@ describe("Validation", () => {
     {
       additionalItemsWithoutType2: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2306,7 +2321,7 @@ describe("Validation", () => {
     {
       additionalItemsWithoutType3: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2314,7 +2329,7 @@ describe("Validation", () => {
     {
       containsAndAdditionalItems: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2322,7 +2337,7 @@ describe("Validation", () => {
     {
       containsAndAdditionalItems: [/test/, "string"],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2330,7 +2345,7 @@ describe("Validation", () => {
     {
       containsInsideItem: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2338,7 +2353,7 @@ describe("Validation", () => {
     {
       containsInsideItem: [["test"], "1", /test/],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2346,7 +2361,7 @@ describe("Validation", () => {
     {
       emptyObject: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2354,7 +2369,7 @@ describe("Validation", () => {
     {
       emptyObject: { a: "test" },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2362,7 +2377,7 @@ describe("Validation", () => {
     {
       nonEmptyObject: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2370,22 +2385,22 @@ describe("Validation", () => {
     {
       nonEmptyObject2: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
     "holey array",
-    // eslint-disable-next-line no-sparse-arrays
+
     [
       {
         mode: "production",
-      },
+      }, // eslint-disable-next-line no-sparse-arrays
       ,
       {
         mode: "development",
       },
     ],
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2399,7 +2414,7 @@ describe("Validation", () => {
         },
       },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2407,7 +2422,7 @@ describe("Validation", () => {
     {
       notEnum: 2,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2415,7 +2430,7 @@ describe("Validation", () => {
     {
       notConst: "foo",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2423,7 +2438,7 @@ describe("Validation", () => {
     {
       notNumber: 1,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2431,7 +2446,7 @@ describe("Validation", () => {
     {
       notNumber: 1,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2439,7 +2454,7 @@ describe("Validation", () => {
     {
       notString: "test",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2447,7 +2462,7 @@ describe("Validation", () => {
     {
       notBoolean: true,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2455,7 +2470,7 @@ describe("Validation", () => {
     {
       notArray: [1, 2, 3],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2463,7 +2478,7 @@ describe("Validation", () => {
     {
       notObject: { foo: "test" },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2471,7 +2486,7 @@ describe("Validation", () => {
     {
       notNull: null,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2479,7 +2494,7 @@ describe("Validation", () => {
     {
       notNotNull: 1,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2487,7 +2502,7 @@ describe("Validation", () => {
     {
       NotNotNotNull: null,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2495,7 +2510,7 @@ describe("Validation", () => {
     {
       notMultipleTypes: 1,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2503,7 +2518,7 @@ describe("Validation", () => {
     {
       notMaxItemsArray: [1, 2],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2511,7 +2526,7 @@ describe("Validation", () => {
     {
       noTypeLikeNumberMinimum: 4,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2519,7 +2534,7 @@ describe("Validation", () => {
     {
       noTypeLikeNumberMaximum: 6,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2527,7 +2542,7 @@ describe("Validation", () => {
     {
       noTypeLikeNumberExclusiveMinimum: 4,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2535,7 +2550,7 @@ describe("Validation", () => {
     {
       noTypeLikeNumberExclusiveMaximum: 6,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2543,7 +2558,7 @@ describe("Validation", () => {
     {
       minimumWithTypeNumber: 4,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2551,7 +2566,7 @@ describe("Validation", () => {
     {
       maximumWithTypeNumber: 6,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2559,7 +2574,7 @@ describe("Validation", () => {
     {
       exclusiveMinimumWithTypeNumber: 4,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2567,7 +2582,7 @@ describe("Validation", () => {
     {
       exclusiveMaximumWithTypeNumber: 6,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2575,7 +2590,7 @@ describe("Validation", () => {
     {
       noTypeLikeNumberMultipleOf: 1,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2583,7 +2598,7 @@ describe("Validation", () => {
     {
       multipleOfWithNumberType: 1,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2591,7 +2606,7 @@ describe("Validation", () => {
     {
       noTypeLikeStringMinLength: "a",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2599,7 +2614,7 @@ describe("Validation", () => {
     {
       noTypeLikeStringMaxLength: "aaa",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2607,7 +2622,7 @@ describe("Validation", () => {
     {
       stringWithMinLength: "a",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2615,7 +2630,7 @@ describe("Validation", () => {
     {
       stringWithMaxLength: "aaa",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2623,7 +2638,7 @@ describe("Validation", () => {
     {
       noTypeLikeStringPattern: "def",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2631,7 +2646,7 @@ describe("Validation", () => {
     {
       patternWithStringType: "def",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2639,7 +2654,7 @@ describe("Validation", () => {
     {
       noTypeLikeStringFormat: "abc",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2647,7 +2662,7 @@ describe("Validation", () => {
     {
       stringWithFormat: "abc",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2655,7 +2670,7 @@ describe("Validation", () => {
     {
       noTypeLikeStringFormatMaximum: "2016-02-06",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2663,7 +2678,7 @@ describe("Validation", () => {
     {
       stringWithFormatMaximum: "2016-02-06",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2671,7 +2686,7 @@ describe("Validation", () => {
     {
       multipleInstanceof: "test",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2679,7 +2694,7 @@ describe("Validation", () => {
     {
       noTypeLikeObjectPatternRequired: { bar: 2 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2687,7 +2702,7 @@ describe("Validation", () => {
     {
       objectWithPatternRequired: { bar: 2 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2695,7 +2710,7 @@ describe("Validation", () => {
     {
       noTypeLikeStringMinLength1: "",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2703,7 +2718,7 @@ describe("Validation", () => {
     {
       noTypeLikeArrayMinItems1: [],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2711,7 +2726,7 @@ describe("Validation", () => {
     {
       noTypeLikeArrayMinItems: [],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2719,7 +2734,7 @@ describe("Validation", () => {
     {
       arrayWithMinItems: [],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2727,7 +2742,7 @@ describe("Validation", () => {
     {
       noTypeMinProperties: {},
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2735,7 +2750,7 @@ describe("Validation", () => {
     {
       noTypeMinProperties1: {},
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2743,7 +2758,7 @@ describe("Validation", () => {
     {
       objectMinProperties: {},
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2751,7 +2766,7 @@ describe("Validation", () => {
     {
       noTypeLikeArrayMaxItems: [1, 2, 3, 4],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2759,7 +2774,7 @@ describe("Validation", () => {
     {
       arrayMaxItems: [1, 2, 3, 4],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2767,7 +2782,7 @@ describe("Validation", () => {
     {
       noTypeLikeObjectMaxProperties: { a: 1, b: 2, c: 3 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2775,7 +2790,7 @@ describe("Validation", () => {
     {
       objectMaxProperties: { a: 1, b: 2, c: 3 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2783,7 +2798,7 @@ describe("Validation", () => {
     {
       noTypeLikeArrayUniqueItems: [1, 2, 1],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2791,7 +2806,7 @@ describe("Validation", () => {
     {
       arrayWithUniqueItems: [1, 2, 1],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2799,7 +2814,7 @@ describe("Validation", () => {
     {
       noTypeLikeArrayAdditionalItems: [1, 1, "foo"],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2807,7 +2822,7 @@ describe("Validation", () => {
     {
       arrayWithAdditionalItems: [1, 1, "foo"],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2815,7 +2830,7 @@ describe("Validation", () => {
     {
       noTypeLikeArrayContains: ["foo", "bar"],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2823,7 +2838,7 @@ describe("Validation", () => {
     {
       arrayWithContains: ["foo", "bar"],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2831,7 +2846,7 @@ describe("Validation", () => {
     {
       anyOfNoTypeInItem: 4.5,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2839,7 +2854,7 @@ describe("Validation", () => {
     {
       oneOfNoTypeInItem: 4.5,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2847,7 +2862,7 @@ describe("Validation", () => {
     {
       noTypeLikeObjectPropertyNames: { foo: "any value" },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2855,7 +2870,7 @@ describe("Validation", () => {
     {
       objectPropertyNames: { foo: "any value" },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2863,7 +2878,7 @@ describe("Validation", () => {
     {
       noTypeLikeObjectDependencies: { foo: 1, baz: 3 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2871,7 +2886,7 @@ describe("Validation", () => {
     {
       objectWithDependencies: { foo: 1, baz: 3 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2879,7 +2894,7 @@ describe("Validation", () => {
     {
       noTypeLikeObjectAdditionalProperties: { foo: 1, baz: 3 },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2887,7 +2902,7 @@ describe("Validation", () => {
     {
       noTypeLikeObjectRequired: {},
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2898,7 +2913,7 @@ describe("Validation", () => {
         larger: 4,
       },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2909,7 +2924,7 @@ describe("Validation", () => {
         email: "joe.bloggs@example.com",
       },
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2917,7 +2932,7 @@ describe("Validation", () => {
     {
       enumNested: "string",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2925,7 +2940,7 @@ describe("Validation", () => {
     {
       testAbsolutePath: "bar",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2933,7 +2948,7 @@ describe("Validation", () => {
     {
       testAbsolutePath: "bar\\\\baz",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2941,7 +2956,7 @@ describe("Validation", () => {
     {
       testAbsolutePath: "bar/baz",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2949,7 +2964,7 @@ describe("Validation", () => {
     {
       testAbsolutePath: ".",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2957,7 +2972,7 @@ describe("Validation", () => {
     {
       testAbsolutePath: "..",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2965,7 +2980,7 @@ describe("Validation", () => {
     {
       notEmptyString: "",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2973,7 +2988,7 @@ describe("Validation", () => {
     {
       notEmptyString2: "",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2981,7 +2996,7 @@ describe("Validation", () => {
     {
       emptyString: "1",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2989,7 +3004,7 @@ describe("Validation", () => {
     {
       emptyString2: "1",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -2997,7 +3012,7 @@ describe("Validation", () => {
     {
       integerWithNotMinMax: 10,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -3005,7 +3020,7 @@ describe("Validation", () => {
     {
       integerNotWithMinimum: 5,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -3013,7 +3028,7 @@ describe("Validation", () => {
     {
       integerZero: 1,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -3021,7 +3036,7 @@ describe("Validation", () => {
     {
       integerNotZero: 0,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -3029,14 +3044,14 @@ describe("Validation", () => {
     {
       notMultipleOf: 5,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createSuccessTestCase(
     "webpack schema",
     { mode: "development" },
     {},
-    webpackSchema
+    webpackSchema,
   );
 
   createFailedTestCase(
@@ -3044,7 +3059,7 @@ describe("Validation", () => {
     {
       formatExclusiveMaximum: "2016-02-05",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -3052,7 +3067,7 @@ describe("Validation", () => {
     {
       formatExclusiveMaximum: "2016-12-27",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -3060,7 +3075,7 @@ describe("Validation", () => {
     {
       enumKeywordAndUndefined: "foo",
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -3068,25 +3083,23 @@ describe("Validation", () => {
     {
       arrayStringAndEnum: ["foo", "bar", 1],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
     "array with enum and undefinedAsNull #2",
     {
-      // eslint-disable-next-line no-undefined
       arrayStringAndEnum: ["foo", "bar", undefined, 1],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
     "array with enum and undefinedAsNull #3",
     {
-      // eslint-disable-next-line no-undefined
       arrayStringAndEnumAndNoUndefined: ["foo", "bar", undefined],
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 
   createFailedTestCase(
@@ -3094,6 +3107,6 @@ describe("Validation", () => {
     {
       stringTypeAndUndefinedAsNull: 1,
     },
-    (msg) => expect(msg).toMatchSnapshot()
+    (msg) => expect(msg).toMatchSnapshot(),
   );
 });
