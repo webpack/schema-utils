@@ -4,9 +4,8 @@
 /** @typedef {import("ajv").ValidateFunction} ValidateFunction */
 
 /**
- *
- * @param {Ajv} ajv
- * @returns {Ajv}
+ * @param {Ajv} ajv ajv
+ * @returns {Ajv} configured ajv
  */
 function addUndefinedAsNullKeyword(ajv) {
   ajv.addKeyword({
@@ -24,7 +23,6 @@ function addUndefinedAsNullKeyword(ajv) {
         const idx = dataCxt.parentDataProperty;
 
         if (typeof dataCxt.parentData[idx] === "undefined") {
-          // eslint-disable-next-line no-param-reassign
           dataCxt.parentData[dataCxt.parentDataProperty] = null;
         }
       }

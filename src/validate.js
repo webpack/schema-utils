@@ -3,11 +3,11 @@ import memoize from "./util/memorize";
 
 const getAjv = memoize(() => {
   // Use CommonJS require for ajv libs so TypeScript consumers aren't locked into esModuleInterop (see #110).
-  // eslint-disable-next-line global-require
+
   const Ajv = require("ajv").default;
-  // eslint-disable-next-line global-require
+
   const ajvKeywords = require("ajv-keywords").default;
-  // eslint-disable-next-line global-require
+
   const addFormats = require("ajv-formats").default;
 
   /**
@@ -25,18 +25,16 @@ const getAjv = memoize(() => {
   addFormats(ajv, { keywords: false });
 
   // Custom keywords
-  // eslint-disable-next-line global-require
+
   const addAbsolutePathKeyword = require("./keywords/absolutePath").default;
 
   addAbsolutePathKeyword(ajv);
 
-  // eslint-disable-next-line global-require
   const addLimitKeyword = require("./keywords/limit").default;
 
   addLimitKeyword(ajv);
 
   const addUndefinedAsNullKeyword =
-    // eslint-disable-next-line global-require
     require("./keywords/undefinedAsNull").default;
 
   addUndefinedAsNullKeyword(ajv);
@@ -50,13 +48,13 @@ const getAjv = memoize(() => {
 /** @typedef {import("ajv").ErrorObject} ErrorObject */
 
 /**
- * @typedef {Object} ExtendedSchema
- * @property {(string | number)=} formatMinimum
- * @property {(string | number)=} formatMaximum
- * @property {(string | boolean)=} formatExclusiveMinimum
- * @property {(string | boolean)=} formatExclusiveMaximum
- * @property {string=} link
- * @property {boolean=} undefinedAsNull
+ * @typedef {object} ExtendedSchema
+ * @property {(string | number)=} formatMinimum format minimum
+ * @property {(string | number)=} formatMaximum format maximum
+ * @property {(string | boolean)=} formatExclusiveMinimum format exclusive minimum
+ * @property {(string | boolean)=} formatExclusiveMaximum format exclusive maximum
+ * @property {string=} link link
+ * @property {boolean=} undefinedAsNull undefined will be resolved as null
  */
 
 // TODO remove me in the next major release
@@ -74,23 +72,22 @@ const getAjv = memoize(() => {
  */
 
 /**
- * @typedef {Object} ValidationErrorConfiguration
- * @property {string=} name
- * @property {string=} baseDataPath
- * @property {PostFormatter=} postFormatter
+ * @typedef {object} ValidationErrorConfiguration
+ * @property {string=} name name
+ * @property {string=} baseDataPath base data path
+ * @property {PostFormatter=} postFormatter post formatter
  */
 
 /**
- * @param {SchemaUtilErrorObject} error
- * @param {number} idx
- * @returns {SchemaUtilErrorObject}
+ * @param {SchemaUtilErrorObject} error error
+ * @param {number} idx idx
+ * @returns {SchemaUtilErrorObject} error object with idx
  */
 function applyPrefix(error, idx) {
-  // eslint-disable-next-line no-param-reassign
   error.instancePath = `[${idx}]${error.instancePath}`;
 
   if (error.children) {
-    error.children.forEach((err) => applyPrefix(err, idx));
+    for (const err of error.children) applyPrefix(err, idx);
   }
 
   return error;
@@ -102,6 +99,9 @@ let skipValidation = false;
 // so we want to disable it globally, `process.env` doesn't supported by browsers, so we have the local `skipValidation` variables
 
 // Enable validation
+/**
+ * @returns {void}
+ */
 function enableValidation() {
   skipValidation = false;
 
@@ -112,6 +112,9 @@ function enableValidation() {
 }
 
 // Disable validation
+/**
+ * @returns {void}
+ */
 function disableValidation() {
   skipValidation = true;
 
@@ -121,6 +124,9 @@ function disableValidation() {
 }
 
 // Check if we need to confirm
+/**
+ * @returns {boolean} true when need validate, otherwise false
+ */
 function needValidate() {
   if (skipValidation) {
     return false;
@@ -142,51 +148,8 @@ function needValidate() {
 }
 
 /**
- * @param {Schema} schema
- * @param {Array<object> | object} options
- * @param {ValidationErrorConfiguration=} configuration
- * @returns {void}
- */
-function validate(schema, options, configuration) {
-  if (!needValidate()) {
-    return;
-  }
-
-  let errors = [];
-
-  if (Array.isArray(options)) {
-    for (let i = 0; i <= options.length - 1; i++) {
-      errors.push(
-        ...validateObject(schema, options[i]).map((err) => applyPrefix(err, i))
-      );
-    }
-  } else {
-    errors = validateObject(schema, options);
-  }
-
-  if (errors.length > 0) {
-    throw new ValidationError(errors, schema, configuration);
-  }
-}
-
-/**
- * @param {Schema} schema
- * @param {Array<object> | object} options
- * @returns {Array<SchemaUtilErrorObject>}
- */
-function validateObject(schema, options) {
-  // Not need to cache, because `ajv@8` has built-in cache
-  const compiledSchema = getAjv().compile(schema);
-  const valid = compiledSchema(options);
-
-  if (valid) return [];
-
-  return compiledSchema.errors ? filterErrors(compiledSchema.errors) : [];
-}
-
-/**
- * @param {Array<ErrorObject>} errors
- * @returns {Array<SchemaUtilErrorObject>}
+ * @param {Array<ErrorObject>} errors array of error objects
+ * @returns {Array<SchemaUtilErrorObject>} filtered array of objects
  */
 function filterErrors(errors) {
   /** @type {Array<SchemaUtilErrorObject>} */
@@ -200,10 +163,9 @@ function filterErrors(errors) {
     newErrors = newErrors.filter((oldError) => {
       if (oldError.instancePath.includes(instancePath)) {
         if (oldError.children) {
-          children = children.concat(oldError.children.slice(0));
+          children = [...children, ...oldError.children];
         }
 
-        // eslint-disable-next-line no-undefined, no-param-reassign
         oldError.children = undefined;
         children.push(oldError);
 
@@ -223,10 +185,48 @@ function filterErrors(errors) {
   return newErrors;
 }
 
-export {
-  validate,
-  enableValidation,
-  disableValidation,
-  needValidate,
-  ValidationError,
-};
+/**
+ * @param {Schema} schema schema
+ * @param {Array<object> | object} options options
+ * @returns {Array<SchemaUtilErrorObject>} array of error objects
+ */
+function validateObject(schema, options) {
+  // Not need to cache, because `ajv@8` has built-in cache
+  const compiledSchema = getAjv().compile(schema);
+  const valid = compiledSchema(options);
+
+  if (valid) return [];
+
+  return compiledSchema.errors ? filterErrors(compiledSchema.errors) : [];
+}
+
+/**
+ * @param {Schema} schema schema
+ * @param {Array<object> | object} options options
+ * @param {ValidationErrorConfiguration=} configuration configuration
+ * @returns {void}
+ */
+function validate(schema, options, configuration) {
+  if (!needValidate()) {
+    return;
+  }
+
+  let errors = [];
+
+  if (Array.isArray(options)) {
+    for (let i = 0; i <= options.length - 1; i++) {
+      errors.push(
+        ...validateObject(schema, options[i]).map((err) => applyPrefix(err, i)),
+      );
+    }
+  } else {
+    errors = validateObject(schema, options);
+  }
+
+  if (errors.length > 0) {
+    throw new ValidationError(errors, schema, configuration);
+  }
+}
+
+export { validate, enableValidation, disableValidation, needValidate };
+export { default as ValidationError } from "./ValidationError";

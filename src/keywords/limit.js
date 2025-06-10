@@ -4,44 +4,47 @@
 /** @typedef {import("ajv").KeywordErrorDefinition} KeywordErrorDefinition */
 
 /**
- * @param {Ajv} ajv
- * @returns {Ajv}
+ * @param {Ajv} ajv ajv
+ * @returns {Ajv} ajv with limit keyword
  */
 function addLimitKeyword(ajv) {
-  // eslint-disable-next-line global-require
   const { _, str, KeywordCxt, nil, Name } = require("ajv");
 
   /**
-   * @param {Code | Name} x
-   * @returns {Code | Name}
+   * @param {Code | Name} nameOrCode name or code
+   * @returns {Code | Name} name or code
    */
-  function par(x) {
-    return x instanceof Name ? x : _`(${x})`;
+  function par(nameOrCode) {
+    return nameOrCode instanceof Name ? nameOrCode : _`(${nameOrCode})`;
   }
 
   /**
-   * @param {Code} op
-   * @returns {function(Code, Code): Code}
+   * @param {Code} op op
+   * @returns {(xValue: Code, yValue: Code) => Code} code
    */
   function mappend(op) {
-    return (x, y) =>
-      x === nil ? y : y === nil ? x : _`${par(x)} ${op} ${par(y)}`;
+    return (xValue, yValue) =>
+      xValue === nil
+        ? yValue
+        : yValue === nil
+          ? xValue
+          : _`${par(xValue)} ${op} ${par(yValue)}`;
   }
 
   const orCode = mappend(_`||`);
 
   // boolean OR (||) expression with the passed arguments
   /**
-   * @param {...Code} args
-   * @returns {Code}
+   * @param {...Code} args args
+   * @returns {Code} code
    */
   function or(...args) {
     return args.reduce(orCode);
   }
 
   /**
-   * @param {string | number} key
-   * @returns {Code}
+   * @param {string | number} key key
+   * @returns {Code} property
    */
   function getProperty(key) {
     return _`[${key}]`;
@@ -81,14 +84,15 @@ function addLimitKeyword(ajv) {
         if (!opts.validateFormats) return;
         const fCxt = new KeywordCxt(
           it,
+          // eslint-disable-next-line jsdoc/no-restricted-syntax
           /** @type {any} */
           (self.RULES.all.format).definition,
-          "format"
+          "format",
         );
 
         /**
-         * @param {Name} fmt
-         * @returns {Code}
+         * @param {Name} fmt fmt
+         * @returns {Code} code
          */
         function compareCode(fmt) {
           return _`${fmt}.compare(${data}, ${schemaCode}) ${
@@ -96,6 +100,9 @@ function addLimitKeyword(ajv) {
           } 0`;
         }
 
+        /**
+         * @returns {void}
+         */
         function validate$DataFormat() {
           const fmts = gen.scopeValue("formats", {
             ref: self.formats,
@@ -108,11 +115,14 @@ function addLimitKeyword(ajv) {
               _`typeof ${fmt} != "object"`,
               _`${fmt} instanceof RegExp`,
               _`typeof ${fmt}.compare != "function"`,
-              compareCode(fmt)
-            )
+              compareCode(fmt),
+            ),
           );
         }
 
+        /**
+         * @returns {void}
+         */
         function validateFormat() {
           const format = fCxt.schema;
           const fmtDef = self.formats[format];
@@ -127,7 +137,7 @@ function addLimitKeyword(ajv) {
             typeof fmtDef.compare !== "function"
           ) {
             throw new Error(
-              `"${keyword}": format "${format}" does not define "compare" function`
+              `"${keyword}": format "${format}" does not define "compare" function`,
             );
           }
 

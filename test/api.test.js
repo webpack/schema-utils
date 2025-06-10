@@ -17,7 +17,15 @@ describe("api", () => {
   });
 
   it("should work", () => {
-    validate(schema, { minimumWithTypeNumber: 5 });
+    let errored;
+
+    try {
+      validate(schema, { minimumWithTypeNumber: 5 });
+    } catch (err) {
+      errored = err;
+    }
+
+    expect(errored).toBeUndefined();
   });
 
   it("should work when options will be changed", () => {
@@ -57,7 +65,7 @@ describe("api", () => {
       validate(
         schemaTitle,
         { foo: "bar" },
-        { name: "NAME", baseDataPath: "BaseDataPath" }
+        { name: "NAME", baseDataPath: "BaseDataPath" },
       );
     } catch (error) {
       if (error.name !== "ValidationError") {
@@ -125,7 +133,7 @@ describe("api", () => {
             },
           },
         },
-        { c: { d: "e" } }
+        { c: { d: "e" } },
       );
     } catch (error) {
       if (error.name !== "ValidationError") {
@@ -144,7 +152,7 @@ describe("api", () => {
           properties: {},
           required: ["d", "e"],
         },
-        {}
+        {},
       );
     } catch (error) {
       if (error.name !== "ValidationError") {
@@ -163,7 +171,7 @@ describe("api", () => {
           properties: {},
           minProperties: 1,
         },
-        {}
+        {},
       );
     } catch (error) {
       if (error.name !== "ValidationError") {
@@ -192,7 +200,7 @@ describe("api", () => {
             },
           ],
         },
-        {}
+        {},
       );
     } catch (error) {
       if (error.name !== "ValidationError") {
@@ -306,7 +314,7 @@ describe("api", () => {
     }
   });
 
-  it.only("should allow to enable and disable validation using API", () => {
+  it("should allow to enable and disable validation using API", () => {
     process.env.SKIP_VALIDATION = "unknown";
     expect(needValidate()).toBe(true);
 
