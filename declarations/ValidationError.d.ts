@@ -68,7 +68,7 @@ declare class ValidationError extends Error {
   formatValidationError(error: SchemaUtilErrorObject): string;
   /**
    * @param {Array<SchemaUtilErrorObject>} errors errors
-   * @returns {string} formatted errros
+   * @returns {string} formatted errors
    */
   formatValidationErrors(errors: Array<SchemaUtilErrorObject>): string;
 }
