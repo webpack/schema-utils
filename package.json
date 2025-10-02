@@ -1,6 +1,6 @@
 {
   "name": "schema-utils",
-  "version": "4.3.2",
+  "version": "4.3.3",
   "description": "webpack Validation Utils",
   "license": "MIT",
   "repository": "webpack/schema-utils",

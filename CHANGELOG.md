@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.3.3](https://github.com/webpack/schema-utils/compare/v4.3.2...v4.3.3) (2025-10-02)
+
+
+### Bug Fixes
+
+* reexport `ValidationErrorConfiguration` type ([#204](https://github.com/webpack/schema-utils/issues/204)) ([49af922](https://github.com/webpack/schema-utils/commit/49af9226eb84c6b4d7d4d49d113a6f436dc214ed))
+
 ### [4.3.2](https://github.com/webpack/schema-utils/compare/v4.3.1...v4.3.2) (2025-04-22)
 
 
