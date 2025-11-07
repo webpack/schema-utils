@@ -297,7 +297,7 @@ Supported values (case insensitive):
 
 Please take a moment to read our contributing guidelines if you haven't yet done so.
 
-[CONTRIBUTING](./.github/CONTRIBUTING.md)
+[CONTRIBUTING](https://github.com/webpack/schema-utils?tab=contributing-ov-file#contributing)
 
 ## License
 
