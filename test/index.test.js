@@ -4,15 +4,17 @@ import { validate } from "../src";
 
 import schema from "./fixtures/schema.json";
 
+// eslint-disable-next-line jsdoc/reject-any-type
+/** @typedef {any} EXPECTED_ANY */
+
 /* eslint-disable jest/no-standalone-expect */
 
 describe("validation", () => {
-  // eslint-disable-next-line jsdoc/no-restricted-syntax
   /**
    * @param {string} name name
-   * @param {Record<string, any>} config config
+   * @param {Record<string, EXPECTED_ANY>} config config
    * @param {({ name: string })=} options options
-   * @param {Record<string, any>} testSchema test schema
+   * @param {Record<string, EXPECTED_ANY>} testSchema test schema
    */
   function createSuccessTestCase(
     name,
@@ -37,10 +39,9 @@ describe("validation", () => {
     });
   }
 
-  // eslint-disable-next-line jsdoc/no-restricted-syntax
   /**
    * @param {string} name name
-   * @param {Record<string, any>} config config
+   * @param {Record<string, EXPECTED_ANY>} config config
    * @param {(message: string) => void} fn fn
    * @param {{ baseDataPath?: string }} configuration configuration
    */
@@ -1732,9 +1733,7 @@ describe("validation", () => {
     "extending",
     {
       extending: {
-        // eslint-disable-next-line camelcase
         shipping_address: {
-          // eslint-disable-next-line camelcase
           street_address: "1600 Pennsylvania Avenue NW",
           city: "Washington",
           state: "DC",

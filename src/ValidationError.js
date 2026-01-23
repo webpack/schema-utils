@@ -8,6 +8,9 @@ import memoize from "./util/memorize";
 /** @typedef {import("./validate").PostFormatter} PostFormatter */
 /** @typedef {import("./validate").SchemaUtilErrorObject} SchemaUtilErrorObject */
 
+// eslint-disable-next-line jsdoc/reject-any-type
+/** @typedef {any} EXPECTED_ANY */
+
 /** @enum {number} */
 const SPECIFICITY = {
   type: 1,
@@ -53,9 +56,9 @@ function isNumeric(value) {
 }
 
 /**
- * @param {Array<SchemaUtilErrorObject>} array array of error objects
+ * @param {SchemaUtilErrorObject[]} array array of error objects
  * @param {(item: SchemaUtilErrorObject) => number} fn function
- * @returns {Array<SchemaUtilErrorObject>} filtered max
+ * @returns {SchemaUtilErrorObject[]} filtered max
  */
 function filterMax(array, fn) {
   const evaluatedMax = array.reduce((max, item) => Math.max(max, fn(item)), 0);
@@ -64,8 +67,8 @@ function filterMax(array, fn) {
 }
 
 /**
- * @param {Array<SchemaUtilErrorObject>} children children
- * @returns {Array<SchemaUtilErrorObject>} filtered children
+ * @param {SchemaUtilErrorObject[]} children children
+ * @returns {SchemaUtilErrorObject[]} filtered children
  */
 function filterChildren(children) {
   let newChildren = children;
@@ -94,7 +97,7 @@ function filterChildren(children) {
 /**
  * Extracts all refs from schema
  * @param {SchemaUtilErrorObject} error error object
- * @returns {Array<string>} extracted refs
+ * @returns {string[]} extracted refs
  */
 function extractRefs(error) {
   const { schema } = error;
@@ -108,8 +111,8 @@ function extractRefs(error) {
 
 /**
  * Find all children errors
- * @param {Array<SchemaUtilErrorObject>} children children
- * @param {Array<string>} schemaPaths schema paths
+ * @param {SchemaUtilErrorObject[]} children children
+ * @param {string[]} schemaPaths schema paths
  * @returns {number} returns index of first child
  */
 function findAllChildren(children, schemaPaths) {
@@ -140,8 +143,8 @@ function findAllChildren(children, schemaPaths) {
 
 /**
  * Groups children by their first level parent (assuming that error is root)
- * @param {Array<SchemaUtilErrorObject>} children children
- * @returns {Array<SchemaUtilErrorObject>} grouped children
+ * @param {SchemaUtilErrorObject[]} children children
+ * @returns {SchemaUtilErrorObject[]} grouped children
  */
 function groupChildrenByFirstChild(children) {
   const result = [];
@@ -188,7 +191,7 @@ function indent(str, prefix) {
 
 /**
  * @param {Schema} schema schema
- * @returns {schema is (Schema & {not: Schema})} true when `not` in schema, otherwise false
+ * @returns {schema is (Schema & { not: Schema })} true when `not` in schema, otherwise false
  */
 function hasNotInSchema(schema) {
   return Boolean(schema.not);
@@ -284,9 +287,8 @@ function canApplyNot(schema) {
   );
 }
 
-// eslint-disable-next-line jsdoc/no-restricted-syntax
 /**
- * @param {any} maybeObj maybe obj
+ * @param {EXPECTED_ANY} maybeObj maybe obj
  * @returns {boolean} true when value is object, otherwise false
  */
 function isObject(maybeObj) {
@@ -314,7 +316,7 @@ function likeArray(schema) {
 }
 
 /**
- * @param {Schema & {patternRequired?: Array<string>}} schema schema
+ * @param {Schema & { patternRequired?: string[] }} schema schema
  * @returns {boolean} true when schema type is object, otherwise false
  */
 function likeObject(schema) {
@@ -375,7 +377,7 @@ function getSchemaNonTypes(schema) {
 }
 
 /**
- * @param {Array<string>} hints hints
+ * @param {string[]} hints hints
  * @returns {string} formatted hints
  */
 function formatHints(hints) {
@@ -405,7 +407,7 @@ function getHints(schema, logic) {
 
 class ValidationError extends Error {
   /**
-   * @param {Array<SchemaUtilErrorObject>} errors array of error objects
+   * @param {SchemaUtilErrorObject[]} errors array of error objects
    * @param {Schema} schema schema
    * @param {ValidationErrorConfiguration} configuration configuration
    */
@@ -414,7 +416,7 @@ class ValidationError extends Error {
 
     /** @type {string} */
     this.name = "ValidationError";
-    /** @type {Array<SchemaUtilErrorObject>} */
+    /** @type {SchemaUtilErrorObject[]} */
     this.errors = errors;
     /** @type {Schema} */
     this.schema = schema;
@@ -453,8 +455,6 @@ class ValidationError extends Error {
 
     /** @type {string} */
     this.message = `${header}${this.formatValidationErrors(errors)}`;
-
-    Error.captureStackTrace(this, this.constructor);
   }
 
   /**
@@ -482,7 +482,7 @@ class ValidationError extends Error {
   /**
    * @param {Schema} schema schema
    * @param {boolean} logic logic
-   * @param {Array<object>} prevSchemas prev schemas
+   * @param {object[]} prevSchemas prev schemas
    * @returns {string} formatted schema
    */
   formatSchema(schema, logic = true, prevSchemas = []) {
@@ -525,11 +525,11 @@ class ValidationError extends Error {
     }
 
     if (
-      /** @type {Schema & {instanceof: string | Array<string>}} */
+      /** @type {Schema & { instanceof: string | string[] }} */
       (schema).instanceof
     ) {
       const { instanceof: value } =
-        /** @type {Schema & {instanceof: string | Array<string>}} */ (schema);
+        /** @type {Schema & { instanceof: string | string[] }} */ (schema);
 
       const values = !Array.isArray(value) ? [value] : value;
 
@@ -545,8 +545,7 @@ class ValidationError extends Error {
     }
 
     if (schema.enum) {
-      // eslint-disable-next-line jsdoc/no-restricted-syntax
-      const enumValues = /** @type {Array<any>} */ (schema.enum)
+      const enumValues = /** @type {EXPECTED_ANY[]} */ (schema.enum)
         .map((item) => {
           if (item === null && schema.undefinedAsNull) {
             return `${JSON.stringify(item)} | undefined`;
@@ -564,19 +563,19 @@ class ValidationError extends Error {
     }
 
     if (schema.oneOf) {
-      return /** @type {Array<Schema>} */ (schema.oneOf)
+      return /** @type {Schema[]} */ (schema.oneOf)
         .map((item) => formatInnerSchema(item, true))
         .join(" | ");
     }
 
     if (schema.anyOf) {
-      return /** @type {Array<Schema>} */ (schema.anyOf)
+      return /** @type {Schema[]} */ (schema.anyOf)
         .map((item) => formatInnerSchema(item, true))
         .join(" | ");
     }
 
     if (schema.allOf) {
-      return /** @type {Array<Schema>} */ (schema.allOf)
+      return /** @type {Schema[]} */ (schema.allOf)
         .map((item) => formatInnerSchema(item, true))
         .join(" & ");
     }
@@ -658,7 +657,7 @@ class ValidationError extends Error {
       if (schema.items) {
         if (Array.isArray(schema.items) && schema.items.length > 0) {
           items = `${
-            /** @type {Array<Schema>} */ (schema.items)
+            /** @type {Schema[]} */ (schema.items)
               .map((item) => formatInnerSchema(item))
               .join(", ")
           }`;
@@ -751,7 +750,7 @@ class ValidationError extends Error {
         /** @type {string[]} */
         (schema.required ? schema.required : []);
       const allProperties = [
-        ...new Set(/** @type {Array<string>} */ ([...required, ...properties])),
+        ...new Set(/** @type {string[]} */ ([...required, ...properties])),
       ];
 
       const objectStructure = [
@@ -773,7 +772,7 @@ class ValidationError extends Error {
       ].join(", ");
 
       const { dependencies, propertyNames, patternRequired } =
-        /** @type {Schema & {patternRequired?: Array<string>;}} */ (schema);
+        /** @type {Schema & { patternRequired?: string[] }} */ (schema);
 
       if (dependencies) {
         for (const dependencyName of Object.keys(dependencies)) {
@@ -841,7 +840,7 @@ class ValidationError extends Error {
 
   /**
    * @param {Schema=} schemaPart schema part
-   * @param {(boolean | Array<string>)=} additionalPath additional path
+   * @param {(boolean | string[])=} additionalPath additional path
    * @param {boolean=} needDot true when need dot
    * @param {boolean=} logic logic
    * @returns {string} schema part text
@@ -919,7 +918,7 @@ class ValidationError extends Error {
 
     const splittedInstancePath = errorInstancePath.split("/");
     /**
-     * @type {Array<string>}
+     * @type {string[]}
      */
     const defaultValue = [];
     const prettyInstancePath = splittedInstancePath
@@ -1149,8 +1148,7 @@ class ValidationError extends Error {
         const { i } = params;
 
         return `${instancePath} should not contain the item '${
-          // eslint-disable-next-line jsdoc/no-restricted-syntax
-          /** @type {{ data: Array<any> }} * */
+          /** @type {{ data: EXPECTED_ANY[] }} * */
           (error).data[i]
         }' twice${getSchemaNonTypes(
           parentSchema,
@@ -1180,8 +1178,8 @@ class ValidationError extends Error {
           Boolean(
             /** @type {Schema} */
             (parentSchema).properties &&
-              /** @type {Schema} */
-              (parentSchema).properties[missingProperty],
+            /** @type {Schema} */
+            (parentSchema).properties[missingProperty],
           );
 
         return `${instancePath} misses the property '${missingProperty}'${getSchemaNonTypes(
@@ -1367,7 +1365,7 @@ class ValidationError extends Error {
   }
 
   /**
-   * @param {Array<SchemaUtilErrorObject>} errors errors
+   * @param {SchemaUtilErrorObject[]} errors errors
    * @returns {string} formatted errors
    */
   formatValidationErrors(errors) {

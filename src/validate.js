@@ -62,7 +62,7 @@ const getAjv = memoize(() => {
 
 /** @typedef {(JSONSchema4 | JSONSchema6 | JSONSchema7) & ExtendedSchema} Schema */
 
-/** @typedef {ErrorObject & { children?: Array<ErrorObject> }} SchemaUtilErrorObject */
+/** @typedef {ErrorObject & { children?: ErrorObject[] }} SchemaUtilErrorObject */
 
 /**
  * @callback PostFormatter
@@ -148,16 +148,16 @@ function needValidate() {
 }
 
 /**
- * @param {Array<ErrorObject>} errors array of error objects
- * @returns {Array<SchemaUtilErrorObject>} filtered array of objects
+ * @param {ErrorObject[]} errors array of error objects
+ * @returns {SchemaUtilErrorObject[]} filtered array of objects
  */
 function filterErrors(errors) {
-  /** @type {Array<SchemaUtilErrorObject>} */
+  /** @type {SchemaUtilErrorObject[]} */
   let newErrors = [];
 
-  for (const error of /** @type {Array<SchemaUtilErrorObject>} */ (errors)) {
+  for (const error of /** @type {SchemaUtilErrorObject[]} */ (errors)) {
     const { instancePath } = error;
-    /** @type {Array<SchemaUtilErrorObject>} */
+    /** @type {SchemaUtilErrorObject[]} */
     let children = [];
 
     newErrors = newErrors.filter((oldError) => {
@@ -187,8 +187,8 @@ function filterErrors(errors) {
 
 /**
  * @param {Schema} schema schema
- * @param {Array<object> | object} options options
- * @returns {Array<SchemaUtilErrorObject>} array of error objects
+ * @param {object[] | object} options options
+ * @returns {SchemaUtilErrorObject[]} array of error objects
  */
 function validateObject(schema, options) {
   // Not need to cache, because `ajv@8` has built-in cache
@@ -202,7 +202,7 @@ function validateObject(schema, options) {
 
 /**
  * @param {Schema} schema schema
- * @param {Array<object> | object} options options
+ * @param {object[] | object} options options
  * @param {ValidationErrorConfiguration=} configuration configuration
  * @returns {void}
  */
@@ -228,5 +228,5 @@ function validate(schema, options, configuration) {
   }
 }
 
-export { validate, enableValidation, disableValidation, needValidate };
+export { disableValidation, enableValidation, needValidate, validate };
 export { default as ValidationError } from "./ValidationError";

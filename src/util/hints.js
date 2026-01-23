@@ -7,6 +7,46 @@ const Range = require("./Range");
  * @param {boolean} logic logic
  * @returns {string[]} array of hints
  */
+module.exports.numberHints = function numberHints(schema, logic) {
+  const hints = [schema.type === "integer" ? "integer" : "number"];
+  const range = new Range();
+
+  if (typeof schema.minimum === "number") {
+    range.left(schema.minimum);
+  }
+
+  if (typeof schema.exclusiveMinimum === "number") {
+    range.left(schema.exclusiveMinimum, true);
+  }
+
+  if (typeof schema.maximum === "number") {
+    range.right(schema.maximum);
+  }
+
+  if (typeof schema.exclusiveMaximum === "number") {
+    range.right(schema.exclusiveMaximum, true);
+  }
+
+  const rangeFormat = range.format(logic);
+
+  if (rangeFormat) {
+    hints.push(rangeFormat);
+  }
+
+  if (typeof schema.multipleOf === "number") {
+    hints.push(
+      `should${logic ? "" : " not"} be multiple of ${schema.multipleOf}`,
+    );
+  }
+
+  return hints;
+};
+
+/**
+ * @param {Schema} schema schema
+ * @param {boolean} logic logic
+ * @returns {string[]} array of hints
+ */
 module.exports.stringHints = function stringHints(schema, logic) {
   const hints = [];
   let type = "string";
@@ -77,44 +117,4 @@ module.exports.stringHints = function stringHints(schema, logic) {
   }
 
   return [type, ...hints];
-};
-
-/**
- * @param {Schema} schema schema
- * @param {boolean} logic logic
- * @returns {string[]} array of hints
- */
-module.exports.numberHints = function numberHints(schema, logic) {
-  const hints = [schema.type === "integer" ? "integer" : "number"];
-  const range = new Range();
-
-  if (typeof schema.minimum === "number") {
-    range.left(schema.minimum);
-  }
-
-  if (typeof schema.exclusiveMinimum === "number") {
-    range.left(schema.exclusiveMinimum, true);
-  }
-
-  if (typeof schema.maximum === "number") {
-    range.right(schema.maximum);
-  }
-
-  if (typeof schema.exclusiveMaximum === "number") {
-    range.right(schema.exclusiveMaximum, true);
-  }
-
-  const rangeFormat = range.format(logic);
-
-  if (rangeFormat) {
-    hints.push(rangeFormat);
-  }
-
-  if (typeof schema.multipleOf === "number") {
-    hints.push(
-      `should${logic ? "" : " not"} be multiple of ${schema.multipleOf}`,
-    );
-  }
-
-  return hints;
 };

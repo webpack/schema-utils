@@ -75,7 +75,7 @@ class Range {
   }
 
   /**
-   * @param {Array<RangeValue>} values values
+   * @param {RangeValue[]} values values
    * @param {boolean} logic is not logic applied
    * @returns {RangeValue} computed value and it's exclusive flag
    */
@@ -103,9 +103,9 @@ class Range {
   }
 
   constructor() {
-    /** @type {Array<RangeValue>} */
+    /** @type {RangeValue[]} */
     this._left = [];
-    /** @type {Array<RangeValue>} */
+    /** @type {RangeValue[]} */
     this._right = [];
   }
 
