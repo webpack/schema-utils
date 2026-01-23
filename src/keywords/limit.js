@@ -8,7 +8,7 @@
  * @returns {Ajv} ajv with limit keyword
  */
 function addLimitKeyword(ajv) {
-  const { _, str, KeywordCxt, nil, Name } = require("ajv");
+  const { KeywordCxt, Name, _, nil, str } = require("ajv");
 
   /**
    * @param {Code | Name} nameOrCode name or code
@@ -84,7 +84,7 @@ function addLimitKeyword(ajv) {
         if (!opts.validateFormats) return;
         const fCxt = new KeywordCxt(
           it,
-          // eslint-disable-next-line jsdoc/no-restricted-syntax
+          // eslint-disable-next-line jsdoc/reject-any-type
           /** @type {any} */
           (self.RULES.all.format).definition,
           "format",

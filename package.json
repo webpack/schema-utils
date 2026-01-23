@@ -2,20 +2,24 @@
   "name": "schema-utils",
   "version": "4.3.3",
   "description": "webpack Validation Utils",
-  "license": "MIT",
-  "repository": "webpack/schema-utils",
-  "author": "webpack Contrib (https://github.com/webpack-contrib)",
+  "keywords": [
+    "webpack"
+  ],
   "homepage": "https://github.com/webpack/schema-utils",
   "bugs": "https://github.com/webpack/schema-utils/issues",
+  "repository": "webpack/schema-utils",
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/webpack"
   },
+  "license": "MIT",
+  "author": "webpack Contrib (https://github.com/webpack-contrib)",
   "main": "dist/index.js",
   "types": "declarations/index.d.ts",
-  "engines": {
-    "node": ">= 10.13.0"
-  },
+  "files": [
+    "dist",
+    "declarations"
+  ],
   "scripts": {
     "start": "npm run build -- -w",
     "clean": "del-cli dist declarations",
@@ -30,8 +34,8 @@
     "lint:types": "tsc --pretty --noEmit",
     "lint": "npm-run-all lint:code lint:types fmt:check",
     "fmt": "npm run fmt:check -- --write",
-    "fix:js": "npm run lint:code -- --fix",
-    "fix": "npm-run-all fix:js fmt",
+    "fix:code": "npm run lint:code -- --fix",
+    "fix": "npm-run-all fix:code fmt",
     "test:only": "jest",
     "test:watch": "npm run test:only -- --watch",
     "test:coverage": "npm run test:only -- --collectCoverageFrom=\"src/**/*.js\" --coverage",
@@ -40,10 +44,6 @@
     "prepare": "npm run build && husky install",
     "release": "standard-version"
   },
-  "files": [
-    "dist",
-    "declarations"
-  ],
   "dependencies": {
     "@types/json-schema": "^7.0.9",
     "ajv": "^8.9.0",
@@ -51,28 +51,17 @@
     "ajv-keywords": "^5.1.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.28.0",
-    "@eslint/markdown": "^6.5.0",
     "@babel/cli": "^7.17.0",
     "@babel/core": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
     "@commitlint/cli": "^17.6.1",
     "@commitlint/config-conventional": "^16.0.0",
     "@types/node": "^22.15.19",
-    "@stylistic/eslint-plugin": "^4.4.1",
     "babel-jest": "^27.4.6",
     "del": "^6.0.0",
     "del-cli": "^4.0.1",
-    "globals": "^16.2.0",
     "eslint": "^9.28.0",
     "eslint-config-webpack": "^4.0.2",
-    "eslint-config-prettier": "^10.1.5",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-jest": "^28.12.0",
-    "eslint-plugin-jsdoc": "^50.7.1",
-    "eslint-plugin-n": "^17.19.0",
-    "eslint-plugin-prettier": "^5.4.1",
-    "eslint-plugin-unicorn": "^59.0.1",
     "husky": "^7.0.4",
     "jest": "^27.4.7",
     "lint-staged": "^16.0.0",
@@ -83,7 +72,7 @@
     "typescript": "^5.8.3",
     "webpack": "^5.99.8"
   },
-  "keywords": [
-    "webpack"
-  ]
+  "engines": {
+    "node": ">= 10.13.0"
+  }
 }

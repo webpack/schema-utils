@@ -6,17 +6,17 @@
 /** @typedef {import("./validate").ValidationErrorConfiguration} ValidationErrorConfiguration */
 
 const {
-  validate,
   ValidationError,
-  enableValidation,
   disableValidation,
+  enableValidation,
   needValidate,
+  validate,
 } = require("./validate");
 
 module.exports = {
-  validate,
   ValidationError,
-  enableValidation,
   disableValidation,
+  enableValidation,
   needValidate,
+  validate,
 };

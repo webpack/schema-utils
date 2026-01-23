@@ -45,8 +45,8 @@ npm install schema-utils
 ```
 
 ```js
-import schema from "./path/to/schema.json";
 import { validate } from "schema-utils";
+import schema from "./path/to/schema.json";
 
 const options = { option: true };
 const configuration = { name: "Loader Name/Plugin Name/Name" };
@@ -82,8 +82,8 @@ Type: `Object`
 Object with options.
 
 ```js
-import schema from "./path/to/schema.json";
 import { validate } from "schema-utils";
+import schema from "./path/to/schema.json";
 
 const options = { foo: "bar" };
 
@@ -122,8 +122,8 @@ Default: `"Object"`
 Allow to setup name in validation errors.
 
 ```js
-import schema from "./path/to/schema.json";
 import { validate } from "schema-utils";
+import schema from "./path/to/schema.json";
 
 const options = { foo: "bar" };
 
@@ -143,8 +143,8 @@ Default: `"configuration"`
 Allow to setup base data path in validation errors.
 
 ```js
-import schema from "./path/to/schema.json";
 import { validate } from "schema-utils";
+import schema from "./path/to/schema.json";
 
 const options = { foo: "bar" };
 
@@ -164,8 +164,8 @@ Default: `undefined`
 Allow to reformat errors.
 
 ```js
-import schema from "./path/to/schema.json";
 import { validate } from "schema-utils";
+import schema from "./path/to/schema.json";
 
 const options = { foo: "bar" };
 
@@ -219,10 +219,9 @@ Invalid options object. MyPlugin has been initialized using an options object th
 ### `Loader`
 
 ```js
+import schema from "path/to/schema.json";
 import { getOptions } from "loader-utils";
 import { validate } from "schema-utils";
-
-import schema from "path/to/schema.json";
 
 function loader(src, map) {
   const options = getOptions(this);
@@ -241,9 +240,8 @@ export default loader;
 ### `Plugin`
 
 ```js
-import { validate } from "schema-utils";
-
 import schema from "path/to/schema.json";
+import { validate } from "schema-utils";
 
 class Plugin {
   constructor(options) {

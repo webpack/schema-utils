@@ -32,7 +32,7 @@ export type ExtendedSchema = {
 export type Extend = ExtendedSchema;
 export type Schema = (JSONSchema4 | JSONSchema6 | JSONSchema7) & ExtendedSchema;
 export type SchemaUtilErrorObject = ErrorObject & {
-  children?: Array<ErrorObject>;
+  children?: ErrorObject[];
 };
 export type PostFormatter = (
   formattedError: string,
@@ -53,25 +53,25 @@ export type ValidationErrorConfiguration = {
   postFormatter?: PostFormatter | undefined;
 };
 /**
- * @param {Schema} schema schema
- * @param {Array<object> | object} options options
- * @param {ValidationErrorConfiguration=} configuration configuration
  * @returns {void}
  */
-export function validate(
-  schema: Schema,
-  options: Array<object> | object,
-  configuration?: ValidationErrorConfiguration | undefined,
-): void;
+export function disableValidation(): void;
 /**
  * @returns {void}
  */
 export function enableValidation(): void;
 /**
- * @returns {void}
- */
-export function disableValidation(): void;
-/**
  * @returns {boolean} true when need validate, otherwise false
  */
 export function needValidate(): boolean;
+/**
+ * @param {Schema} schema schema
+ * @param {object[] | object} options options
+ * @param {ValidationErrorConfiguration=} configuration configuration
+ * @returns {void}
+ */
+export function validate(
+  schema: Schema,
+  options: object[] | object,
+  configuration?: ValidationErrorConfiguration | undefined,
+): void;

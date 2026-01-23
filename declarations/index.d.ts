@@ -5,15 +5,15 @@ export type JSONSchema7 = import("./validate").JSONSchema7;
 export type ExtendedSchema = import("./validate").ExtendedSchema;
 export type ValidationErrorConfiguration =
   import("./validate").ValidationErrorConfiguration;
-import { validate } from "./validate";
 import { ValidationError } from "./validate";
-import { enableValidation } from "./validate";
 import { disableValidation } from "./validate";
+import { enableValidation } from "./validate";
 import { needValidate } from "./validate";
+import { validate } from "./validate";
 export {
-  validate,
   ValidationError,
-  enableValidation,
   disableValidation,
+  enableValidation,
   needValidate,
+  validate,
 };

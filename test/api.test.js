@@ -1,14 +1,14 @@
 import {
-  validate,
   ValidationError,
-  enableValidation,
   disableValidation,
+  enableValidation,
   needValidate,
+  validate,
 } from "../src/index";
 
-import schema from "./fixtures/schema.json";
-import schemaTitle from "./fixtures/schema-title.json";
 import schemaTitleBrone from "./fixtures/schema-title-broken.json";
+import schemaTitle from "./fixtures/schema-title.json";
+import schema from "./fixtures/schema.json";
 
 describe("api", () => {
   it("should export validate and ValidateError", () => {
