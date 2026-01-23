@@ -47,15 +47,15 @@ declare class Range {
     logic: boolean,
   ): string;
   /**
-   * @param {Array<RangeValue>} values values
+   * @param {RangeValue[]} values values
    * @param {boolean} logic is not logic applied
    * @returns {RangeValue} computed value and it's exclusive flag
    */
-  static getRangeValue(values: Array<RangeValue>, logic: boolean): RangeValue;
-  /** @type {Array<RangeValue>} */
-  _left: Array<RangeValue>;
-  /** @type {Array<RangeValue>} */
-  _right: Array<RangeValue>;
+  static getRangeValue(values: RangeValue[], logic: boolean): RangeValue;
+  /** @type {RangeValue[]} */
+  _left: RangeValue[];
+  /** @type {RangeValue[]} */
+  _right: RangeValue[];
   /**
    * @param {number} value value
    * @param {boolean=} exclusive true when exclusive, otherwise false

@@ -6,19 +6,20 @@ export type ValidationErrorConfiguration =
   import("./validate").ValidationErrorConfiguration;
 export type PostFormatter = import("./validate").PostFormatter;
 export type SchemaUtilErrorObject = import("./validate").SchemaUtilErrorObject;
+export type EXPECTED_ANY = any;
 declare class ValidationError extends Error {
   /**
-   * @param {Array<SchemaUtilErrorObject>} errors array of error objects
+   * @param {SchemaUtilErrorObject[]} errors array of error objects
    * @param {Schema} schema schema
    * @param {ValidationErrorConfiguration} configuration configuration
    */
   constructor(
-    errors: Array<SchemaUtilErrorObject>,
+    errors: SchemaUtilErrorObject[],
     schema: Schema,
     configuration?: ValidationErrorConfiguration,
   );
-  /** @type {Array<SchemaUtilErrorObject>} */
-  errors: Array<SchemaUtilErrorObject>;
+  /** @type {SchemaUtilErrorObject[]} */
+  errors: SchemaUtilErrorObject[];
   /** @type {Schema} */
   schema: Schema;
   /** @type {string} */
@@ -35,24 +36,20 @@ declare class ValidationError extends Error {
   /**
    * @param {Schema} schema schema
    * @param {boolean} logic logic
-   * @param {Array<object>} prevSchemas prev schemas
+   * @param {object[]} prevSchemas prev schemas
    * @returns {string} formatted schema
    */
-  formatSchema(
-    schema: Schema,
-    logic?: boolean,
-    prevSchemas?: Array<object>,
-  ): string;
+  formatSchema(schema: Schema, logic?: boolean, prevSchemas?: object[]): string;
   /**
    * @param {Schema=} schemaPart schema part
-   * @param {(boolean | Array<string>)=} additionalPath additional path
+   * @param {(boolean | string[])=} additionalPath additional path
    * @param {boolean=} needDot true when need dot
    * @param {boolean=} logic logic
    * @returns {string} schema part text
    */
   getSchemaPartText(
     schemaPart?: Schema | undefined,
-    additionalPath?: (boolean | Array<string>) | undefined,
+    additionalPath?: (boolean | string[]) | undefined,
     needDot?: boolean | undefined,
     logic?: boolean | undefined,
   ): string;
@@ -67,8 +64,8 @@ declare class ValidationError extends Error {
    */
   formatValidationError(error: SchemaUtilErrorObject): string;
   /**
-   * @param {Array<SchemaUtilErrorObject>} errors errors
+   * @param {SchemaUtilErrorObject[]} errors errors
    * @returns {string} formatted errors
    */
-  formatValidationErrors(errors: Array<SchemaUtilErrorObject>): string;
+  formatValidationErrors(errors: SchemaUtilErrorObject[]): string;
 }
