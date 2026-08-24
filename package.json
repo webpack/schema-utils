@@ -46,13 +46,13 @@
   },
   "dependencies": {
     "@types/json-schema": "^7.0.9",
-    "ajv": "^8.9.0",
+    "ajv": "^8.18.0",
     "ajv-formats": "^2.1.1",
     "ajv-keywords": "^5.1.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.0",
-    "@babel/core": "^7.17.0",
+    "@babel/core": "^7.29.6",
     "@babel/preset-env": "^7.16.11",
     "@commitlint/cli": "^17.6.1",
     "@commitlint/config-conventional": "^16.0.0",
