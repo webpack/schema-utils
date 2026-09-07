@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+All notable changes to this project will be documented in this file.
 
 ### [4.3.3](https://github.com/webpack/schema-utils/compare/v4.3.2...v4.3.3) (2025-10-02)
 
