@@ -206,6 +206,35 @@ function indent(str, prefix) {
     : str.split("\n").join(separator);
 }
 
+// A list of errors longer than this is not readable anyway and formatting it can take a lot of
+// memory, i.e. a configuration with 200000 invalid values used to produce a 20MB long message
+const MAX_LISTED_ERRORS = 100;
+
+/**
+ * Formats a list of errors, listing at most `MAX_LISTED_ERRORS` of them and only counting the rest.
+ * @param {SchemaUtilErrorObject[]} errors errors
+ * @param {string} bullet marker put in front of every entry
+ * @param {(error: SchemaUtilErrorObject) => string} format formats a single error
+ * @returns {string} formatted list of errors
+ */
+function formatErrorList(errors, bullet, format) {
+  const listed = Math.min(errors.length, MAX_LISTED_ERRORS);
+  /** @type {string[]} */
+  const lines = [];
+
+  for (let i = 0; i < listed; i++) {
+    lines.push(`${bullet}${indent(format(errors[i]), "   ")}`);
+  }
+
+  const rest = errors.length - listed;
+
+  if (rest > 0) {
+    lines.push(`${bullet}and ${rest} more error${rest > 1 ? "s" : ""}`);
+  }
+
+  return lines.join("\n");
+}
+
 /**
  * @param {Schema} schema schema
  * @returns {schema is (Schema & { not: Schema })} true when `not` in schema, otherwise false
@@ -404,6 +433,55 @@ function formatHints(hints) {
 const getUtilHints = memoize(() => require("./util/hints"));
 
 /**
+ * Replaces the lazy `message` accessor by a plain property, so that the message is built once and
+ * behaves like the `message` of any other error afterwards.
+ * @param {ValidationError} error error
+ * @param {string} message message
+ * @returns {string} message
+ */
+function setMessage(error, message) {
+  Object.defineProperty(error, "message", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: message,
+  });
+
+  return message;
+}
+
+// One shared descriptor, defining the accessor per error would allocate a context and two
+// functions for every error object
+const LAZY_MESSAGE = {
+  configurable: true,
+  enumerable: true,
+  /**
+   * @this {ValidationError}
+   * @returns {string} message
+   */
+  get() {
+    const header = `Invalid ${this.baseDataPath} object. ${
+      this.headerName
+    } has been initialized using ${getArticle(this.baseDataPath)} ${
+      this.baseDataPath
+    } object that does not match the API schema.\n`;
+
+    return setMessage(
+      this,
+      `${header}${this.formatValidationErrors(this.errors)}`,
+    );
+  },
+  /**
+   * @this {ValidationError}
+   * @param {string} value value
+   * @returns {void}
+   */
+  set(value) {
+    setMessage(this, value);
+  },
+};
+
+/**
  * @param {Schema} schema schema
  * @param {boolean} logic logic
  * @returns {string[]} array of hints
@@ -464,14 +542,9 @@ class ValidationError extends Error {
     /** @type {PostFormatter | null} */
     this.postFormatter = configuration.postFormatter || null;
 
-    const header = `Invalid ${this.baseDataPath} object. ${
-      this.headerName
-    } has been initialized using ${getArticle(this.baseDataPath)} ${
-      this.baseDataPath
-    } object that does not match the API schema.\n`;
-
-    /** @type {string} */
-    this.message = `${header}${this.formatValidationErrors(errors)}`;
+    // Formatting the errors is by far the most expensive part of an invalid configuration and
+    // consumers that only look at `errors` never need it, so the message is built on first access
+    Object.defineProperty(this, "message", LAZY_MESSAGE);
   }
 
   /**
@@ -1328,16 +1401,11 @@ class ValidationError extends Error {
 
           return `${instancePath} should be one of these:\n${this.getSchemaPartText(
             parentSchema,
-          )}\nDetails:\n${filteredChildren
-            .map(
-              /**
-               * @param {SchemaUtilErrorObject} nestedError nested error
-               * @returns {string} formatted errors
-               */
-              (nestedError) =>
-                ` * ${indent(this.formatValidationError(nestedError), "   ")}`,
-            )
-            .join("\n")}`;
+          )}\nDetails:\n${formatErrorList(
+            filteredChildren,
+            " * ",
+            (nestedError) => this.formatValidationError(nestedError),
+          )}`;
         }
 
         return `${instancePath} should be one of these:\n${this.getSchemaPartText(
@@ -1380,17 +1448,13 @@ class ValidationError extends Error {
    * @returns {string} formatted errors
    */
   formatValidationErrors(errors) {
-    return errors
-      .map((error) => {
-        let formattedError = this.formatValidationError(error);
+    return formatErrorList(errors, " - ", (error) => {
+      const formattedError = this.formatValidationError(error);
 
-        if (this.postFormatter) {
-          formattedError = this.postFormatter(formattedError, error);
-        }
-
-        return ` - ${indent(formattedError, "   ")}`;
-      })
-      .join("\n");
+      return this.postFormatter
+        ? this.postFormatter(formattedError, error)
+        : formattedError;
+    });
   }
 }
 
