@@ -47,12 +47,14 @@ const SPECIFICITY = {
   absolutePath: 2,
 };
 
+const IS_NUMERIC = /^-?\d+$/;
+
 /**
  * @param {string} value value
  * @returns {value is number} true when is number, otherwise false
  */
 function isNumeric(value) {
-  return /^-?\d+$/.test(value);
+  return IS_NUMERIC.test(value);
 }
 
 /**
@@ -184,12 +186,24 @@ function groupChildrenByFirstChild(children) {
 }
 
 /**
+ * Indents every line of `str` but the first one, a trailing new line is left alone.
  * @param {string} str string
  * @param {string} prefix prefix
  * @returns {string} string with indent and prefix
  */
 function indent(str, prefix) {
-  return str.replace(/\n(?!$)/g, `\n${prefix}`);
+  const firstNewLine = str.indexOf("\n");
+
+  // Most formatted errors are a single line
+  if (firstNewLine === -1 || firstNewLine === str.length - 1) {
+    return str;
+  }
+
+  const separator = `\n${prefix}`;
+
+  return str.charCodeAt(str.length - 1) === 10 /* \n */
+    ? `${str.slice(0, -1).split("\n").join(separator)}\n`
+    : str.split("\n").join(separator);
 }
 
 /**
@@ -919,27 +933,21 @@ class ValidationError extends Error {
   formatValidationError(error) {
     const { keyword, instancePath: errorInstancePath } = error;
 
-    const splittedInstancePath = errorInstancePath.split("/");
-    /**
-     * @type {string[]}
-     */
-    const defaultValue = [];
-    const prettyInstancePath = splittedInstancePath
-      .reduce((acc, val) => {
-        if (val.length > 0) {
-          if (isNumeric(val)) {
-            acc.push(`[${val}]`);
-          } else if (/^\[/.test(val)) {
-            acc.push(val);
-          } else {
-            acc.push(`.${val}`);
-          }
-        }
+    let instancePath = this.baseDataPath;
 
-        return acc;
-      }, defaultValue)
-      .join("");
-    const instancePath = `${this.baseDataPath}${prettyInstancePath}`;
+    for (const part of errorInstancePath.split("/")) {
+      if (part.length === 0) {
+        continue;
+      }
+
+      if (isNumeric(part)) {
+        instancePath += `[${part}]`;
+      } else if (part.charCodeAt(0) === 91 /* [ */) {
+        instancePath += part;
+      } else {
+        instancePath += `.${part}`;
+      }
+    }
 
     // const { keyword, instancePath: errorInstancePath } = error;
     // const instancePath = `${this.baseDataPath}${errorInstancePath.replace(/\//g, '.')}`;

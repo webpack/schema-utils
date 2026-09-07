@@ -62,9 +62,9 @@ export type ErrorPathNode = {
    */
   indexes: number[];
   /**
-   * nodes of nested instance paths, keyed by json pointer segment
+   * nodes of nested instance paths, keyed by json pointer segment, created on demand
    */
-  children: Map<string, ErrorPathNode>;
+  children: Map<string, ErrorPathNode> | undefined;
   /**
    * amount of errors stored in this node and in all its descendants
    */

@@ -140,6 +140,24 @@ describe("filter errors", () => {
     expect(elapsed).toBeLessThan(5000);
   }, 30000);
 
+  // The errors of each entry used to be spread into the result with `push(...errors)`, which
+  // overflows the call stack for a large amount of errors
+  it("should report a large amount of errors for an array of options", () => {
+    const schema = {
+      type: "object",
+      properties: {
+        list: { type: "array", items: { type: "string" } },
+      },
+    };
+
+    const options = [{ list: Array.from({ length: 200000 }, () => 1) }];
+
+    const errors = getErrors(schema, options);
+
+    expect(errors).toHaveLength(200000);
+    expect(errors[0].instancePath).toBe("[0]/list/0");
+  }, 30000);
+
   it("should filter a large amount of errors with distinct instance paths in a reasonable time", () => {
     const schema = {
       type: "object",

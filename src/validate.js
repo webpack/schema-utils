@@ -123,6 +123,9 @@ function disableValidation() {
   }
 }
 
+const IS_TRUTHY = /^(?:y|yes|true|1|on)$/i;
+const IS_FALSY = /^(?:n|no|false|0|off)$/i;
+
 // Check if we need to confirm
 /**
  * @returns {boolean} true when need validate, otherwise false
@@ -132,14 +135,18 @@ function needValidate() {
     return false;
   }
 
-  if (process && process.env && process.env.SKIP_VALIDATION) {
-    const value = process.env.SKIP_VALIDATION.trim();
+  // Reading a variable from `process.env` is expensive and this runs on every validation,
+  // so it is read only once
+  const value = process && process.env && process.env.SKIP_VALIDATION;
 
-    if (/^(?:y|yes|true|1|on)$/i.test(value)) {
+  if (value) {
+    const trimmedValue = value.trim();
+
+    if (IS_TRUTHY.test(trimmedValue)) {
       return false;
     }
 
-    if (/^(?:n|no|false|0|off)$/i.test(value)) {
+    if (IS_FALSY.test(trimmedValue)) {
       return true;
     }
   }
@@ -152,7 +159,7 @@ function needValidate() {
  * instance path.
  * @typedef {object} ErrorPathNode
  * @property {number[]} indexes positions (in the result array) of the errors reported for exactly this instance path
- * @property {Map<string, ErrorPathNode>} children nodes of nested instance paths, keyed by json pointer segment
+ * @property {Map<string, ErrorPathNode> | undefined} children nodes of nested instance paths, keyed by json pointer segment, created on demand
  * @property {number} size amount of errors stored in this node and in all its descendants
  */
 
@@ -160,7 +167,7 @@ function needValidate() {
  * @returns {ErrorPathNode} empty node
  */
 function createErrorPathNode() {
-  return { indexes: [], children: new Map(), size: 0 };
+  return { indexes: [], children: undefined, size: 0 };
 }
 
 /**
@@ -175,89 +182,88 @@ function parseInstancePath(instancePath) {
 }
 
 /**
- * @param {ErrorPathNode} root root node
- * @param {string[]} segments json pointer segments of the error instance path
- * @param {number} index position of the error in the result array
- * @returns {void}
+ * @param {number} a a
+ * @param {number} b b
+ * @returns {number} comparison result
  */
-function addErrorPath(root, segments, index) {
-  let node = root;
-
-  node.size += 1;
-
-  for (const segment of segments) {
-    let child = node.children.get(segment);
-
-    if (!child) {
-      child = createErrorPathNode();
-      node.children.set(segment, child);
-    }
-
-    node = child;
-    node.size += 1;
-  }
-
-  node.indexes.push(index);
+function compareNumbers(a, b) {
+  return a - b;
 }
 
 /**
- * Removes and returns every error reported for the given instance path or for anything nested
- * inside it, in the order the errors were reported.
+ * Stores an error at the given instance path and removes every error already stored for that path
+ * or for anything nested inside it, since those become children of the new one.
+ *
+ * The new error keeps the node non empty, so no node ever has to be pruned.
  * @param {ErrorPathNode} root root node
  * @param {string[]} segments json pointer segments of the error instance path
- * @returns {number[]} positions (in the result array) of the removed errors
+ * @param {number} index position of the error in the result array
+ * @returns {number[]} positions (in the result array) of the removed errors, in the order they were reported
  */
-function takeErrorPaths(root, segments) {
+function replaceErrorPath(root, segments, index) {
   /** @type {ErrorPathNode[]} */
-  const ancestors = [root];
+  const ancestors = [];
+  /** @type {number[]} */
+  const indexes = [];
   let node = root;
+  let depth = 0;
 
+  // A single walk down, creating the missing nodes on the way
   for (const segment of segments) {
-    const child = node.children.get(segment);
+    ancestors[depth] = node;
+    depth += 1;
 
-    // Nothing was reported below this instance path
+    let { children } = node;
+
+    if (!children) {
+      children = new Map();
+      node.children = children;
+    }
+
+    let child = children.get(segment);
+
     if (!child) {
-      return [];
+      child = createErrorPathNode();
+      children.set(segment, child);
     }
 
     node = child;
-    ancestors.push(node);
   }
 
-  /** @type {number[]} */
-  const indexes = [];
-  /** @type {ErrorPathNode[]} */
-  const stack = [node];
+  if (node.size > 0) {
+    /** @type {ErrorPathNode[]} */
+    const stack = [node];
 
-  while (stack.length > 0) {
-    const current = /** @type {ErrorPathNode} */ (stack.pop());
+    while (stack.length > 0) {
+      const current = /** @type {ErrorPathNode} */ (stack.pop());
 
-    for (const index of current.indexes) {
-      indexes.push(index);
+      for (const collected of current.indexes) {
+        indexes.push(collected);
+      }
+
+      if (current.children) {
+        for (const child of current.children.values()) {
+          stack.push(child);
+        }
+      }
     }
 
-    for (const child of current.children.values()) {
-      stack.push(child);
-    }
+    // The subtree has been consumed, so detach it
+    node.children = undefined;
+    indexes.sort(compareNumbers);
   }
 
-  // The whole subtree has been consumed, so detach it and drop the ancestors it left empty,
-  // otherwise later lookups would keep walking over nodes without errors
-  const removed = indexes.length;
+  node.indexes = [index];
 
-  node.indexes = [];
-  node.children.clear();
-  node.size = 0;
+  const delta = 1 - node.size;
 
-  for (let i = ancestors.length - 2; i >= 0; i--) {
-    ancestors[i].size -= removed;
+  node.size = 1;
 
-    if (ancestors[i + 1].size === 0) {
-      ancestors[i].children.delete(segments[i]);
-    }
+  for (let i = 0; i < depth; i++) {
+    ancestors[i].size += delta;
   }
 
-  return indexes.sort((a, b) => a - b);
+  return indexes;
 }
 
 /**
@@ -270,13 +276,24 @@ function filterErrors(errors) {
   /** @type {(SchemaUtilErrorObject | undefined)[]} */
   const newErrors = [];
   const root = createErrorPathNode();
+  let lastInstancePath;
+  /** @type {string[]} */
+  let segments = [];
 
   for (const error of /** @type {SchemaUtilErrorObject[]} */ (errors)) {
-    const segments = parseInstancePath(error.instancePath);
+    const { instancePath } = error;
+
+    // Errors reported next to each other usually share the instance path, i.e. the branches of an
+    // `anyOf`, so the split is worth reusing
+    if (instancePath !== lastInstancePath) {
+      lastInstancePath = instancePath;
+      segments = parseInstancePath(instancePath);
+    }
+
     /** @type {SchemaUtilErrorObject[]} */
     let children = [];
 
-    for (const index of takeErrorPaths(root, segments)) {
+    for (const index of replaceErrorPath(root, segments, newErrors.length)) {
       const oldError = /** @type {SchemaUtilErrorObject} */ (newErrors[index]);
 
       newErrors[index] = undefined;
@@ -301,7 +318,6 @@ function filterErrors(errors) {
       error.children = children;
     }
 
-    addErrorPath(root, segments, newErrors.length);
     newErrors.push(error);
   }
 
@@ -340,9 +356,10 @@ function validate(schema, options, configuration) {
 
   if (Array.isArray(options)) {
     for (let i = 0; i <= options.length - 1; i++) {
-      errors.push(
-        ...validateObject(schema, options[i]).map((err) => applyPrefix(err, i)),
-      );
+      // Not `errors.push(...)`, a large amount of errors would overflow the call stack
+      for (const error of validateObject(schema, options[i])) {
+        errors.push(applyPrefix(error, i));
+      }
     }
   } else {
     errors = validateObject(schema, options);
