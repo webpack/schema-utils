@@ -6,11 +6,46 @@ import {
   validate,
 } from "../src/index";
 
+// eslint-disable-next-line jsdoc/reject-any-type
+/** @typedef {any} EXPECTED_ANY */
+
 import schemaTitleBrone from "./fixtures/schema-title-broken.json";
 import schemaTitle from "./fixtures/schema-title.json";
 import schema from "./fixtures/schema.json";
 
 describe("api", () => {
+  /**
+   * Loads a fresh copy of `schema-utils`, as if the process had been started with
+   * `process.env.SKIP_VALIDATION` set to `value` - the variable is read when the module is loaded.
+   * @param {string | undefined} value value of `process.env.SKIP_VALIDATION`
+   * @param {(api: EXPECTED_ANY) => void} fn receives the freshly loaded module
+   * @returns {void}
+   */
+  function withSkipValidation(value, fn) {
+    const oldValue = process.env.SKIP_VALIDATION;
+    const set = (newValue) => {
+      if (typeof newValue === "undefined") {
+        delete process.env.SKIP_VALIDATION;
+      } else {
+        process.env.SKIP_VALIDATION = newValue;
+      }
+    };
+
+    set(value);
+
+    try {
+      jest.isolateModules(() => {
+        fn(require("../src/index"));
+      });
+    } finally {
+      set(oldValue);
+      // the state is shared with the already loaded copy, reload so it matches the environment again
+      jest.isolateModules(() => {
+        require("../src/index");
+      });
+    }
+  }
+
   it("should export validate and ValidateError", () => {
     expect(typeof validate).toBe("function");
     expect(typeof ValidationError).toBe("function");
@@ -212,39 +247,31 @@ describe("api", () => {
   });
 
   it('should allow to disable validation using "process.env.SKIP_VALIDATION"', () => {
-    const oldValue = process.env.SKIP_VALIDATION;
+    withSkipValidation("y", ({ validate: freshValidate }) => {
+      let errored;
 
-    let errored;
+      try {
+        freshValidate(schemaTitle, { foo: "bar" }, { name: "NAME" });
+      } catch (error) {
+        errored = error;
+      }
 
-    process.env.SKIP_VALIDATION = "y";
-
-    try {
-      validate(schemaTitle, { foo: "bar" }, { name: "NAME" });
-    } catch (error) {
-      errored = error;
-    }
-
-    expect(errored).toBeUndefined();
-
-    process.env.SKIP_VALIDATION = oldValue;
+      expect(errored).toBeUndefined();
+    });
   });
 
   it('should allow to disable validation using "process.env.SKIP_VALIDATION" #2', () => {
-    const oldValue = process.env.SKIP_VALIDATION;
+    withSkipValidation("YeS", ({ validate: freshValidate }) => {
+      let errored;
 
-    let errored;
+      try {
+        freshValidate(schemaTitle, { foo: "bar" }, { name: "NAME" });
+      } catch (error) {
+        errored = error;
+      }
 
-    process.env.SKIP_VALIDATION = "YeS";
-
-    try {
-      validate(schemaTitle, { foo: "bar" }, { name: "NAME" });
-    } catch (error) {
-      errored = error;
-    }
-
-    expect(errored).toBeUndefined();
-
-    process.env.SKIP_VALIDATION = oldValue;
+      expect(errored).toBeUndefined();
+    });
   });
 
   it('should allow to enable validation using "process.env.SKIP_VALIDATION"', () => {
@@ -314,15 +341,54 @@ describe("api", () => {
     }
   });
 
+  it('should read "process.env.SKIP_VALIDATION" when loaded, not on every validation', () => {
+    enableValidation();
+
+    try {
+      process.env.SKIP_VALIDATION = "y";
+
+      let errored;
+
+      try {
+        validate(schemaTitle, { foo: "bar" }, { name: "NAME" });
+      } catch (error) {
+        errored = error;
+      }
+
+      // the already loaded copy keeps the value it read when it was loaded
+      expect(errored).toBeDefined();
+    } finally {
+      enableValidation();
+    }
+  });
+
+  it("should share the state with other copies of `schema-utils`", () => {
+    try {
+      disableValidation();
+
+      jest.isolateModules(() => {
+        // another copy, as if a dependency depended on a different version
+
+        const api = require("../src/index");
+
+        expect(api.needValidate()).toBe(false);
+
+        api.enableValidation();
+      });
+
+      // turning it back on in the other copy turns it back on here
+      expect(needValidate()).toBe(true);
+    } finally {
+      enableValidation();
+    }
+  });
+
   it("should allow to enable and disable validation using API", () => {
-    process.env.SKIP_VALIDATION = "unknown";
-    expect(needValidate()).toBe(true);
-
-    process.env.SKIP_VALIDATION = "no";
-    expect(needValidate()).toBe(true);
-
-    process.env.SKIP_VALIDATION = "yes";
-    expect(needValidate()).toBe(false);
+    withSkipValidation("unknown", (api) =>
+      expect(api.needValidate()).toBe(true),
+    );
+    withSkipValidation("no", (api) => expect(api.needValidate()).toBe(true));
+    withSkipValidation("yes", (api) => expect(api.needValidate()).toBe(false));
 
     enableValidation();
     expect(process.env.SKIP_VALIDATION).toBe("n");

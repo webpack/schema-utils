@@ -47,12 +47,14 @@ const SPECIFICITY = {
   absolutePath: 2,
 };
 
+const IS_NUMERIC = /^-?\d+$/;
+
 /**
  * @param {string} value value
  * @returns {value is number} true when is number, otherwise false
  */
 function isNumeric(value) {
-  return /^-?\d+$/.test(value);
+  return IS_NUMERIC.test(value);
 }
 
 /**
@@ -113,10 +115,11 @@ function extractRefs(error) {
  * Find all children errors
  * @param {SchemaUtilErrorObject[]} children children
  * @param {string[]} schemaPaths schema paths
+ * @param {number=} end amount of children to look at, i.e. only `children[0..end - 1]` are visited
  * @returns {number} returns index of first child
  */
-function findAllChildren(children, schemaPaths) {
-  let i = children.length - 1;
+function findAllChildren(children, schemaPaths, end = children.length) {
+  let i = end - 1;
   const predicate =
     /**
      * @param {string} schemaPath schema path
@@ -127,10 +130,11 @@ function findAllChildren(children, schemaPaths) {
   while (i > -1 && !schemaPaths.every(predicate)) {
     if (children[i].keyword === "anyOf" || children[i].keyword === "oneOf") {
       const refs = extractRefs(children[i]);
-      const childrenStart = findAllChildren(children.slice(0, i), [
-        ...refs,
-        children[i].schemaPath,
-      ]);
+      const childrenStart = findAllChildren(
+        children,
+        [...refs, children[i].schemaPath],
+        i,
+      );
 
       i = childrenStart - 1;
     } else {
@@ -155,10 +159,11 @@ function groupChildrenByFirstChild(children) {
 
     if (child.keyword === "anyOf" || child.keyword === "oneOf") {
       const refs = extractRefs(child);
-      const childrenStart = findAllChildren(children.slice(0, i), [
-        ...refs,
-        child.schemaPath,
-      ]);
+      const childrenStart = findAllChildren(
+        children,
+        [...refs, child.schemaPath],
+        i,
+      );
 
       if (childrenStart !== i) {
         result.push({ ...child, children: children.slice(childrenStart, i) });
@@ -181,12 +186,53 @@ function groupChildrenByFirstChild(children) {
 }
 
 /**
+ * Indents every line of `str` but the first one, a trailing new line is left alone.
  * @param {string} str string
  * @param {string} prefix prefix
  * @returns {string} string with indent and prefix
  */
 function indent(str, prefix) {
-  return str.replace(/\n(?!$)/g, `\n${prefix}`);
+  const firstNewLine = str.indexOf("\n");
+
+  // Most formatted errors are a single line
+  if (firstNewLine === -1 || firstNewLine === str.length - 1) {
+    return str;
+  }
+
+  const separator = `\n${prefix}`;
+
+  return str.charCodeAt(str.length - 1) === 10 /* \n */
+    ? `${str.slice(0, -1).split("\n").join(separator)}\n`
+    : str.split("\n").join(separator);
+}
+
+// A list of errors longer than this is not readable anyway and formatting it can take a lot of
+// memory, i.e. a configuration with 200000 invalid values used to produce a 20MB long message
+const MAX_LISTED_ERRORS = 100;
+
+/**
+ * Formats a list of errors, listing at most `MAX_LISTED_ERRORS` of them and only counting the rest.
+ * @param {SchemaUtilErrorObject[]} errors errors
+ * @param {string} bullet marker put in front of every entry
+ * @param {(error: SchemaUtilErrorObject) => string} format formats a single error
+ * @returns {string} formatted list of errors
+ */
+function formatErrorList(errors, bullet, format) {
+  const listed = Math.min(errors.length, MAX_LISTED_ERRORS);
+  /** @type {string[]} */
+  const lines = [];
+
+  for (let i = 0; i < listed; i++) {
+    lines.push(`${bullet}${indent(format(errors[i]), "   ")}`);
+  }
+
+  const rest = errors.length - listed;
+
+  if (rest > 0) {
+    lines.push(`${bullet}and ${rest} more error${rest > 1 ? "s" : ""}`);
+  }
+
+  return lines.join("\n");
 }
 
 /**
@@ -916,27 +962,21 @@ class ValidationError extends Error {
   formatValidationError(error) {
     const { keyword, instancePath: errorInstancePath } = error;
 
-    const splittedInstancePath = errorInstancePath.split("/");
-    /**
-     * @type {string[]}
-     */
-    const defaultValue = [];
-    const prettyInstancePath = splittedInstancePath
-      .reduce((acc, val) => {
-        if (val.length > 0) {
-          if (isNumeric(val)) {
-            acc.push(`[${val}]`);
-          } else if (/^\[/.test(val)) {
-            acc.push(val);
-          } else {
-            acc.push(`.${val}`);
-          }
-        }
+    let instancePath = this.baseDataPath;
 
-        return acc;
-      }, defaultValue)
-      .join("");
-    const instancePath = `${this.baseDataPath}${prettyInstancePath}`;
+    for (const part of errorInstancePath.split("/")) {
+      if (part.length === 0) {
+        continue;
+      }
+
+      if (isNumeric(part)) {
+        instancePath += `[${part}]`;
+      } else if (part.charCodeAt(0) === 91 /* [ */) {
+        instancePath += part;
+      } else {
+        instancePath += `.${part}`;
+      }
+    }
 
     // const { keyword, instancePath: errorInstancePath } = error;
     // const instancePath = `${this.baseDataPath}${errorInstancePath.replace(/\//g, '.')}`;
@@ -1317,16 +1357,11 @@ class ValidationError extends Error {
 
           return `${instancePath} should be one of these:\n${this.getSchemaPartText(
             parentSchema,
-          )}\nDetails:\n${filteredChildren
-            .map(
-              /**
-               * @param {SchemaUtilErrorObject} nestedError nested error
-               * @returns {string} formatted errors
-               */
-              (nestedError) =>
-                ` * ${indent(this.formatValidationError(nestedError), "   ")}`,
-            )
-            .join("\n")}`;
+          )}\nDetails:\n${formatErrorList(
+            filteredChildren,
+            " * ",
+            (nestedError) => this.formatValidationError(nestedError),
+          )}`;
         }
 
         return `${instancePath} should be one of these:\n${this.getSchemaPartText(
@@ -1369,17 +1404,13 @@ class ValidationError extends Error {
    * @returns {string} formatted errors
    */
   formatValidationErrors(errors) {
-    return errors
-      .map((error) => {
-        let formattedError = this.formatValidationError(error);
+    return formatErrorList(errors, " - ", (error) => {
+      const formattedError = this.formatValidationError(error);
 
-        if (this.postFormatter) {
-          formattedError = this.postFormatter(formattedError, error);
-        }
-
-        return ` - ${indent(formattedError, "   ")}`;
-      })
-      .join("\n");
+      return this.postFormatter
+        ? this.postFormatter(formattedError, error)
+        : formattedError;
+    });
   }
 }
 

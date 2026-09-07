@@ -53,6 +53,33 @@ export type ValidationErrorConfiguration = {
   postFormatter?: PostFormatter | undefined;
 };
 /**
+ * A node of the prefix tree used by `filterErrors` to look up already reported errors by their
+ * instance path.
+ */
+export type ErrorPathNode = {
+  /**
+   * positions (in the result array) of the errors reported for exactly this instance path
+   */
+  indexes: number[];
+  /**
+   * nodes of nested instance paths, keyed by json pointer segment, created on demand
+   */
+  children: Map<string, ErrorPathNode> | undefined;
+  /**
+   * amount of errors stored in this node and in all its descendants
+   */
+  size: number;
+};
+/**
+ * Whether validation is skipped, shared by every `schema-utils` in the process.
+ */
+export type SkipValidationState = {
+  /**
+   * true when validation is disabled
+   */
+  skip: boolean;
+};
+/**
  * @returns {void}
  */
 export function disableValidation(): void;
