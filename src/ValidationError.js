@@ -433,55 +433,6 @@ function formatHints(hints) {
 const getUtilHints = memoize(() => require("./util/hints"));
 
 /**
- * Replaces the lazy `message` accessor by a plain property, so that the message is built once and
- * behaves like the `message` of any other error afterwards.
- * @param {ValidationError} error error
- * @param {string} message message
- * @returns {string} message
- */
-function setMessage(error, message) {
-  Object.defineProperty(error, "message", {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    value: message,
-  });
-
-  return message;
-}
-
-// One shared descriptor, defining the accessor per error would allocate a context and two
-// functions for every error object
-const LAZY_MESSAGE = {
-  configurable: true,
-  enumerable: true,
-  /**
-   * @this {ValidationError}
-   * @returns {string} message
-   */
-  get() {
-    const header = `Invalid ${this.baseDataPath} object. ${
-      this.headerName
-    } has been initialized using ${getArticle(this.baseDataPath)} ${
-      this.baseDataPath
-    } object that does not match the API schema.\n`;
-
-    return setMessage(
-      this,
-      `${header}${this.formatValidationErrors(this.errors)}`,
-    );
-  },
-  /**
-   * @this {ValidationError}
-   * @param {string} value value
-   * @returns {void}
-   */
-  set(value) {
-    setMessage(this, value);
-  },
-};
-
-/**
  * @param {Schema} schema schema
  * @param {boolean} logic logic
  * @returns {string[]} array of hints
@@ -542,9 +493,14 @@ class ValidationError extends Error {
     /** @type {PostFormatter | null} */
     this.postFormatter = configuration.postFormatter || null;
 
-    // Formatting the errors is by far the most expensive part of an invalid configuration and
-    // consumers that only look at `errors` never need it, so the message is built on first access
-    Object.defineProperty(this, "message", LAZY_MESSAGE);
+    const header = `Invalid ${this.baseDataPath} object. ${
+      this.headerName
+    } has been initialized using ${getArticle(this.baseDataPath)} ${
+      this.baseDataPath
+    } object that does not match the API schema.\n`;
+
+    /** @type {string} */
+    this.message = `${header}${this.formatValidationErrors(errors)}`;
   }
 
   /**
