@@ -267,12 +267,107 @@ function replaceErrorPath(root, segments, index) {
 }
 
 /**
+ * Moves an already reported error under `children`, hoisting the children it collected itself.
+ * @param {SchemaUtilErrorObject[]} children collected children
+ * @param {SchemaUtilErrorObject} oldError error to nest
+ * @returns {SchemaUtilErrorObject[]} collected children, which may be a different array
+ */
+function absorbError(children, oldError) {
+  let newChildren = children;
+
+  if (oldError.children) {
+    if (newChildren.length === 0) {
+      // Adopt the array instead of copying it - a long run of sibling errors re-parents the
+      // previously collected children on every step, so copying them would be quadratic
+      newChildren = oldError.children;
+    } else {
+      for (const child of oldError.children) {
+        newChildren.push(child);
+      }
+    }
+  }
+
+  oldError.children = undefined;
+  newChildren.push(oldError);
+
+  return newChildren;
+}
+
+/**
+ * Whether an instance path points at `ancestorPath` itself or at something nested inside it, i.e.
+ * `"/rules/0"` is inside `"/rules"` but `"/rulesets"` is not.
+ * @param {string} instancePath instance path
+ * @param {string} ancestorPath ancestor instance path
+ * @returns {boolean} true when at or below the ancestor path, otherwise false
+ */
+function isAtOrBelow(instancePath, ancestorPath) {
+  if (instancePath.length === ancestorPath.length) {
+    return instancePath === ancestorPath;
+  }
+
+  return (
+    instancePath.length > ancestorPath.length &&
+    // the next character has to be a separator, otherwise it is a sibling with a longer name
+    instancePath.charCodeAt(ancestorPath.length) === 47 /* / */ &&
+    instancePath.startsWith(ancestorPath)
+  );
+}
+
+// Below this amount of errors scanning the collected errors directly is cheaper than indexing
+// them, above it the index is what keeps the whole thing from going quadratic
+const MAX_SCANNED_ERRORS = 24;
+
+/**
+ * Same as `filterErrors`, without the instance path index - for a small amount of errors walking
+ * the collected errors is cheaper than building one.
+ * @param {SchemaUtilErrorObject[]} errors array of error objects
+ * @returns {SchemaUtilErrorObject[]} filtered array of objects
+ */
+function scanErrors(errors) {
+  /** @type {SchemaUtilErrorObject[]} */
+  const newErrors = [];
+
+  for (const error of errors) {
+    const { instancePath } = error;
+    /** @type {SchemaUtilErrorObject[]} */
+    let children = [];
+    let kept = 0;
+
+    for (let i = 0; i < newErrors.length; i++) {
+      const oldError = newErrors[i];
+
+      if (!isAtOrBelow(oldError.instancePath, instancePath)) {
+        newErrors[kept] = oldError;
+        kept += 1;
+        continue;
+      }
+
+      children = absorbError(children, oldError);
+    }
+
+    newErrors.length = kept;
+
+    if (children.length) {
+      error.children = children;
+    }
+
+    newErrors.push(error);
+  }
+
+  return newErrors;
+}
+
+/**
  * Nests every error under the last reported error that covers its instance path, so that only the
  * outermost errors are left at the top level.
  * @param {ErrorObject[]} errors array of error objects
  * @returns {SchemaUtilErrorObject[]} filtered array of objects
  */
 function filterErrors(errors) {
+  if (errors.length <= MAX_SCANNED_ERRORS) {
+    return scanErrors(/** @type {SchemaUtilErrorObject[]} */ (errors));
+  }
+
   /** @type {(SchemaUtilErrorObject | undefined)[]} */
   const newErrors = [];
   const root = createErrorPathNode();
@@ -297,21 +392,7 @@ function filterErrors(errors) {
       const oldError = /** @type {SchemaUtilErrorObject} */ (newErrors[index]);
 
       newErrors[index] = undefined;
-
-      if (oldError.children) {
-        if (children.length === 0) {
-          // Adopt the array instead of copying it - a long run of sibling errors re-parents the
-          // previously collected children on every step, so copying them would be quadratic
-          children = oldError.children;
-        } else {
-          for (const child of oldError.children) {
-            children.push(child);
-          }
-        }
-      }
-
-      oldError.children = undefined;
-      children.push(oldError);
+      children = absorbError(children, oldError);
     }
 
     if (children.length) {

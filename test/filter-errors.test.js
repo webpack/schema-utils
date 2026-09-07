@@ -116,6 +116,33 @@ describe("filter errors", () => {
     ).toBe(true);
   });
 
+  // Errors are collected by scanning them directly below a threshold and through an instance path
+  // index above it, both have to nest them the same way
+  it.each([3, 40])("should nest the same way for %i errors", (length) => {
+    const properties = { nested: { type: "object", properties: {} } };
+
+    for (let i = 0; i < length; i++) {
+      properties.nested.properties[`p${i}`] = { type: "string" };
+    }
+
+    const schema = { type: "object", properties };
+    const options = { nested: {} };
+
+    for (let i = 0; i < length; i++) {
+      options.nested[`p${i}`] = 1;
+    }
+
+    const errors = getErrors(schema, options);
+
+    expect(errors).toHaveLength(length);
+    expect(errors.every((error) => typeof error.children === "undefined")).toBe(
+      true,
+    );
+    expect(errors.map((error) => error.instancePath)).toStrictEqual(
+      Array.from({ length }, (_, i) => `/nested/p${i}`),
+    );
+  });
+
   // `filterErrors` used to be quadratic in the amount of reported errors, so a large invalid
   // configuration was enough to lock up the process for minutes
   it("should filter a large amount of sibling errors in a reasonable time", () => {
