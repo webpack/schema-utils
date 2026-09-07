@@ -148,41 +148,166 @@ function needValidate() {
 }
 
 /**
+ * A node of the prefix tree used by `filterErrors` to look up already reported errors by their
+ * instance path.
+ * @typedef {object} ErrorPathNode
+ * @property {number[]} indexes positions (in the result array) of the errors reported for exactly this instance path
+ * @property {Map<string, ErrorPathNode>} children nodes of nested instance paths, keyed by json pointer segment
+ * @property {number} size amount of errors stored in this node and in all its descendants
+ */
+
+/**
+ * @returns {ErrorPathNode} empty node
+ */
+function createErrorPathNode() {
+  return { indexes: [], children: new Map(), size: 0 };
+}
+
+/**
+ * Splits an instance path (a json pointer) into its segments, i.e. `"/rules/0"` into `["rules", "0"]`.
+ * @param {string} instancePath instance path
+ * @returns {string[]} json pointer segments
+ */
+function parseInstancePath(instancePath) {
+  // A json pointer is either empty or starts with a separator, so the leading separator is dropped
+  // instead of splitting off an empty first segment
+  return instancePath === "" ? [] : instancePath.slice(1).split("/");
+}
+
+/**
+ * @param {ErrorPathNode} root root node
+ * @param {string[]} segments json pointer segments of the error instance path
+ * @param {number} index position of the error in the result array
+ * @returns {void}
+ */
+function addErrorPath(root, segments, index) {
+  let node = root;
+
+  node.size += 1;
+
+  for (const segment of segments) {
+    let child = node.children.get(segment);
+
+    if (!child) {
+      child = createErrorPathNode();
+      node.children.set(segment, child);
+    }
+
+    node = child;
+    node.size += 1;
+  }
+
+  node.indexes.push(index);
+}
+
+/**
+ * Removes and returns every error reported for the given instance path or for anything nested
+ * inside it, in the order the errors were reported.
+ * @param {ErrorPathNode} root root node
+ * @param {string[]} segments json pointer segments of the error instance path
+ * @returns {number[]} positions (in the result array) of the removed errors
+ */
+function takeErrorPaths(root, segments) {
+  /** @type {ErrorPathNode[]} */
+  const ancestors = [root];
+  let node = root;
+
+  for (const segment of segments) {
+    const child = node.children.get(segment);
+
+    // Nothing was reported below this instance path
+    if (!child) {
+      return [];
+    }
+
+    node = child;
+    ancestors.push(node);
+  }
+
+  /** @type {number[]} */
+  const indexes = [];
+  /** @type {ErrorPathNode[]} */
+  const stack = [node];
+
+  while (stack.length > 0) {
+    const current = /** @type {ErrorPathNode} */ (stack.pop());
+
+    for (const index of current.indexes) {
+      indexes.push(index);
+    }
+
+    for (const child of current.children.values()) {
+      stack.push(child);
+    }
+  }
+
+  // The whole subtree has been consumed, so detach it and drop the ancestors it left empty,
+  // otherwise later lookups would keep walking over nodes without errors
+  const removed = indexes.length;
+
+  node.indexes = [];
+  node.children.clear();
+  node.size = 0;
+
+  for (let i = ancestors.length - 2; i >= 0; i--) {
+    ancestors[i].size -= removed;
+
+    if (ancestors[i + 1].size === 0) {
+      ancestors[i].children.delete(segments[i]);
+    }
+  }
+
+  return indexes.sort((a, b) => a - b);
+}
+
+/**
+ * Nests every error under the last reported error that covers its instance path, so that only the
+ * outermost errors are left at the top level.
  * @param {ErrorObject[]} errors array of error objects
  * @returns {SchemaUtilErrorObject[]} filtered array of objects
  */
 function filterErrors(errors) {
-  /** @type {SchemaUtilErrorObject[]} */
-  let newErrors = [];
+  /** @type {(SchemaUtilErrorObject | undefined)[]} */
+  const newErrors = [];
+  const root = createErrorPathNode();
 
   for (const error of /** @type {SchemaUtilErrorObject[]} */ (errors)) {
-    const { instancePath } = error;
+    const segments = parseInstancePath(error.instancePath);
     /** @type {SchemaUtilErrorObject[]} */
     let children = [];
 
-    newErrors = newErrors.filter((oldError) => {
-      if (oldError.instancePath.includes(instancePath)) {
-        if (oldError.children) {
-          children = [...children, ...oldError.children];
+    for (const index of takeErrorPaths(root, segments)) {
+      const oldError = /** @type {SchemaUtilErrorObject} */ (newErrors[index]);
+
+      newErrors[index] = undefined;
+
+      if (oldError.children) {
+        if (children.length === 0) {
+          // Adopt the array instead of copying it - a long run of sibling errors re-parents the
+          // previously collected children on every step, so copying them would be quadratic
+          children = oldError.children;
+        } else {
+          for (const child of oldError.children) {
+            children.push(child);
+          }
         }
-
-        oldError.children = undefined;
-        children.push(oldError);
-
-        return false;
       }
 
-      return true;
-    });
+      oldError.children = undefined;
+      children.push(oldError);
+    }
 
     if (children.length) {
       error.children = children;
     }
 
+    addErrorPath(root, segments, newErrors.length);
     newErrors.push(error);
   }
 
-  return newErrors;
+  return /** @type {SchemaUtilErrorObject[]} */ (
+    newErrors.filter((error) => typeof error !== "undefined")
+  );
 }
 
 /**

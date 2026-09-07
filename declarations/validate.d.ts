@@ -53,6 +53,24 @@ export type ValidationErrorConfiguration = {
   postFormatter?: PostFormatter | undefined;
 };
 /**
+ * A node of the prefix tree used by `filterErrors` to look up already reported errors by their
+ * instance path.
+ */
+export type ErrorPathNode = {
+  /**
+   * positions (in the result array) of the errors reported for exactly this instance path
+   */
+  indexes: number[];
+  /**
+   * nodes of nested instance paths, keyed by json pointer segment
+   */
+  children: Map<string, ErrorPathNode>;
+  /**
+   * amount of errors stored in this node and in all its descendants
+   */
+  size: number;
+};
+/**
  * @returns {void}
  */
 export function disableValidation(): void;

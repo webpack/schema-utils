@@ -113,10 +113,11 @@ function extractRefs(error) {
  * Find all children errors
  * @param {SchemaUtilErrorObject[]} children children
  * @param {string[]} schemaPaths schema paths
+ * @param {number=} end amount of children to look at, i.e. only `children[0..end - 1]` are visited
  * @returns {number} returns index of first child
  */
-function findAllChildren(children, schemaPaths) {
-  let i = children.length - 1;
+function findAllChildren(children, schemaPaths, end = children.length) {
+  let i = end - 1;
   const predicate =
     /**
      * @param {string} schemaPath schema path
@@ -127,10 +128,11 @@ function findAllChildren(children, schemaPaths) {
   while (i > -1 && !schemaPaths.every(predicate)) {
     if (children[i].keyword === "anyOf" || children[i].keyword === "oneOf") {
       const refs = extractRefs(children[i]);
-      const childrenStart = findAllChildren(children.slice(0, i), [
-        ...refs,
-        children[i].schemaPath,
-      ]);
+      const childrenStart = findAllChildren(
+        children,
+        [...refs, children[i].schemaPath],
+        i,
+      );
 
       i = childrenStart - 1;
     } else {
@@ -155,10 +157,11 @@ function groupChildrenByFirstChild(children) {
 
     if (child.keyword === "anyOf" || child.keyword === "oneOf") {
       const refs = extractRefs(child);
-      const childrenStart = findAllChildren(children.slice(0, i), [
-        ...refs,
-        child.schemaPath,
-      ]);
+      const childrenStart = findAllChildren(
+        children,
+        [...refs, child.schemaPath],
+        i,
+      );
 
       if (childrenStart !== i) {
         result.push({ ...child, children: children.slice(childrenStart, i) });
