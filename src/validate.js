@@ -93,19 +93,66 @@ function applyPrefix(error, idx) {
   return error;
 }
 
-let skipValidation = false;
+const IS_TRUTHY = /^(?:y|yes|true|1|on)$/i;
+const IS_FALSY = /^(?:n|no|false|0|off)$/i;
 
-// We use `process.env.SKIP_VALIDATION` because you can have multiple `schema-utils` with different version,
-// so we want to disable it globally, `process.env` doesn't supported by browsers, so we have the local `skipValidation` variables
+/**
+ * @returns {boolean} true when `process.env.SKIP_VALIDATION` asks to skip validation
+ */
+function skipValidationFromEnv() {
+  const value =
+    process && process.env ? process.env.SKIP_VALIDATION : undefined;
+
+  if (value) {
+    const trimmedValue = value.trim();
+
+    if (IS_TRUTHY.test(trimmedValue)) {
+      return true;
+    }
+
+    if (IS_FALSY.test(trimmedValue)) {
+      return false;
+    }
+  }
+
+  return false;
+}
+
+/**
+ * Whether validation is skipped, shared by every `schema-utils` in the process.
+ * @typedef {object} SkipValidationState
+ * @property {boolean} skip true when validation is disabled
+ */
+
+const SKIP_VALIDATION_KEY = Symbol.for("schema-utils/skipValidation");
+const globalObject =
+  /** @type {Record<symbol, SkipValidationState | undefined>} */
+  (
+    /** @type {unknown} */
+    // eslint-disable-next-line no-undef
+    typeof globalThis === "undefined" ? global : globalThis
+  );
+
+// `process.env.SKIP_VALIDATION` is read when this module is loaded, not on every validation -
+// reading a variable from `process.env` costs about 250ns, which is most of the time a successful
+// validation takes. Later changes go through `enableValidation`/`disableValidation`, which share
+// the resolved state through the global object so that `schema-utils` copies of different
+// versions still turn each other on and off, and keep writing `process.env` for copies too old
+// to know about the shared state.
+const sharedState =
+  globalObject[SKIP_VALIDATION_KEY] ||
+  (globalObject[SKIP_VALIDATION_KEY] = { skip: false });
+
+sharedState.skip = skipValidationFromEnv();
 
 // Enable validation
 /**
  * @returns {void}
  */
 function enableValidation() {
-  skipValidation = false;
+  sharedState.skip = false;
 
-  // Disable validation for any versions
+  // Enable validation for any versions
   if (process && process.env) {
     process.env.SKIP_VALIDATION = "n";
   }
@@ -116,42 +163,19 @@ function enableValidation() {
  * @returns {void}
  */
 function disableValidation() {
-  skipValidation = true;
+  sharedState.skip = true;
 
   if (process && process.env) {
     process.env.SKIP_VALIDATION = "y";
   }
 }
 
-const IS_TRUTHY = /^(?:y|yes|true|1|on)$/i;
-const IS_FALSY = /^(?:n|no|false|0|off)$/i;
-
 // Check if we need to confirm
 /**
  * @returns {boolean} true when need validate, otherwise false
  */
 function needValidate() {
-  if (skipValidation) {
-    return false;
-  }
-
-  // Reading a variable from `process.env` is expensive and this runs on every validation,
-  // so it is read only once
-  const value = process && process.env && process.env.SKIP_VALIDATION;
-
-  if (value) {
-    const trimmedValue = value.trim();
-
-    if (IS_TRUTHY.test(trimmedValue)) {
-      return false;
-    }
-
-    if (IS_FALSY.test(trimmedValue)) {
-      return true;
-    }
-  }
-
-  return true;
+  return !sharedState.skip;
 }
 
 /**

@@ -291,6 +291,15 @@ Supported values (case insensitive):
 - `yes`/`y`/`true`/`1`/`on`
 - `no`/`n`/`false`/`0`/`off`
 
+The variable is read when `schema-utils` is loaded, so set it before starting the process:
+
+```console
+SKIP_VALIDATION=y webpack
+```
+
+Use `enableValidation()`/`disableValidation()` to change it while the process is running - they
+take effect immediately and apply to every copy of `schema-utils` in the process.
+
 ## Contributing
 
 Please take a moment to read our contributing guidelines if you haven't yet done so.

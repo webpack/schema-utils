@@ -71,6 +71,15 @@ export type ErrorPathNode = {
   size: number;
 };
 /**
+ * Whether validation is skipped, shared by every `schema-utils` in the process.
+ */
+export type SkipValidationState = {
+  /**
+   * true when validation is disabled
+   */
+  skip: boolean;
+};
+/**
  * @returns {void}
  */
 export function disableValidation(): void;
