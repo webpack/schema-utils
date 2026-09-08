@@ -143,6 +143,68 @@ describe("filter errors", () => {
     );
   });
 
+  // `groupChildrenByFirstChild` puts the errors of an inner `anyOf` under it
+  it("should group the children of a nested `anyOf`", () => {
+    const schema = {
+      type: "object",
+      properties: {
+        a: {
+          anyOf: [
+            { anyOf: [{ type: "string" }, { type: "number" }] },
+            { type: "boolean" },
+          ],
+        },
+      },
+    };
+
+    const message = getMessage(schema, { a: {} });
+
+    expect(message).toContain("configuration.a should be one of these:");
+    expect(message).toContain("string | number | boolean");
+    // the inner `anyOf` and its own branches, not a flat list of every branch
+    expect(message).toContain(
+      "configuration.a should be one of these:\n   string | number",
+    );
+  });
+
+  // Enough errors to use the instance path index, with an error that arrives after the errors
+  // nested inside it and so collects a whole subtree at once
+  it("should nest a subtree of errors under a later error covering it", () => {
+    const length = 30;
+    const properties = {};
+
+    for (let i = 0; i < length; i++) {
+      properties[`p${i}`] = { type: "string" };
+    }
+
+    const schema = {
+      type: "object",
+      properties: {
+        a: { anyOf: [{ type: "object", properties }, { type: "string" }] },
+      },
+    };
+
+    const options = { a: {} };
+
+    for (let i = 0; i < length; i++) {
+      options.a[`p${i}`] = 1;
+    }
+
+    const errors = getErrors(schema, options);
+
+    expect(errors).toHaveLength(1);
+    expect(errors[0].keyword).toBe("anyOf");
+    expect(errors[0].instancePath).toBe("/a");
+
+    const children = errors[0].children.map((error) => error.instancePath);
+
+    // every nested error, in the order it was reported, plus the error for the second branch
+    expect(children).toStrictEqual([
+      ...Array.from({ length }, (_, i) => `/a/p${i}`),
+      "/a",
+    ]);
+  });
+
   // `filterErrors` used to be quadratic in the amount of reported errors, so a large invalid
   // configuration was enough to lock up the process for minutes
   it("should filter a large amount of sibling errors in a reasonable time", () => {
