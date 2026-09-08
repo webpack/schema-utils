@@ -325,6 +325,14 @@ describe("validation", () => {
     testAbsolutePath: "//server/directory/deep/tree",
   });
 
+  createSuccessTestCase("absolutePath #6", {
+    testAbsolutePath: "file:///Users/username/directory/deep/tree",
+  });
+
+  createSuccessTestCase("absolutePath #7", {
+    testAbsolutePath: "file:///C:/directory/deep/tree",
+  });
+
   createSuccessTestCase("$data", {
     dollarData: {
       smaller: 5,
