@@ -1,380 +1,340 @@
 # Changelog
 
+## 4.4.0
+
+### Minor Changes
+
+- The `absolutePath` keyword accepts an optional `file://` prefix now, so a path from `import.meta.resolve()` can be passed to an option that takes an absolute path. Options that take a relative path reject such a value instead, they used to accept it. (by [@laymonage](https://github.com/laymonage), [@alexander-akait](https://github.com/alexander-akait) in [#222](https://github.com/webpack/schema-utils/pull/222))
+
+- `process.env.SKIP_VALIDATION` is now read when `schema-utils` is loaded rather than on every validation, so set it before starting the process. `enableValidation()`/`disableValidation()` still take effect immediately and now share their state with every copy of `schema-utils` in the process directly. (by [@alexander-akait](https://github.com/alexander-akait) in [#217](https://github.com/webpack/schema-utils/pull/217))
+
+- At most 100 errors of a list are listed in the message now, the rest is counted as `and N more errors`. `errors` still holds every error. (by [@alexander-akait](https://github.com/alexander-akait) in [#217](https://github.com/webpack/schema-utils/pull/217))
+
+### Patch Changes
+
+- read the `format` keyword as part of the type, i.e. `should be a date string` instead of `should be a string (should match format "date")` (by [@alexander-akait](https://github.com/alexander-akait) in [#225](https://github.com/webpack/schema-utils/pull/225))
+
+- output the type of object properties in error messages, i.e. `object { foo?: boolean, bar?: integer }` (by [@alexander-akait](https://github.com/alexander-akait) in [#224](https://github.com/webpack/schema-utils/pull/224))
+
+- Updated `ajv` to `8.20.0`, `ajv-formats` to `3.0.1` and `@types/json-schema` to `7.0.15`. `ajv-formats` 3 only moves `ajv` to a peer dependency, the formats themselves are unchanged. (by [@alexander-akait](https://github.com/alexander-akait) in [#221](https://github.com/webpack/schema-utils/pull/221))
+
+- A string an `absolutePath` keyword applies to is described as an `absolute path string` or a `relative path string` rather than as a bare `string`, which read as though any string would do. A failure a schema reaches through more than one branch is listed once instead of repeatedly, so a relative path given to a rule condition is reported as the one line that says so. (by [@alexander-akait](https://github.com/alexander-akait) in [#223](https://github.com/webpack/schema-utils/pull/223))
+
+- Fixed error filtering being quadratic in the amount of reported errors, which let a large invalid configuration lock up the process, and stopped errors from being dropped when one instance path merely contained another as a substring - two sibling properties where one name is a prefix of the other were enough to lose an error. An array of options reporting a lot of errors no longer throws `RangeError: Maximum call stack size exceeded` instead of a `ValidationError`. (by [@alexander-akait](https://github.com/alexander-akait) in [#217](https://github.com/webpack/schema-utils/pull/217))
+
 All notable changes to this project will be documented in this file.
 
 ### [4.3.3](https://github.com/webpack/schema-utils/compare/v4.3.2...v4.3.3) (2025-10-02)
 
-
 ### Bug Fixes
 
-* reexport `ValidationErrorConfiguration` type ([#204](https://github.com/webpack/schema-utils/issues/204)) ([49af922](https://github.com/webpack/schema-utils/commit/49af9226eb84c6b4d7d4d49d113a6f436dc214ed))
+- reexport `ValidationErrorConfiguration` type ([#204](https://github.com/webpack/schema-utils/issues/204)) ([49af922](https://github.com/webpack/schema-utils/commit/49af9226eb84c6b4d7d4d49d113a6f436dc214ed))
 
 ### [4.3.2](https://github.com/webpack/schema-utils/compare/v4.3.1...v4.3.2) (2025-04-22)
 
-
 ### Bug Fixes
 
-* compatibility with old types ([#198](https://github.com/webpack/schema-utils/issues/198)) ([8e31ef3](https://github.com/webpack/schema-utils/commit/8e31ef311484ad1c0d122266fe520d1f1cb90fad))
+- compatibility with old types ([#198](https://github.com/webpack/schema-utils/issues/198)) ([8e31ef3](https://github.com/webpack/schema-utils/commit/8e31ef311484ad1c0d122266fe520d1f1cb90fad))
 
 ### [4.3.1](https://github.com/webpack/schema-utils/compare/v4.3.0...v4.3.1) (2025-04-22)
 
-
 ### Bug Fixes
 
-* export `Schema` and additional schemas ([#197](https://github.com/webpack/schema-utils/issues/197)) ([f72cd60](https://github.com/webpack/schema-utils/commit/f72cd6063dc8af6e191540a44333c0624b3fbcab))
+- export `Schema` and additional schemas ([#197](https://github.com/webpack/schema-utils/issues/197)) ([f72cd60](https://github.com/webpack/schema-utils/commit/f72cd6063dc8af6e191540a44333c0624b3fbcab))
 
 ## [4.3.0](https://github.com/webpack/schema-utils/compare/v4.2.0...v4.3.0) (2024-12-11)
 
-
 ### Features
 
-* backport old logic from v3 ([2e2ba9d](https://github.com/webpack/schema-utils/commit/2e2ba9dd84575d11326d6fff3d795df2e33db935))
-
+- backport old logic from v3 ([2e2ba9d](https://github.com/webpack/schema-utils/commit/2e2ba9dd84575d11326d6fff3d795df2e33db935))
 
 ### Bug Fixes
 
-* disallow arrays as the object type ([#194](https://github.com/webpack/schema-utils/issues/194)) ([4b8acf2](https://github.com/webpack/schema-utils/commit/4b8acf2b1a2bc787af24546c7039bd6102a8f038))
+- disallow arrays as the object type ([#194](https://github.com/webpack/schema-utils/issues/194)) ([4b8acf2](https://github.com/webpack/schema-utils/commit/4b8acf2b1a2bc787af24546c7039bd6102a8f038))
 
 ## [4.2.0](https://github.com/webpack/schema-utils/compare/v4.1.0...v4.2.0) (2023-06-14)
 
-
 ### Features
 
-* added API to disable and enable validation ([#180](https://github.com/webpack/schema-utils/issues/180)) ([d6b9c9e](https://github.com/webpack/schema-utils/commit/d6b9c9e14bc5304f28f713b3bbf0497461bb117e))
-
+- added API to disable and enable validation ([#180](https://github.com/webpack/schema-utils/issues/180)) ([d6b9c9e](https://github.com/webpack/schema-utils/commit/d6b9c9e14bc5304f28f713b3bbf0497461bb117e))
 
 ### Bug Fixes
 
-* lazy loading some modules ([#178](https://github.com/webpack/schema-utils/issues/178)) ([3806c65](https://github.com/webpack/schema-utils/commit/3806c65167f880051a331b8b728ea03ad0632840))
+- lazy loading some modules ([#178](https://github.com/webpack/schema-utils/issues/178)) ([3806c65](https://github.com/webpack/schema-utils/commit/3806c65167f880051a331b8b728ea03ad0632840))
 
 ## [4.1.0](https://github.com/webpack/schema-utils/compare/v4.0.1...v4.1.0) (2023-06-07)
 
-
 ### Features
 
-* implement `undefinedAsNull` keyword for `enum` type ([#175](https://github.com/webpack/schema-utils/issues/175)) ([1265eac](https://github.com/webpack/schema-utils/commit/1265eac8621cddf2f4dad342efc2d76a169912f7))
+- implement `undefinedAsNull` keyword for `enum` type ([#175](https://github.com/webpack/schema-utils/issues/175)) ([1265eac](https://github.com/webpack/schema-utils/commit/1265eac8621cddf2f4dad342efc2d76a169912f7))
 
 ### [4.0.1](https://github.com/webpack/schema-utils/compare/v4.0.0...v4.0.1) (2023-04-15)
 
 ### Bug Fixes
 
-* (perf) improved initial start time
+- (perf) improved initial start time
 
 ## [4.0.0](https://github.com/webpack/schema-utils/compare/v3.1.1...v4.0.0) (2021-11-16)
 
-
 ### ⚠ BREAKING CHANGES
 
-* minimum supported `Node.js` version is `>= 12.13.0`
-* update `ajv` to `8.8.0` version, please read [internal changes](https://github.com/ajv-validator/ajv/releases), `postFormatter` require attention due some properties were changed
-* logic for `formatExclusiveMaximum` and `formatExclusiveMinimum` was changed (due usage `ajv-formats` package)
+- minimum supported `Node.js` version is `>= 12.13.0`
+- update `ajv` to `8.8.0` version, please read [internal changes](https://github.com/ajv-validator/ajv/releases), `postFormatter` require attention due some properties were changed
+- logic for `formatExclusiveMaximum` and `formatExclusiveMinimum` was changed (due usage `ajv-formats` package)
 
 ### [3.1.1](https://github.com/webpack/schema-utils/compare/v3.1.0...v3.1.1) (2021-07-19)
 
-
 ### Bug Fixes
 
-* update error message for `integer` ([#136](https://github.com/webpack/schema-utils/issues/136)) ([2daa97e](https://github.com/webpack/schema-utils/commit/2daa97eae87e6790b92711746a6a527b859ac13b))
+- update error message for `integer` ([#136](https://github.com/webpack/schema-utils/issues/136)) ([2daa97e](https://github.com/webpack/schema-utils/commit/2daa97eae87e6790b92711746a6a527b859ac13b))
 
 ## [3.1.0](https://github.com/webpack/schema-utils/compare/v3.0.0...v3.1.0) (2021-06-30)
 
-
 ### Features
 
-* added the `link` property in validation error ([589aa59](https://github.com/webpack/schema-utils/commit/589aa5993424a8bc45ec22b67dff55be92c456a9))
-
+- added the `link` property in validation error ([589aa59](https://github.com/webpack/schema-utils/commit/589aa5993424a8bc45ec22b67dff55be92c456a9))
 
 ### Bug Fixes
 
-* non-empty validation error message ([#116](https://github.com/webpack/schema-utils/issues/116)) ([c51abef](https://github.com/webpack/schema-utils/commit/c51abefa4d4d62e1346b3a105182d36675595077))
+- non-empty validation error message ([#116](https://github.com/webpack/schema-utils/issues/116)) ([c51abef](https://github.com/webpack/schema-utils/commit/c51abefa4d4d62e1346b3a105182d36675595077))
 
 ## [3.0.0](https://github.com/webpack/schema-utils/compare/v2.7.1...v3.0.0) (2020-10-05)
 
-
 ### ⚠ BREAKING CHANGES
 
-* minimum supported `Node.js` version is `10.13.0`, 
-* the packages exports was changed, please use `const { validate } = require('schema-utils');`
-* the `ValidateError` export was removed in favor the `ValidationError` export, please use `const { ValidationError } = require('schema-utils');`
+- minimum supported `Node.js` version is `10.13.0`,
+- the packages exports was changed, please use `const { validate } = require('schema-utils');`
+- the `ValidateError` export was removed in favor the `ValidationError` export, please use `const { ValidationError } = require('schema-utils');`
 
 ### [2.7.1](https://github.com/webpack/schema-utils/compare/v2.7.0...v2.7.1) (2020-08-31)
 
-
 ### Bug Fixes
 
-* remove esModuleInterop from tsconfig ([#110](https://github.com/webpack/schema-utils/issues/110)) ([#111](https://github.com/webpack/schema-utils/issues/111)) ([2f40154](https://github.com/webpack/schema-utils/commit/2f40154b91e45b393258ae9dd8f10cc3b8590b7d))
+- remove esModuleInterop from tsconfig ([#110](https://github.com/webpack/schema-utils/issues/110)) ([#111](https://github.com/webpack/schema-utils/issues/111)) ([2f40154](https://github.com/webpack/schema-utils/commit/2f40154b91e45b393258ae9dd8f10cc3b8590b7d))
 
 ## [2.7.0](https://github.com/webpack/schema-utils/compare/v2.6.6...v2.7.0) (2020-05-29)
 
-
 ### Features
 
-* improve hints ([a36e535](https://github.com/webpack/schema-utils/commit/a36e535faca1b01e27c3bfa3c8bee9227c3f836c))
-* smart not case ([#101](https://github.com/webpack/schema-utils/issues/101)) ([698d8b0](https://github.com/webpack/schema-utils/commit/698d8b05462d86aadb217e25a45c7b953a79a52e))
-
+- improve hints ([a36e535](https://github.com/webpack/schema-utils/commit/a36e535faca1b01e27c3bfa3c8bee9227c3f836c))
+- smart not case ([#101](https://github.com/webpack/schema-utils/issues/101)) ([698d8b0](https://github.com/webpack/schema-utils/commit/698d8b05462d86aadb217e25a45c7b953a79a52e))
 
 ### Bug Fixes
 
-* move @types/json-schema from devDependencies to dependencies ([#97](https://github.com/webpack/schema-utils/issues/97)) ([#98](https://github.com/webpack/schema-utils/issues/98)) ([945e67d](https://github.com/webpack/schema-utils/commit/945e67db5e19baf7ec7df72813b0739dd56f950d))
+- move @types/json-schema from devDependencies to dependencies ([#97](https://github.com/webpack/schema-utils/issues/97)) ([#98](https://github.com/webpack/schema-utils/issues/98)) ([945e67d](https://github.com/webpack/schema-utils/commit/945e67db5e19baf7ec7df72813b0739dd56f950d))
 
 ### [2.6.6](https://github.com/webpack/schema-utils/compare/v2.6.5...v2.6.6) (2020-04-17)
 
-
 ### Bug Fixes
 
-* improve perf
+- improve perf
 
 ### [2.6.5](https://github.com/webpack/schema-utils/compare/v2.6.4...v2.6.5) (2020-03-11)
 
-
 ### Bug Fixes
 
-* correct dots at end of sentence ([7284beb](https://github.com/webpack/schema-utils/commit/7284bebe00cd570f1bef2c15951a07b9794038e6))
+- correct dots at end of sentence ([7284beb](https://github.com/webpack/schema-utils/commit/7284bebe00cd570f1bef2c15951a07b9794038e6))
 
 ### [2.6.4](https://github.com/webpack/schema-utils/compare/v2.6.3...v2.6.4) (2020-01-17)
 
-
 ### Bug Fixes
 
-* change `initialised` to `initialized` ([#87](https://github.com/webpack/schema-utils/issues/87)) ([70f12d3](https://github.com/webpack/schema-utils/commit/70f12d33a8eaa27249bc9c1a27f886724cf91ea7))
+- change `initialised` to `initialized` ([#87](https://github.com/webpack/schema-utils/issues/87)) ([70f12d3](https://github.com/webpack/schema-utils/commit/70f12d33a8eaa27249bc9c1a27f886724cf91ea7))
 
 ### [2.6.3](https://github.com/webpack/schema-utils/compare/v2.6.2...v2.6.3) (2020-01-17)
 
-
 ### Bug Fixes
 
-* prefer the `baseDataPath` option from arguments ([#86](https://github.com/webpack/schema-utils/issues/86)) ([e236859](https://github.com/webpack/schema-utils/commit/e236859e85b28e35e1294f86fc1ff596a5031cea))
+- prefer the `baseDataPath` option from arguments ([#86](https://github.com/webpack/schema-utils/issues/86)) ([e236859](https://github.com/webpack/schema-utils/commit/e236859e85b28e35e1294f86fc1ff596a5031cea))
 
 ### [2.6.2](https://github.com/webpack/schema-utils/compare/v2.6.1...v2.6.2) (2020-01-14)
 
-
 ### Bug Fixes
 
-* better handle Windows absolute paths ([#85](https://github.com/webpack/schema-utils/issues/85)) ([1fa2930](https://github.com/webpack/schema-utils/commit/1fa2930a161e907b9fc53a7233d605910afdb883))
+- better handle Windows absolute paths ([#85](https://github.com/webpack/schema-utils/issues/85)) ([1fa2930](https://github.com/webpack/schema-utils/commit/1fa2930a161e907b9fc53a7233d605910afdb883))
 
 ### [2.6.1](https://github.com/webpack/schema-utils/compare/v2.6.0...v2.6.1) (2019-11-28)
 
-
 ### Bug Fixes
 
-* typescript declarations ([#84](https://github.com/webpack/schema-utils/issues/84)) ([89d55a9](https://github.com/webpack/schema-utils/commit/89d55a9a8edfa6a8ac8b112f226bb3154e260319))
+- typescript declarations ([#84](https://github.com/webpack/schema-utils/issues/84)) ([89d55a9](https://github.com/webpack/schema-utils/commit/89d55a9a8edfa6a8ac8b112f226bb3154e260319))
 
 ## [2.6.0](https://github.com/webpack/schema-utils/compare/v2.5.0...v2.6.0) (2019-11-27)
 
-
 ### Features
 
-* support configuration via title ([#81](https://github.com/webpack/schema-utils/issues/81)) ([afddc10](https://github.com/webpack/schema-utils/commit/afddc109f6891cd37a9f1835d50862d119a072bf))
-
+- support configuration via title ([#81](https://github.com/webpack/schema-utils/issues/81)) ([afddc10](https://github.com/webpack/schema-utils/commit/afddc109f6891cd37a9f1835d50862d119a072bf))
 
 ### Bug Fixes
 
-* typescript definitions ([#70](https://github.com/webpack/schema-utils/issues/70)) ([f38158d](https://github.com/webpack/schema-utils/commit/f38158d6d040e2c701622778ae8122fb26a4f990))
+- typescript definitions ([#70](https://github.com/webpack/schema-utils/issues/70)) ([f38158d](https://github.com/webpack/schema-utils/commit/f38158d6d040e2c701622778ae8122fb26a4f990))
 
 ## [2.5.0](https://github.com/webpack/schema-utils/compare/v2.4.1...v2.5.0) (2019-10-15)
 
-
 ### Bug Fixes
 
-* rework format for maxLength, minLength ([#67](https://github.com/webpack/schema-utils/issues/67)) ([0d12259](https://github.com/webpack/schema-utils/commit/0d12259))
-* support all cases with one number in range ([#64](https://github.com/webpack/schema-utils/issues/64)) ([7fc8069](https://github.com/webpack/schema-utils/commit/7fc8069))
-* typescript definition and export naming ([#69](https://github.com/webpack/schema-utils/issues/69)) ([a435b79](https://github.com/webpack/schema-utils/commit/a435b79))
-
+- rework format for maxLength, minLength ([#67](https://github.com/webpack/schema-utils/issues/67)) ([0d12259](https://github.com/webpack/schema-utils/commit/0d12259))
+- support all cases with one number in range ([#64](https://github.com/webpack/schema-utils/issues/64)) ([7fc8069](https://github.com/webpack/schema-utils/commit/7fc8069))
+- typescript definition and export naming ([#69](https://github.com/webpack/schema-utils/issues/69)) ([a435b79](https://github.com/webpack/schema-utils/commit/a435b79))
 
 ### Features
 
-* "smart" numbers range ([62fb107](https://github.com/webpack/schema-utils/commit/62fb107))
+- "smart" numbers range ([62fb107](https://github.com/webpack/schema-utils/commit/62fb107))
 
 ### [2.4.1](https://github.com/webpack/schema-utils/compare/v2.4.0...v2.4.1) (2019-09-27)
 
-
 ### Bug Fixes
 
-* publish definitions ([#58](https://github.com/webpack/schema-utils/issues/58)) ([1885faa](https://github.com/webpack/schema-utils/commit/1885faa))
+- publish definitions ([#58](https://github.com/webpack/schema-utils/issues/58)) ([1885faa](https://github.com/webpack/schema-utils/commit/1885faa))
 
 ## [2.4.0](https://github.com/webpack/schema-utils/compare/v2.3.0...v2.4.0) (2019-09-26)
 
-
 ### Features
 
-* better errors when the `type` keyword doesn't exist ([0988be2](https://github.com/webpack/schema-utils/commit/0988be2))
-* support $data reference ([#56](https://github.com/webpack/schema-utils/issues/56)) ([d2f11d6](https://github.com/webpack/schema-utils/commit/d2f11d6))
-* types definitions ([#52](https://github.com/webpack/schema-utils/issues/52)) ([facb431](https://github.com/webpack/schema-utils/commit/facb431))
+- better errors when the `type` keyword doesn't exist ([0988be2](https://github.com/webpack/schema-utils/commit/0988be2))
+- support $data reference ([#56](https://github.com/webpack/schema-utils/issues/56)) ([d2f11d6](https://github.com/webpack/schema-utils/commit/d2f11d6))
+- types definitions ([#52](https://github.com/webpack/schema-utils/issues/52)) ([facb431](https://github.com/webpack/schema-utils/commit/facb431))
 
 ## [2.3.0](https://github.com/webpack/schema-utils/compare/v2.2.0...v2.3.0) (2019-09-26)
 
-
 ### Features
 
-* support `not` keyword ([#53](https://github.com/webpack/schema-utils/issues/53)) ([765f458](https://github.com/webpack/schema-utils/commit/765f458))
+- support `not` keyword ([#53](https://github.com/webpack/schema-utils/issues/53)) ([765f458](https://github.com/webpack/schema-utils/commit/765f458))
 
 ## [2.2.0](https://github.com/webpack/schema-utils/compare/v2.1.0...v2.2.0) (2019-09-02)
 
-
 ### Features
 
-* better error output for `oneOf` and `anyOf` ([#48](https://github.com/webpack/schema-utils/issues/48)) ([#50](https://github.com/webpack/schema-utils/issues/50)) ([332242f](https://github.com/webpack/schema-utils/commit/332242f))
+- better error output for `oneOf` and `anyOf` ([#48](https://github.com/webpack/schema-utils/issues/48)) ([#50](https://github.com/webpack/schema-utils/issues/50)) ([332242f](https://github.com/webpack/schema-utils/commit/332242f))
 
 ## [2.1.0](https://github.com/webpack-contrib/schema-utils/compare/v2.0.1...v2.1.0) (2019-08-07)
 
-
 ### Bug Fixes
 
-* throw error on sparse arrays ([#47](https://github.com/webpack-contrib/schema-utils/issues/47)) ([b85ac38](https://github.com/webpack-contrib/schema-utils/commit/b85ac38))
-
+- throw error on sparse arrays ([#47](https://github.com/webpack-contrib/schema-utils/issues/47)) ([b85ac38](https://github.com/webpack-contrib/schema-utils/commit/b85ac38))
 
 ### Features
 
-* export `ValidateError` ([#46](https://github.com/webpack-contrib/schema-utils/issues/46)) ([ff781d7](https://github.com/webpack-contrib/schema-utils/commit/ff781d7))
-
-
+- export `ValidateError` ([#46](https://github.com/webpack-contrib/schema-utils/issues/46)) ([ff781d7](https://github.com/webpack-contrib/schema-utils/commit/ff781d7))
 
 ### [2.0.1](https://github.com/webpack-contrib/schema-utils/compare/v2.0.0...v2.0.1) (2019-07-18)
 
-
 ### Bug Fixes
 
-* error message for empty object ([#44](https://github.com/webpack-contrib/schema-utils/issues/44)) ([0b4b4a2](https://github.com/webpack-contrib/schema-utils/commit/0b4b4a2))
-
-
+- error message for empty object ([#44](https://github.com/webpack-contrib/schema-utils/issues/44)) ([0b4b4a2](https://github.com/webpack-contrib/schema-utils/commit/0b4b4a2))
 
 ### [2.0.0](https://github.com/webpack-contrib/schema-utils/compare/v1.0.0...v2.0.0) (2019-07-17)
 
-
 ### BREAKING CHANGES
 
-* drop support for Node.js < 8.9.0
-* drop support `errorMessage`, please use `description` for links.
-* api was changed, please look documentation.
-* error messages was fully rewritten.
-
+- drop support for Node.js < 8.9.0
+- drop support `errorMessage`, please use `description` for links.
+- api was changed, please look documentation.
+- error messages was fully rewritten.
 
 <a name="1.0.0"></a>
+
 # [1.0.0](https://github.com/webpack-contrib/schema-utils/compare/v0.4.7...v1.0.0) (2018-08-07)
 
-
 ### Features
 
-* **src:** add support for custom error messages ([#33](https://github.com/webpack-contrib/schema-utils/issues/33)) ([1cbe4ef](https://github.com/webpack-contrib/schema-utils/commit/1cbe4ef))
-
-
+- **src:** add support for custom error messages ([#33](https://github.com/webpack-contrib/schema-utils/issues/33)) ([1cbe4ef](https://github.com/webpack-contrib/schema-utils/commit/1cbe4ef))
 
 <a name="0.4.7"></a>
+
 ## [0.4.7](https://github.com/webpack-contrib/schema-utils/compare/v0.4.6...v0.4.7) (2018-08-07)
 
-
 ### Bug Fixes
 
-* **src:** `node >= v4.0.0` support ([#32](https://github.com/webpack-contrib/schema-utils/issues/32)) ([cb13dd4](https://github.com/webpack-contrib/schema-utils/commit/cb13dd4))
-
-
+- **src:** `node >= v4.0.0` support ([#32](https://github.com/webpack-contrib/schema-utils/issues/32)) ([cb13dd4](https://github.com/webpack-contrib/schema-utils/commit/cb13dd4))
 
 <a name="0.4.6"></a>
+
 ## [0.4.6](https://github.com/webpack-contrib/schema-utils/compare/v0.4.5...v0.4.6) (2018-08-06)
 
-
 ### Bug Fixes
 
-* **package:** remove lockfile ([#28](https://github.com/webpack-contrib/schema-utils/issues/28)) ([69f1a81](https://github.com/webpack-contrib/schema-utils/commit/69f1a81))
-* **package:** remove unnecessary `webpack` dependency ([#26](https://github.com/webpack-contrib/schema-utils/issues/26)) ([532eaa5](https://github.com/webpack-contrib/schema-utils/commit/532eaa5))
-
-
+- **package:** remove lockfile ([#28](https://github.com/webpack-contrib/schema-utils/issues/28)) ([69f1a81](https://github.com/webpack-contrib/schema-utils/commit/69f1a81))
+- **package:** remove unnecessary `webpack` dependency ([#26](https://github.com/webpack-contrib/schema-utils/issues/26)) ([532eaa5](https://github.com/webpack-contrib/schema-utils/commit/532eaa5))
 
 <a name="0.4.5"></a>
+
 ## [0.4.5](https://github.com/webpack-contrib/schema-utils/compare/v0.4.4...v0.4.5) (2018-02-13)
 
-
 ### Bug Fixes
 
-* **CHANGELOG:** update broken links ([4483b9f](https://github.com/webpack-contrib/schema-utils/commit/4483b9f))
-* **package:** update broken links ([f2494ba](https://github.com/webpack-contrib/schema-utils/commit/f2494ba))
-
-
+- **CHANGELOG:** update broken links ([4483b9f](https://github.com/webpack-contrib/schema-utils/commit/4483b9f))
+- **package:** update broken links ([f2494ba](https://github.com/webpack-contrib/schema-utils/commit/f2494ba))
 
 <a name="0.4.4"></a>
+
 ## [0.4.4](https://github.com/webpack-contrib/schema-utils/compare/v0.4.3...v0.4.4) (2018-02-13)
 
-
 ### Bug Fixes
 
-* **package:** update `dependencies` ([#22](https://github.com/webpack-contrib/schema-utils/issues/22)) ([3aecac6](https://github.com/webpack-contrib/schema-utils/commit/3aecac6))
-
-
+- **package:** update `dependencies` ([#22](https://github.com/webpack-contrib/schema-utils/issues/22)) ([3aecac6](https://github.com/webpack-contrib/schema-utils/commit/3aecac6))
 
 <a name="0.4.3"></a>
+
 ## [0.4.3](https://github.com/webpack-contrib/schema-utils/compare/v0.4.2...v0.4.3) (2017-12-14)
 
-
 ### Bug Fixes
 
-* **validateOptions:** throw `err` instead of `process.exit(1)` ([#17](https://github.com/webpack-contrib/schema-utils/issues/17)) ([c595eda](https://github.com/webpack-contrib/schema-utils/commit/c595eda))
-* **ValidationError:** never return `this` in the ctor ([#16](https://github.com/webpack-contrib/schema-utils/issues/16)) ([c723791](https://github.com/webpack-contrib/schema-utils/commit/c723791))
-
-
+- **validateOptions:** throw `err` instead of `process.exit(1)` ([#17](https://github.com/webpack-contrib/schema-utils/issues/17)) ([c595eda](https://github.com/webpack-contrib/schema-utils/commit/c595eda))
+- **ValidationError:** never return `this` in the ctor ([#16](https://github.com/webpack-contrib/schema-utils/issues/16)) ([c723791](https://github.com/webpack-contrib/schema-utils/commit/c723791))
 
 <a name="0.4.2"></a>
+
 ## [0.4.2](https://github.com/webpack-contrib/schema-utils/compare/v0.4.1...v0.4.2) (2017-11-09)
 
-
 ### Bug Fixes
 
-* **validateOptions:** catch `ValidationError` and handle it internally ([#15](https://github.com/webpack-contrib/schema-utils/issues/15)) ([9c5ef5e](https://github.com/webpack-contrib/schema-utils/commit/9c5ef5e))
-
-
+- **validateOptions:** catch `ValidationError` and handle it internally ([#15](https://github.com/webpack-contrib/schema-utils/issues/15)) ([9c5ef5e](https://github.com/webpack-contrib/schema-utils/commit/9c5ef5e))
 
 <a name="0.4.1"></a>
+
 ## [0.4.1](https://github.com/webpack-contrib/schema-utils/compare/v0.4.0...v0.4.1) (2017-11-03)
 
-
 ### Bug Fixes
 
-* **ValidationError:** use `Error.captureStackTrace` for `err.stack` handling ([#14](https://github.com/webpack-contrib/schema-utils/issues/14)) ([a6fb974](https://github.com/webpack-contrib/schema-utils/commit/a6fb974))
-
-
+- **ValidationError:** use `Error.captureStackTrace` for `err.stack` handling ([#14](https://github.com/webpack-contrib/schema-utils/issues/14)) ([a6fb974](https://github.com/webpack-contrib/schema-utils/commit/a6fb974))
 
 <a name="0.4.0"></a>
+
 # [0.4.0](https://github.com/webpack-contrib/schema-utils/compare/v0.3.0...v0.4.0) (2017-10-28)
 
-
 ### Features
 
-* add support for `typeof`, `instanceof` (`{Function\|RegExp}`) ([#10](https://github.com/webpack-contrib/schema-utils/issues/10)) ([9f01816](https://github.com/webpack-contrib/schema-utils/commit/9f01816))
-
-
+- add support for `typeof`, `instanceof` (`{Function\|RegExp}`) ([#10](https://github.com/webpack-contrib/schema-utils/issues/10)) ([9f01816](https://github.com/webpack-contrib/schema-utils/commit/9f01816))
 
 <a name="0.3.0"></a>
-# [0.3.0](https://github.com/webpack-contrib/schema-utils/compare/v0.2.1...v0.3.0) (2017-04-29)
 
+# [0.3.0](https://github.com/webpack-contrib/schema-utils/compare/v0.2.1...v0.3.0) (2017-04-29)
 
 ### Features
 
-* add ValidationError ([#8](https://github.com/webpack-contrib/schema-utils/issues/8)) ([d48f0fb](https://github.com/webpack-contrib/schema-utils/commit/d48f0fb))
-
-
+- add ValidationError ([#8](https://github.com/webpack-contrib/schema-utils/issues/8)) ([d48f0fb](https://github.com/webpack-contrib/schema-utils/commit/d48f0fb))
 
 <a name="0.2.1"></a>
-## [0.2.1](https://github.com/webpack-contrib/schema-utils/compare/v0.2.0...v0.2.1) (2017-03-13)
 
+## [0.2.1](https://github.com/webpack-contrib/schema-utils/compare/v0.2.0...v0.2.1) (2017-03-13)
 
 ### Bug Fixes
 
-* Include .babelrc to `files` ([28f0363](https://github.com/webpack-contrib/schema-utils/commit/28f0363))
-* Include source to `files` ([43b0f2f](https://github.com/webpack-contrib/schema-utils/commit/43b0f2f))
-
-
+- Include .babelrc to `files` ([28f0363](https://github.com/webpack-contrib/schema-utils/commit/28f0363))
+- Include source to `files` ([43b0f2f](https://github.com/webpack-contrib/schema-utils/commit/43b0f2f))
 
 <a name="0.2.0"></a>
+
 # [0.2.0](https://github.com/webpack-contrib/schema-utils/compare/v0.1.0...v0.2.0) (2017-03-12)
 
 <a name="0.1.0"></a>
-# 0.1.0 (2017-03-07)
 
+# 0.1.0 (2017-03-07)
 
 ### Features
 
-* **validations:** add validateOptions module ([ae9b47b](https://github.com/webpack-contrib/schema-utils/commit/ae9b47b))
-
-
+- **validations:** add validateOptions module ([ae9b47b](https://github.com/webpack-contrib/schema-utils/commit/ae9b47b))
 
 # Change Log
 
