@@ -1,4 +1,10 @@
 const Range = require("./Range");
+const humanize = require("./humanize");
+
+const STRING_TYPE_REGEXP = /string$/;
+// A format that is a name, so it can be read as words. A format is any string,
+// including a pattern like `[0-9]*`, and such a one is left to a hint
+const FORMAT_NAME_REGEXP = /^[A-Za-z][A-Za-z\d]*(?:[-_][A-Za-z\d]+)*$/;
 
 /** @typedef {import("../validate").Schema} Schema */
 
@@ -50,6 +56,7 @@ module.exports.numberHints = function numberHints(schema, logic) {
 module.exports.stringHints = function stringHints(schema, logic) {
   const hints = [];
   let type = "string";
+  let formatName = "";
   const currentSchema = { ...schema };
 
   if (!logic) {
@@ -99,11 +106,17 @@ module.exports.stringHints = function stringHints(schema, logic) {
   }
 
   if (currentSchema.format) {
-    hints.push(
-      `should${logic ? "" : " not"} match format ${JSON.stringify(
-        currentSchema.format,
-      )}`,
-    );
+    if (logic && FORMAT_NAME_REGEXP.test(currentSchema.format)) {
+      // The format names the string, `should be a date string` reads better than
+      // `should be a string (should match format "date")`
+      formatName = humanize(currentSchema.format);
+    } else {
+      hints.push(
+        `should${logic ? "" : " not"} match format ${JSON.stringify(
+          currentSchema.format,
+        )}`,
+      );
+    }
   }
 
   if (currentSchema.formatMinimum) {
@@ -122,5 +135,12 @@ module.exports.stringHints = function stringHints(schema, logic) {
     );
   }
 
-  return [type, ...hints];
+  // Every type here ends with `string`, the format names the string itself, so it
+  // goes next to that word - `non-empty email string`, not `email non-empty string`
+  return [
+    formatName
+      ? type.replace(STRING_TYPE_REGEXP, `${formatName} string`)
+      : type,
+    ...hints,
+  ];
 };

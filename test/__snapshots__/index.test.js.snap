@@ -733,7 +733,7 @@ exports[`validation should fail validation for format, formatMaximum and formatE
 
 exports[`validation should fail validation for format, formatMaximum and formatExclusiveMaximum 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.strictFormat should be a string (should match format "date", should be < "2016-02-06")."
+ - configuration.strictFormat should be a date string (should be < "2016-02-06")."
 `;
 
 exports[`validation should fail validation for format, formatMinimum and formatExclusiveMinimum #2 1`] = `
@@ -743,7 +743,7 @@ exports[`validation should fail validation for format, formatMinimum and formatE
 
 exports[`validation should fail validation for format, formatMinimum and formatExclusiveMinimum 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
- - configuration.strictFormat2 should be a string (should match format "date", should be > "2016-02-06")."
+ - configuration.strictFormat2 should be a date string (should be > "2016-02-06")."
 `;
 
 exports[`validation should fail validation for formatExclusiveMaximum #1 1`] = `
