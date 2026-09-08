@@ -31,12 +31,22 @@ const testCases = [
     ['should not match pattern "phone"'],
   ],
   [
+    { format: "date-time" },
+    ["date time string"],
+    ['should not match format "date-time"'],
+  ],
+  [
+    { format: "email", minLength: 1 },
+    ["non-empty email string"],
+    ['should not match format "email"'],
+  ],
+  [
     {
       format: "date",
       formatMaximum: "01.01.2022",
       formatExclusiveMaximum: "01.01.2022",
     },
-    ['should match format "date"', 'should be < "01.01.2022"'],
+    ["date string", 'should be < "01.01.2022"'],
     ['should not match format "date"', 'should be >= "01.01.2022"'],
   ],
 ];
