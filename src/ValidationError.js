@@ -69,6 +69,37 @@ function filterMax(array, fn) {
 }
 
 /**
+ * Removes the children that format to a message an earlier child already
+ * produced. A schema can reach the same failure through more than one branch.
+ * @param {SchemaUtilErrorObject[]} children children
+ * @param {(error: SchemaUtilErrorObject) => string} format formats one child
+ * @returns {SchemaUtilErrorObject[]} children without the duplicates
+ */
+function filterDuplicateChildren(children, format) {
+  if (children.length < 2) {
+    return children;
+  }
+
+  /** @type {Set<string>} */
+  const seen = new Set();
+  /** @type {SchemaUtilErrorObject[]} */
+  const newChildren = [];
+
+  for (const child of children) {
+    const message = format(child);
+
+    if (seen.has(message)) {
+      continue;
+    }
+
+    seen.add(message);
+    newChildren.push(child);
+  }
+
+  return newChildren;
+}
+
+/**
  * @param {SchemaUtilErrorObject[]} children children
  * @returns {SchemaUtilErrorObject[]} filtered children
  */
@@ -998,12 +1029,15 @@ class ValidationError extends Error {
               false,
               true,
             )}`;
-          case "string":
-            return `${instancePath} should be a ${this.getSchemaPartText(
+          case "string": {
+            const stringType = this.getSchemaPartText(
               parentSchema,
               false,
               true,
-            )}`;
+            );
+
+            return `${instancePath} should be ${getArticle(stringType)} ${stringType}`;
+          }
           case "boolean":
             return `${instancePath} should be a ${this.getSchemaPartText(
               parentSchema,
@@ -1347,7 +1381,10 @@ class ValidationError extends Error {
             });
           }
 
-          let filteredChildren = filterChildren(children);
+          let filteredChildren = filterDuplicateChildren(
+            filterChildren(children),
+            (nestedError) => this.formatValidationError(nestedError),
+          );
 
           if (filteredChildren.length === 1) {
             return this.formatValidationError(filteredChildren[0]);

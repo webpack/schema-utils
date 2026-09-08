@@ -392,7 +392,7 @@ exports[`validation should fail validation for array type 1`] = `
 exports[`validation should fail validation for array with absolutePath item 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.arrayWithAbsolutePath should be an array:
-   [integer, string, ...]"
+   [integer, absolute path string, ...]"
 `;
 
 exports[`validation should fail validation for array with additionalItems 1`] = `
@@ -1125,9 +1125,7 @@ exports[`validation should fail validation for module 1`] = `
     * configuration.module.rules[0].compiler should be an array:
       [RegExp | non-empty string | function | [(recursive), ...] | object { and?, exclude?, include?, not?, or?, test? }, ...]
     * configuration.module.rules[0].compiler should be an object:
-      object { and?, exclude?, include?, not?, or?, test? }
-    * configuration.module.rules[0].compiler should be an array:
-      [RegExp | non-empty string | function | [(recursive), ...] | object { and?, exclude?, include?, not?, or?, test? }, ...]"
+      object { and?, exclude?, include?, not?, or?, test? }"
 `;
 
 exports[`validation should fail validation for multiple configurations 1`] = `
@@ -1135,10 +1133,10 @@ exports[`validation should fail validation for multiple configurations 1`] = `
  - configuration[0].entry[0] should be a non-empty string.
    -> A non-empty string
  - configuration[1].output.filename should be one of these:
-   string | function
+   relative path string | function
    -> Specifies the name of each output file on disk. You must **not** specify an absolute path here! The \`output.path\` option determines the location on disk the files are written to, filename is used solely for naming the individual files.
    Details:
-    * configuration[1].output.filename should be a string.
+    * configuration[1].output.filename should be a relative path string.
     * configuration[1].output.filename should be an instance of function."
 `;
 
@@ -1147,10 +1145,10 @@ exports[`validation should fail validation for multiple errors 1`] = `
  - configuration.entry[0] should be a non-empty string.
    -> A non-empty string
  - configuration.output.filename should be one of these:
-   string | function
+   relative path string | function
    -> Specifies the name of each output file on disk. You must **not** specify an absolute path here! The \`output.path\` option determines the location on disk the files are written to, filename is used solely for naming the individual files.
    Details:
-    * configuration.output.filename should be a string.
+    * configuration.output.filename should be a relative path string.
     * configuration.output.filename should be an instance of function."
 `;
 
@@ -1647,7 +1645,7 @@ exports[`validation should fail validation for oneOf #3 1`] = `
     * configuration.optimization.runtimeChunk should be a boolean.
     * configuration.optimization.runtimeChunk should be one of these:
       "single" | "multiple"
-    * configuration.optimization.runtimeChunk should be a empty string.
+    * configuration.optimization.runtimeChunk should be an empty string.
     * configuration.optimization.runtimeChunk should be an object:
       object { name? }"
 `;

@@ -62,6 +62,12 @@ module.exports.stringHints = function stringHints(schema, logic) {
     currentSchema.formatMaximum = tmpFormat;
   }
 
+  if (typeof currentSchema.absolutePath === "boolean") {
+    type = currentSchema.absolutePath
+      ? "absolute path string"
+      : "relative path string";
+  }
+
   if (typeof currentSchema.minLength === "number") {
     if (currentSchema.minLength === 1) {
       type = "non-empty string";

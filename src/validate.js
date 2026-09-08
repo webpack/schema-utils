@@ -55,6 +55,7 @@ const getAjv = memoize(() => {
  * @property {(string | boolean)=} formatExclusiveMaximum format exclusive maximum
  * @property {string=} link link
  * @property {boolean=} undefinedAsNull undefined will be resolved as null
+ * @property {boolean=} absolutePath the string is an absolute path when true, a relative one when false
  */
 
 // TODO remove me in the next major release
