@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "moduleResolution": "node",
+    "module": "node16",
+    "moduleResolution": "node16",
+    "rootDir": "./src",
     "allowJs": true,
     "checkJs": true,
     "strict": true,

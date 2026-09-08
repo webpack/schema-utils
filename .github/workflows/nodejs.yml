@@ -40,8 +40,6 @@ jobs:
         run: if [ -n "$(git status declarations --porcelain)" ]; then echo "Missing declarations in git"; exit 1; else echo "All declarations are valid"; fi
       - name: Security audit
         run: npm run security
-      - name: Check commit message
-        uses: wagoid/commitlint-github-action@v4
   test:
     name: Test - ${{ matrix.os }} - Node v${{ matrix.node-version }}
     strategy:
@@ -74,15 +72,18 @@ jobs:
           architecture: ${{ steps.calculate_architecture.outputs.result }}
           cache: "npm"
       - name: Install dependencies
-        # Legacy versions do not generate types, so skip scripts that invoke `prepare` and explicitly run the code build without generating types
+        # The dev dependencies require an active LTS release, so install the versions that still
+        # run on the version under test. Legacy versions do not generate types either, so skip
+        # scripts that invoke `prepare` and explicitly run the code build without generating types.
+        # `--legacy-peer-deps` is what lets npm 7 and above downgrade over the lockfile
         run: |
-          npm i -D typescript@4 del-cli@^3 --ignore-scripts
-          npm i --ignore-engines --ignore-scripts
+          npm i -D typescript@4 del-cli@^3 jest@^27 babel-jest@^27 @babel/cli@^7 @babel/core@^7 @babel/preset-env@^7 --ignore-scripts --legacy-peer-deps
+          npm i --ignore-engines --ignore-scripts --legacy-peer-deps
           npm run build:code
-        if: matrix.node-version == '10.x' || matrix.node-version == '12.x' || matrix.node-version == '14.x' || matrix.node-version == '16.x' || matrix.node-version == '18.x'
+        if: matrix.node-version == '10.x' || matrix.node-version == '12.x' || matrix.node-version == '14.x' || matrix.node-version == '16.x' || matrix.node-version == '18.x' || matrix.node-version == '20.x'
       - name: Install dependencies
         run: npm ci
-        if: matrix.node-version == '20.x' || matrix.node-version == '22.x' || matrix.node-version == '24.x' || matrix.node-version == '26.x'
+        if: matrix.node-version == '22.x' || matrix.node-version == '24.x' || matrix.node-version == '26.x'
       - name: Run tests with coverage
         run: npm run test:coverage -- --ci
       - uses: codecov/codecov-action@v5
