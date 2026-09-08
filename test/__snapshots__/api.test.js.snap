@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`api should allow to enable validation using "process.env.SKIP_VALIDATION" #2 1`] = `
 "Invalid options object. NAME has been initialized using an options object that does not match the API schema.

@@ -306,6 +306,10 @@ Please take a moment to read our contributing guidelines if you haven't yet done
 
 [CONTRIBUTING](https://github.com/webpack/schema-utils?tab=contributing-ov-file#contributing)
 
+The package itself runs on Node.js 10.13.0 and above, but the dev dependencies require an active
+LTS release, so use one to work on it. CI installs older ones to run the tests on the older
+versions of Node.js the package supports.
+
 ## License
 
 [MIT](./LICENSE)
