@@ -423,6 +423,31 @@ function getArticle(type) {
   return "a";
 }
 
+// The constraints a formatted type ends with, they are stated by the error on
+// the property itself, so the summary of the shape does not repeat them
+const TYPE_CONSTRAINTS_REGEXP = /\s*\([^()]*\)$/;
+// A type that is more than a name: a union, an object or an array
+const COMPOSITE_TYPE_REGEXP = /[{}[\]()|\n]/;
+const MAX_LEAF_TYPE_LENGTH = 24;
+// The width the listed types of an object have to fit in
+const MAX_TYPED_STRUCTURE_LENGTH = 120;
+
+/**
+ * Names the type of a property shortly enough to sit next to the property name.
+ * A composite type is left out, it buries the property names it is listed with.
+ * @param {string} type formatted type
+ * @returns {string} the short name of the type, an empty string when it has none
+ */
+function getLeafTypeName(type) {
+  const name = type.replace(TYPE_CONSTRAINTS_REGEXP, "");
+
+  return name.length > 0 &&
+    name.length <= MAX_LEAF_TYPE_LENGTH &&
+    !COMPOSITE_TYPE_REGEXP.test(name)
+    ? name
+    : "";
+}
+
 /**
  * @param {Schema=} schema schema
  * @returns {string} schema non types
@@ -830,23 +855,45 @@ class ValidationError extends Error {
         ...new Set(/** @type {string[]} */ ([...required, ...properties])),
       ];
 
-      const objectStructure = [
-        ...allProperties.map((property) => {
-          const isRequired = required.includes(property);
+      const namedProperties = allProperties.map((property) => {
+        // Some properties need quotes, maybe we should add check
+        const name = `${property}${required.includes(property) ? "" : "?"}`;
+        const propertySchema = schema.properties
+          ? schema.properties[property]
+          : undefined;
+        const type =
+          propertySchema && propertySchema !== true
+            ? getLeafTypeName(formatInnerSchema(propertySchema, true))
+            : "";
 
-          // Some properties need quotes, maybe we should add check
-          // Maybe we should output type of property (`foo: string`), but it is looks very unreadable
-          return `${property}${isRequired ? "" : "?"}`;
-        }),
-        ...(typeof schema.additionalProperties === "undefined" ||
+        return { name, type };
+      });
+
+      const otherProperties =
+        typeof schema.additionalProperties === "undefined" ||
         Boolean(schema.additionalProperties)
           ? schema.additionalProperties &&
             isObject(schema.additionalProperties) &&
             schema.additionalProperties !== true
             ? [`<key>: ${formatInnerSchema(schema.additionalProperties)}`]
             : ["…"]
-          : []),
+          : [];
+
+      const typedStructure = [
+        ...namedProperties.map(
+          ({ name, type }) => `${name}${type ? `: ${type}` : ""}`,
+        ),
+        ...otherProperties,
       ].join(", ");
+      // The types are only listed while the shape stays readable, an object with
+      // that many properties is hard enough to read by the names alone
+      const objectStructure =
+        typedStructure.length <= MAX_TYPED_STRUCTURE_LENGTH
+          ? typedStructure
+          : [
+              ...namedProperties.map(({ name }) => name),
+              ...otherProperties,
+            ].join(", ");
 
       const { dependencies, propertyNames, patternRequired } =
         /** @type {Schema & { patternRequired?: string[] }} */ (schema);
