@@ -3,55 +3,73 @@
 exports[`api should allow to enable validation using "process.env.SKIP_VALIDATION" #2 1`] = `
 "Invalid options object. NAME has been initialized using an options object that does not match the API schema.
  - options has an unknown property 'foo'. These properties are valid:
-   object { name? }"
+   object { name?: boolean }"
 `;
 
 exports[`api should allow to enable validation using "process.env.SKIP_VALIDATION" 1`] = `
 "Invalid options object. NAME has been initialized using an options object that does not match the API schema.
  - options has an unknown property 'foo'. These properties are valid:
-   object { name? }"
+   object { name?: boolean }"
 `;
 
 exports[`api should allow to enable validation using API 1`] = `
 "Invalid options object. NAME has been initialized using an options object that does not match the API schema.
  - options has an unknown property 'foo'. These properties are valid:
-   object { name? }"
+   object { name?: boolean }"
 `;
 
 exports[`api should get configuration from schema 1`] = `
 "Invalid options object. CSS Loader has been initialized using an options object that does not match the API schema.
  - options has an unknown property 'foo'. These properties are valid:
-   object { name? }"
+   object { name?: boolean }"
+`;
+
+exports[`api should not output the type of a property when it is a composite one 1`] = `
+"Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
+ - configuration.v should be an object:
+   object { shorthand?: string, union?, nested?, list?, constrained?: number, … }"
+`;
+
+exports[`api should not output the types of an object with many properties 1`] = `
+"Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
+ - configuration.v should be an object:
+   object { property0?, property1?, property2?, property3?, property4?, property5?, property6?, property7?, property8?, property9?, property10?, property11?, property12?, property13?, property14?, property15?, property16?, property17?, property18?, property19?, … }"
+`;
+
+exports[`api should output the type of each property 1`] = `
+"Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
+ - configuration.v should be an object:
+   object { foo?: boolean, bar?: integer, … }"
 `;
 
 exports[`api should prefer configuration over "title" #1 1`] = `
 "Invalid options object. NAME has been initialized using an options object that does not match the API schema.
  - options has an unknown property 'foo'. These properties are valid:
-   object { name? }"
+   object { name?: boolean }"
 `;
 
 exports[`api should prefer configuration over "title" #2 1`] = `
 "Invalid BaseDataPath object. CSS Loader has been initialized using a BaseDataPath object that does not match the API schema.
  - BaseDataPath has an unknown property 'foo'. These properties are valid:
-   object { name? }"
+   object { name?: boolean }"
 `;
 
 exports[`api should prefer configuration over "title" 1`] = `
 "Invalid BaseDataPath object. NAME has been initialized using a BaseDataPath object that does not match the API schema.
  - BaseDataPath has an unknown property 'foo'. These properties are valid:
-   object { name? }"
+   object { name?: boolean }"
 `;
 
 exports[`api should use default values when "title" is broken 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration has an unknown property 'foo'. These properties are valid:
-   object { name? }"
+   object { name?: boolean }"
 `;
 
 exports[`api should work with anyOf 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration should be one of these:
-   object { bar, … } | object { baz, … }
+   object { bar: number, … } | object { baz: number, … }
    Details:
     * configuration misses the property 'bar' | should be any non-object. Should be:
       number
@@ -73,4 +91,19 @@ exports[`api should work with required properties 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.c misses the property 'e'. Should be:
    string"
+`;
+
+exports[`api should work with the \`not\` keyword 1`] = `
+"Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
+ - configuration.v should be any non-number | number (should be < 3)."
+`;
+
+exports[`api should work with the \`not\` keyword 2`] = `
+"Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
+ - configuration.v should be any non-string."
+`;
+
+exports[`api should work with the \`not\` keyword 3`] = `
+"Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
+ - configuration.v should not be 1 | 2."
 `;

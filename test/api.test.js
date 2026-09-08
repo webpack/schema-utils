@@ -198,6 +198,111 @@ describe("api", () => {
     }
   });
 
+  it("should output the type of each property", () => {
+    expect.assertions(1);
+
+    try {
+      validate(
+        {
+          type: "object",
+          properties: {
+            v: {
+              type: "object",
+              properties: {
+                foo: { type: "boolean" },
+                bar: { type: "integer" },
+              },
+            },
+          },
+        },
+        { v: 1 },
+      );
+    } catch (error) {
+      if (error.name !== "ValidationError") {
+        throw error;
+      }
+
+      expect(error.message).toMatchSnapshot();
+    }
+  });
+
+  it("should not output the type of a property when it is a composite one", () => {
+    expect.assertions(1);
+
+    try {
+      validate(
+        {
+          type: "object",
+          properties: {
+            v: {
+              type: "object",
+              properties: {
+                shorthand: { type: "string" },
+                union: { type: ["string", "number"] },
+                nested: {
+                  type: "object",
+                  properties: { deep: { type: "string" } },
+                },
+                list: { type: "array", items: { type: "string" } },
+                constrained: { type: "number", minimum: 2 },
+              },
+            },
+          },
+        },
+        { v: 1 },
+      );
+    } catch (error) {
+      if (error.name !== "ValidationError") {
+        throw error;
+      }
+
+      expect(error.message).toMatchSnapshot();
+    }
+  });
+
+  it("should not output the types of an object with many properties", () => {
+    expect.assertions(1);
+
+    const properties = {};
+
+    for (let i = 0; i < 20; i++) {
+      properties[`property${i}`] = { type: "string" };
+    }
+
+    try {
+      validate(
+        { type: "object", properties: { v: { type: "object", properties } } },
+        { v: 1 },
+      );
+    } catch (error) {
+      if (error.name !== "ValidationError") {
+        throw error;
+      }
+
+      expect(error.message).toMatchSnapshot();
+    }
+  });
+
+  it("should work with the `not` keyword", () => {
+    expect.assertions(3);
+
+    for (const [not, value] of [
+      [{ minimum: 3 }, 5],
+      [{ type: "string" }, "foo"],
+      [{ enum: [1, 2] }, 1],
+    ]) {
+      try {
+        validate({ type: "object", properties: { v: { not } } }, { v: value });
+      } catch (error) {
+        if (error.name !== "ValidationError") {
+          throw error;
+        }
+
+        expect(error.message).toMatchSnapshot();
+      }
+    }
+  });
+
   it("should work with minProperties properties", () => {
     try {
       validate(

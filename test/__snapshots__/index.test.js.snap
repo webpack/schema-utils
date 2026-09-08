@@ -19,11 +19,11 @@ exports[`validation should fail validation for $data 1`] = `
 exports[`validation should fail validation for Invalid plugin provided: int 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.plugins[0] should be one of these:
-   object { apply, … } | function
+   object { apply: function, … } | function
    -> Plugin of type object or instanceof Function
    Details:
     * configuration.plugins[0] should be an object:
-      object { apply, … }
+      object { apply: function, … }
       -> Plugin instance
     * configuration.plugins[0] should be an instance of function.
       -> Function acting as plugin"
@@ -103,13 +103,13 @@ exports[`validation should fail validation for additionalItems with false 1`] = 
 exports[`validation should fail validation for additionalProperties #2 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.additionalPropertiesKeyword has an unknown property 'baz' | should be any non-object. These properties are valid:
-   object { foo? } (additional property names should match pattern "^.*r$")"
+   object { foo?: number } (additional property names should match pattern "^.*r$")"
 `;
 
 exports[`validation should fail validation for additionalProperties #3 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.additionalPropertiesKeyword has an unknown property 'baz' | should be any non-object. These properties are valid:
-   object { foo? } (additional property names should match pattern "^.*r$")
+   object { foo?: number } (additional property names should match pattern "^.*r$")
  - configuration.additionalPropertiesKeyword.foo should be a number."
 `;
 
@@ -131,33 +131,33 @@ exports[`validation should fail validation for additionalProperties #6 1`] = `
 exports[`validation should fail validation for additionalProperties 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.additionalPropertiesKeyword has an unknown property 'a' | should be any non-object. These properties are valid:
-   object { foo? } (additional property names should match pattern "^.*r$")"
+   object { foo?: number } (additional property names should match pattern "^.*r$")"
 `;
 
 exports[`validation should fail validation for additionalProperties inside oneOf #2 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.additionalPropertiesInsideOneOf has an unknown property 'bar'. These properties are valid:
-   object { foo? }"
+   object { foo?: integer }"
 `;
 
 exports[`validation should fail validation for additionalProperties inside oneOf #3 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.additionalPropertiesInsideOneOf2 should be one of these:
-   integer (should be <= 3) | object { foo?, … }
+   integer (should be <= 3) | object { foo?: integer, … }
    Details:
     * configuration.additionalPropertiesInsideOneOf2 should be an integer (should be <= 3).
     * configuration.additionalPropertiesInsideOneOf2 should be an object:
-      object { foo?, … }"
+      object { foo?: integer, … }"
 `;
 
 exports[`validation should fail validation for additionalProperties inside oneOf 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.additionalPropertiesInsideOneOf should be one of these:
-   integer (should be <= 3) | object { foo? }
+   integer (should be <= 3) | object { foo?: integer }
    Details:
     * configuration.additionalPropertiesInsideOneOf should be an integer (should be <= 3).
     * configuration.additionalPropertiesInsideOneOf should be an object:
-      object { foo? }"
+      object { foo?: integer }"
 `;
 
 exports[`validation should fail validation for additionalProperties without object type 1`] = `
@@ -194,10 +194,10 @@ exports[`validation should fail validation for allOf 2`] = `
 exports[`validation should fail validation for anyOf 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.anyOfKeyword should be one of these:
-   object { foo?, … } | non-empty string | [non-empty string, ...] (should not have fewer than 1 item, should not have duplicate items)
+   object { foo?: string, … } | non-empty string | [non-empty string, ...] (should not have fewer than 1 item, should not have duplicate items)
    Details:
     * configuration.anyOfKeyword should be an object:
-      object { foo?, … }
+      object { foo?: string, … }
     * configuration.anyOfKeyword should be one of these:
       non-empty string | [non-empty string, ...] (should not have fewer than 1 item, should not have duplicate items)
       Details:
@@ -342,7 +342,7 @@ exports[`validation should fail validation for array #21 1`] = `
 exports[`validation should fail validation for array #22 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.arrayKeyword16 should be an array:
-   [integer, integer, ...] (should not have fewer than 4 items, should not have more than 8 items, additional items should be object { foo?, bar?, … })"
+   [integer, integer, ...] (should not have fewer than 4 items, should not have more than 8 items, additional items should be object { foo?: string, bar?: number, … })"
 `;
 
 exports[`validation should fail validation for array #23 1`] = `
@@ -932,11 +932,11 @@ exports[`validation should fail validation for invalid mode 1`] = `
 exports[`validation should fail validation for invalid plugin provided: array 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.plugins[0] should be one of these:
-   object { apply, … } | function
+   object { apply: function, … } | function
    -> Plugin of type object or instanceof Function
    Details:
     * configuration.plugins[0] should be an object:
-      object { apply, … }
+      object { apply: function, … }
       -> Plugin instance
     * configuration.plugins[0] should be an instance of function.
       -> Function acting as plugin"
@@ -945,11 +945,11 @@ exports[`validation should fail validation for invalid plugin provided: array 1`
 exports[`validation should fail validation for invalid plugin provided: bool 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.plugins[0] should be one of these:
-   object { apply, … } | function
+   object { apply: function, … } | function
    -> Plugin of type object or instanceof Function
    Details:
     * configuration.plugins[0] should be an object:
-      object { apply, … }
+      object { apply: function, … }
       -> Plugin instance
     * configuration.plugins[0] should be an instance of function.
       -> Function acting as plugin"
@@ -958,11 +958,11 @@ exports[`validation should fail validation for invalid plugin provided: bool 1`]
 exports[`validation should fail validation for invalid plugin provided: string 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.plugins[0] should be one of these:
-   object { apply, … } | function
+   object { apply: function, … } | function
    -> Plugin of type object or instanceof Function
    Details:
     * configuration.plugins[0] should be an object:
-      object { apply, … }
+      object { apply: function, … }
       -> Plugin instance
     * configuration.plugins[0] should be an instance of function.
       -> Function acting as plugin"
@@ -1039,7 +1039,7 @@ exports[`validation should fail validation for maxProperties and minProperties #
 exports[`validation should fail validation for maxProperties and minProperties 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.maxPropertiesAndMinProperties should be an object:
-   object { foo?, bar?, … } (should not have fewer than 3 properties, should not have more than 5 properties)"
+   object { foo?: string, bar?: number, … } (should not have fewer than 3 properties, should not have more than 5 properties)"
 `;
 
 exports[`validation should fail validation for maxProperties without object type 1`] = `
@@ -1258,7 +1258,7 @@ exports[`validation should fail validation for no type like number with multiple
 exports[`validation should fail validation for no type like object additionalProperties 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.noTypeLikeObjectAdditionalProperties has an unknown property 'baz' | should be any non-object. These properties are valid:
-   object { foo? } (additional property names should match pattern "^.*r$")"
+   object { foo?: number } (additional property names should match pattern "^.*r$")"
 `;
 
 exports[`validation should fail validation for no type like object dependencies 1`] = `
@@ -1330,7 +1330,7 @@ exports[`validation should fail validation for non empty object #2 1`] = `
 exports[`validation should fail validation for non empty object 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.nonEmptyObject should be an object:
-   object { bar? }"
+   object { bar?: number }"
 `;
 
 exports[`validation should fail validation for non empty string in object with anyOf 1`] = `
@@ -1446,7 +1446,7 @@ exports[`validation should fail validation for number with minimum and maximum 1
 exports[`validation should fail validation for object #2 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.objectTest2 should be an object:
-   object { a, b, c, d } (should not have fewer than 3 properties, should not have more than 5 properties)"
+   object { a: number, b: number, c: number, d } (should not have fewer than 3 properties, should not have more than 5 properties)"
 `;
 
 exports[`validation should fail validation for object #3 1`] = `
@@ -1475,7 +1475,7 @@ exports[`validation should fail validation for object #6 1`] = `
 exports[`validation should fail validation for object #7 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.objectTest5 should be an object:
-   object { foo@bar.com, <key>: string } (each property name should match format "email")"
+   object { foo@bar.com: number, <key>: string } (each property name should match format "email")"
 `;
 
 exports[`validation should fail validation for object #8 1`] = `
@@ -1487,7 +1487,7 @@ exports[`validation should fail validation for object #8 1`] = `
 exports[`validation should fail validation for object #9 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.objectTest7 should be an object:
-   object { prop, … } (should have properties 'bar', 'baz' when property 'foo' is present, should be valid according to the schema object { a, b, c, d, bar?, … } when property 'baz' is present)"
+   object { prop, … } (should have properties 'bar', 'baz' when property 'foo' is present, should be valid according to the schema object { a, b, c, d, bar?: number, … } when property 'baz' is present)"
 `;
 
 exports[`validation should fail validation for object #9 2`] = `
@@ -1505,7 +1505,7 @@ exports[`validation should fail validation for object #10 1`] = `
 exports[`validation should fail validation for object #11 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.objectTest9 should be an object:
-   object { prop, … } (should have properties 'bar', 'baz' when property 'foo' is present, should be valid according to the schema object { other, prop, bar?, … } when property 'baz' is present)"
+   object { prop, … } (should have properties 'bar', 'baz' when property 'foo' is present, should be valid according to the schema object { other, prop, bar?: number, … } when property 'baz' is present)"
 `;
 
 exports[`validation should fail validation for object #12 1`] = `
@@ -1517,7 +1517,7 @@ exports[`validation should fail validation for object #12 1`] = `
 exports[`validation should fail validation for object 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.objectTest should be an object:
-   object { a, b, c, d, f?, <key>: number } (should not have fewer than 3 properties, should not have more than 5 properties)"
+   object { a: number, b: number, c: number, d, f?: number, <key>: number } (should not have fewer than 3 properties, should not have more than 5 properties)"
 `;
 
 exports[`validation should fail validation for object dependencies 1`] = `
@@ -1533,13 +1533,13 @@ exports[`validation should fail validation for object dependencies 2`] = `
 exports[`validation should fail validation for object in object with anyOf 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.allOfRef.alias should be one of these:
-   object { <key>: string } | [object { alias?, name?, onlyModule? }, ...]
+   object { <key>: string } | [object { alias?: string, name?: string, onlyModule?: boolean }, ...]
    -> Redirect module requests
    Details:
     * configuration.allOfRef.alias should be an object:
       object { <key>: string }
     * configuration.allOfRef.alias should be an array:
-      [object { alias?, name?, onlyModule? }, ...]"
+      [object { alias?: string, name?: string, onlyModule?: boolean }, ...]"
 `;
 
 exports[`validation should fail validation for object type 1`] = `
@@ -1552,25 +1552,25 @@ exports[`validation should fail validation for object type 1`] = `
 exports[`validation should fail validation for object with dependencies #2 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.objectWithPropertyDependency2 should be an object:
-   object { foo?, … } (should have property 'bar' when property 'foo' is present)"
+   object { foo?: string, … } (should have property 'bar' when property 'foo' is present)"
 `;
 
 exports[`validation should fail validation for object with dependencies #3 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.objectWithPropertyDependency3 should be an object:
-   object { foo?, … } (should be valid according to the schema object { bar?, … } when property 'foo' is present)"
+   object { foo?: string, … } (should be valid according to the schema object { bar?: number, … } when property 'foo' is present)"
 `;
 
 exports[`validation should fail validation for object with dependencies #4 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.objectWithPropertyDependency4 should be an object:
-   object { foo?, … }"
+   object { foo?: string, … }"
 `;
 
 exports[`validation should fail validation for object with dependencies 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.objectWithPropertyDependency should be an object:
-   object { foo?, … } (should have properties 'bar', 'baz' when property 'foo' is present)"
+   object { foo?: string, … } (should have properties 'bar', 'baz' when property 'foo' is present)"
 `;
 
 exports[`validation should fail validation for object with maxProperties 1`] = `
@@ -1586,7 +1586,7 @@ exports[`validation should fail validation for object with maxProperties 2`] = `
 exports[`validation should fail validation for object with required and properties 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.justAnObject should be an object:
-   object { foo, bar?, … }"
+   object { foo: string, bar?: number, … }"
 `;
 
 exports[`validation should fail validation for object without items 1`] = `
@@ -1665,10 +1665,10 @@ exports[`validation should fail validation for oneOf with description 1`] = `
 exports[`validation should fail validation for oneOf with if 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.oneOfWithIf should be one of these:
-   if object { power?, … } then object { disbelief, … } else object { confidence, … } | integer
+   if object { power?: number, … } then object { disbelief, … } else object { confidence, … } | integer
    Details:
     * configuration.oneOfWithIf should be an object:
-      if object { power?, … } then object { disbelief, … } else object { confidence, … }
+      if object { power?: number, … } then object { disbelief, … } else object { confidence, … }
     * configuration.oneOfWithIf should be an integer."
 `;
 
@@ -1691,7 +1691,7 @@ exports[`validation should fail validation for only items 1`] = `
 exports[`validation should fail validation for only properties #2 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.onlyProperties2 has an unknown property 'break' | should be any non-object. These properties are valid:
-   object { foo?, bar? }"
+   object { foo?: string, bar?: number }"
 `;
 
 exports[`validation should fail validation for only properties 1`] = `
@@ -1803,7 +1803,7 @@ exports[`validation should fail validation for propertyNames without object type
 exports[`validation should fail validation for recursion 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.recursion.person.children should be an array:
-   [object { name?, children?, … }, ...]"
+   [object { name?: string, children?, … }, ...]"
 `;
 
 exports[`validation should fail validation for ref inside object inside allOf 1`] = `
