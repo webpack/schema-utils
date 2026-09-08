@@ -3061,6 +3061,51 @@ describe("validation", () => {
     webpackSchema,
   );
 
+  // A rule condition that is a string has to be an absolute path, and saying so once beats
+  // listing every branch of the condition schema that the value also failed
+  it.each([
+    ["a string", "node_modules", "configuration.module.rules[0].exclude"],
+    ["an array", ["node_modules"], "configuration.module.rules[0].exclude[0]"],
+  ])(
+    "should report a relative rule condition given as %s without listing every branch",
+    (_name, exclude, expectedPath) => {
+      let message;
+
+      try {
+        validate(
+          webpackSchema,
+          {
+            module: {
+              rules: [{ test: /\.js$/, exclude, use: ["babel-loader"] }],
+            },
+          },
+          {},
+        );
+      } catch (error) {
+        if (error.name !== "ValidationError") {
+          throw error;
+        }
+
+        message = error.message;
+      }
+
+      expect(message.split("\n").slice(1).join("\n")).toBe(
+        ` - ${expectedPath}: The provided value "node_modules" is not an absolute path!`,
+      );
+    },
+  );
+
+  // The type of a string an `absolutePath` keyword applies to says which strings are accepted,
+  // a bare `string` reads as though any would do
+  createFailedTestCase(
+    "absolutePath in a list of alternatives",
+    { testAbsolutePath: 1 },
+    (msg) => {
+      expect(msg).toContain("should be an absolute path string.");
+      expect(msg).not.toContain("should be a string.");
+    },
+  );
+
   // `import.meta.resolve()` returns a `file://` URL, so every option of webpack's own schema that
   // takes an absolute path has to accept one - these are all of them
   const WEBPACK_FILE_URL = "file:///directory/deep/tree";

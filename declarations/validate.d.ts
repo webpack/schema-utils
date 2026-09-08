@@ -28,6 +28,10 @@ export type ExtendedSchema = {
    * undefined will be resolved as null
    */
   undefinedAsNull?: boolean | undefined;
+  /**
+   * the string is an absolute path when true, a relative one when false
+   */
+  absolutePath?: boolean | undefined;
 };
 export type Extend = ExtendedSchema;
 export type Schema = (JSONSchema4 | JSONSchema6 | JSONSchema7) & ExtendedSchema;
