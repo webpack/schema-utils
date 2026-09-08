@@ -3061,6 +3061,127 @@ describe("validation", () => {
     webpackSchema,
   );
 
+  // `import.meta.resolve()` returns a `file://` URL, so every option of webpack's own schema that
+  // takes an absolute path has to accept one - these are all of them
+  const WEBPACK_FILE_URL = "file:///directory/deep/tree";
+
+  /** @type {Record<string, Record<string, EXPECTED_ANY>>} */
+  const webpackAbsolutePathOptions = {
+    "cache.cacheDirectory": {
+      cache: { type: "filesystem", cacheDirectory: WEBPACK_FILE_URL },
+    },
+    "cache.cacheLocation": {
+      cache: { type: "filesystem", cacheLocation: WEBPACK_FILE_URL },
+    },
+    "cache.immutablePaths": {
+      cache: { type: "filesystem", immutablePaths: [WEBPACK_FILE_URL] },
+    },
+    "cache.managedPaths": {
+      cache: { type: "filesystem", managedPaths: [WEBPACK_FILE_URL] },
+    },
+    context: { context: WEBPACK_FILE_URL },
+    "dotenv.dir": { dotenv: { dir: WEBPACK_FILE_URL } },
+    "experiments.buildHttp.cacheLocation": {
+      experiments: {
+        buildHttp: { allowedUris: [], cacheLocation: WEBPACK_FILE_URL },
+      },
+    },
+    "experiments.buildHttp.lockfileLocation": {
+      experiments: {
+        buildHttp: { allowedUris: [], lockfileLocation: WEBPACK_FILE_URL },
+      },
+    },
+    "module.defaultRules.exclude": {
+      module: { defaultRules: [{ exclude: WEBPACK_FILE_URL }] },
+    },
+    "module.defaultRules.include": {
+      module: { defaultRules: [{ include: WEBPACK_FILE_URL }] },
+    },
+    "module.defaultRules.issuer": {
+      module: { defaultRules: [{ issuer: WEBPACK_FILE_URL }] },
+    },
+    "module.defaultRules.realResource": {
+      module: { defaultRules: [{ realResource: WEBPACK_FILE_URL }] },
+    },
+    "module.defaultRules.resolve.restrictions": {
+      module: {
+        defaultRules: [{ resolve: { restrictions: [WEBPACK_FILE_URL] } }],
+      },
+    },
+    "module.defaultRules.resource": {
+      module: { defaultRules: [{ resource: WEBPACK_FILE_URL }] },
+    },
+    "module.defaultRules.test": {
+      module: { defaultRules: [{ test: WEBPACK_FILE_URL }] },
+    },
+    "module.noParse": { module: { noParse: WEBPACK_FILE_URL } },
+    "module.noParse[]": { module: { noParse: [WEBPACK_FILE_URL] } },
+    "module.rules.exclude": {
+      module: { rules: [{ exclude: WEBPACK_FILE_URL }] },
+    },
+    "module.rules.include": {
+      module: { rules: [{ include: WEBPACK_FILE_URL }] },
+    },
+    "module.rules.issuer": {
+      module: { rules: [{ issuer: WEBPACK_FILE_URL }] },
+    },
+    "module.rules.realResource": {
+      module: { rules: [{ realResource: WEBPACK_FILE_URL }] },
+    },
+    "module.rules.resolve.restrictions": {
+      module: { rules: [{ resolve: { restrictions: [WEBPACK_FILE_URL] } }] },
+    },
+    "module.rules.resource": {
+      module: { rules: [{ resource: WEBPACK_FILE_URL }] },
+    },
+    "module.rules.test": { module: { rules: [{ test: WEBPACK_FILE_URL }] } },
+    "output.path": { output: { path: WEBPACK_FILE_URL } },
+    recordsInputPath: { recordsInputPath: WEBPACK_FILE_URL },
+    recordsOutputPath: { recordsOutputPath: WEBPACK_FILE_URL },
+    recordsPath: { recordsPath: WEBPACK_FILE_URL },
+    "resolve.restrictions": { resolve: { restrictions: [WEBPACK_FILE_URL] } },
+    "resolveLoader.restrictions": {
+      resolveLoader: { restrictions: [WEBPACK_FILE_URL] },
+    },
+    "snapshot.immutablePaths": {
+      snapshot: { immutablePaths: [WEBPACK_FILE_URL] },
+    },
+    "snapshot.managedPaths": { snapshot: { managedPaths: [WEBPACK_FILE_URL] } },
+    "snapshot.unmanagedPaths": {
+      snapshot: { unmanagedPaths: [WEBPACK_FILE_URL] },
+    },
+    "stats.context": { stats: { context: WEBPACK_FILE_URL } },
+  };
+
+  for (const [option, config] of Object.entries(webpackAbsolutePathOptions)) {
+    createSuccessTestCase(
+      `\`file://\` for the webpack option \`${option}\``,
+      config,
+      {},
+      webpackSchema,
+    );
+  }
+
+  // The prefix must not turn an option that wants a relative path into an absolute one
+  it.each([
+    ["output.filename", { output: { filename: WEBPACK_FILE_URL } }],
+    [
+      "output.sourceMapFilename",
+      { output: { sourceMapFilename: WEBPACK_FILE_URL } },
+    ],
+    [
+      "output.assetModuleFilename",
+      { output: { assetModuleFilename: WEBPACK_FILE_URL } },
+    ],
+  ])(
+    "should fail validation for `file://` for the relative webpack option `%s`",
+    (option, config) => {
+      expect(() => validate(webpackSchema, config)).toThrow(
+        /is an absolute path!/,
+      );
+    },
+  );
+
   createFailedTestCase(
     "formatExclusiveMaximum #1",
     {
