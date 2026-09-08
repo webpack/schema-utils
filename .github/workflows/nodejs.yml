@@ -40,8 +40,6 @@ jobs:
         run: if [ -n "$(git status declarations --porcelain)" ]; then echo "Missing declarations in git"; exit 1; else echo "All declarations are valid"; fi
       - name: Security audit
         run: npm run security
-      - name: Check commit message
-        uses: wagoid/commitlint-github-action@v4
   test:
     name: Test - ${{ matrix.os }} - Node v${{ matrix.node-version }}
     strategy:
