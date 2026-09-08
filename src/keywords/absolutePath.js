@@ -70,11 +70,12 @@ function addAbsolutePathKeyword(ajv) {
           passes = false;
         }
 
+        // (?:file:\/\/)? - optional file:// protocol prefix
         // ?:[A-Za-z]:\\ - Windows absolute path
         // \\\\ - Windows network absolute path
         // \/ - Unix-like OS absolute path
         const isCorrectAbsolutePath =
-          schema === /^(?:[A-Za-z]:(\\|\/)|\\\\|\/)/.test(data);
+          schema === /^(?:file:\/\/)?(?:[A-Za-z]:(\\|\/)|\\\\|\/)/.test(data);
 
         if (!isCorrectAbsolutePath) {
           callback.errors = [getErrorFor(schema, parentSchema, data)];
