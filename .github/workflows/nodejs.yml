@@ -74,10 +74,11 @@ jobs:
       - name: Install dependencies
         # The dev dependencies require an active LTS release, so install the versions that still
         # run on the version under test. Legacy versions do not generate types either, so skip
-        # scripts that invoke `prepare` and explicitly run the code build without generating types
+        # scripts that invoke `prepare` and explicitly run the code build without generating types.
+        # `--legacy-peer-deps` is what lets npm 7 and above downgrade over the lockfile
         run: |
-          npm i -D typescript@4 del-cli@^3 jest@^27 babel-jest@^27 @babel/cli@^7 @babel/core@^7 @babel/preset-env@^7 --ignore-scripts
-          npm i --ignore-engines --ignore-scripts
+          npm i -D typescript@4 del-cli@^3 jest@^27 babel-jest@^27 @babel/cli@^7 @babel/core@^7 @babel/preset-env@^7 --ignore-scripts --legacy-peer-deps
+          npm i --ignore-engines --ignore-scripts --legacy-peer-deps
           npm run build:code
         if: matrix.node-version == '10.x' || matrix.node-version == '12.x' || matrix.node-version == '14.x' || matrix.node-version == '16.x' || matrix.node-version == '18.x' || matrix.node-version == '20.x'
       - name: Install dependencies
