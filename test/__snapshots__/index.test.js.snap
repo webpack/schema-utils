@@ -56,6 +56,16 @@ exports[`validation should fail validation for absolute path #4 1`] = `
  - configuration.testAbsolutePath: The provided value ".." is not an absolute path!"
 `;
 
+exports[`validation should fail validation for absolute path #5 1`] = `
+"Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
+ - configuration.testAbsolutePath: The provided value "file:directory/deep/tree" is not an absolute path!"
+`;
+
+exports[`validation should fail validation for absolute path #6 1`] = `
+"Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
+ - configuration.testAbsolutePath: The provided value "file:C:/directory/deep/tree" is not an absolute path!"
+`;
+
 exports[`validation should fail validation for absolute path 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.context: The provided value "baz" is not an absolute path!
