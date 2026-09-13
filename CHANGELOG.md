@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.5.0
+
+### Minor Changes
+
+- The `absolutePath` keyword reads a `file:` URL the way Node's own URL parser does: the scheme may be followed by any number of slashes, so `file:/directory` is accepted alongside `file:///directory`, and it is matched case-insensitively, so `FILE:///directory` is too. A scheme with no slash after it — `file:directory` — still names no absolute path and is rejected. (by [@alexander-akait](https://github.com/alexander-akait) in [#226](https://github.com/webpack/schema-utils/pull/226))
+
 ## 4.4.0
 
 ### Minor Changes
