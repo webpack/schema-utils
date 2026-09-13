@@ -333,6 +333,18 @@ describe("validation", () => {
     testAbsolutePath: "file:///C:/directory/deep/tree",
   });
 
+  createSuccessTestCase("absolutePath #8", {
+    testAbsolutePath: "file:/Users/username/directory/deep/tree",
+  });
+
+  createSuccessTestCase("absolutePath #9", {
+    testAbsolutePath: "file:/C:/directory/deep/tree",
+  });
+
+  createSuccessTestCase("absolutePath #10", {
+    testAbsolutePath: "FILE:///Users/username/directory/deep/tree",
+  });
+
   createSuccessTestCase("$data", {
     dollarData: {
       smaller: 5,
@@ -2983,6 +2995,22 @@ describe("validation", () => {
   );
 
   createFailedTestCase(
+    "absolute path #5",
+    {
+      testAbsolutePath: "file:directory/deep/tree",
+    },
+    (msg) => expect(msg).toMatchSnapshot(),
+  );
+
+  createFailedTestCase(
+    "absolute path #6",
+    {
+      testAbsolutePath: "file:C:/directory/deep/tree",
+    },
+    (msg) => expect(msg).toMatchSnapshot(),
+  );
+
+  createFailedTestCase(
     "not empty string #1",
     {
       notEmptyString: "",
@@ -3109,6 +3137,8 @@ describe("validation", () => {
   // `import.meta.resolve()` returns a `file://` URL, so every option of webpack's own schema that
   // takes an absolute path has to accept one - these are all of them
   const WEBPACK_FILE_URL = "file:///directory/deep/tree";
+  // The same URL with the single slash Node's URL parser normalizes to three
+  const WEBPACK_SHORT_FILE_URL = "file:/directory/deep/tree";
 
   /** @type {Record<string, Record<string, EXPECTED_ANY>>} */
   const webpackAbsolutePathOptions = {
@@ -3202,6 +3232,17 @@ describe("validation", () => {
     createSuccessTestCase(
       `\`file://\` for the webpack option \`${option}\``,
       config,
+      {},
+      webpackSchema,
+    );
+
+    createSuccessTestCase(
+      `\`file:/\` for the webpack option \`${option}\``,
+      JSON.parse(
+        JSON.stringify(config)
+          .split(WEBPACK_FILE_URL)
+          .join(WEBPACK_SHORT_FILE_URL),
+      ),
       {},
       webpackSchema,
     );
