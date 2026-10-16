@@ -261,6 +261,37 @@ class Plugin {
 export default Plugin;
 ```
 
+### Precompiled schemas
+
+Compiling a schema at runtime loads `ajv`, which costs about 150ms for the first schema of a
+process and a few to tens of milliseconds for every other one. A loader or a plugin can compile its
+schema ahead of time instead, into a check that `validate` takes as its fourth argument:
+
+```console
+npx schema-utils precompile src/options.json
+```
+
+This writes `src/options.check.js` next to the schema. Commit it, and publish it with the package:
+
+```js
+import { validate } from "schema-utils";
+import check from "./options.check.js";
+import schema from "./options.json";
+
+validate(schema, options, { name: "Loader Name" }, check);
+```
+
+When the options are valid, the check is all that runs and `ajv` is never loaded. When they are
+not, `validate` runs the full validation to report what is wrong, so the errors are the same as
+without a check.
+
+Run `schema-utils precompile --check src/options.json` in CI to fail when the check is missing or
+out of date with its schema. The generated module needs `schema-utils` as a dependency of the
+package and is CommonJS.
+
+A relative `$ref` to another file resolves against the schema. To compile a schema from code, use
+`precompile(schema, { loadSchema })`, it returns the source of the module.
+
 ### Allow to disable and enable validation (the `validate` function do nothing)
 
 This can be useful when you don't want to do validation for `production` builds.

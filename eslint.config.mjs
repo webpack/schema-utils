@@ -8,4 +8,14 @@ export default defineConfig([
       "n/prefer-node-protocol": "off",
     },
   },
+  {
+    files: ["bin/**/*.js"],
+    rules: {
+      // Node.js has always skipped the hashbang of the file it runs
+      "n/no-unsupported-features/es-syntax": [
+        "error",
+        { ignores: ["hashbang"] },
+      ],
+    },
+  },
 ]);

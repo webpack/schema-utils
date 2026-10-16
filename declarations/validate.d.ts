@@ -3,6 +3,7 @@ export type JSONSchema4 = import("json-schema").JSONSchema4;
 export type JSONSchema6 = import("json-schema").JSONSchema6;
 export type JSONSchema7 = import("json-schema").JSONSchema7;
 export type ErrorObject = import("ajv").ErrorObject;
+export type EXPECTED_ANY = any;
 export type ExtendedSchema = {
   /**
    * format minimum
@@ -75,6 +76,10 @@ export type ErrorPathNode = {
   size: number;
 };
 /**
+ * A check precompiled from a schema with `precompile`, it only says whether the value is valid.
+ */
+export type PrecompiledCheck = (value: EXPECTED_ANY) => boolean;
+/**
  * Whether validation is skipped, shared by every `schema-utils` in the process.
  */
 export type SkipValidationState = {
@@ -96,13 +101,21 @@ export function enableValidation(): void;
  */
 export function needValidate(): boolean;
 /**
+ * A check precompiled from a schema with `precompile`, it only says whether the value is valid.
+ * @callback PrecompiledCheck
+ * @param {EXPECTED_ANY} value value
+ * @returns {boolean} true when valid, otherwise false
+ */
+/**
  * @param {Schema} schema schema
  * @param {object[] | object} options options
  * @param {ValidationErrorConfiguration=} configuration configuration
+ * @param {PrecompiledCheck=} check precompiled check of the schema, so a valid value never compiles the schema
  * @returns {void}
  */
 export function validate(
   schema: Schema,
   options: object[] | object,
   configuration?: ValidationErrorConfiguration | undefined,
+  check?: PrecompiledCheck | undefined,
 ): void;

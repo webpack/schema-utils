@@ -47,6 +47,9 @@ const getAjv = memoize(() => {
 /** @typedef {import("json-schema").JSONSchema7} JSONSchema7 */
 /** @typedef {import("ajv").ErrorObject} ErrorObject */
 
+// eslint-disable-next-line jsdoc/reject-any-type
+/** @typedef {any} EXPECTED_ANY */
+
 /**
  * @typedef {object} ExtendedSchema
  * @property {(string | number)=} formatMinimum format minimum
@@ -448,13 +451,31 @@ function validateObject(schema, options) {
 }
 
 /**
+ * A check precompiled from a schema with `precompile`, it only says whether the value is valid.
+ * @callback PrecompiledCheck
+ * @param {EXPECTED_ANY} value value
+ * @returns {boolean} true when valid, otherwise false
+ */
+
+/**
  * @param {Schema} schema schema
  * @param {object[] | object} options options
  * @param {ValidationErrorConfiguration=} configuration configuration
+ * @param {PrecompiledCheck=} check precompiled check of the schema, so a valid value never compiles the schema
  * @returns {void}
  */
-function validate(schema, options, configuration) {
+function validate(schema, options, configuration, check) {
   if (!needValidate()) {
+    return;
+  }
+
+  // Only an invalid value needs `ajv`, to tell what is wrong with it
+  if (
+    check &&
+    (Array.isArray(options)
+      ? options.every((item) => check(item))
+      : check(options))
+  ) {
     return;
   }
 

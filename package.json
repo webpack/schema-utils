@@ -16,7 +16,11 @@
   "author": "webpack Contrib (https://github.com/webpack-contrib)",
   "main": "dist/index.js",
   "types": "declarations/index.d.ts",
+  "bin": {
+    "schema-utils": "bin/schema-utils.js"
+  },
   "files": [
+    "bin",
     "dist",
     "declarations"
   ],
