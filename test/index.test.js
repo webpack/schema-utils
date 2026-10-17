@@ -3,6 +3,7 @@ import webpackSchema from "webpack/schemas/WebpackOptions.json";
 import { validate } from "../src";
 
 import schema from "./fixtures/schema.json";
+import { copy, getCheck } from "./helpers/precompiled";
 
 // eslint-disable-next-line jsdoc/reject-any-type
 /** @typedef {any} EXPECTED_ANY */
@@ -37,6 +38,19 @@ describe("validation", () => {
 
       expect(error).toBeUndefined();
     });
+
+    it(`should pass the precompiled check for ${name}`, async () => {
+      const check = await getCheck(testSchema);
+      const checked = copy(config);
+      const validated = copy(config);
+
+      expect(check(checked)).toBe(true);
+
+      validate(testSchema, validated, options.name);
+
+      // `undefinedAsNull` sets the value the same way in both
+      expect(checked).toEqual(validated);
+    });
   }
 
   /**
@@ -66,6 +80,12 @@ describe("validation", () => {
       }
 
       throw new Error("Validation didn't fail");
+    });
+
+    it(`should fail the precompiled check for ${name}`, async () => {
+      const check = await getCheck(schema);
+
+      expect(check(copy(config))).toBe(false);
     });
   }
 
@@ -3299,6 +3319,10 @@ describe("validation", () => {
     },
     (msg) => expect(msg).toMatchSnapshot(),
   );
+
+  createSuccessTestCase("array with enum and undefinedAsNull and undefined", {
+    arrayStringAndEnum: ["foo", undefined],
+  });
 
   createFailedTestCase(
     "array with enum and undefinedAsNull #2",
