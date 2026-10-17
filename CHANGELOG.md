@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.6.0
+
+### Minor Changes
+
+- perf: add `schema-utils precompile` to compile a schema ahead of time into a check that `validate` takes as its fourth argument, so valid options are validated without loading `ajv` (by [@alexander-akait](https://github.com/alexander-akait) in [#231](https://github.com/webpack/schema-utils/pull/231))
+
 ## 4.5.0
 
 ### Minor Changes
