@@ -598,3 +598,46 @@ describe("precompile", () => {
     });
   });
 });
+
+describe("bundled", () => {
+  // `schema-utils` is bundled by tools that ship it inside their own code, which reaches
+  // `precompile` through the `precompile` export even though it only runs at build time
+  it("should bundle without errors or warnings", (done) => {
+    const webpack = require("webpack");
+
+    const outputPath = fs.mkdtempSync(path.join(os.tmpdir(), "schema-utils-"));
+
+    webpack(
+      {
+        mode: "none",
+        target: "node",
+        context: path.resolve(__dirname, ".."),
+        entry: "./src/index.js",
+        output: { path: outputPath },
+      },
+      (err, stats) => {
+        remove(outputPath);
+
+        if (err) {
+          done(err);
+
+          return;
+        }
+
+        try {
+          const { errors, warnings } = stats.toJson({
+            all: false,
+            errors: true,
+            warnings: true,
+          });
+
+          expect(errors.map(({ message }) => message)).toEqual([]);
+          expect(warnings.map(({ message }) => message)).toEqual([]);
+          done();
+        } catch (error) {
+          done(error);
+        }
+      },
+    );
+  }, 60000);
+});
