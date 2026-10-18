@@ -189,6 +189,18 @@ describe("precompile", () => {
       expect(check({ other: true })).toBe(false);
     });
 
+    it("should keep a schema pattern that looks like an error object", async () => {
+      const check = load(
+        await precompile(
+          { type: "string", pattern: "\\{instancePathx,keyword:y," },
+          { minify: true },
+        ),
+      );
+
+      expect(check("{instancePathx,keyword:y,")).toBe(true);
+      expect(check("other")).toBe(false);
+    });
+
     it("should keep an ES module", async () => {
       const code = await precompile(
         { type: "object", properties: { date: { format: "date" } } },

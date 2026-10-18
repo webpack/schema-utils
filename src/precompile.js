@@ -272,8 +272,12 @@ async function minify(code, esm) {
     });
   }
 
-  // Keep in sync with webpack's `tooling/precompile-schemas.js`, which does the same
-  const stripped = code.replace(/\{instancePath[^{}]+,keyword:[^{}]+,/g, "{");
+  // Only an error object ajv assigns, never a string or regex of the schema that merely looks like
+  // one: `= {instancePath:instancePath+…,schemaPath:"…",keyword:"…",` loses all but its `params`
+  const stripped = code.replace(
+    /(=\s*\[?)\{instancePath(?::instancePath\b[^{}]*?)?,schemaPath:"(?:[^"\\]|\\.)*",keyword:"\w+",/g,
+    "$1{",
+  );
   const result = await terser.minify(stripped, {
     compress: { passes: 3 },
     mangle: true,
