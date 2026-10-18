@@ -1,4 +1,4 @@
-const USAGE = `Usage: schema-utils precompile [--check] <schema.json>...
+const USAGE = `Usage: schema-utils precompile [--check] [--minify] <schema.json>...
 
 Compiles every schema into a check next to it, \`options.json\` into \`options.check.js\`,
 for the fourth argument of \`validate\`:
@@ -13,7 +13,9 @@ the way Node.js reads a .js file there, and a CommonJS module otherwise:
   validate(schema, options, configuration, check);
 
 Options:
-  --check  write nothing, fail when a check is missing or out of date`;
+  --check   write nothing, fail when a check is missing or out of date
+  --minify  drop the error objects a check never reports and minify it with terser,
+            which has to be installed, for a smaller module that loads faster`;
 
 /**
  * @param {string} schemaPath path of the schema
@@ -96,7 +98,8 @@ async function cli(args, io) {
   }
 
   const check = rest.includes("--check");
-  const files = rest.filter((arg) => arg !== "--check");
+  const minify = rest.includes("--minify");
+  const files = rest.filter((arg) => arg !== "--check" && arg !== "--minify");
   const unknown = files.find((arg) => arg.startsWith("-"));
 
   if (unknown) {
@@ -133,7 +136,7 @@ async function cli(args, io) {
         schema.$id = pathToFileURL(schemaPath).href;
       }
 
-      code = await precompile(schema, { esm: isModule(checkPath) });
+      code = await precompile(schema, { esm: isModule(checkPath), minify });
     } catch (error) {
       io.error(
         `Cannot precompile "${file}": ${/** @type {Error} */ (error).message}`,

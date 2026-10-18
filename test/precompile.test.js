@@ -7,7 +7,7 @@ import { pathToFileURL } from "url";
 import { precompile, validate } from "../src";
 import cli from "../src/cli";
 
-import { getCheck } from "./helpers/precompiled";
+import { getCheck, load } from "./helpers/precompiled";
 
 const runtime = require("../src/runtime");
 
@@ -149,6 +149,70 @@ describe("precompile", () => {
 
     expect(code).not.toMatch(/Plugin options|The options|example\.com/);
     expect(code).toMatch(/"description"/);
+  });
+
+  describe("minified", () => {
+    const schema = {
+      type: "object",
+      properties: {
+        name: { type: "string", minLength: 2 },
+        mode: { enum: [{ a: 1 }] },
+        context: { type: "string", absolutePath: true },
+        output: { type: "string", absolutePath: true },
+      },
+      additionalProperties: false,
+    };
+
+    it("should drop the error objects and inline the helpers", async () => {
+      const code = await precompile(schema, { minify: true });
+
+      expect(code.length).toBeLessThan((await precompile(schema)).length);
+      // Only the parameter of the check is still named `instancePath`
+      expect(code).not.toMatch(/schemaPath|keyword:/);
+      // `ucs2length` and `equal` are written into the check
+      expect(code).not.toMatch(/require\(/);
+      // One regex for every `absolutePath`
+      expect(code.match(/\[A-Za-z\]:/g)).toHaveLength(1);
+      expect(code).toMatch(/^\/\* eslint-disable \*\/\n\/\/ @ts-nocheck\n/);
+    });
+
+    it("should check like the full validation", async () => {
+      const check = load(await precompile(schema, { minify: true }));
+
+      expect(check({ name: "ab", mode: { a: 1 }, context: "/abs" })).toBe(true);
+      // One astral character is one character, as for the full validation
+      expect(check({ name: "😀" })).toBe(false);
+      expect(check({ name: "😀😀" })).toBe(true);
+      expect(check({ mode: { a: 2 } })).toBe(false);
+      expect(check({ context: "relative" })).toBe(false);
+      expect(check({ output: "/abs!loader" })).toBe(false);
+      expect(check({ other: true })).toBe(false);
+    });
+
+    it("should keep an ES module", async () => {
+      const code = await precompile(
+        { type: "object", properties: { date: { format: "date" } } },
+        { esm: true, minify: true },
+      );
+
+      expect(code).toMatch(/export\{\w+ as default\}|export default/);
+      expect(code).toMatch(/import \w+ from"schema-utils\/dist\/runtime\.js"/);
+      expect(code).not.toMatch(/require\(|module\.exports/);
+    });
+
+    it("should ask for terser when it is not installed", async () => {
+      jest.doMock("terser", () => {
+        throw new Error("Cannot find module 'terser'");
+      });
+
+      try {
+        await expect(precompile(schema, { minify: true })).rejects.toThrow(
+          'Install "terser" to minify a precompiled check',
+        );
+      } finally {
+        jest.dontMock("terser");
+      }
+    });
   });
 
   it("should load the runtime helpers from schema-utils", async () => {
@@ -469,6 +533,32 @@ describe("precompile", () => {
       expect(code).not.toMatch(/module\.exports/);
       expect(otherCode).toMatch(/module\.exports/);
       expect(otherCode).not.toMatch(/export default/);
+    });
+
+    it("should minify the check with --minify", async () => {
+      const file = writeJson("options.json", {
+        type: "object",
+        properties: { name: { type: "string", minLength: 2 } },
+      });
+      const checkFile = path.join(dir, "options.check.js");
+
+      let result = await runCli(["precompile", "--minify", file]);
+
+      expect(result.exitCode).toBe(0);
+
+      const code = fs.readFileSync(checkFile, "utf8");
+
+      expect(code).not.toMatch(/require\(|schemaPath/);
+
+      result = await runCli(["precompile", "--check", "--minify", file]);
+
+      expect(result).toEqual({ exitCode: 0, log: [], error: [] });
+
+      // Checked against the unminified code, the minified one is out of date
+      result = await runCli(["precompile", "--check", file]);
+
+      expect(result.exitCode).toBe(1);
+      expect(result.error[0]).toMatch(/options\.check\.js" is out of date/);
     });
 
     it("should write CommonJS when package.json cannot be read", async () => {

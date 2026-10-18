@@ -23,9 +23,10 @@ const RUNTIME_MODULE = `${RUNTIME}.js`;
 
 /**
  * @param {Ajv} ajv ajv
+ * @param {boolean} hoist whether to keep the values a keyword needs in module scope
  * @returns {void}
  */
-function addKeywords(ajv) {
+function addKeywords(ajv, hoist) {
   const { Name, _ } = require("ajv");
 
   // The same constructors `ajv-keywords` accepts
@@ -73,11 +74,20 @@ function addKeywords(ajv) {
      * @param {KeywordCxt} cxt context
      */
     code(cxt) {
-      const { data, schema } = cxt;
+      const { data, gen, schema } = cxt;
 
-      // Keep in sync with `keywords/absolutePath.js`
+      // Keep in sync with `keywords/absolutePath.js`. Minified, the regex is one constant for the
+      // whole module, like any other value ajv keeps in scope, instead of a new one on every call.
+      const absolutePathRegExp = hoist
+        ? gen.scopeValue("pattern", {
+            key: "absolutePath",
+            ref: /^(?:file:(?=\/))?(?:[A-Za-z]:(\\|\/)|\\\\|\/)/i,
+            code: _`/^(?:file:(?=\\/))?(?:[A-Za-z]:(\\\\|\\/)|\\\\\\\\|\\/)/i`,
+          })
+        : _`/^(?:file:(?=\\/))?(?:[A-Za-z]:(\\\\|\\/)|\\\\\\\\|\\/)/i`;
+
       cxt.fail(
-        _`${data}.includes("!") || /^(?:file:(?=\\/))?(?:[A-Za-z]:(\\\\|\\/)|\\\\\\\\|\\/)/i.test(${data}) !== ${schema}`,
+        _`${data}.includes("!") || ${absolutePathRegExp}.test(${data}) !== ${schema}`,
       );
     },
   });
@@ -123,14 +133,21 @@ function addKeywords(ajv) {
 /**
  * @param {string} code generated code
  * @param {boolean} esm whether the code is an ES module
+ * @param {boolean} inline whether to write the helper functions into the code
  * @returns {string} code loading the runtime helpers from `schema-utils`
  */
-function useRuntime(code, esm) {
+function useRuntime(code, esm, inline) {
   return code.replace(
     /require\("ajv\/dist\/runtime\/(\w+)"\)\.default/g,
     (match, name) => {
       if (!["equal", "ucs2length", "uri"].includes(name)) {
         throw new Error(`Unsupported "ajv" runtime helper "${name}"`);
+      }
+
+      // WHY: loading a helper through `schema-utils` costs about 1ms, more than the check itself
+      // takes to run for most options - both functions are small and self-contained, `uri` is not
+      if (inline && name !== "uri") {
+        return `(${require(`ajv/dist/runtime/${name}`).default.toString()})`;
       }
 
       // ajv keeps `require` for its helpers in an ES module too
@@ -233,9 +250,46 @@ async function loadFileSchema(uri) {
 }
 
 /**
+ * WHY: a check only says whether a value is valid, so the error objects ajv still builds are dead
+ * weight, and the code is loaded on every start of the tool that ships it - for webpack's own options
+ * that halves the size of the module and the time it takes to load.
+ * @param {string} code generated code
+ * @param {boolean} esm whether the code is an ES module
+ * @returns {Promise<string>} code without error objects, minified
+ */
+async function minify(code, esm) {
+  /** @type {{ minify: (code: string, options: Record<string, EXPECTED_ANY>) => Promise<{ code?: string }> }} */
+  let terser;
+
+  // An optional peer dependency, required by name so neither TypeScript nor a bundler needs it
+  const TERSER = "terser";
+
+  try {
+    terser = require(TERSER);
+  } catch (err) {
+    throw new Error('Install "terser" to minify a precompiled check', {
+      cause: err,
+    });
+  }
+
+  // Keep in sync with webpack's `tooling/precompile-schemas.js`, which does the same
+  const stripped = code.replace(/\{instancePath[^{}]+,keyword:[^{}]+,/g, "{");
+  const result = await terser.minify(stripped, {
+    compress: { passes: 3 },
+    mangle: true,
+    ecma: 2015,
+    module: esm,
+    toplevel: true,
+  });
+
+  return /** @type {string} */ (result.code);
+}
+
+/**
  * @typedef {object} PrecompileOptions
  * @property {((uri: string) => Promise<AnySchemaObject>)=} loadSchema loads a schema an external `$ref` points to
  * @property {boolean=} esm generate an ES module instead of a CommonJS one
+ * @property {boolean=} minify drop the error objects a check never reports and minify the code with `terser`, which has to be installed
  */
 
 /**
@@ -276,7 +330,7 @@ async function precompile(schema, options = {}) {
   const addLimitKeyword = require("./keywords/limit").default;
 
   addLimitKeyword(ajv);
-  addKeywords(ajv);
+  addKeywords(ajv, Boolean(options.minify));
 
   const keywords = new Set([
     ...Object.keys(ajv.RULES.all),
@@ -294,7 +348,11 @@ async function precompile(schema, options = {}) {
 
   const validate = await ajv.compileAsync(stripAnnotations(schema, keywords));
 
-  let code = useRuntime(standaloneCode(ajv, validate), esm);
+  let code = useRuntime(
+    standaloneCode(ajv, validate),
+    esm,
+    Boolean(options.minify),
+  );
 
   // The `$id` of a schema read from a file is its absolute URL, which ends up in the code, so the
   // URLs of the schemas are made relative to the schema for the generated file to be the same on
@@ -320,6 +378,10 @@ async function precompile(schema, options = {}) {
 
   if (esm && code.includes(`${RUNTIME_BINDING}.`)) {
     code = `import ${RUNTIME_BINDING} from ${JSON.stringify(RUNTIME_MODULE)};\n${code}`;
+  }
+
+  if (options.minify) {
+    code = await minify(code, esm);
   }
 
   return `/* eslint-disable */

@@ -290,8 +290,13 @@ out of date with its schema. The generated module may need `schema-utils` as a d
 package. It is an ES module when the nearest `package.json` has `"type": "module"`, the way Node.js
 reads a `.js` file there, and CommonJS otherwise.
 
+With `--minify`, the check drops the error objects it never reports, has its helpers written into
+it instead of loaded from `schema-utils`, and is minified with [terser](https://github.com/terser/terser),
+which has to be installed. For webpack's own options that is less than half the size and loads in
+13ms instead of 21ms. `--check` has to be given the same `--minify` to compare against the right code.
+
 A relative `$ref` to another file resolves against the schema. To compile a schema from code, use
-`precompile(schema, { loadSchema, esm })`, it returns the source of the module.
+`precompile(schema, { loadSchema, esm, minify })`, it returns the source of the module.
 
 ### Allow to disable and enable validation (the `validate` function do nothing)
 

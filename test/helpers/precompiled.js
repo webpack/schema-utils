@@ -12,7 +12,7 @@ const cache = new WeakMap();
  * @param {string} code source of the module
  * @returns {(value: EXPECTED_ANY) => boolean} check
  */
-function load(code) {
+export function load(code) {
   const module = { exports: {} };
   /**
    * @param {string} request request
