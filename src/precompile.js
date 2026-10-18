@@ -269,13 +269,20 @@ async function minify(code, esm) {
   let minifier;
 
   // webpack's own minifier, which writes what terser writes without loading it - the packages
-  // shipping a check already have webpack. Required through an alias of `module` so a bundler
-  // that bundles `schema-utils` neither bundles webpack nor warns about a request it cannot
-  // resolve, while Node.js resolves it like any `require` here.
+  // shipping a check already have webpack. A bundler that bundles `schema-utils` must neither
+  // bundle webpack nor warn about a request it cannot resolve, so webpack is loaded with Node.js's
+  // own `require`: the one webpack keeps as `__non_webpack_require__` inside a webpack bundle, and
+  // `module.require` through an alias of `module` outside one.
+  /* global __non_webpack_require__ */
+  // prettier-ignore
+  // @ts-expect-error a free variable only a webpack bundle defines
+  const nodeRequire = typeof __non_webpack_require__ === "function" ? __non_webpack_require__ : undefined;
   const self = module;
 
   try {
-    minifier = await self.require("webpack").javascript.syntax.printer.load();
+    minifier = await (nodeRequire || self.require.bind(self))(
+      "webpack",
+    ).javascript.syntax.printer.load();
   } catch (err) {
     throw new Error(
       "Install webpack 5.112.0 or later to minify a precompiled check",

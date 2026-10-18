@@ -602,23 +602,27 @@ describe("precompile", () => {
 describe("bundled", () => {
   // `schema-utils` is bundled by tools that ship it inside their own code, which reaches
   // `precompile` through the `precompile` export even though it only runs at build time
-  it("should bundle without errors or warnings", (done) => {
+  it("should bundle without errors or warnings and minify from the bundle", (done) => {
     const webpack = require("webpack");
 
-    const outputPath = fs.mkdtempSync(path.join(os.tmpdir(), "schema-utils-"));
+    // Inside the package, so the bundle finds webpack the way any installed bundle does
+    const localPath = path.resolve(__dirname, "../local");
+
+    fs.mkdirSync(localPath, { recursive: true });
+
+    const outputPath = fs.mkdtempSync(path.join(localPath, "bundle-"));
 
     webpack(
       {
         mode: "none",
         target: "node",
-        context: path.resolve(__dirname, ".."),
-        entry: "./src/index.js",
+        context: __dirname,
+        entry: "./fixtures/bundled-precompile.js",
         output: { path: outputPath },
       },
       (err, stats) => {
-        remove(outputPath);
-
         if (err) {
+          remove(outputPath);
           done(err);
 
           return;
@@ -633,9 +637,18 @@ describe("bundled", () => {
 
           expect(errors.map(({ message }) => message)).toEqual([]);
           expect(warnings.map(({ message }) => message)).toEqual([]);
+          expect(
+            JSON.parse(
+              execFileSync(process.execPath, [
+                path.join(outputPath, "main.js"),
+              ]).toString(),
+            ),
+          ).toEqual([false, true]);
           done();
         } catch (error) {
           done(error);
+        } finally {
+          remove(outputPath);
         }
       },
     );
