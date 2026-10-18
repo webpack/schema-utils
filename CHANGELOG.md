@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.7.0
+
+### Minor Changes
+
+- `schema-utils precompile` writes an ES module check for a package with `"type": "module"`, and `precompile` takes an `esm` option. (by [@alexander-akait](https://github.com/alexander-akait) in [#233](https://github.com/webpack/schema-utils/pull/233))
+
 ## 4.6.0
 
 ### Minor Changes
