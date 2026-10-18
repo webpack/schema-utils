@@ -291,8 +291,8 @@ package. It is an ES module when the nearest `package.json` has `"type": "module
 reads a `.js` file there, and CommonJS otherwise.
 
 With `--minify`, the check drops the error objects it never reports, has its helpers written into
-it instead of loaded from `schema-utils`, and is minified with [terser](https://github.com/terser/terser),
-which has to be installed. For webpack's own options that is less than half the size and loads in
+it instead of loaded from `schema-utils`, and is minified with webpack's own minifier, which needs
+webpack 5.112.0 or later. For webpack's own options that is less than half the size and loads in
 13ms instead of 21ms. `--check` has to be given the same `--minify` to compare against the right code.
 
 A relative `$ref` to another file resolves against the schema. To compile a schema from code, use

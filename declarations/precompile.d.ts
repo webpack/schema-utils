@@ -9,7 +9,7 @@ export type PrecompileOptions = {
    */
   esm?: boolean | undefined;
   /**
-   * drop the error objects a check never reports and minify the code with `terser`, which has to be installed
+   * drop the error objects a check never reports and minify the code with webpack's minifier, which needs webpack 5.112.0 or later installed
    */
   minify?: boolean | undefined;
 };
@@ -22,7 +22,7 @@ export type EXPECTED_ANY = any;
  * @typedef {object} PrecompileOptions
  * @property {((uri: string) => Promise<AnySchemaObject>)=} loadSchema loads a schema an external `$ref` points to
  * @property {boolean=} esm generate an ES module instead of a CommonJS one
- * @property {boolean=} minify drop the error objects a check never reports and minify the code with `terser`, which has to be installed
+ * @property {boolean=} minify drop the error objects a check never reports and minify the code with webpack's minifier, which needs webpack 5.112.0 or later installed
  */
 /**
  * Compiles a schema into the source of a module that exports a check for it, CommonJS unless

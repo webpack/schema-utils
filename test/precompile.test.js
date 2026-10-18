@@ -212,17 +212,16 @@ describe("precompile", () => {
       expect(code).not.toMatch(/require\(|module\.exports/);
     });
 
-    it("should ask for terser when it is not installed", async () => {
-      jest.doMock("terser", () => {
-        throw new Error("Cannot find module 'terser'");
-      });
+    it("should ask for webpack when it has no minifier", async () => {
+      // webpack before 5.112.0
+      jest.doMock("webpack", () => ({}));
 
       try {
         await expect(precompile(schema, { minify: true })).rejects.toThrow(
-          'Install "terser" to minify a precompiled check',
+          "Install webpack 5.112.0 or later to minify a precompiled check",
         );
       } finally {
-        jest.dontMock("terser");
+        jest.dontMock("webpack");
       }
     });
   });

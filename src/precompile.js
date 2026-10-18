@@ -259,17 +259,20 @@ async function loadFileSchema(uri) {
  */
 async function minify(code, esm) {
   /** @type {{ minify: (code: string, options: Record<string, EXPECTED_ANY>) => Promise<{ code?: string }> }} */
-  let terser;
+  let minifier;
 
-  // An optional peer dependency, required by name so neither TypeScript nor a bundler needs it
-  const TERSER = "terser";
+  // webpack's own minifier, which writes what terser writes without loading it - the packages
+  // shipping a check already have webpack. Required by name so neither TypeScript nor a bundler
+  // reaches for it.
+  const WEBPACK = "webpack";
 
   try {
-    terser = require(TERSER);
+    minifier = await require(WEBPACK).javascript.syntax.printer.load();
   } catch (err) {
-    throw new Error('Install "terser" to minify a precompiled check', {
-      cause: err,
-    });
+    throw new Error(
+      "Install webpack 5.112.0 or later to minify a precompiled check",
+      { cause: err },
+    );
   }
 
   // Only an error object ajv assigns, never a string or regex of the schema that merely looks like
@@ -278,7 +281,7 @@ async function minify(code, esm) {
     /(=\s*\[?)\{instancePath(?::instancePath\b[^{}]*?)?,schemaPath:"(?:[^"\\]|\\.)*",keyword:"\w+",/g,
     "$1{",
   );
-  const result = await terser.minify(stripped, {
+  const result = await minifier.minify(stripped, {
     compress: { passes: 3 },
     mangle: true,
     ecma: 2015,
@@ -293,7 +296,7 @@ async function minify(code, esm) {
  * @typedef {object} PrecompileOptions
  * @property {((uri: string) => Promise<AnySchemaObject>)=} loadSchema loads a schema an external `$ref` points to
  * @property {boolean=} esm generate an ES module instead of a CommonJS one
- * @property {boolean=} minify drop the error objects a check never reports and minify the code with `terser`, which has to be installed
+ * @property {boolean=} minify drop the error objects a check never reports and minify the code with webpack's minifier, which needs webpack 5.112.0 or later installed
  */
 
 /**

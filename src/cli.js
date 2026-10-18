@@ -14,8 +14,8 @@ the way Node.js reads a .js file there, and a CommonJS module otherwise:
 
 Options:
   --check   write nothing, fail when a check is missing or out of date
-  --minify  drop the error objects a check never reports and minify it with terser,
-            which has to be installed, for a smaller module that loads faster`;
+  --minify  drop the error objects a check never reports and minify it with webpack's
+            minifier, which needs webpack 5.112.0 or later, for a smaller module that loads faster`;
 
 /**
  * @param {string} schemaPath path of the schema
