@@ -16,6 +16,11 @@
 
 const RUNTIME = "schema-utils/dist/runtime";
 
+// What an ES module check imports the runtime helpers as, and from where: Node.js resolves a
+// path in a package without an `exports` field only with its extension
+const RUNTIME_BINDING = "schemaUtilsRuntime";
+const RUNTIME_MODULE = `${RUNTIME}.js`;
+
 /**
  * @param {Ajv} ajv ajv
  * @returns {void}
@@ -117,9 +122,10 @@ function addKeywords(ajv) {
 
 /**
  * @param {string} code generated code
+ * @param {boolean} esm whether the code is an ES module
  * @returns {string} code loading the runtime helpers from `schema-utils`
  */
-function useRuntime(code) {
+function useRuntime(code, esm) {
   return code.replace(
     /require\("ajv\/dist\/runtime\/(\w+)"\)\.default/g,
     (match, name) => {
@@ -127,7 +133,10 @@ function useRuntime(code) {
         throw new Error(`Unsupported "ajv" runtime helper "${name}"`);
       }
 
-      return `require(${JSON.stringify(RUNTIME)}).${name}`;
+      // ajv keeps `require` for its helpers in an ES module too
+      return esm
+        ? `${RUNTIME_BINDING}.${name}`
+        : `require(${JSON.stringify(RUNTIME)}).${name}`;
     },
   );
 }
@@ -226,10 +235,12 @@ async function loadFileSchema(uri) {
 /**
  * @typedef {object} PrecompileOptions
  * @property {((uri: string) => Promise<AnySchemaObject>)=} loadSchema loads a schema an external `$ref` points to
+ * @property {boolean=} esm generate an ES module instead of a CommonJS one
  */
 
 /**
- * Compiles a schema into the source of a CommonJS module that exports a check for it.
+ * Compiles a schema into the source of a module that exports a check for it, CommonJS unless
+ * `esm` is set.
  * @param {Schema} schema schema
  * @param {PrecompileOptions=} options options
  * @returns {Promise<string>} source of the module
@@ -239,7 +250,9 @@ async function precompile(schema, options = {}) {
   const standaloneCode = require("ajv/dist/standalone").default;
   const ajvKeywords = require("ajv-keywords").default;
   const addFormats = require("ajv-formats").default;
-  const { _ } = require("ajv");
+  const { Name, _ } = require("ajv");
+
+  const esm = Boolean(options.esm);
 
   // The same options as the full validation in `validate.js`, without the ones that only shape
   // the errors - a check only says whether the value is valid
@@ -250,7 +263,10 @@ async function precompile(schema, options = {}) {
     code: {
       source: true,
       optimize: true,
-      formats: _`require(${RUNTIME}).formats`,
+      esm,
+      formats: esm
+        ? _`${new Name(RUNTIME_BINDING)}.formats`
+        : _`require(${RUNTIME}).formats`,
     },
   });
 
@@ -278,7 +294,7 @@ async function precompile(schema, options = {}) {
 
   const validate = await ajv.compileAsync(stripAnnotations(schema, keywords));
 
-  let code = useRuntime(standaloneCode(ajv, validate));
+  let code = useRuntime(standaloneCode(ajv, validate), esm);
 
   // The `$id` of a schema read from a file is its absolute URL, which ends up in the code, so the
   // URLs of the schemas are made relative to the schema for the generated file to be the same on
@@ -300,6 +316,10 @@ async function precompile(schema, options = {}) {
         .split(url)
         .join(path.relative(dir, fileURLToPath(url)).replace(/\\/g, "/"));
     }
+  }
+
+  if (esm && code.includes(`${RUNTIME_BINDING}.`)) {
+    code = `import ${RUNTIME_BINDING} from ${JSON.stringify(RUNTIME_MODULE)};\n${code}`;
   }
 
   return `/* eslint-disable */

@@ -1,3 +1,4 @@
+import { execFileSync } from "child_process";
 import fs from "fs";
 import os from "os";
 import path from "path";
@@ -166,6 +167,84 @@ describe("precompile", () => {
     );
     expect(code).toMatch(/require\("schema-utils\/dist\/runtime"\)\.formats/);
     expect(code).toMatch(/require\("schema-utils\/dist\/runtime"\)\.equal/);
+  });
+
+  it("should generate an ES module", async () => {
+    const code = await precompile(
+      {
+        type: "object",
+        properties: {
+          name: { type: "string", minLength: 2 },
+          date: { type: "string", format: "date" },
+          mode: { enum: [{ a: 1 }] },
+        },
+      },
+      { esm: true },
+    );
+
+    expect(code).toContain(
+      'import schemaUtilsRuntime from "schema-utils/dist/runtime.js";',
+    );
+    expect(code).toMatch(/export default/);
+    expect(code).not.toMatch(/require\(/);
+    expect(code).not.toMatch(/module\.exports/);
+  });
+
+  it("should not import the runtime when an ES module needs none of it", async () => {
+    const code = await precompile({ type: "string" }, { esm: true });
+
+    expect(code).not.toMatch(/import /);
+    expect(code).toMatch(/export default/);
+  });
+
+  // ES modules need Node.js 14, and the published `dist` the check imports from
+  const supportsModules =
+    Number(process.versions.node.split(".")[0]) >= 14 &&
+    fs.existsSync(path.resolve(__dirname, "../dist/runtime.js"));
+
+  (supportsModules ? describe : describe.skip)("in Node.js", () => {
+    it("should run as an ES module in Node.js", async () => {
+      const code = await precompile(
+        {
+          type: "object",
+          properties: {
+            name: { type: "string", minLength: 2 },
+            date: { type: "string", format: "date" },
+          },
+          additionalProperties: false,
+        },
+        { esm: true },
+      );
+
+      fs.writeFileSync(
+        path.join(dir, "package.json"),
+        JSON.stringify({ type: "module" }),
+      );
+      fs.mkdirSync(path.join(dir, "node_modules"));
+      fs.symlinkSync(
+        path.resolve(__dirname, ".."),
+        path.join(dir, "node_modules/schema-utils"),
+        "junction",
+      );
+      fs.writeFileSync(path.join(dir, "options.check.js"), code);
+      fs.writeFileSync(
+        path.join(dir, "run.js"),
+        `import check from "./options.check.js";
+  console.log(JSON.stringify([
+    check({ name: "ab", date: "2026-10-18" }),
+    check({ name: "a" }),
+    check({ date: "not a date" }),
+    check({ other: true }),
+  ]));`,
+      );
+
+      const output = execFileSync(process.execPath, ["run.js"], {
+        cwd: dir,
+        encoding: "utf8",
+      });
+
+      expect(JSON.parse(output)).toEqual([true, false, false, false]);
+    });
   });
 
   it("should expose every runtime helper", () => {
@@ -363,6 +442,45 @@ describe("precompile", () => {
       expect(result.exitCode).toBe(1);
       expect(result.error[0]).toMatch(/options\.check\.js" is out of date/);
       expect(fs.readFileSync(checkFile, "utf8")).toBe(code);
+    });
+
+    it("should write an ES module where package.json has type module", async () => {
+      writeJson("package.json", { type: "module" });
+
+      const file = writeJson("src/options.json", { type: "string" });
+
+      writeJson("other/package.json", { type: "commonjs" });
+
+      const other = writeJson("other/options.json", { type: "string" });
+      const result = await runCli(["precompile", file, other]);
+
+      expect(result.exitCode).toBe(0);
+
+      const code = fs.readFileSync(
+        path.join(dir, "src/options.check.js"),
+        "utf8",
+      );
+      const otherCode = fs.readFileSync(
+        path.join(dir, "other/options.check.js"),
+        "utf8",
+      );
+
+      expect(code).toMatch(/export default/);
+      expect(code).not.toMatch(/module\.exports/);
+      expect(otherCode).toMatch(/module\.exports/);
+      expect(otherCode).not.toMatch(/export default/);
+    });
+
+    it("should write CommonJS when package.json cannot be read", async () => {
+      fs.writeFileSync(path.join(dir, "package.json"), "{");
+
+      const file = writeJson("options.json", { type: "string" });
+      const result = await runCli(["precompile", file]);
+
+      expect(result.exitCode).toBe(0);
+      expect(
+        fs.readFileSync(path.join(dir, "options.check.js"), "utf8"),
+      ).toMatch(/module\.exports/);
     });
 
     it("should report a schema it cannot precompile and go on", async () => {
