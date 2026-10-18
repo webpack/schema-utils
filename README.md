@@ -286,11 +286,12 @@ not, `validate` runs the full validation to report what is wrong, so the errors 
 without a check.
 
 Run `schema-utils precompile --check src/options.json` in CI to fail when the check is missing or
-out of date with its schema. The generated module needs `schema-utils` as a dependency of the
-package and is CommonJS.
+out of date with its schema. The generated module may need `schema-utils` as a dependency of the
+package. It is an ES module when the nearest `package.json` has `"type": "module"`, the way Node.js
+reads a `.js` file there, and CommonJS otherwise.
 
 A relative `$ref` to another file resolves against the schema. To compile a schema from code, use
-`precompile(schema, { loadSchema })`, it returns the source of the module.
+`precompile(schema, { loadSchema, esm })`, it returns the source of the module.
 
 ### Allow to disable and enable validation (the `validate` function do nothing)
 

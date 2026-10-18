@@ -5,6 +5,9 @@ for the fourth argument of \`validate\`:
 
   validate(schema, options, configuration, require("./options.check.js"));
 
+The check is an ES module when the nearest package.json has "type": "module",
+the way Node.js reads a .js file there, and a CommonJS module otherwise.
+
 Options:
   --check  write nothing, fail when a check is missing or out of date`;
 
@@ -14,6 +17,43 @@ Options:
  */
 function getCheckPath(schemaPath) {
   return `${schemaPath.replace(/\.json$/i, "")}.check.js`;
+}
+
+/**
+ * @param {string} file path of a `.js` file
+ * @returns {boolean} whether Node.js loads it as an ES module
+ */
+function isModule(file) {
+  const fs = require("fs");
+  const path = require("path");
+
+  let dir = path.dirname(file);
+
+  for (;;) {
+    let content;
+
+    try {
+      content = fs.readFileSync(path.join(dir, "package.json"), "utf8");
+    } catch (_err) {
+      // No package.json here, look further up
+    }
+
+    if (typeof content !== "undefined") {
+      try {
+        return JSON.parse(content).type === "module";
+      } catch (_err) {
+        return false;
+      }
+    }
+
+    const parent = path.dirname(dir);
+
+    if (parent === dir) {
+      return false;
+    }
+
+    dir = parent;
+  }
 }
 
 /**
@@ -89,7 +129,7 @@ async function cli(args, io) {
         schema.$id = pathToFileURL(schemaPath).href;
       }
 
-      code = await precompile(schema);
+      code = await precompile(schema, { esm: isModule(checkPath) });
     } catch (error) {
       io.error(
         `Cannot precompile "${file}": ${/** @type {Error} */ (error).message}`,

@@ -4,6 +4,10 @@ export type PrecompileOptions = {
    * loads a schema an external `$ref` points to
    */
   loadSchema?: ((uri: string) => Promise<AnySchemaObject>) | undefined;
+  /**
+   * generate an ES module instead of a CommonJS one
+   */
+  esm?: boolean | undefined;
 };
 export type Ajv = import("ajv").default;
 export type AnySchemaObject = import("ajv").AnySchemaObject;
@@ -13,9 +17,11 @@ export type EXPECTED_ANY = any;
 /**
  * @typedef {object} PrecompileOptions
  * @property {((uri: string) => Promise<AnySchemaObject>)=} loadSchema loads a schema an external `$ref` points to
+ * @property {boolean=} esm generate an ES module instead of a CommonJS one
  */
 /**
- * Compiles a schema into the source of a CommonJS module that exports a check for it.
+ * Compiles a schema into the source of a module that exports a check for it, CommonJS unless
+ * `esm` is set.
  * @param {Schema} schema schema
  * @param {PrecompileOptions=} options options
  * @returns {Promise<string>} source of the module
