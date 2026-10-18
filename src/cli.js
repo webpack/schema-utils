@@ -6,7 +6,11 @@ for the fourth argument of \`validate\`:
   validate(schema, options, configuration, require("./options.check.js"));
 
 The check is an ES module when the nearest package.json has "type": "module",
-the way Node.js reads a .js file there, and a CommonJS module otherwise.
+the way Node.js reads a .js file there, and a CommonJS module otherwise:
+
+  import check from "./options.check.js";
+
+  validate(schema, options, configuration, check);
 
 Options:
   --check  write nothing, fail when a check is missing or out of date`;
