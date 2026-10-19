@@ -130,6 +130,13 @@ function addKeywords(ajv, hoist) {
   });
 }
 
+// Each helper is required by its own name: a request built from the name would make a bundler
+// that bundles `schema-utils` parse every file in `ajv/dist/runtime`
+const INLINE_HELPERS = {
+  equal: () => require("ajv/dist/runtime/equal").default,
+  ucs2length: () => require("ajv/dist/runtime/ucs2length").default,
+};
+
 /**
  * @param {string} code generated code
  * @param {boolean} esm whether the code is an ES module
@@ -147,7 +154,7 @@ function useRuntime(code, esm, inline) {
       // WHY: loading a helper through `schema-utils` costs about 1ms, more than the check itself
       // takes to run for most options - both functions are small and self-contained, `uri` is not
       if (inline && name !== "uri") {
-        return `(${require(`ajv/dist/runtime/${name}`).default.toString()})`;
+        return `(${INLINE_HELPERS[/** @type {"equal" | "ucs2length"} */ (name)]().toString()})`;
       }
 
       // ajv keeps `require` for its helpers in an ES module too
@@ -262,12 +269,20 @@ async function minify(code, esm) {
   let minifier;
 
   // webpack's own minifier, which writes what terser writes without loading it - the packages
-  // shipping a check already have webpack. Required by name so neither TypeScript nor a bundler
-  // reaches for it.
-  const WEBPACK = "webpack";
+  // shipping a check already have webpack. A bundler that bundles `schema-utils` must neither
+  // bundle webpack nor warn about a request it cannot resolve, so webpack is loaded with Node.js's
+  // own `require`: the one webpack keeps as `__non_webpack_require__` inside a webpack bundle, and
+  // `module.require` through an alias of `module` outside one.
+  /* global __non_webpack_require__ */
+  // prettier-ignore
+  // @ts-expect-error a free variable only a webpack bundle defines
+  const nodeRequire = typeof __non_webpack_require__ === "function" ? __non_webpack_require__ : undefined;
+  const self = module;
 
   try {
-    minifier = await require(WEBPACK).javascript.syntax.printer.load();
+    minifier = await (nodeRequire || self.require.bind(self))(
+      "webpack",
+    ).javascript.syntax.printer.load();
   } catch (err) {
     throw new Error(
       "Install webpack 5.112.0 or later to minify a precompiled check",
