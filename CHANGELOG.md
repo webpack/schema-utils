@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.8.1
+
+### Patch Changes
+
+- Bundle `schema-utils` without errors or warnings: `precompile` requires the `ajv` helpers it inlines by name and loads webpack's minifier with Node.js's own `require`, so `minify` works from a webpack bundle too. (by [@alexander-akait](https://github.com/alexander-akait) in [#238](https://github.com/webpack/schema-utils/pull/238))
+
 ## 4.8.0
 
 ### Minor Changes
