@@ -265,8 +265,8 @@ async function loadFileSchema(uri) {
  * @returns {Promise<string>} code without error objects, minified
  */
 async function minify(code, esm) {
-  /** @type {{ minify: (code: string, options: Record<string, EXPECTED_ANY>) => Promise<{ code?: string }> }} */
-  let minifier;
+  /** @type {(code: string, options: Record<string, EXPECTED_ANY>) => Promise<string> | string} */
+  let minifyWith;
 
   // webpack's own minifier, which writes what terser writes without loading it - the packages
   // shipping a check already have webpack. A bundler that bundles `schema-utils` must neither
@@ -280,9 +280,25 @@ async function minify(code, esm) {
   const self = module;
 
   try {
-    minifier = await (nodeRequire || self.require.bind(self))(
+    const { syntax } = (nodeRequire || self.require.bind(self))(
       "webpack",
-    ).javascript.syntax.printer.load();
+    ).javascript;
+
+    if (syntax.SourceProcessor) {
+      // One `SourceProcessor` run reads, mangles, compresses and prints it.
+      minifyWith = (source, options) =>
+        new syntax.SourceProcessor().process(source, {
+          ...options,
+          sourceType: esm ? "module" : "script",
+          mode: "minify",
+        }).code;
+    } else {
+      // TODO in the next major release: require the webpack whose `SourceProcessor` minifies and drop `printer.load()`
+      const minifier = await syntax.printer.load();
+
+      minifyWith = async (source, options) =>
+        /** @type {string} */ ((await minifier.minify(source, options)).code);
+    }
   } catch (err) {
     throw new Error(
       "Install webpack 5.112.0 or later to minify a precompiled check",
@@ -296,15 +312,14 @@ async function minify(code, esm) {
     /(=\s*\[?)\{instancePath(?::instancePath\b[^{}]*?)?,schemaPath:"(?:[^"\\]|\\.)*",keyword:"\w+",/g,
     "$1{",
   );
-  const result = await minifier.minify(stripped, {
+
+  return minifyWith(stripped, {
     compress: { passes: 3 },
     mangle: true,
     ecma: 2015,
     module: esm,
     toplevel: true,
   });
-
-  return /** @type {string} */ (result.code);
 }
 
 /**

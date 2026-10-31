@@ -212,6 +212,50 @@ describe("precompile", () => {
       expect(code).not.toMatch(/require\(|module\.exports/);
     });
 
+    it("should minify with webpack's SourceProcessor where it has one", async () => {
+      /** @type {Record<string, EXPECTED_ANY>[]} */
+      const runs = [];
+
+      jest.doMock("webpack", () => ({
+        javascript: {
+          syntax: {
+            SourceProcessor: class {
+              /**
+               * @param {string} code code
+               * @param {Record<string, EXPECTED_ANY>} options options
+               * @returns {{ code: string }} the code
+               */
+              process(code, options) {
+                runs.push(options);
+                return { code: `/* minified */${code.length}` };
+              }
+            },
+          },
+        },
+      }));
+
+      try {
+        const code = await precompile(schema, { esm: true, minify: true });
+
+        expect(code).toMatch(/\/\* minified \*\/\d+$/);
+        expect(runs).toEqual([
+          {
+            compress: { passes: 3 },
+            mangle: true,
+            ecma: 2015,
+            module: true,
+            toplevel: true,
+            sourceType: "module",
+            mode: "minify",
+          },
+        ]);
+      } finally {
+        jest.dontMock("webpack");
+        // A mock once required stays in the registry for the next `doMock`.
+        jest.resetModules();
+      }
+    });
+
     it("should ask for webpack when it has no minifier", async () => {
       // webpack before 5.112.0
       jest.doMock("webpack", () => ({}));
