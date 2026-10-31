@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.8.2
+
+### Patch Changes
+
+- Minify a precompiled check with webpack's `SourceProcessor` where webpack has one. (by [@alexander-akait](https://github.com/alexander-akait) in [#241](https://github.com/webpack/schema-utils/pull/241))
+
 ## 4.8.1
 
 ### Patch Changes

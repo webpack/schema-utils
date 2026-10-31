@@ -1,6 +1,6 @@
 {
   "name": "schema-utils",
-  "version": "4.8.1",
+  "version": "4.8.2",
   "description": "webpack Validation Utils",
   "keywords": [
     "webpack"
