@@ -453,7 +453,7 @@ function validateObject(schema, options) {
 /**
  * A check precompiled from a schema with `precompile`, it only says whether the value is valid.
  * @callback PrecompiledCheck
- * @param {unknown} value value
+ * @param {EXPECTED_ANY} value value
  * @returns {boolean} true when valid, otherwise false
  */
 
