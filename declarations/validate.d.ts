@@ -78,7 +78,7 @@ export type ErrorPathNode = {
 /**
  * A check precompiled from a schema with `precompile`, it only says whether the value is valid.
  */
-export type PrecompiledCheck = (value: EXPECTED_ANY) => boolean;
+export type PrecompiledCheck = (value: unknown) => boolean;
 /**
  * Whether validation is skipped, shared by every `schema-utils` in the process.
  */
@@ -103,19 +103,19 @@ export function needValidate(): boolean;
 /**
  * A check precompiled from a schema with `precompile`, it only says whether the value is valid.
  * @callback PrecompiledCheck
- * @param {EXPECTED_ANY} value value
+ * @param {unknown} value value
  * @returns {boolean} true when valid, otherwise false
  */
 /**
  * @param {Schema} schema schema
- * @param {object[] | object} options options
+ * @param {unknown} options options, an object or an array of objects
  * @param {ValidationErrorConfiguration=} configuration configuration
  * @param {PrecompiledCheck=} check precompiled check of the schema, so a valid value never compiles the schema
  * @returns {void}
  */
 export function validate(
   schema: Schema,
-  options: object[] | object,
+  options: unknown,
   configuration?: ValidationErrorConfiguration | undefined,
   check?: PrecompiledCheck | undefined,
 ): void;

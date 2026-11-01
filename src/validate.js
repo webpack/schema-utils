@@ -437,7 +437,7 @@ function filterErrors(errors) {
 
 /**
  * @param {Schema} schema schema
- * @param {object[] | object} options options
+ * @param {unknown} options options, an object or an array of objects
  * @returns {SchemaUtilErrorObject[]} array of error objects
  */
 function validateObject(schema, options) {
@@ -453,13 +453,13 @@ function validateObject(schema, options) {
 /**
  * A check precompiled from a schema with `precompile`, it only says whether the value is valid.
  * @callback PrecompiledCheck
- * @param {EXPECTED_ANY} value value
+ * @param {unknown} value value
  * @returns {boolean} true when valid, otherwise false
  */
 
 /**
  * @param {Schema} schema schema
- * @param {object[] | object} options options
+ * @param {unknown} options options, an object or an array of objects
  * @param {ValidationErrorConfiguration=} configuration configuration
  * @param {PrecompiledCheck=} check precompiled check of the schema, so a valid value never compiles the schema
  * @returns {void}
