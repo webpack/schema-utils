@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.8.3
+
+### Patch Changes
+
+- Accept any webpack 5 as the optional peer dependency. Requiring `^5.112.0` broke installs with an older webpack 5, such as NestJS CLI's pinned `webpack@5.106.2`. Only `precompile` with `minify` needs webpack 5.112.0 or later, and it reports that when webpack is older. (by [@alexander-akait](https://github.com/alexander-akait) in [#244](https://github.com/webpack/schema-utils/pull/244))
+
 ## 4.8.2
 
 ### Patch Changes
