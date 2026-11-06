@@ -75,7 +75,7 @@
     "webpack": "^5.112.0"
   },
   "peerDependencies": {
-    "webpack": "^5.112.0"
+    "webpack": "^5.0.0"
   },
   "peerDependenciesMeta": {
     "webpack": {
