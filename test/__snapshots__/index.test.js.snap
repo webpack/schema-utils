@@ -781,9 +781,29 @@ exports[`validation should fail validation for formatExclusiveMaximum 1`] = `
  - configuration.formatExclusiveMaximumKeyword should be < "2016-02-06" | should be any non-string."
 `;
 
+exports[`validation should fail validation for formatExclusiveMaximum as boolean flag #2 1`] = `
+"Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
+ - configuration.formatExclusiveMaximumKeyword1 should be < "2016-02-06" | should be any non-string."
+`;
+
+exports[`validation should fail validation for formatExclusiveMaximum as boolean flag 1`] = `
+"Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
+ - configuration.formatExclusiveMaximumKeyword1 should be < "2016-02-06" | should be any non-string."
+`;
+
 exports[`validation should fail validation for formatExclusiveMinimum 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.formatExclusiveMinimumKeyword should be > "2016-02-06" | should be any non-string."
+`;
+
+exports[`validation should fail validation for formatExclusiveMinimum as boolean flag #2 1`] = `
+"Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
+ - configuration.formatExclusiveMinimumKeyword1 should be > "2016-02-06" | should be any non-string."
+`;
+
+exports[`validation should fail validation for formatExclusiveMinimum as boolean flag 1`] = `
+"Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
+ - configuration.formatExclusiveMinimumKeyword1 should be > "2016-02-06" | should be any non-string."
 `;
 
 exports[`validation should fail validation for formatExclusiveMinimumKeyword #2 1`] = `

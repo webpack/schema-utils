@@ -365,6 +365,14 @@ describe("validation", () => {
     testAbsolutePath: "FILE:///Users/username/directory/deep/tree",
   });
 
+  createSuccessTestCase("formatExclusiveMinimum as boolean flag", {
+    formatExclusiveMinimumKeyword1: "2016-02-07",
+  });
+
+  createSuccessTestCase("formatExclusiveMaximum as boolean flag", {
+    formatExclusiveMaximumKeyword1: "2016-02-05",
+  });
+
   createSuccessTestCase("$data", {
     dollarData: {
       smaller: 5,
@@ -1197,6 +1205,38 @@ describe("validation", () => {
     "formatExclusiveMaximum #3",
     {
       formatExclusiveMaximumKeyword: "2016-02-07",
+    },
+    (msg) => expect(msg).toMatchSnapshot(),
+  );
+
+  createFailedTestCase(
+    "formatExclusiveMinimum as boolean flag",
+    {
+      formatExclusiveMinimumKeyword1: "2016-02-06",
+    },
+    (msg) => expect(msg).toMatchSnapshot(),
+  );
+
+  createFailedTestCase(
+    "formatExclusiveMinimum as boolean flag #2",
+    {
+      formatExclusiveMinimumKeyword1: "2016-02-05",
+    },
+    (msg) => expect(msg).toMatchSnapshot(),
+  );
+
+  createFailedTestCase(
+    "formatExclusiveMaximum as boolean flag",
+    {
+      formatExclusiveMaximumKeyword1: "2016-02-06",
+    },
+    (msg) => expect(msg).toMatchSnapshot(),
+  );
+
+  createFailedTestCase(
+    "formatExclusiveMaximum as boolean flag #2",
+    {
+      formatExclusiveMaximumKeyword1: "2016-02-07",
     },
     (msg) => expect(msg).toMatchSnapshot(),
   );
