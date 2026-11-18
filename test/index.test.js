@@ -373,6 +373,30 @@ describe("validation", () => {
     formatExclusiveMaximumKeyword1: "2016-02-05",
   });
 
+  createSuccessTestCase("formatExclusiveMaximum as false boolean flag", {
+    formatExclusiveMaximumKeyword2: "2016-02-06",
+  });
+
+  createSuccessTestCase("formatExclusiveMinimum flag without formatMinimum", {
+    formatExclusiveMinimumKeyword2: "2016-02-06",
+  });
+
+  createSuccessTestCase("formatExclusiveMaximum flag with $data limit", {
+    dollarDataFormatExclusiveFlag: {
+      date: "2016-02-06",
+      max: "2016-02-07",
+    },
+  });
+
+  createSuccessTestCase(
+    "formatExclusiveMaximum flag with missing $data limit",
+    {
+      dollarDataFormatExclusiveFlag: {
+        date: "2016-02-07",
+      },
+    },
+  );
+
   createSuccessTestCase("$data", {
     dollarData: {
       smaller: 5,
@@ -2991,6 +3015,25 @@ describe("validation", () => {
         smaller: 5,
         larger: 4,
       },
+    },
+    (msg) => expect(msg).toMatchSnapshot(),
+  );
+
+  createFailedTestCase(
+    "formatExclusiveMaximum flag with $data limit",
+    {
+      dollarDataFormatExclusiveFlag: {
+        date: "2016-02-07",
+        max: "2016-02-07",
+      },
+    },
+    (msg) => expect(msg).toMatchSnapshot(),
+  );
+
+  createFailedTestCase(
+    "formatExclusiveMaximum as false boolean flag",
+    {
+      formatExclusiveMaximumKeyword2: "2016-02-07",
     },
     (msg) => expect(msg).toMatchSnapshot(),
   );
