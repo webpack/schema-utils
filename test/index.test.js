@@ -397,6 +397,13 @@ describe("validation", () => {
     },
   );
 
+  createSuccessTestCase("formatExclusiveMaximum flag with $data format", {
+    dollarDataFormatWithExclusiveFlag: {
+      format: "date",
+      value: "2016-02-06",
+    },
+  });
+
   createSuccessTestCase("$data", {
     dollarData: {
       smaller: 5,
@@ -3036,6 +3043,17 @@ describe("validation", () => {
       dollarDataFormatExclusiveFlag: {
         date: "2016-02-07",
         max: null,
+      },
+    },
+    (msg) => expect(msg).toMatchSnapshot(),
+  );
+
+  createFailedTestCase(
+    "formatExclusiveMaximum flag with $data format",
+    {
+      dollarDataFormatWithExclusiveFlag: {
+        format: "date",
+        value: "2016-02-07",
       },
     },
     (msg) => expect(msg).toMatchSnapshot(),

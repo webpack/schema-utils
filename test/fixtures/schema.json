@@ -3784,6 +3784,18 @@
         "max": {}
       }
     },
+    "dollarDataFormatWithExclusiveFlag": {
+      "type": "object",
+      "properties": {
+        "format": { "type": "string" },
+        "value": {
+          "type": "string",
+          "format": { "$data": "1/format" },
+          "formatMaximum": "2016-02-07",
+          "formatExclusiveMaximum": true
+        }
+      }
+    },
     "dollarData2": {
       "type": "object",
       "additionalProperties": {
