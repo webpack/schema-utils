@@ -45,11 +45,21 @@ describe("formats", () => {
       ["time", "12:00:00.1Z", "12:00:00.10Z", 0],
       ["time", "12:00:00.0001Z", "12:00:00Z", 1],
       ["time", "14:00:00+02:00", "12:00:00Z", 0],
+      // A leap second comes after the second 59 and before the next minute
+      ["date-time", "1990-12-31T23:59:60Z", "1991-01-01T00:00:00Z", -1],
+      ["date-time", "1990-12-31T23:59:60Z", "1990-12-31T23:59:59.999Z", 1],
+      ["date-time", "1990-12-31T23:59:60.5Z", "1990-12-31T23:59:60.25Z", 1],
+      ["date-time", "1990-12-31T15:59:60-08:00", "1990-12-31T23:59:60Z", 0],
+      ["time", "23:59:60Z", "23:59:59Z", 1],
+      // A leap day
+      ["date-time", "2024-02-29T00:00:00Z", "2024-03-01T00:00:00Z", -1],
+      ["date-time", "2000-02-29T00:00:00Z", "2000-03-01T00:00:00Z", -1],
       // `iso-time` compares the digits as written
       ["iso-time", "09:00:00.1Z", "09:00:00.10Z", 0],
       ["iso-time", "09:00:00.09Z", "09:00:00.10Z", -1],
       ["iso-time", "09:00:00.100", "09:00:00.1", 0],
       ["iso-time", "09:00:01", "09:00:00.999", 1],
+      ["iso-time", "09:00:00+02:00", "09:00:00", 0],
     ])("%s should compare %s with %s", (format, a, b, expected) => {
       expect(sign(comparators[format](a, b))).toBe(expected);
       expect(sign(comparators[format](b, a))).toBe(
@@ -67,6 +77,18 @@ describe("formats", () => {
       ["date-time", "2016-2-6T12:00:00Z", "2016-02-06T12:00:00Z"],
       ["date-time", "2016-02-06T12:00Z", "2016-02-06T12:00:00Z"],
       ["time", "12:00:00Z", "noon"],
+      // Out of range
+      ["time", "12:00:00Z", "25:00:00Z"],
+      ["time", "12:00:00Z", "12:60:00Z"],
+      ["time", "12:00:00Z", "12:00:61Z"],
+      ["time", "12:00:00Z", "12:00:00+24:00"],
+      ["time", "12:00:00Z", "12:00:00+02:60"],
+      ["date-time", "2024-12-31T00:00:00Z", "2024-13-01T00:00:00Z"],
+      ["date-time", "2024-12-31T00:00:00Z", "2024-00-01T00:00:00Z"],
+      ["date-time", "2024-12-31T00:00:00Z", "2024-04-31T00:00:00Z"],
+      ["date-time", "2024-12-31T00:00:00Z", "2023-02-29T00:00:00Z"],
+      ["date-time", "2024-12-31T00:00:00Z", "1900-02-29T00:00:00Z"],
+      ["date-time", "2024-12-31T00:00:00Z", "2024-12-00T00:00:00Z"],
       ["iso-time", "09:00:00", {}],
     ])("%s should not compare %j with %j", (format, a, b) => {
       expect(comparators[format](a, b)).toBeUndefined();
@@ -154,6 +176,25 @@ describe("formats", () => {
           ["09:00:00.1001Z", false],
         ],
       ],
+      // A leap second before an exclusive maximum at the next midnight
+      [
+        "date-time",
+        {
+          formatMaximum: "1991-01-01T00:00:00Z",
+          formatExclusiveMaximum: true,
+        },
+        [
+          ["1990-12-31T23:59:60Z", true],
+          ["1991-01-01T00:00:00Z", false],
+        ],
+      ],
+      // A limit that is not a valid date-time or time is not compared
+      [
+        "date-time",
+        { formatMinimum: "2024-13-01T00:00:00Z" },
+        [["2024-12-31T00:00:00Z", true]],
+      ],
+      ["time", { formatMinimum: "25:00:00Z" }, [["12:00:00Z", true]]],
       // A limit that is not a string is not compared, and does not throw
       ["iso-date-time", { formatMaximum: 5 }, [["2016-02-06T12:00:00", true]]],
     ];

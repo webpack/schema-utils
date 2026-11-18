@@ -5,6 +5,10 @@ export type Instant = {
    */
   seconds: number;
   /**
+   * whether it is a leap second, which comes after the second `59` of `seconds` and before the next one
+   */
+  leap: boolean;
+  /**
    * digits of the fraction of a second, without trailing zeros
    */
   fraction: string;

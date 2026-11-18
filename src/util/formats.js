@@ -18,6 +18,7 @@
 /**
  * @typedef {object} Instant
  * @property {number} seconds whole seconds, since the Unix epoch for a date-time or since midnight for a time
+ * @property {boolean} leap whether it is a leap second, which comes after the second `59` of `seconds` and before the next one
  * @property {string} fraction digits of the fraction of a second, without trailing zeros
  */
 
@@ -25,6 +26,15 @@ const TIME =
   /^(\d\d):(\d\d):(\d\d)(?:\.(\d+))?(z|([+-])(\d\d)(?::?(\d\d))?)?$/i;
 const DATE_TIME_SEPARATOR = /t|\s/i;
 const DATE = /^(\d\d\d\d)-(\d\d)-(\d\d)$/;
+const DAYS = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+/**
+ * @param {number} year year
+ * @returns {boolean} true when the year has a 29 February
+ */
+function isLeapYear(year) {
+  return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+}
 
 /**
  * @param {string} str time, such as `12:30:00.5+02:00`
@@ -38,15 +48,34 @@ function parseTime(str, withTimeZone) {
     return undefined;
   }
 
-  const seconds = Number(matches[1]) * 3600 + Number(matches[2]) * 60;
+  const hours = Number(matches[1]);
+  const minutes = Number(matches[2]);
+  const seconds = Number(matches[3]);
+  const offsetHours = Number(matches[7] || 0);
+  const offsetMinutes = Number(matches[8] || 0);
+
+  // Like `Date` did for the comparators of `ajv-formats`, a time out of range is not compared.
+  // The second `60` is a leap second.
+  if (
+    hours > 23 ||
+    minutes > 59 ||
+    seconds > 60 ||
+    offsetHours > 23 ||
+    offsetMinutes > 59
+  ) {
+    return undefined;
+  }
+
   const offset =
     withTimeZone && matches[6]
       ? (matches[6] === "-" ? -1 : 1) *
-        (Number(matches[7]) * 3600 + Number(matches[8] || 0) * 60)
+        (offsetHours * 3600 + offsetMinutes * 60)
       : 0;
+  const leap = seconds === 60;
 
   return {
-    seconds: seconds + Number(matches[3]) - offset,
+    seconds: hours * 3600 + minutes * 60 + (leap ? 59 : seconds) - offset,
+    leap,
     fraction: (matches[4] || "").replace(/0+$/, ""),
   };
 }
@@ -69,13 +98,28 @@ function parseDateTime(str) {
     return undefined;
   }
 
+  const year = Number(date[1]);
+  const month = Number(date[2]);
+  const dayOfMonth = Number(date[3]);
+
+  // A date out of range, such as `2024-13-01`, is not compared instead of rolling over
+  if (
+    month < 1 ||
+    month > 12 ||
+    dayOfMonth < 1 ||
+    dayOfMonth > (month === 2 && isLeapYear(year) ? 29 : DAYS[month])
+  ) {
+    return undefined;
+  }
+
   // `Date.UTC` maps the years 0-99 to 1900-1999, `setUTCFullYear` does not
   const day = new Date(0);
 
-  day.setUTCFullYear(Number(date[1]), Number(date[2]) - 1, Number(date[3]));
+  day.setUTCFullYear(year, month - 1, dayOfMonth);
 
   return {
     seconds: day.valueOf() / 1000 + time.seconds,
+    leap: time.leap,
     fraction: time.fraction,
   };
 }
@@ -88,6 +132,10 @@ function parseDateTime(str) {
 function compareInstants(a, b) {
   if (a.seconds !== b.seconds) {
     return a.seconds - b.seconds;
+  }
+
+  if (a.leap !== b.leap) {
+    return a.leap ? 1 : -1;
   }
 
   const length = Math.max(a.fraction.length, b.fraction.length);
