@@ -7,12 +7,15 @@
 
 /* eslint-disable jsdoc/reject-any-type */
 
+/** @type {Record<string, any> | undefined} */
+let formats;
+
 /**
  * @typedef {object} Runtime
  * @property {(a: any, b: any) => boolean} equal deep equality for `const`, `enum` and `uniqueItems`
  * @property {(str: string) => number} ucs2length string length in code points for `minLength` and `maxLength`
  * @property {any} uri URI parser for `$ref` to an `$id`
- * @property {Record<string, any>} formats formats of `ajv-formats` for `format`
+ * @property {Record<string, any>} formats formats of `ajv-formats` for `format`, with the exact comparators of `util/formats.js`
  */
 
 /** @type {Runtime} */
@@ -33,7 +36,17 @@ Object.defineProperties(runtime, {
   },
   formats: {
     enumerable: true,
-    get: () => require("ajv-formats/dist/formats").fullFormats,
+    get: () => {
+      if (!formats) {
+        const { withComparators } = require("./util/formats");
+
+        formats = withComparators(
+          require("ajv-formats/dist/formats").fullFormats,
+        );
+      }
+
+      return formats;
+    },
   },
 });
 
