@@ -1,4 +1,14 @@
 export default addFormats;
+export type TimeOptions = {
+  /**
+   * whether a time without a time zone is not compared, like `time` and `date-time` do not validate it
+   */
+  requireTimeZone: boolean;
+  /**
+   * whether to apply the time zone offset, `iso-time` ignores it
+   */
+  applyTimeZone: boolean;
+};
 export type Instant = {
   /**
    * whole seconds, since the Unix epoch for a date-time or since midnight for a time

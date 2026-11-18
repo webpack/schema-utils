@@ -60,6 +60,13 @@ describe("formats", () => {
       ["iso-time", "09:00:00.100", "09:00:00.1", 0],
       ["iso-time", "09:00:01", "09:00:00.999", 1],
       ["iso-time", "09:00:00+02:00", "09:00:00", 0],
+      // A leap second in the last minute of the day in UTC, also for `iso-time`
+      ["iso-time", "15:59:60-08:00", "15:59:59-08:00", 1],
+      ["iso-time", "23:59:60", "23:59:59", 1],
+      ["date-time", "1991-01-01T00:00:60+00:01", "1990-12-31T23:59:60Z", 0],
+      ["iso-date-time", "1990-12-31T23:59:60", "1991-01-01T00:00:00", -1],
+      // A long fraction of a second is compared in linear time
+      ["time", `12:00:00.${"0".repeat(100000)}1Z`, "12:00:00Z", 1],
     ])("%s should compare %s with %s", (format, a, b, expected) => {
       expect(sign(comparators[format](a, b))).toBe(expected);
       expect(sign(comparators[format](b, a))).toBe(
@@ -77,6 +84,14 @@ describe("formats", () => {
       ["date-time", "2016-2-6T12:00:00Z", "2016-02-06T12:00:00Z"],
       ["date-time", "2016-02-06T12:00Z", "2016-02-06T12:00:00Z"],
       ["time", "12:00:00Z", "noon"],
+      // Without the time zone that `time` and `date-time` require
+      ["time", "12:00:00Z", "12:00:00"],
+      ["date-time", "2024-01-01T11:00:00Z", "2024-01-01T12:00:00"],
+      // A second `60` outside the last minute of the day in UTC
+      ["time", "12:00:00Z", "12:00:60Z"],
+      ["time", "12:00:00Z", "23:59:60+01:00"],
+      ["iso-time", "12:00:00", "12:00:60"],
+      ["date-time", "2016-02-06T12:00:00Z", "2016-02-06T12:00:60Z"],
       // Out of range
       ["time", "12:00:00Z", "25:00:00Z"],
       ["time", "12:00:00Z", "12:60:00Z"],
@@ -195,6 +210,12 @@ describe("formats", () => {
         [["2024-12-31T00:00:00Z", true]],
       ],
       ["time", { formatMinimum: "25:00:00Z" }, [["12:00:00Z", true]]],
+      ["time", { formatMinimum: "12:00:60Z" }, [["12:00:30Z", true]]],
+      [
+        "date-time",
+        { formatMinimum: "2024-01-01T12:00:00" },
+        [["2024-01-01T11:00:00Z", true]],
+      ],
       // A limit that is not a string is not compared, and does not throw
       ["iso-date-time", { formatMaximum: 5 }, [["2016-02-06T12:00:00", true]]],
     ];

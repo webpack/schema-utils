@@ -37,11 +37,32 @@ function isLeapYear(year) {
 }
 
 /**
- * @param {string} str time, such as `12:30:00.5+02:00`
- * @param {boolean} withTimeZone whether to apply the time zone offset
- * @returns {Instant | undefined} seconds since midnight in UTC (in local time without `withTimeZone`)
+ * @param {string} digits digits of a fraction of a second
+ * @returns {string} the digits without trailing zeros
  */
-function parseTime(str, withTimeZone) {
+function trimTrailingZeros(digits) {
+  // A loop and not `/0+$/`, which takes quadratic time on a long run of zeros before a digit
+  let end = digits.length;
+
+  while (end > 0 && digits[end - 1] === "0") {
+    end--;
+  }
+
+  return digits.slice(0, end);
+}
+
+/**
+ * @typedef {object} TimeOptions
+ * @property {boolean} requireTimeZone whether a time without a time zone is not compared, like `time` and `date-time` do not validate it
+ * @property {boolean} applyTimeZone whether to apply the time zone offset, `iso-time` ignores it
+ */
+
+/**
+ * @param {string} str time, such as `12:30:00.5+02:00`
+ * @param {TimeOptions} options options
+ * @returns {Instant | undefined} seconds since midnight in UTC (as written without `applyTimeZone`)
+ */
+function parseTime(str, { requireTimeZone, applyTimeZone }) {
   const matches = TIME.exec(str);
 
   if (!matches) {
@@ -61,30 +82,46 @@ function parseTime(str, withTimeZone) {
     minutes > 59 ||
     seconds > 60 ||
     offsetHours > 23 ||
-    offsetMinutes > 59
+    offsetMinutes > 59 ||
+    (requireTimeZone && !matches[5])
   ) {
     return undefined;
   }
 
-  const offset =
-    withTimeZone && matches[6]
-      ? (matches[6] === "-" ? -1 : 1) *
-        (offsetHours * 3600 + offsetMinutes * 60)
-      : 0;
+  const sign = matches[6] === "-" ? -1 : 1;
   const leap = seconds === 60;
+
+  // Like the format validators of `ajv-formats`, a leap second is only valid in the last
+  // minute of the day in UTC, `15:59:60-08:00` is but `12:00:60Z` is not
+  if (leap) {
+    const utcMinutes = minutes - offsetMinutes * sign;
+    const utcHours = hours - offsetHours * sign - (utcMinutes < 0 ? 1 : 0);
+
+    if (
+      !(utcHours === 23 || utcHours === -1) ||
+      !(utcMinutes === 59 || utcMinutes === -1)
+    ) {
+      return undefined;
+    }
+  }
+
+  const offset = applyTimeZone
+    ? sign * (offsetHours * 3600 + offsetMinutes * 60)
+    : 0;
 
   return {
     seconds: hours * 3600 + minutes * 60 + (leap ? 59 : seconds) - offset,
     leap,
-    fraction: (matches[4] || "").replace(/0+$/, ""),
+    fraction: trimTrailingZeros(matches[4] || ""),
   };
 }
 
 /**
  * @param {string} str date-time, such as `2016-02-06T12:30:00.5Z`
+ * @param {boolean} requireTimeZone whether a date-time without a time zone is not compared
  * @returns {Instant | undefined} seconds since the Unix epoch
  */
-function parseDateTime(str) {
+function parseDateTime(str, requireTimeZone) {
   const parts = str.split(DATE_TIME_SEPARATOR);
 
   if (parts.length !== 2) {
@@ -92,7 +129,7 @@ function parseDateTime(str) {
   }
 
   const date = DATE.exec(parts[0]);
-  const time = parseTime(parts[1], true);
+  const time = parseTime(parts[1], { requireTimeZone, applyTimeZone: true });
 
   if (!date || !time) {
     return undefined;
@@ -168,11 +205,16 @@ function createCompare(parse) {
 
 /** @type {Record<string, (a: any, b: any) => number | undefined>} */
 const comparators = {
-  time: createCompare((str) => parseTime(str, true)),
+  time: createCompare((str) =>
+    parseTime(str, { requireTimeZone: true, applyTimeZone: true }),
+  ),
   // Like `ajv-formats`, `iso-time` compares the digits as written and ignores the time zone
-  "iso-time": createCompare((str) => parseTime(str, false)),
-  "date-time": createCompare(parseDateTime),
-  "iso-date-time": createCompare(parseDateTime),
+  "iso-time": createCompare((str) =>
+    parseTime(str, { requireTimeZone: false, applyTimeZone: false }),
+  ),
+  "date-time": createCompare((str) => parseDateTime(str, true)),
+  // An `iso-date-time` without a time zone is compared as UTC
+  "iso-date-time": createCompare((str) => parseDateTime(str, false)),
 };
 
 /**
