@@ -2,6 +2,7 @@
 /** @typedef {import("ajv").Code} Code */
 /** @typedef {import("ajv").Name} Name */
 /** @typedef {import("ajv").KeywordErrorDefinition} KeywordErrorDefinition */
+/** @typedef {import("ajv/dist/types").KeywordErrorCxt} KeywordErrorCxt */
 
 /**
  * @param {Ajv} ajv ajv
@@ -57,16 +58,40 @@ function addLimitKeyword(ajv) {
     formatExclusiveMinimum: { okStr: ">", ok: _`>`, fail: _`<=` },
   };
 
+  /**
+   * Boolean `formatExclusiveMaximum`/`formatExclusiveMinimum` (v3 style) are
+   * flags which make the corresponding `formatMaximum`/`formatMinimum` exclusive.
+   * @type {Record<string, "formatMaximum" | "formatMinimum">}
+   */
+  const exclusiveFlagFor = {
+    formatExclusiveMaximum: "formatMaximum",
+    formatExclusiveMinimum: "formatMinimum",
+  };
+
+  /** @type {Record<string, string>} */
+  const inclusiveToExclusive = {
+    formatMaximum: "formatExclusiveMaximum",
+    formatMinimum: "formatExclusiveMinimum",
+  };
+
+  /**
+   * @param {KeywordErrorCxt} cxt context
+   * @returns {Code | number | string | boolean} limit code
+   */
+  function getLimitCode({ schemaCode, params }) {
+    return typeof params.limit !== "undefined" ? params.limit : schemaCode;
+  }
+
   /** @type {KeywordErrorDefinition} */
   const error = {
-    message: ({ keyword, schemaCode }) =>
+    message: (cxt) =>
       str`should be ${
-        keywords[/** @type {keyof typeof keywords} */ (keyword)].okStr
-      } ${schemaCode}`,
-    params: ({ keyword, schemaCode }) =>
+        keywords[/** @type {keyof typeof keywords} */ (cxt.keyword)].okStr
+      } ${getLimitCode(cxt)}`,
+    params: (cxt) =>
       _`{comparison: ${
-        keywords[/** @type {keyof typeof keywords} */ (keyword)].okStr
-      }, limit: ${schemaCode}}`,
+        keywords[/** @type {keyof typeof keywords} */ (cxt.keyword)].okStr
+      }, limit: ${getLimitCode(cxt)}}`,
   };
 
   for (const keyword of Object.keys(keywords)) {
@@ -79,9 +104,59 @@ function addLimitKeyword(ajv) {
       $data: true,
       error,
       code(cxt) {
-        const { gen, data, schemaCode, keyword, it } = cxt;
+        const { gen, data, schema, parentSchema, keyword, it } = cxt;
         const { opts, self } = it;
         if (!opts.validateFormats) return;
+
+        // The inclusive check is performed by the exclusive keyword when it is used as a flag
+        const exclusiveSibling = inclusiveToExclusive[keyword];
+
+        if (exclusiveSibling && parentSchema[exclusiveSibling] === true) {
+          return;
+        }
+
+        /** @type {Code | number | string | boolean} */
+        let schemaCode = cxt.schemaCode; // eslint-disable-line prefer-destructuring
+        /**
+         * @param {Code} failCode fail code
+         * @returns {Code} fail code with extra `$data` limit checks
+         */
+        let wrapFailCode = (failCode) => failCode;
+
+        if (typeof schema === "boolean") {
+          const inclusiveKeyword = exclusiveFlagFor[keyword];
+
+          if (
+            !schema ||
+            typeof parentSchema[inclusiveKeyword] === "undefined"
+          ) {
+            return;
+          }
+
+          const limitCxt = new KeywordCxt(
+            it,
+            // eslint-disable-next-line jsdoc/reject-any-type
+            /** @type {any} */
+            (self.RULES.all[inclusiveKeyword]).definition,
+            inclusiveKeyword,
+          );
+
+          ({ schemaCode } = limitCxt);
+
+          if (limitCxt.$data) {
+            const limit = schemaCode;
+
+            // Same as `fail$data` does for `$data` keywords: skip missing limits
+            // and fail limits of invalid type
+            wrapFailCode = (failCode) =>
+              _`${limit} !== undefined && (${or(
+                _`typeof ${limit} != "string" && typeof ${limit} != "number"`,
+                failCode,
+              )})`;
+          }
+
+          cxt.setParams({ limit: /** @type {Code} */ (schemaCode) });
+        }
         const fCxt = new KeywordCxt(
           it,
           // eslint-disable-next-line jsdoc/reject-any-type
@@ -110,14 +185,14 @@ function addLimitKeyword(ajv) {
           });
           const fmt = gen.const("fmt", _`${fmts}[${fCxt.schemaCode}]`);
 
-          cxt.fail$data(
-            or(
-              _`typeof ${fmt} != "object"`,
-              _`${fmt} instanceof RegExp`,
-              _`typeof ${fmt}.compare != "function"`,
-              compareCode(fmt),
-            ),
+          const failCode = or(
+            _`typeof ${fmt} != "object"`,
+            _`${fmt} instanceof RegExp`,
+            _`typeof ${fmt}.compare != "function"`,
+            compareCode(fmt),
           );
+
+          cxt.fail$data(wrapFailCode(failCode));
         }
 
         /**
@@ -149,7 +224,7 @@ function addLimitKeyword(ajv) {
               : undefined,
           });
 
-          cxt.fail$data(compareCode(fmt));
+          cxt.fail$data(wrapFailCode(compareCode(fmt)));
         }
 
         if (fCxt.$data) {
