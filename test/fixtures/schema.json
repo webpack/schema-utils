@@ -3781,7 +3781,7 @@
           "formatMaximum": { "$data": "1/max" },
           "formatExclusiveMaximum": true
         },
-        "max": { "type": "string" }
+        "max": {}
       }
     },
     "dollarData2": {

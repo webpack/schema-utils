@@ -3031,6 +3031,17 @@ describe("validation", () => {
   );
 
   createFailedTestCase(
+    "formatExclusiveMaximum flag with invalid $data limit",
+    {
+      dollarDataFormatExclusiveFlag: {
+        date: "2016-02-07",
+        max: null,
+      },
+    },
+    (msg) => expect(msg).toMatchSnapshot(),
+  );
+
+  createFailedTestCase(
     "formatExclusiveMaximum as false boolean flag",
     {
       formatExclusiveMaximumKeyword2: "2016-02-07",

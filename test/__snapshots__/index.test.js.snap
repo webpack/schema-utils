@@ -801,6 +801,11 @@ exports[`validation should fail validation for formatExclusiveMaximum flag with 
  - configuration.dollarDataFormatExclusiveFlag.date should be < "2016-02-07"."
 `;
 
+exports[`validation should fail validation for formatExclusiveMaximum flag with invalid $data limit 1`] = `
+"Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
+ - configuration.dollarDataFormatExclusiveFlag.date should be < null."
+`;
+
 exports[`validation should fail validation for formatExclusiveMinimum 1`] = `
 "Invalid configuration object. Object has been initialized using a configuration object that does not match the API schema.
  - configuration.formatExclusiveMinimumKeyword should be > "2016-02-06" | should be any non-string."

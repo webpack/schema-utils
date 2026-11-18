@@ -79,7 +79,7 @@ function addLimitKeyword(ajv) {
    * @returns {Code | number | string | boolean} limit code
    */
   function getLimitCode({ schemaCode, params }) {
-    return params.limit || schemaCode;
+    return typeof params.limit !== "undefined" ? params.limit : schemaCode;
   }
 
   /** @type {KeywordErrorDefinition} */
@@ -109,14 +109,19 @@ function addLimitKeyword(ajv) {
         if (!opts.validateFormats) return;
 
         // The inclusive check is performed by the exclusive keyword when it is used as a flag
-        if (parentSchema[inclusiveToExclusive[keyword]] === true) {
+        const exclusiveSibling = inclusiveToExclusive[keyword];
+
+        if (exclusiveSibling && parentSchema[exclusiveSibling] === true) {
           return;
         }
 
         /** @type {Code | number | string | boolean} */
         let schemaCode = cxt.schemaCode; // eslint-disable-line prefer-destructuring
-        /** @type {Code | undefined} */
-        let limitDefinedCode;
+        /**
+         * @param {Code} failCode fail code
+         * @returns {Code} fail code with extra `$data` limit checks
+         */
+        let wrapFailCode = (failCode) => failCode;
 
         if (typeof schema === "boolean") {
           const inclusiveKeyword = exclusiveFlagFor[keyword];
@@ -139,7 +144,15 @@ function addLimitKeyword(ajv) {
           ({ schemaCode } = limitCxt);
 
           if (limitCxt.$data) {
-            limitDefinedCode = _`${schemaCode} === undefined`;
+            const limit = schemaCode;
+
+            // Same as `fail$data` does for `$data` keywords: skip missing limits
+            // and fail limits of invalid type
+            wrapFailCode = (failCode) =>
+              _`${limit} !== undefined && (${or(
+                _`typeof ${limit} != "string" && typeof ${limit} != "number"`,
+                failCode,
+              )})`;
           }
 
           cxt.setParams({ limit: /** @type {Code} */ (schemaCode) });
@@ -179,11 +192,7 @@ function addLimitKeyword(ajv) {
             compareCode(fmt),
           );
 
-          cxt.fail$data(
-            limitDefinedCode
-              ? _`!(${limitDefinedCode}) && (${failCode})`
-              : failCode,
-          );
+          cxt.fail$data(wrapFailCode(failCode));
         }
 
         /**
@@ -215,11 +224,7 @@ function addLimitKeyword(ajv) {
               : undefined,
           });
 
-          cxt.fail$data(
-            limitDefinedCode
-              ? _`!(${limitDefinedCode}) && (${compareCode(fmt)})`
-              : compareCode(fmt),
-          );
+          cxt.fail$data(wrapFailCode(compareCode(fmt)));
         }
 
         if (fCxt.$data) {
