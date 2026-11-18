@@ -4,7 +4,7 @@ export = runtime;
  * @property {(a: any, b: any) => boolean} equal deep equality for `const`, `enum` and `uniqueItems`
  * @property {(str: string) => number} ucs2length string length in code points for `minLength` and `maxLength`
  * @property {any} uri URI parser for `$ref` to an `$id`
- * @property {Record<string, any>} formats formats of `ajv-formats` for `format`
+ * @property {Record<string, any>} formats formats of `ajv-formats` for `format`, with the exact comparators of `util/formats.js`
  */
 /** @type {Runtime} */
 declare const runtime: Runtime;
@@ -25,7 +25,7 @@ type Runtime = {
    */
   uri: any;
   /**
-   * formats of `ajv-formats` for `format`
+   * formats of `ajv-formats` for `format`, with the exact comparators of `util/formats.js`
    */
   formats: Record<string, any>;
 };

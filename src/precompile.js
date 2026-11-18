@@ -340,7 +340,7 @@ async function precompile(schema, options = {}) {
   const Ajv = require("ajv").default;
   const standaloneCode = require("ajv/dist/standalone").default;
   const ajvKeywords = require("ajv-keywords").default;
-  const addFormats = require("ajv-formats").default;
+  const addFormats = require("./util/formats").default;
   const { Name, _ } = require("ajv");
 
   const esm = Boolean(options.esm);
@@ -362,7 +362,7 @@ async function precompile(schema, options = {}) {
   });
 
   ajvKeywords(ajv, ["patternRequired"]);
-  addFormats(ajv, { keywords: false });
+  addFormats(ajv);
 
   const addLimitKeyword = require("./keywords/limit").default;
 

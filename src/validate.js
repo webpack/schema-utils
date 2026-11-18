@@ -8,7 +8,7 @@ const getAjv = memoize(() => {
 
   const ajvKeywords = require("ajv-keywords").default;
 
-  const addFormats = require("ajv-formats").default;
+  const addFormats = require("./util/formats").default;
 
   /**
    * @type {Ajv}
@@ -22,7 +22,7 @@ const getAjv = memoize(() => {
 
   ajvKeywords(ajv, ["instanceof", "patternRequired"]);
   // TODO set `{ keywords: true }` for the next major release and remove `keywords/limit.js`
-  addFormats(ajv, { keywords: false });
+  addFormats(ajv);
 
   // Custom keywords
 
